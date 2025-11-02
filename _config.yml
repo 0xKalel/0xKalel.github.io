@@ -48,6 +48,7 @@ exclude:
   - Gemfile.lock
   - node_modules
   - vendor
+  - .claude
 
 # SEO
 lang: en
