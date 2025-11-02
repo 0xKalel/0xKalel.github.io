@@ -1,63 +1,36 @@
 ---
 layout: default
-title: Chrome DevTools MCP for WSL
+title: Home
 ---
 
-# Chrome DevTools MCP for WSL
+# Hi, I'm Khalil Hebachi
 
-> Guides and resources for using Chrome DevTools MCP with Claude Code in WSL environments
+Lead Full-Stack Engineer with 12+ years of experience building high-performance web applications. I specialize in modern web development, AI-assisted workflows, and scalable architecture.
 
-## 📚 Guides
+## What I Do
 
-### [Quick Start Guide](./README-CHROME-MCP.md)
-Get up and running with Chrome DevTools MCP in WSL in under 5 minutes. Includes installation steps, configuration, and troubleshooting.
+I architect and build enterprise-grade applications using React, Laravel, and modern JavaScript/PHP ecosystems. Currently leading development at Storagepal, where I've delivered WMS solutions with 99%+ performance improvements.
 
-**Perfect for:** First-time users, quick setup
+Beyond traditional development, I'm deeply involved in AI-assisted development workflows—exploring how developers can leverage LLMs, agents, and structured prompting to build faster and smarter. I work extensively with Claude Code, custom MCP servers, and markdown-driven development processes.
 
----
+## Areas of Focus
 
-### [Complete Installation Guide](./CHROME_DEVTOOLS_MCP_WSL_GUIDE.md)
-In-depth documentation covering every aspect of installing and configuring Chrome DevTools MCP in WSL. Includes detailed troubleshooting, alternative approaches, and technical explanations.
+- **Full-Stack Development**: React, Vue, Laravel, Node.js, NEOS Flow
+- **AI-Assisted Development**: LLM APIs, prompt engineering, agent systems
+- **Performance Optimization**: Architecture, caching, database optimization
+- **Modern Web**: PWAs, offline-first, Web3, local-first architectures
+- **Security**: Defense-in-depth models, CASL, PostgreSQL RLS
 
-**Perfect for:** Detailed setup, advanced configuration, troubleshooting complex issues
+## Connect
 
----
+- [LinkedIn](https://www.linkedin.com/in/hebachi-khalil/)
+- [GitHub](https://github.com/0xKalel)
+- [Download CV](./assets/cv.pdf)
 
-## 🎯 What is Chrome DevTools MCP?
+## Recent Posts
 
-Chrome DevTools MCP is a Model Context Protocol server that allows AI assistants like Claude to interact with Chrome browsers for:
+{% for post in site.posts limit:3 %}
+- [{{ post.title }}]({{ post.url }}) - {{ post.date | date: "%B %d, %Y" }}
+{% endfor %}
 
-- 🌐 Browser automation and testing
-- 📊 Performance analysis and debugging
-- 🐛 Network inspection and console monitoring
-- 📸 Screenshots and visual testing
-- 🔍 Web scraping and data extraction
-
-## 💻 WSL Support
-
-These guides specifically address the challenges of running Chrome DevTools MCP in Windows Subsystem for Linux (WSL), providing solutions for:
-
-- Chrome executable path resolution
-- WSL/Windows Chrome bridge issues
-- Permission and configuration setup
-- Chrome for Testing integration
-
-## 🚀 Quick Install
-
-```bash
-# Install Chrome for Testing
-npx -y @puppeteer/browsers install chrome@stable --path ~/.local/share/chrome-for-testing
-
-# Configure and enable in Claude Code
-# See the Quick Start Guide for complete instructions
-```
-
-## 🔗 External Resources
-
-- [Chrome DevTools MCP GitHub](https://github.com/ChromeDevTools/chrome-devtools-mcp)
-- [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code)
-- [MCP Protocol Specification](https://modelcontextprotocol.io/)
-
----
-
-**Questions or issues?** Check the [Complete Installation Guide](./CHROME_DEVTOOLS_MCP_WSL_GUIDE.md) for detailed troubleshooting.
+[View all posts →](./blog.html)

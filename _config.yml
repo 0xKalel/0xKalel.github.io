@@ -1,3 +1,54 @@
+# Site Settings
+title: Khalil Hebachi
+description: Lead Full-Stack Engineer | AI-Assisted Development | Web Performance & Architecture
+author: Khalil Hebachi
+email: # Add your email if you want
+url: "https://0xKalel.github.io"
+baseurl: ""
+
+# Social Links
+github_username: 0xKalel
+linkedin_username: hebachi-khalil
+
+# Theme
 remote_theme: pages-themes/hacker@v0.2.0
 plugins:
-- jekyll-remote-theme
+  - jekyll-remote-theme
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Build Settings
+markdown: kramdown
+permalink: /blog/:year/:month/:day/:title/
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /blog/:year/:month/:day/:title/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "default"
+      author: "Khalil Hebachi"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
+# Exclude from processing
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+
+# SEO
+lang: en
+timezone: Europe/Brussels
