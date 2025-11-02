@@ -53,3 +53,6 @@ exclude:
 # SEO
 lang: en
 timezone: Europe/Brussels
+
+# Analytics
+google_analytics: G-SLJ8G6MSCP
