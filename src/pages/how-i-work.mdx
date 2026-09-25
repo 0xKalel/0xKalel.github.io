@@ -1,89 +1,21 @@
 ---
 layout: ../layouts/Prose.astro
 title: How I work
-description: How a requirement becomes working software, and the concrete setup that keeps AI-assisted work reviewable and safe.
+description: Plan clearly. Build in small steps. Check the result.
 ---
-import { Icon } from 'astro-icon/components';
-import Cards from '../components/viz/Cards.astro';
 
-I start from what people need the software to do, and I take responsibility for what ships. Claude Code and Codex handle much of the implementation; the setup below is what makes their output something I can review, trust and maintain.
+## Understand the problem
 
-<div class="not-prose my-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
-  <div class="card fx p-5">
-    <p class="display text-3xl font-bold">520</p>
-    <p class="mt-1.5 text-xs leading-snug text-muted">lines of project instructions, loaded every session</p>
-  </div>
-  <div class="card fx p-5" style="--d:70ms">
-    <p class="display text-3xl font-bold">23</p>
-    <p class="mt-1.5 text-xs leading-snug text-muted">reusable task instructions in one codebase</p>
-  </div>
-  <div class="card fx p-5" style="--d:140ms">
-    <p class="display text-3xl font-bold">~140</p>
-    <p class="mt-1.5 text-xs leading-snug text-muted">notes on incidents, APIs and decisions</p>
-  </div>
-  <div class="card fx p-5" style="--d:210ms">
-    <p class="display text-3xl font-bold">65</p>
-    <p class="mt-1.5 text-xs leading-snug text-muted">browser scenarios checked automatically</p>
-  </div>
-</div>
+I ask what needs to change, who it affects and what success looks like. I write down the rules and edge cases before building.
 
-## From a requirement to a release
+## Build and review
 
-<div class="not-prose my-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-  <div class="card fx p-5">
-    <p class="font-mono text-xs text-accent">01</p>
-    <h3 class="mt-2 font-semibold">Plan</h3>
-    <p class="mt-2 text-sm leading-relaxed text-muted">The problem, the outcome, the rules and the edge cases, written down first.</p>
-  </div>
-  <div class="card fx p-5" style="--d:60ms">
-    <p class="font-mono text-xs text-accent">02</p>
-    <h3 class="mt-2 font-semibold">Build</h3>
-    <p class="mt-2 text-sm leading-relaxed text-muted">Small changes, existing patterns, AI tools guided by written instructions.</p>
-  </div>
-  <div class="card fx p-5" style="--d:120ms">
-    <p class="font-mono text-xs text-accent">03</p>
-    <h3 class="mt-2 font-semibold">Review</h3>
-    <p class="mt-2 text-sm leading-relaxed text-muted">Every change read for correctness, reuse and unnecessary complexity.</p>
-  </div>
-  <div class="card fx p-5" style="--d:180ms">
-    <p class="font-mono text-xs text-accent">04</p>
-    <h3 class="mt-2 font-semibold">Verify</h3>
-    <p class="mt-2 text-sm leading-relaxed text-muted">Tests, static analysis and real-browser checks. Then testers, when the team has them.</p>
-  </div>
-  <div class="card fx p-5" style="--d:240ms">
-    <p class="font-mono text-xs text-accent">05</p>
-    <h3 class="mt-2 font-semibold">Measure</h3>
-    <p class="mt-2 text-sm leading-relaxed text-muted">Small releases, then production data decides whether it worked.</p>
-  </div>
-</div>
+I use Claude Code and Codex to help implement small changes. I make the technical decisions and review the code for mistakes and unnecessary complexity.
 
-## The setup, concretely
+## Test and release
 
-<Cards
-  cols={2}
-  items={[
-    { icon: 'ph:book-open', title: 'Project instructions', text: 'A ~520-line instruction file per codebase: architecture, commands, conventions and the business rules that must never break, such as which invoice amounts may be summed.' },
-    { icon: 'ph:shield-check', title: 'Guard hooks', text: 'Automated checks around every change: formatting and linting on save, plus a guard that blocks destructive migrations and the command class that once broke production.' },
-    { icon: 'ph:stack', title: '23 reusable task instructions', text: 'Conductor instructions sequence the specialists; ops runbooks are decode tables distilled from real incidents: status codes, cooldowns, cost forensics.' },
-    { icon: 'ph:detective', title: 'Read-only investigation', text: 'Dedicated read-only investigators (pipeline-detective, prod-auditor) trace problems wide without the ability to change anything.' },
-    { icon: 'ph:brain', title: 'Notes that carry forward', text: '~140 recorded facts: incident write-ups, how external APIs actually behave, and each decision with its reasoning, available to every future session.' },
-    { icon: 'ph:plugs-connected', title: 'The right tool access', text: 'Documentation, application context and browser control connected where they help, including a third-party server wrapped to be read-only.' },
-    { icon: 'ph:browser', title: 'Checks in a real browser', text: '65 scenarios on the warehouse app, run automatically: complete workflows including failures, with network requests, console, database and logs in the report.' },
-    { icon: 'ph:file-text', title: 'Decisions with their reasoning', text: 'Investigated-and-deferred records live next to the code (prompt caching, embedding curation), so a closed question stays closed until the evidence changes.' },
-  ]}
-/>
+I check the main workflows, failure cases and automated tests. I release small changes, then check errors, performance and usage.
 
-## Decisions I keep close
+## Keep the team informed
 
-<Cards
-  cols={3}
-  items={[
-    { icon: 'ph:blueprint', title: 'Architecture', text: 'How the parts fit, how data moves, how the system recovers from failure, and the maintenance each choice creates.' },
-    { icon: 'ph:currency-eur', title: 'Money and data', text: 'Billing rules, payment retries, migrations and deletions: specified in detail, reviewed twice, never delegated.' },
-    { icon: 'ph:siren', title: 'Incidents', text: 'Tools gather evidence faster, but tracing four compounding bugs takes understanding the system. Every incident ends in a regression check.' },
-  ]}
-/>
-
-## Working with a team
-
-Written requirements, small changes, review notes and test results keep the work easy to follow, and I stay involved after release. The deepest worked example of all of this is the [RavenClip engineering deep dive](/blog/2026/09/25/ravenclip-engineering/); the incident stories are in the [SPS case study](/work/sps/).
+I share decisions, progress and problems. I keep instructions and notes with the code so others can pick up the work. I stay involved after release.

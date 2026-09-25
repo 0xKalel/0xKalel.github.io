@@ -42,61 +42,61 @@ export const experience: Entry[] = [
     location: 'Paris, remote',
     period: 'Oct 2024 - present',
     intro:
-      'Paris storage company where customers book collection, storage and return of their belongings online. I lead the platform that runs the whole business: pricing, bookings, warehouse stock, billing and payments.',
+      'Booking, warehouse and payment software for a Paris storage company.',
     stack: 'PHP (Neos Flow, Laravel), React, MariaDB, Redis, Stripe, Google Maps, GA4, Gemini, Docker, CI/CD',
     bullets: [
       {
-        text: 'Set the technical roadmap and led **2 developers and 2 testers** across the booking platform, the warehouse app and the marketing site. Over this period orders grew **69% year over year** while ad spend per order fell **22%**.',
+        text: 'Led **2 developers and 2 testers**. During this period, orders grew **69% year over year** and ad spend per order fell **22%**.',
         tags: ['lead', 'founder', 'freelance'],
         weight: 10,
       },
       {
-        text: 'Built **SPS end to end**, the warehouse app staff use on their phones every working day (Laravel 13, React 19, Redis queues, PWA): **15,000+ barcode scans** and **8,800+ item moves** since April 2026, in use **120 of 120 weekdays**.',
+        text: 'Built the **SPS warehouse app** with Laravel and React: **15,000+ scans** and **8,800+ item moves** since April 2026.',
         tags: ['lead', 'laravel', 'founder', 'frontend'],
         weight: 9,
       },
       {
-        text: 'Built a transport pricing engine (real driving distance, vehicle and mover optimisation): quotes **32% cheaper**, truck bookings **up 24 to 40%**, transport revenue **up 34%**.',
+        text: 'Built a distance-based pricing engine. Transport revenue rose **34%** after launch.',
         tags: ['lead', 'founder', 'freelance'],
         weight: 8,
       },
       {
-        text: 'Set up an AI-assisted development workflow: project rules and hooks for Claude Code, plus **65 browser test scenarios the agent runs** through Chrome DevTools MCP, reporting UI, network, database and log errors. Backed by **659 PHPUnit tests** and static analysis.',
+        text: 'Set up AI-assisted development with **65 browser checks**, **659 PHPUnit tests** and static analysis.',
         tags: ['ai', 'lead'],
         weight: 8,
       },
       {
-        text: 'Shipped a **Gemini assistant** that turns a description or photos of belongings into a priced cart, checked against the real catalogue: **42%** of conversations end in a confirmed cart.',
+        text: 'Built a **Gemini shopping assistant** from text and photos. **42%** of conversations end in a confirmed cart.',
         tags: ['ai', 'founder', 'frontend'],
         weight: 7,
       },
       {
-        text: 'Designed the REST API between the booking platform and the warehouse app: orders, returns, order changes with Stripe repricing, retry handling designed to prevent duplicate charges. **835 orders** and **8,600+ status changes** processed.',
+        text: 'Designed the booking-to-warehouse API: **835 orders** and **8,600+ status changes** processed, with duplicate-charge protection.',
         tags: ['lead', 'laravel'],
         weight: 7,
       },
       {
-        text: 'Found a billing fault that collected unpaid months twice, fixed it, and rebuilt payment retries and reminders; **77 failed payments recovered** in the first seven weeks.',
+        text: 'Fixed duplicate billing and rebuilt payment recovery: **77 failed payments recovered** in seven weeks.',
         tags: ['lead', 'founder', 'freelance'],
         weight: 6,
       },
       {
-        text: 'Traced a sync incident that marked **99% of orders cancelled** to four compounding bugs; fixed it with retries, safe deletion detection and a nightly reconciliation, covered by regression tests.',
+        text: 'Fixed four sync bugs that incorrectly marked **99% of orders cancelled**. Added recovery checks and regression tests.',
         tags: ['lead', 'laravel'],
         weight: 5,
       },
       {
-        text: 'Made the catalogue **10x faster**, measured against the code I inherited (warm load **9.1 s to 0.9 s**, page weight 3.1 MB to 376 KB), and reduced checkout from **7 steps to 3** (**700+ orders**).',
+        text: 'Cut catalogue load time from **9.1 s to 0.9 s** and checkout from **7 steps to 3**.',
         tags: ['perf', 'frontend', 'freelance', 'lead'],
         weight: 5,
       },
       {
-        text: 'Raised the share of orders visible in GA4 from **58% to 84%** (server-side tracking, Consent Mode v2, ad-click tracking through checkout), giving the team more complete data for advertising decisions.',
+        text: 'Improved order tracking in GA4 from **58% to 84%** with server-side tracking and consent handling.',
         tags: ['founder', 'freelance'],
         weight: 4,
       },
       {
-        text: 'Led improvements to lead capture and HubSpot CRM sync: captured leads went from **31 to 270+ a month**.',
+        text: 'Led lead-capture and CRM improvements: **31 to 270+ leads a month**.',
         tags: ['lead', 'founder'],
         weight: 3,
       },
@@ -110,7 +110,7 @@ export const experience: Entry[] = [
     period: 'Jul 2023 - Aug 2024',
     bullets: [
       {
-        text: 'Built and launched **5+ AI SaaS products**, including Autoreels.ai (Laravel, Inertia, Vue and React), serving **600+ daily active users**.',
+        text: 'Launched **5+ AI products**, including Autoreels.ai, serving **600+ daily active users**.',
         tags: ['ai', 'founder', 'freelance', 'laravel'],
         weight: 10,
       },
@@ -120,7 +120,7 @@ export const experience: Entry[] = [
         weight: 8,
       },
       {
-        text: 'Integrated **8+ AI and media APIs** (OpenAI, ElevenLabs, AssemblyAI, Replicate, Stability) through queued Laravel jobs, with direct publishing to TikTok, YouTube and Instagram.',
+        text: 'Integrated **8+ AI and media APIs** with Laravel queues and social publishing.',
         tags: ['ai', 'laravel'],
         weight: 7,
       },
@@ -228,31 +228,31 @@ export const projects: Entry[] = [
     location: 'Own product',
     period: 'May 2026 - present',
     intro:
-      'AI video product for agencies, consultancies and coaches. It selects stories from news feeds, creates narrated videos and publishes to TikTok and YouTube. Instagram publishing is integrated and awaiting approval.',
+      'Turns news into narrated videos and publishes to TikTok and YouTube.',
     stack: 'PHP 8.5, Laravel 13 (laravel/ai), React 19, TypeScript, Redis, MariaDB, FFmpeg, Node (Skia), Gemini, ElevenLabs, AssemblyAI',
     bullets: [
       {
-        text: 'Designed, built and launched it end to end: **paying customers within 4 months** of the first commit (~1,450 commits), across marketing, AI consulting and coaching.',
+        text: 'Built and launched the product. Reached **paying customers within 4 months**.',
         tags: ['founder', 'freelance', 'ai', 'lead'],
         weight: 10,
       },
       {
-        text: 'Modelled the pipeline as a **resumable state machine** in the database, orchestrating **28 AI agents** with key pools and **failover across 10+ providers**, so processing can recover when a provider fails.',
+        text: 'Built a resumable pipeline with **28 AI agents** and fallback handling across **10+ providers**.',
         tags: ['ai', 'lead', 'founder'],
         weight: 9,
       },
       {
-        text: 'Logged every AI call with its cost per video, and checked on-screen facts against **live data sources** (sports, gaming and crypto APIs) to reduce unsupported claims in videos.',
+        text: 'Tracked AI costs per video and checked on-screen facts against **live data sources**.',
         tags: ['ai', 'founder'],
         weight: 8,
       },
       {
-        text: 'Built the video engine itself: a ~10k-line Node/Skia overlay renderer plus segment-parallel FFmpeg compositing, with **~1,300 automated tests** across the product.',
+        text: 'Built a Node/Skia and FFmpeg video renderer. Added **~1,300 tests** across the product.',
         tags: ['ai', 'perf'],
         weight: 5,
       },
       {
-        text: 'Built the supporting product features: 2FA and passkeys, subscriptions, multi-platform publishing, blog and SEO, analytics.',
+        text: 'Built subscriptions, passkeys, social publishing and analytics.',
         tags: ['founder', 'freelance', 'frontend'],
         weight: 6,
       },

@@ -31,9 +31,9 @@ export const roles: Role[] = [
     label: 'Lead full-stack',
     headline: 'Lead Full-Stack Engineer, Laravel and React',
     summary:
-      'Lead full-stack engineer with 14 years of experience building web applications for clients around the world since 2012. At StoragePal, I lead two developers and two testers on the booking platform and built the warehouse app from design to deployment. I combine hands-on development with technical planning, code review and an AI-assisted workflow.',
+      'Full-stack engineer with 14 years of experience. I lead two developers and two testers at StoragePal, build web applications and improve performance.',
     focus: ['lead', 'laravel', 'perf', 'frontend'],
-    bullets: [7, 3, 2, 2, 2, 2],
+    bullets: [4, 2, 1, 2, 1, 1],
     projectBullets: 3,
     sections: ['experience', 'projects', 'skills', 'education'],
     skills: ['backend', 'frontend', 'infra', 'ai', 'practice'],
@@ -47,10 +47,10 @@ export const roles: Role[] = [
     label: 'AI engineer',
     headline: 'AI Product Engineer, Laravel and LLM applications',
     summary:
-      'Full-stack engineer building AI products that people use in production. I founded RavenClip, which turns news into videos using 28 AI agents across 10+ providers, and built a Gemini shopping assistant for StoragePal. My work covers model integration, reliability, cost tracking and testing. I also use Claude Code and Codex in development and review each change.',
+      'I build AI products with Laravel and React. Founded RavenClip and built a Gemini shopping assistant. Focus: reliable workflows, testing and cost tracking.',
     focus: ['ai', 'lead', 'founder', 'laravel'],
-    bullets: [6, 3, 2, 1, 1, 1],
-    projectBullets: 4,
+    bullets: [4, 2, 1, 2, 1, 1],
+    projectBullets: 3,
     sections: ['projects', 'experience', 'skills', 'education'],
     skills: ['ai', 'backend', 'frontend', 'infra', 'practice'],
     links: [
@@ -64,10 +64,10 @@ export const roles: Role[] = [
     label: 'Founding engineer',
     headline: 'Founding Engineer, product development and launch',
     summary:
-      'Engineer with experience taking products from an idea to paying customers. I founded and ran a development agency for six years, built and launched RavenClip, and lead development at StoragePal. I work across product decisions, application development, infrastructure and analytics, and stay involved after launch.',
+      'I take products from idea to paying customers. Co-founded a development agency, launched RavenClip and lead development at StoragePal.',
     focus: ['founder', 'ai', 'lead', 'freelance'],
-    bullets: [6, 3, 2, 1, 1, 2],
-    projectBullets: 5,
+    bullets: [4, 2, 1, 2, 1, 1],
+    projectBullets: 3,
     sections: ['projects', 'experience', 'skills', 'education'],
     skills: ['backend', 'frontend', 'ai', 'infra', 'practice'],
     links: [
@@ -79,11 +79,11 @@ export const roles: Role[] = [
   {
     slug: 'freelance',
     label: 'Freelance',
-    headline: 'Senior Full-Stack Developer, Laravel and React, available for contracts',
+    headline: 'Senior Full-Stack Developer, Laravel and React',
     summary:
-      'Senior full-stack developer with 14 years of experience delivering projects for clients around the world, including full-time roles in the UK, Denmark and Estonia. I build Laravel and React applications, modernise older systems and improve performance. Results include reducing a calendar load from 34 s to 0.3 s and making a catalogue 10x faster (9.1 s to 0.9 s, measured).',
+      'I build Laravel and React apps, modernise older systems and fix performance problems. Fourteen years of experience working with clients worldwide.',
     focus: ['freelance', 'perf', 'laravel', 'frontend'],
-    bullets: [5, 3, 2, 2, 2, 1],
+    bullets: [4, 2, 1, 2, 1, 1],
     projectBullets: 3,
     sections: ['experience', 'projects', 'skills', 'education'],
     skills: ['backend', 'frontend', 'infra', 'ai', 'practice'],
