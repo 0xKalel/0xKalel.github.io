@@ -275,11 +275,6 @@ kbd.key {
 .hero-meta > span { display: flex; align-items: center; gap: 6px; margin-right: 4px; }
 .hero-meta a { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid var(--line); border-radius: 50%; font-size: 17px; transition: color 160ms, border-color 160ms; }
 .hero-meta a:hover { color: var(--fg); border-color: var(--muted); }
-.hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); padding-block: 25px 30px; border-top: 1px solid var(--line); }
-.hero-stats > div { padding-inline: 24px; border-left: 1px solid var(--line); }
-.hero-stats > div:first-child { padding-left: 0; border-left: 0; }
-.hero-stats dt { font-family: var(--font-display); font-size: 28px; font-weight: 500; letter-spacing: -.04em; }
-.hero-stats dd { margin-top: 3px; font-size: 12px; color: var(--muted); }
 
 .project-preview { min-width: 0; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); box-shadow: 0 24px 70px -38px rgb(0 0 0 / .5); overflow: hidden; }
 .preview-topline { height: 44px; padding: 0 18px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
@@ -390,10 +385,6 @@ kbd.key {
   .hero-title { font-size: clamp(40px, 8.8vw, 58px); }
   .hero-description { font-size: 15px; margin-top: 20px; }
   .hero-meta { margin-top: 20px; }
-  .hero-stats { grid-template-columns: 1fr 1fr; row-gap: 22px; padding-block: 24px; }
-  .hero-stats > div { padding-inline: 18px; }
-  .hero-stats > div:nth-child(3) { padding-left: 0; border-left: 0; }
-  .hero-stats dd { max-width: 20ch; font-size: 11px; }
   .preview-art { height: 230px; }
   .preview-caption { min-height: 83px; }
   .preview-index { display: inline; }

@@ -21,12 +21,6 @@ const projects = [
   { id: 'sps', role: 'Full-stack development', images: [scan, bay], alts: ['SPS scanning interface', 'SPS inventory interface'], metrics: [work.sps.metrics[1], work.sps.metrics[3]], stack: 'Laravel · React · Redis' },
   { id: 'ravenclip', role: 'Founder & AI engineering', images: [raven], alts: ['RavenClip video creation interface'], metrics: [work.ravenclip.metrics[0], work.ravenclip.metrics[1]], stack: 'Laravel · React · AI pipelines' },
 ];
-const stats = [
-  { value: '14', label: 'years building software' },
-  { value: '300+', label: 'projects delivered' },
-  { value: '6', label: 'countries with full-time teams' },
-  { value: '3', label: 'live products' },
-];
 const loop = [
   { verb: 'Plan', text: 'Define the problem and agree on the result.' },
   { verb: 'Build', text: 'Make small changes. Review and test each one.' },
@@ -53,9 +47,6 @@ const loop = [
       </div>
       <ProjectPreview />
     </div>
-    <dl class="hero-stats shell">
-      {stats.map((s) => <div><dt>{s.value}</dt><dd>{s.label}</dd></div>)}
-    </dl>
   </section>
 
   <section id="work" class="shell section-space">
