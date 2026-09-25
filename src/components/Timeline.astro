@@ -6,19 +6,19 @@ import { inline } from '../lib/inline';
 // The career, oldest first. Hooks retell each era; bullets come from the CV data.
 const hooks: Record<string, string> = {
   mawaki3:
-    'Founded my own agency and ran it for six years: 2 people to 7, and 100+ projects for clients in the US, France and the UK. Where architecture, QA and leading a team stopped being theory.',
+    'Monder and I founded Mawaki3 after a hackathon in Annaba: he had the freelancer.com profile, I had the office. We grew to 7 developers, trained juniors, and shipped nearly 300 projects for clients around the world, while building our own products on the side. The hard lesson: every developer we trained eventually left to freelance alone, so in 2018 I went full time with international teams. Twelve years on, Monder and I still ship together at StoragePal.',
   blackyellow:
-    'Built custom PHP and JavaScript frameworks with zero dependencies, and ran Docker and CI/CD in 2018, before either was assumed. The best education in fundamentals I ever got.',
+    'Built in-house PHP and JavaScript frameworks and a ticketing system used by major UK retailers. I also introduced Docker and automated build and deployment pipelines.',
   aviadmin:
     'Remote contract for a Danish aviation company: modernised a PHP 5.4 codebase, rebuilt the frontend in Vue, and took their calendar from 34 seconds to 0.3.',
   singularity:
     'Performance and delivery work for an Estonian team: 60% faster through query optimisation and indexing, plus ten production features.',
   atlas:
-    'The AI chapter begins: five AI SaaS products shipped in about a year, 600+ daily users. Fast because of the decade before it, since queues, provider failover and billing were already old friends.',
+    'Built and launched five AI software products in about a year, serving 600+ daily active users. The work brought together video processing, external AI services, subscriptions and publishing.',
   storagepal:
-    'Lead developer for a Paris storage business. The platform runs the whole company; I set the roadmap, direct two developers and two testers, and built the warehouse app end to end.',
+    'Lead developer for a Paris storage business. I set the technical roadmap, work with two developers and two testers, and built the warehouse app from design through to ongoing support.',
   ravenclip:
-    'My own SaaS: a newsroom that runs itself, publishing daily across 10+ AI providers without a human in the loop. Paying customers within four months of the first commit: agencies, consultancies and coaches.',
+    'Founded RavenClip, a product that turns news into short videos and publishes them automatically. I built and launched it, reaching paying customers in agencies, consultancies and coaching within four months of the first commit.',
 };
 
 const entries: Entry[] = [...experience].reverse().concat(projects);
@@ -39,7 +39,7 @@ const year = (e: Entry) => e.period.match(/\d{4}/)?.[0] ?? '';
         <p class="mt-3 max-w-[62ch] leading-relaxed text-muted">{hooks[e.id]}</p>
         <div class="acc-item mt-4">
           <button class="acc-btn inline-flex items-center gap-2 text-sm font-medium text-accent" aria-expanded="false">
-            <Icon name="ph:plus" class="ph-plus" /> What I shipped
+            <Icon name="ph:plus" class="ph-plus" /> Work and results
           </button>
           <div class="acc">
             <div>

@@ -46,7 +46,7 @@ export const experience: Entry[] = [
     stack: 'PHP (Neos Flow, Laravel), React, MariaDB, Redis, Stripe, Google Maps, GA4, Gemini, Docker, CI/CD',
     bullets: [
       {
-        text: 'Set the technical roadmap and directed **2 developers and 2 testers** across the booking platform, the warehouse app and the marketing site. Over this period orders grew **69% year over year** while ad spend per order fell **22%**.',
+        text: 'Set the technical roadmap and led **2 developers and 2 testers** across the booking platform, the warehouse app and the marketing site. Over this period orders grew **69% year over year** while ad spend per order fell **22%**.',
         tags: ['lead', 'founder', 'freelance'],
         weight: 10,
       },
@@ -61,7 +61,7 @@ export const experience: Entry[] = [
         weight: 8,
       },
       {
-        text: 'Set up an AI-native workflow: project rules and hooks for Claude Code, plus **65 browser test scenarios the agent runs** through Chrome DevTools MCP, reporting UI, network, database and log errors. Backed by **659 PHPUnit tests** and static analysis.',
+        text: 'Set up an AI-assisted development workflow: project rules and hooks for Claude Code, plus **65 browser test scenarios the agent runs** through Chrome DevTools MCP, reporting UI, network, database and log errors. Backed by **659 PHPUnit tests** and static analysis.',
         tags: ['ai', 'lead'],
         weight: 8,
       },
@@ -71,32 +71,32 @@ export const experience: Entry[] = [
         weight: 7,
       },
       {
-        text: 'Designed the REST API between the booking platform and the warehouse app: orders, returns, order changes with Stripe repricing, retries that never charge twice. **835 orders** and **8,600+ status changes** processed.',
+        text: 'Designed the REST API between the booking platform and the warehouse app: orders, returns, order changes with Stripe repricing, retry handling designed to prevent duplicate charges. **835 orders** and **8,600+ status changes** processed.',
         tags: ['lead', 'laravel'],
         weight: 7,
       },
       {
-        text: 'Found a billing fault that collected unpaid months twice, fixed it, and rebuilt payment retries and reminders under French consumer law; **77 failed payments recovered** in the first seven weeks.',
+        text: 'Found a billing fault that collected unpaid months twice, fixed it, and rebuilt payment retries and reminders; **77 failed payments recovered** in the first seven weeks.',
         tags: ['lead', 'founder', 'freelance'],
         weight: 6,
       },
       {
-        text: 'Traced a sync incident that marked **99% of orders cancelled** to four compounding bugs; fixed it with retries, safe deletion detection and a nightly reconciliation, locked in by regression tests.',
+        text: 'Traced a sync incident that marked **99% of orders cancelled** to four compounding bugs; fixed it with retries, safe deletion detection and a nightly reconciliation, covered by regression tests.',
         tags: ['lead', 'laravel'],
         weight: 5,
       },
       {
-        text: 'Cut catalogue server time from **250 ms to 53 ms** and shipped a one-page checkout with Apple Pay and Google Pay (**700+ orders**).',
+        text: 'Made the catalogue **10x faster**, measured against the code I inherited (warm load **9.1 s to 0.9 s**, page weight 3.1 MB to 376 KB), and reduced checkout from **7 steps to 3** (**700+ orders**).',
         tags: ['perf', 'frontend', 'freelance', 'lead'],
         weight: 5,
       },
       {
-        text: 'Raised the share of orders visible in GA4 from **58% to 84%** (server-side tracking, Consent Mode v2, ad-click tracking through checkout), so ad budgets rest on real data.',
+        text: 'Raised the share of orders visible in GA4 from **58% to 84%** (server-side tracking, Consent Mode v2, ad-click tracking through checkout), giving the team more complete data for advertising decisions.',
         tags: ['founder', 'freelance'],
         weight: 4,
       },
       {
-        text: 'Directed lead capture and HubSpot CRM sync: captured leads went from **31 to 270+ a month**.',
+        text: 'Led improvements to lead capture and HubSpot CRM sync: captured leads went from **31 to 270+ a month**.',
         tags: ['lead', 'founder'],
         weight: 3,
       },
@@ -120,7 +120,7 @@ export const experience: Entry[] = [
         weight: 8,
       },
       {
-        text: 'Orchestrated **8+ AI and media APIs** (OpenAI, ElevenLabs, AssemblyAI, Replicate, Stability) through queued Laravel jobs, with direct publishing to TikTok, YouTube and Instagram.',
+        text: 'Integrated **8+ AI and media APIs** (OpenAI, ElevenLabs, AssemblyAI, Replicate, Stability) through queued Laravel jobs, with direct publishing to TikTok, YouTube and Instagram.',
         tags: ['ai', 'laravel'],
         weight: 7,
       },
@@ -163,7 +163,7 @@ export const experience: Entry[] = [
         weight: 10,
       },
       {
-        text: 'Migrated a PHP 5.4 codebase to PHP 7 and rebuilt the frontend in Vue with an atomic component system.',
+        text: 'Migrated a PHP 5.4 codebase to PHP 7 and rebuilt the frontend in Vue with reusable components.',
         tags: ['freelance', 'frontend', 'lead'],
         weight: 6,
       },
@@ -206,7 +206,7 @@ export const experience: Entry[] = [
     period: 'Jun 2012 - Jan 2018',
     bullets: [
       {
-        text: 'Grew the agency from **2 to 7 developers** and delivered **100+ projects** for clients in the US, France and the UK.',
+        text: 'Grew the agency from **2 to 7 developers** and delivered **100+ projects** for clients around the world, via freelancer.com and direct.',
         tags: ['founder', 'lead', 'freelance'],
         weight: 10,
       },
@@ -228,7 +228,7 @@ export const projects: Entry[] = [
     location: 'Own product',
     period: 'May 2026 - present',
     intro:
-      'SaaS newsroom that runs itself: it picks the story from live news feeds, writes and voices a fact-grounded script, renders and publishes to TikTok, YouTube and Instagram. Customers: agencies, consultancies, coaches.',
+      'AI video product for agencies, consultancies and coaches. It selects stories from news feeds, creates narrated videos and publishes to TikTok and YouTube. Instagram publishing is integrated and awaiting approval.',
     stack: 'PHP 8.5, Laravel 13 (laravel/ai), React 19, TypeScript, Redis, MariaDB, FFmpeg, Node (Skia), Gemini, ElevenLabs, AssemblyAI',
     bullets: [
       {
@@ -237,22 +237,22 @@ export const projects: Entry[] = [
         weight: 10,
       },
       {
-        text: 'Modelled the pipeline as a **resumable state machine** in the database, orchestrating **28 AI agents** with key pools and **failover across 10+ providers**, so one outage never stops a run.',
+        text: 'Modelled the pipeline as a **resumable state machine** in the database, orchestrating **28 AI agents** with key pools and **failover across 10+ providers**, so processing can recover when a provider fails.',
         tags: ['ai', 'lead', 'founder'],
         weight: 9,
       },
       {
-        text: 'Logged every AI call with its cost per video, and checked on-screen facts against **live data sources** (sports, gaming and crypto APIs) so videos are grounded, not invented.',
+        text: 'Logged every AI call with its cost per video, and checked on-screen facts against **live data sources** (sports, gaming and crypto APIs) to reduce unsupported claims in videos.',
         tags: ['ai', 'founder'],
         weight: 8,
       },
       {
-        text: 'Built the video engine itself: a ~10k-line Node/Skia overlay renderer plus segment-parallel FFmpeg compositing, held together by **~1,300 automated tests**.',
+        text: 'Built the video engine itself: a ~10k-line Node/Skia overlay renderer plus segment-parallel FFmpeg compositing, with **~1,300 automated tests** across the product.',
         tags: ['ai', 'perf'],
         weight: 5,
       },
       {
-        text: 'Full product around it: 2FA and passkeys, subscriptions, multi-platform publishing, blog and SEO, analytics.',
+        text: 'Built the supporting product features: 2FA and passkeys, subscriptions, multi-platform publishing, blog and SEO, analytics.',
         tags: ['founder', 'freelance', 'frontend'],
         weight: 6,
       },
@@ -285,12 +285,12 @@ export const skills: SkillGroup[] = [
   },
   {
     id: 'infra',
-    label: 'Data and infra',
+    label: 'Infrastructure',
     items: 'MySQL and MariaDB, Redis, PostgreSQL, Docker, CI/CD, AWS, Linux, Nginx, FFmpeg, GA4 and GTM',
   },
   {
     id: 'practice',
-    label: 'Practice',
+    label: 'Engineering',
     items: 'Architecture, code review, performance tuning, PHPUnit and Pest, static analysis, technical leadership',
   },
 ];

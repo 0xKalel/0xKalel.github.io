@@ -4,8 +4,8 @@
 const H = 34;
 type Pill = { x: number; y: number; w: number; label: string; kind?: 'node' | 'end' };
 const pills: Pill[] = [
-  { x: 6, y: 101, w: 88, label: 'Ingest' },
-  { x: 112, y: 101, w: 88, label: 'Enrich' },
+  { x: 6, y: 101, w: 88, label: 'News feeds' },
+  { x: 112, y: 101, w: 88, label: 'Context' },
   { x: 218, y: 101, w: 88, label: 'Script', kind: 'node' },
   { x: 348, y: 30, w: 88, label: 'Voice' },
   { x: 454, y: 30, w: 104, label: 'Transcript' },
@@ -30,9 +30,9 @@ const lines = [
 ---
 
 <figure class="not-prose card fx my-10 overflow-x-auto p-5 md:p-7">
-  <figcaption class="text-[0.95rem] font-medium">One video, one pass through the pipeline</figcaption>
+  <figcaption class="text-[0.95rem] font-medium">From a news story to a published video</figcaption>
   <div class="mt-4 min-w-[760px]">
-    <svg viewBox="0 0 920 236" class="w-full" role="img" aria-label="Pipeline diagram: ingest, enrich and script run in sequence, then the flow forks into a voice branch (voice, transcript) and a visual branch (scenes, assets) that rejoin at render, followed by review and publish.">
+    <svg viewBox="0 0 920 236" class="w-full" role="img" aria-label="Pipeline diagram: news feeds, context and script run in sequence, then the flow forks into a voice branch (voice, transcript) and a visual branch (scenes, assets) that rejoin at render, followed by review and publish.">
       <defs>
         <marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
           <path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"></path>
@@ -61,6 +61,6 @@ const lines = [
     </svg>
   </div>
   <p class="mt-3 text-xs leading-relaxed text-muted">
-    Every stage writes its status to the database; an autopilot advances whatever is ready. Any run can stop, resume or retry at any stage.
+    Each stage saves its progress to the database. Processing advances when the next stage is ready, and can resume or retry after a failure.
   </p>
 </figure>

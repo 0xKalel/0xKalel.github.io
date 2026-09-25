@@ -16,7 +16,15 @@ function reveals() {
   const els = $$('.fx');
   if (!els.length) return;
   const io = new IntersectionObserver(
-    (es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
+    (es) =>
+      es.forEach((e) => {
+        // Reveal when entering, and also when already scrolled past (fast scrolls
+        // can deliver the entry after the element has left the viewport).
+        if (e.isIntersecting || e.boundingClientRect.top < innerHeight) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      }),
     { threshold: 0.15, rootMargin: '0px 0px -5% 0px' },
   );
   els.forEach((el) => io.observe(el));
@@ -157,7 +165,7 @@ function copyChips() {
     on(btn, 'click', async () => {
       try {
         await navigator.clipboard.writeText(btn.dataset.copy!);
-        label.textContent = 'Copied';
+        label.textContent = 'Email copied';
         setTimeout(() => { label.textContent = original; }, 1400);
       } catch {}
     });

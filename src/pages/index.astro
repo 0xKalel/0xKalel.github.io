@@ -15,18 +15,18 @@ const work = Object.fromEntries((await getCollection('work')).map((w) => [w.id, 
 const [latest] = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.data.date);
 
 const stats = [
-  { n: 14, suffix: '', label: 'years shipping production software' },
-  { n: 100, suffix: '+', label: 'projects delivered, agency to enterprise' },
-  { n: 6, suffix: '', label: 'countries built for, remote since 2018' },
-  { n: 3, suffix: '', label: 'products in production today' },
+  { n: 14, suffix: '', label: 'years building software' },
+  { n: 300, suffix: '+', label: 'projects delivered worldwide, freelance to enterprise' },
+  { n: 6, suffix: '', label: 'countries of teams I have worked in full time' },
+  { n: 3, suffix: '', label: 'live products I build and maintain' },
 ];
 
 const loop = [
-  { verb: 'Specify', text: 'I write what must be true and what must never happen before any code exists.' },
-  { verb: 'Delegate', text: 'Claude Code or Codex implements in small steps, inside project rules and hooks.' },
-  { verb: 'Review', text: 'I read every diff for correctness, duplication and needless complexity.' },
-  { verb: 'Verify', text: 'Tests, static analysis and agent-run browser scenarios check the real app. Then people do.' },
-  { verb: 'Measure', text: 'Small releases, checked afterwards against production data.' },
+  { verb: 'Plan', text: 'I define the problem, the business rules and the edge cases before writing code.' },
+  { verb: 'Build', text: 'I use Claude Code and Codex to implement small changes, guided by instructions in the project.' },
+  { verb: 'Review', text: 'I review each change for correctness, clarity and unnecessary complexity.' },
+  { verb: 'Verify', text: 'I combine automated tests and browser checks with hands-on testing of the actual workflow.' },
+  { verb: 'Measure', text: 'I release small changes and check production data to see whether they helped.' },
 ];
 ---
 
@@ -38,19 +38,19 @@ const loop = [
     <div class="relative z-10 mx-auto grid max-w-6xl items-center gap-14 px-4 pt-20 pb-24 md:px-8 md:pt-28 lg:min-h-[86dvh] lg:grid-cols-[1.2fr_1fr] lg:gap-12 lg:pt-16 lg:pb-16">
       <div>
         <h1 class="display rise text-[2.6rem] leading-[1.02] font-bold md:text-6xl lg:text-[4.2rem]">
-          <span class="block" data-scramble>Shipping software</span>
+          <span class="block" data-scramble>Building software</span>
           <span class="block"><span data-scramble>since 2012.</span></span>
-          <span class="mt-3 block text-muted">Agents type.</span>
-          <span class="block text-accent">I own what ships.</span>
+          <span class="mt-3 block text-muted">From the first idea</span>
+          <span class="block text-accent">to daily use.</span>
         </h1>
         <p class="rise mt-7 max-w-[52ch] text-lg leading-relaxed text-muted" style="--i:2">
-          Lead full-stack engineer. 100+ projects through my own agency, five AI SaaS products, and three
-          platforms in production today. I write the specs, direct Claude Code and Codex, and sign off on
-          every line.
+          I’m Khalil, a lead full-stack engineer based in Algeria, building for clients around the
+          world since 2012. I help teams turn ideas into working products and improve the software
+          they already rely on. My work spans storage operations, payments and AI video tools.
         </p>
         <div class="rise mt-9 flex flex-wrap items-center gap-3" style="--i:3">
           <a href="#work" class="btn btn-primary" data-magnet>See the work <Icon name="ph:arrow-down" /></a>
-          <a href="/how-i-work/" class="btn btn-ghost">How I direct agents</a>
+          <a href="/how-i-work/" class="btn btn-ghost">How I work</a>
         </div>
       </div>
       <div class="rise relative pb-12 pl-10 max-lg:mx-auto max-lg:w-full max-lg:max-w-md md:pl-14" style="--i:2" data-tilt="2.5">
@@ -98,8 +98,8 @@ const loop = [
   <section id="work" class="mx-auto max-w-6xl scroll-mt-24 px-4 pt-32 md:px-8">
     <h2 class="display fx text-4xl font-bold tracking-tight md:text-5xl">Selected work</h2>
     <p class="fx mt-4 max-w-[60ch] text-lg text-muted" style="--d:80ms">
-      Three products in production. One I lead with a team, one I built end to end for that team, and one that is
-      mine, live with its first customers.
+      I lead development at StoragePal, built its warehouse app, and launched RavenClip, my own AI video
+      product. Here’s what each project involved and what changed for the people using it.
     </p>
 
     <div class="mt-14 grid gap-5 lg:grid-cols-5">
@@ -180,10 +180,10 @@ const loop = [
   <!-- Journey -->
   <section id="journey" class="mx-auto max-w-6xl scroll-mt-24 px-4 pt-36 md:px-8">
     <div class="max-w-[62ch]">
-      <h2 class="display fx text-4xl font-bold tracking-tight md:text-5xl">Fourteen years, in order</h2>
+      <h2 class="display fx text-4xl font-bold tracking-tight md:text-5xl">My experience</h2>
       <p class="fx mt-4 text-lg leading-relaxed text-muted" style="--d:80ms">
-        Long before AI could write code I was building frameworks, backends and products from scratch. The
-        agents are the newest layer on a deep foundation. Open any era.
+        I started by running a development agency, then worked with teams across Europe. Along the way,
+        I’ve built business software, improved older systems and launched AI products. Explore each role below.
       </p>
     </div>
     <Timeline />
@@ -192,12 +192,12 @@ const loop = [
   <!-- How I work -->
   <section class="mx-auto grid max-w-6xl gap-12 px-4 pt-36 md:px-8 lg:grid-cols-[0.9fr_1.1fr]">
     <div class="lg:sticky lg:top-28 lg:self-start">
-      <h2 class="display fx text-4xl font-bold tracking-tight md:text-5xl">How I work with AI</h2>
+      <h2 class="display fx text-4xl font-bold tracking-tight md:text-5xl">How I work</h2>
       <p class="fx mt-5 max-w-[46ch] text-lg leading-relaxed text-muted" style="--d:80ms">
-        Typing code stopped being the bottleneck. Judgment did. My job is the system, the rules the agents
-        work inside, and the review that decides what ships.
+        I start with the problem, agree on what needs to change, and build in small steps. AI tools help
+        with implementation; I review the work and check how it behaves before and after release.
       </p>
-      <a href="/how-i-work/" class="btn btn-ghost fx mt-8" style="--d:160ms">The full setup <Icon name="ph:arrow-right" /></a>
+      <a href="/how-i-work/" class="btn btn-ghost fx mt-8" style="--d:160ms">Read about my process <Icon name="ph:arrow-right" /></a>
     </div>
     <ol class="divide-y divide-line border-y border-line">
       {
@@ -215,7 +215,7 @@ const loop = [
   <section class="mx-auto grid max-w-6xl gap-5 px-4 pt-36 md:px-8 lg:grid-cols-[1.3fr_1fr]">
     <div class="card fx p-7 md:p-9">
       <h2 class="display text-3xl font-semibold tracking-tight">A CV for the role you're hiring for</h2>
-      <p class="mt-3 max-w-[52ch] text-muted">Same fourteen years, ordered for what you need. Each one has a PDF.</p>
+      <p class="mt-3 max-w-[52ch] text-muted">Choose a version that highlights the experience most relevant to your team. Each is available as a PDF.</p>
       <ul class="mt-7 grid gap-2 sm:grid-cols-2">
         {
           roles.map((r) => (
@@ -236,7 +236,7 @@ const loop = [
           <h3 class="mt-4 text-lg leading-snug font-medium">{latest.data.title}</h3>
           <p class="mt-3 line-clamp-3 text-sm leading-relaxed text-muted">{latest.data.description}</p>
           <span class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-medium text-accent">
-            Read it <Icon name="ph:arrow-right" class="transition-transform group-hover:translate-x-1" />
+            Read the article <Icon name="ph:arrow-right" class="transition-transform group-hover:translate-x-1" />
           </span>
         </a>
       )
@@ -246,8 +246,9 @@ const loop = [
   <!-- Contact -->
   <section class="mx-auto max-w-6xl px-4 pt-40 pb-4 md:px-8">
     <h2 class="display fx max-w-[16ch] text-5xl leading-[1.02] font-bold text-balance md:text-7xl">
-      Building something that has to work <span class="text-accent">every day?</span>
+      Have a project <span class="text-accent">in mind?</span>
     </h2>
+    <p class="fx mt-6 max-w-[52ch] text-lg leading-relaxed text-muted">Tell me what you’re building, what needs improving, or the role you’re hiring for.</p>
     <div class="fx mt-10 flex flex-wrap items-center gap-3" style="--d:120ms">
       <a href={`mailto:${profile.email}`} class="btn btn-primary" data-magnet>Email me <Icon name="ph:arrow-right" /></a>
       <button type="button" class="btn btn-ghost" data-copy={profile.email}>

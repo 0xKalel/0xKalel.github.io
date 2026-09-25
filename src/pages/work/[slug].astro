@@ -19,7 +19,7 @@ const wide = d.shots.filter((s) => s.src.height <= s.src.width);
 <Base title={d.title} description={d.tagline}>
   <article class="mx-auto max-w-6xl px-4 pt-14 md:px-8 md:pt-20">
     <a href="/#work" class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-fg">
-      <Icon name="ph:arrow-left" /> All work
+      <Icon name="ph:arrow-left" /> Back to selected work
     </a>
     <h1 class="rise mt-8 text-4xl font-semibold tracking-[-0.035em] md:text-6xl">{d.title}</h1>
     <p class="rise mt-5 max-w-[52ch] text-lg leading-relaxed text-muted" style="--i:1">{d.tagline}</p>
@@ -28,7 +28,7 @@ const wide = d.shots.filter((s) => s.src.height <= s.src.width);
       <div><dt class="text-muted">Role</dt><dd class="mt-1">{d.role}</dd></div>
       <div><dt class="text-muted">Period</dt><dd class="mt-1">{d.period}</dd></div>
       <div>
-        <dt class="text-muted">Stack</dt>
+        <dt class="text-muted">Technologies</dt>
         <dd class="mt-1 leading-relaxed">{d.stack}</dd>
       </div>
     </dl>

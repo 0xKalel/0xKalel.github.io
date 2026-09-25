@@ -1,11 +1,13 @@
 ---
-title: "Complete Guide: Installing Chrome DevTools MCP in WSL for Claude Code"
-description: "Step-by-step guide to install and configure Chrome DevTools MCP server in WSL for Claude Code VSCode extension. Learn browser automation, performance analysis, and AI-assisted web development."
+title: "Set up Chrome DevTools MCP in WSL for Claude Code"
+description: "Connect Claude Code to a Chrome browser running in WSL, with setup steps, configuration examples and troubleshooting notes."
 date: 2025-11-02
 tags: [claude-code, mcp, wsl, chrome-devtools]
 ---
 
-Learn how to set up Chrome DevTools Model Context Protocol (MCP) server in Windows Subsystem for Linux (WSL) for seamless integration with Claude Code VSCode extension. This guide covers installation, configuration, troubleshooting, and practical use cases.
+This guide connects Claude Code in VS Code to Chrome running inside Windows Subsystem for Linux (WSL). Once connected, you can ask Claude to inspect a page, check console errors and test browser interactions.
+
+The configuration examples below date from November 2025. Check the linked project documentation for changes to supported options and requirements.
 
 ## Table of Contents
 - [What is Chrome DevTools MCP?](#what-is-chrome-devtools-mcp)
@@ -18,7 +20,7 @@ Learn how to set up Chrome DevTools Model Context Protocol (MCP) server in Windo
 
 ## What is Chrome DevTools MCP?
 
-Chrome DevTools MCP is a Model Context Protocol server that enables AI assistants like Claude to interact directly with Chrome browsers. This integration unlocks powerful capabilities:
+Chrome DevTools MCP is a Model Context Protocol server that enables AI assistants like Claude to interact directly with Chrome browsers. It lets the assistant use browser tools for tasks such as:
 
 - **Browser Automation**: Open pages, click elements, fill forms, navigate websites
 - **Performance Analysis**: Record traces, analyze Core Web Vitals, identify bottlenecks
@@ -32,13 +34,13 @@ Chrome DevTools MCP is a Model Context Protocol server that enables AI assistant
 Before starting, ensure you have:
 
 - **WSL 2** installed on Windows
-- **VSCode** with Claude Code extension
+- **VS Code** with the Claude Code extension
 - **Node.js and npm** installed in your WSL environment
 - Basic command line knowledge
 
 ## Quick Start
 
-If you want to get up and running quickly, follow these steps:
+These steps cover the basic setup. The next section explains the configuration in more detail.
 
 ### 1. Install Chrome for Testing
 
@@ -91,7 +93,7 @@ Add to `~/.claude/settings.json`:
 }
 ```
 
-### 4. Reload VSCode
+### 4. Reload VS Code
 
 Press `Ctrl+Shift+P` → "Developer: Reload Window"
 
@@ -115,7 +117,7 @@ When using Chrome DevTools MCP in WSL, you face two options:
 1. **Use Windows Chrome from WSL** (complex, prone to connection issues)
 2. **Use Chrome for Testing in WSL** (recommended, reliable)
 
-This guide focuses on option 2 for the best experience.
+This guide uses Chrome for Testing inside WSL.
 
 ### Step 1: Install Chrome for Testing
 
@@ -221,7 +223,7 @@ Create `.claude/settings.local.json` in your project:
 
 The `*` wildcard allows all chrome-devtools tools without listing them individually.
 
-### Step 4: Reload VSCode
+### Step 4: Reload VS Code
 
 Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac), type "Developer: Reload Window", and press Enter.
 
@@ -256,7 +258,7 @@ Update the `-e` path in `~/.claude.json` to match exactly.
 
 ### "Protocol error (Target.setDiscoverTargets): Target closed"
 
-**Cause**: You're attempting to use Windows Chrome from WSL, which has compatibility issues.
+**Possible cause**: Chrome closed during startup. If you are launching Windows Chrome from WSL, check whether the same issue occurs with a Linux installation.
 
 **Solution**: Use Chrome for Testing (Linux version) as shown in this guide. Avoid using paths like `/mnt/c/Program Files/Google/Chrome/Application/chrome.exe`.
 
@@ -265,8 +267,8 @@ Update the `-e` path in `~/.claude.json` to match exactly.
 **Possible causes and solutions:**
 
 1. **Invalid JSON syntax**: Validate your `~/.claude.json` file using a JSON validator
-2. **VSCode not reloaded**: Press `Ctrl+Shift+P` → "Developer: Reload Window"
-3. **Extension errors**: Check VSCode logs at `~/.vscode-server/data/logs/*/exthost*/Anthropic.claude-code/Claude VSCode.log`
+2. **VS Code not reloaded**: Press `Ctrl+Shift+P` → "Developer: Reload Window"
+3. **Extension errors**: Check VS Code logs at `~/.vscode-server/data/logs/*/exthost*/Anthropic.claude-code/Claude VSCode.log`
 
 ### Permission Denied Errors
 
@@ -286,7 +288,7 @@ Can you open https://example.com and analyze its performance?
 Check Core Web Vitals and identify any bottlenecks.
 ```
 
-Claude will:
+Ask Claude to:
 - Navigate to the URL
 - Start a performance trace
 - Analyze metrics (FCP, LCP, CLS, etc.)
@@ -299,7 +301,7 @@ Ask Claude:
 Open https://myapp.com and check for console errors
 ```
 
-Claude will:
+Ask Claude to:
 - Navigate to your application
 - Monitor console messages
 - Report any errors, warnings, or issues
@@ -313,7 +315,7 @@ Take a screenshot of the login page at https://myapp.com/login
 and verify all form elements are visible
 ```
 
-Claude will:
+Ask Claude to:
 - Open the page
 - Capture a screenshot
 - Analyze the visual elements
@@ -327,7 +329,7 @@ Fill out the contact form at https://example.com/contact
 with test data and submit it
 ```
 
-Claude will:
+Ask Claude to:
 - Navigate to the form
 - Fill in the fields
 - Submit the form
@@ -341,28 +343,11 @@ Open https://api-example.com and monitor all API calls.
 Show me the request/response for the user profile endpoint.
 ```
 
-Claude will:
+Ask Claude to:
 - Navigate to the page
 - Monitor network traffic
 - Filter for specific API calls
 - Display request/response details
-
-## Why This Approach Works
-
-### Advantages of Chrome for Testing
-
-1. **Native Linux Support**: Purpose-built for automation, works natively in WSL without Windows bridge issues
-2. **Isolated Mode**: The `--isolated` flag ensures each session uses a fresh profile, avoiding conflicts and state issues
-3. **Headless-Ready**: Optimized for automated scenarios without GUI dependencies
-4. **Reliable**: Designed specifically for testing tools and automation frameworks
-
-### Benefits of MCP Integration
-
-1. **AI-Assisted Debugging**: Claude can analyze browser behavior and suggest fixes
-2. **Automated Testing**: Create test scenarios through natural language
-3. **Performance Insights**: Get AI-powered analysis of web performance
-4. **Documentation**: Generate screenshots and reports automatically
-5. **Rapid Prototyping**: Test web interactions without writing code
 
 ## Alternative: Using Windows Chrome (Not Recommended)
 
@@ -378,13 +363,13 @@ While you can try using Windows Chrome from WSL:
 ]
 ```
 
-This approach has known issues:
+Problems to check with this setup include:
 - Connection instability and "Target closed" errors
 - Profile selection dialogs interfering with automation
 - WSL-to-Windows binary execution overhead
 - Firewall and permission complications
 
-**Recommendation**: Use Chrome for Testing for the best experience.
+The Linux installation described above avoids crossing the WSL-to-Windows boundary.
 
 ## Resources
 
@@ -394,20 +379,8 @@ This approach has known issues:
 - [MCP Protocol Specification](https://modelcontextprotocol.io/)
 - [Chrome for Testing](https://developer.chrome.com/blog/chrome-for-testing/)
 
-## Conclusion
+## Try it on your project
 
-With Chrome DevTools MCP properly installed in WSL, you unlock powerful browser automation capabilities within Claude Code. This integration enables:
+Start with a small task: open a local page, inspect the console and capture a screenshot. That gives you a quick check that the connection works before moving on to longer browser scenarios.
 
-- **Faster debugging**: AI-assisted browser debugging and analysis
-- **Automated testing**: Natural language test creation and execution
-- **Performance optimization**: AI-powered performance insights
-- **Web scraping**: Intelligent data extraction and analysis
-- **Development velocity**: Automate repetitive browser tasks
-
-The combination of Claude's intelligence with Chrome's DevTools creates a powerful workflow for modern web development.
-
----
-
-**Questions or issues?** Feel free to reach out on [GitHub](https://github.com/0xKalel) or [LinkedIn](https://www.linkedin.com/in/hebachi-khalil/).
-
-**Found this helpful?** Share it with other developers working with Claude Code and WSL!
+If you run into an issue with this guide, you can find me on [GitHub](https://github.com/0xKalel) or [LinkedIn](https://www.linkedin.com/in/hebachi-khalil/).

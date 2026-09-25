@@ -328,6 +328,7 @@ kbd.key {
   --tw-prose-td-borders: var(--line);
 }
 .prose :where(pre) { border: 1px solid var(--line); border-radius: var(--radius); }
+.prose :where(code):not(:where(pre code)) { overflow-wrap: anywhere; }
 .prose :where(code):not(:where(pre code))::before,
 .prose :where(code):not(:where(pre code))::after { content: none; }
 

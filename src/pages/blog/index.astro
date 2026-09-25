@@ -6,10 +6,10 @@ import { postHref } from '../../lib/blog';
 const posts = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.data.date);
 ---
 
-<Base title="Writing" description="Notes on building software with AI agents, performance and architecture.">
+<Base title="Writing" description="What I’ve learned from building AI products, improving performance and maintaining software in production.">
   <section class="mx-auto max-w-3xl px-4 pt-14 md:px-8 md:pt-20">
     <h1 class="rise text-4xl font-semibold tracking-[-0.035em] md:text-5xl">Writing</h1>
-    <p class="rise mt-5 text-lg text-muted" style="--i:1">Notes on building software with AI agents, performance and architecture.</p>
+    <p class="rise mt-5 text-lg text-muted" style="--i:1">What I’ve learned from building AI products, improving performance and maintaining software in production.</p>
     <ul class="mt-12 divide-y divide-line border-y border-line">
       {
         posts.map((p) => (

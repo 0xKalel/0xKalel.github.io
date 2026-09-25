@@ -12,8 +12,8 @@ interface Item {
 const items: Item[] = [
   { label: 'Home', hint: 'Page', href: '/' },
   { label: 'Selected work', hint: 'Page', href: '/#work' },
-  { label: 'Journey since 2012', hint: 'Page', href: '/#journey' },
-  { label: 'How I work with AI agents', hint: 'Page', href: '/how-i-work/' },
+  { label: 'Experience since 2012', hint: 'Page', href: '/#journey' },
+  { label: 'How I work', hint: 'Page', href: '/how-i-work/' },
   { label: 'Writing', hint: 'Page', href: '/blog/' },
   { label: 'Case study: StoragePal platform', hint: 'Work', href: '/work/storagepal/' },
   { label: 'Case study: SPS warehouse app', hint: 'Work', href: '/work/sps/' },
@@ -22,14 +22,14 @@ const items: Item[] = [
   ...roles.map((r) => ({ label: `Download PDF: ${r.label}`, hint: 'PDF', href: `/cv/${r.slug}.pdf` })),
   { label: 'Email me', hint: 'Action', href: `mailto:${profile.email}` },
   { label: 'Copy email address', hint: 'Action', action: 'copy-email' },
-  { label: 'Toggle theme', hint: 'Action', action: 'theme' },
+  { label: 'Switch light or dark theme', hint: 'Action', action: 'theme' },
   { label: 'GitHub', hint: 'Link', href: profile.github },
   { label: 'LinkedIn', hint: 'Link', href: profile.linkedin },
 ];
 ---
 
-<dialog id="palette" aria-label="Command palette">
-  <input class="pal-input" type="text" name="palette-search" id="palette-search" placeholder="Where to?" autocomplete="off" spellcheck="false" />
+<dialog id="palette" aria-label="Find a page or action">
+  <input class="pal-input" type="text" name="palette-search" id="palette-search" aria-label="Search pages and actions" placeholder="Find a page or action…" autocomplete="off" spellcheck="false" />
   <ul class="pal-list" role="listbox">
     {
       items.map((it) => (
