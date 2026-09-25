@@ -28,10 +28,10 @@ const sectionTitle = { experience: 'Experience', projects: 'Independent product'
 </div>
 
 <article class="paper mx-auto mb-16 max-w-[210mm] bg-bg px-[14mm] py-[13mm] text-[10pt] leading-[1.45] text-fg shadow-[0_30px_80px_-30px_oklch(0.1_0.02_250/0.5)] print:m-0 print:max-w-none print:p-0 print:shadow-none">
-  <header>
-    <h1 class="text-[22pt] leading-none font-semibold tracking-tight">{profile.name}</h1>
-    <p class="mt-2 text-[11.5pt] font-medium text-accent">{role.headline}</p>
-    <p class="mt-2.5 flex flex-wrap gap-x-4 gap-y-1 text-[9pt] text-muted">
+  <header class="border-b border-line pb-4">
+    <h1 class="text-[24pt] leading-none font-bold tracking-tight">{profile.name}</h1>
+    <p class="mt-2 text-[12pt] font-semibold text-accent">{role.headline}</p>
+    <p class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[9.5pt] text-muted">
       <span>{profile.location}</span>
       {contacts.map((c) => (
         <span><span aria-hidden="true">{'\u00A0·\u00A0'}</span><a href={c.href} class="underline decoration-line underline-offset-2">{c.label}</a></span>
@@ -39,9 +39,9 @@ const sectionTitle = { experience: 'Experience', projects: 'Independent product'
     </p>
   </header>
 
-  <p class="mt-5 text-[10pt] leading-[1.55]">{role.summary}</p>
+  <p class="mt-4 text-[10.5pt] leading-[1.55]">{role.summary}</p>
 
-  <p class="mt-3 text-[9pt] text-muted">
+  <p class="mt-2 text-[9pt] text-muted">
     <span class="font-medium text-fg">See also:{'\u00A0'}</span>
     {role.links.map((l, i) => (
       <>
@@ -54,22 +54,21 @@ const sectionTitle = { experience: 'Experience', projects: 'Independent product'
   {
     role.sections.map((section) => (
       <section class="mt-6">
-        <h2 class="border-b border-line pb-1 text-[9pt] font-semibold tracking-[0.08em] text-muted uppercase">{sectionTitle[section]}</h2>
+        <h2 class="flex items-center gap-3 text-[9.5pt] font-semibold tracking-[0.1em] uppercase">
+          <span>{sectionTitle[section]}</span>
+          <span class="h-px flex-1 bg-line" aria-hidden="true" />
+        </h2>
 
         {(section === 'experience' || section === 'projects') &&
           (section === 'experience' ? cv.experience : cv.projects).map((e: Entry) => (
-            <div class="mt-4 break-inside-avoid-page">
-              <div class="flex flex-wrap items-baseline justify-between gap-x-4">
-                <h3 class="font-semibold">
-                  {e.title},{' '}
-                  {e.url ? <a href={e.url} class="underline decoration-line underline-offset-2">{e.org}</a> : e.org}{'\u00A0'}
-                </h3>
-                <span class="text-[9pt] text-muted tabular-nums">
-                  {'\u00A0'}{e.location}, {e.period}
-                </span>
-              </div>
+            <div class="mt-3.5 break-inside-avoid-page">
+              <h3 class="text-[10.5pt] leading-snug font-semibold">{e.title}</h3>
+              <p class="mt-0.5 text-[9.5pt] text-muted">
+                <span class="font-medium text-fg">{e.url ? <a href={e.url} class="underline decoration-line underline-offset-2">{e.org}</a> : e.org}</span>
+                {' · '}{e.location}{' · '}<span class="tabular-nums">{e.period}</span>
+              </p>
               {e.intro && <p class="mt-1 text-[9.5pt] text-muted">{e.intro}</p>}
-              <ul class="mt-1.5 list-disc space-y-1 pl-4 marker:text-line">
+              <ul class="mt-1.5 list-disc space-y-1 pl-[1.05rem] marker:text-[color-mix(in_oklch,var(--accent)_55%,var(--line))]">
                 {e.bullets.map((b) => (
                   <li set:html={inline(b.text)} />
                 ))}
@@ -79,16 +78,12 @@ const sectionTitle = { experience: 'Experience', projects: 'Independent product'
           ))}
 
         {section === 'skills' && (
-          <dl class="mt-3 grid grid-cols-[8.5rem_1fr] gap-x-4 gap-y-1.5 text-[9.5pt]">
+          <div class="mt-2.5 grid grid-cols-2 gap-x-7 gap-y-2 text-[9.5pt] leading-[1.5] max-sm:grid-cols-1">
             {cv.skills.map((s) => (
-              <>
-                <dt class="font-medium">{s.label}{'\u00A0'}</dt>
-                <dd class="text-muted">{s.items}</dd>
-              </>
+              <p><span class="font-semibold">{s.label}.{'\u00A0'}</span><span class="text-muted">{s.items}</span></p>
             ))}
-            <dt class="font-medium">Languages{'\u00A0'}</dt>
-            <dd class="text-muted">{profile.languages}</dd>
-          </dl>
+            <p><span class="font-semibold">Languages.{'\u00A0'}</span><span class="text-muted">{profile.languages}</span></p>
+          </div>
         )}
 
         {section === 'education' && (
