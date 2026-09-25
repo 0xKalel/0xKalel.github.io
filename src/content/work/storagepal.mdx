@@ -1,9 +1,9 @@
 ---
 title: StoragePal platform
-tagline: Helping a Paris storage business manage bookings, pricing and payments on one platform.
-role: Lead developer, working with 2 developers and 2 testers
+tagline: I lead development for a Paris storage business.
+role: Lead developer — 2 developers, 2 testers
 period: Oct 2024 - present
-stack: PHP (Neos Flow), MariaDB, JavaScript, Stripe, Google Maps, GA4, HubSpot, Gemini, Docker, CI/CD
+stack: PHP, Neos Flow, MariaDB, JavaScript, Stripe, Gemini
 order: 1
 url: https://storagepal.fr
 video:
@@ -17,109 +17,70 @@ metrics:
   - value: "+34%"
     label: transport revenue after the new pricing engine
   - value: "10x"
-    label: "faster catalogue, measured: 9.1 s to 0.9 s"
+    label: "faster catalogue: 9.1 s to 0.9 s"
 shots:
   - src: ../../assets/work/storagepal-ai-cart.png
-    alt: The AI cart builder turning a description of a studio move into a priced cart
+    alt: Build a cart from a description
   - src: ../../assets/work/storagepal-transport.png
-    alt: Booking form collecting address, floor and lift details for the transport quote
+    alt: Get a transport quote
   - src: ../../assets/work/storagepal-catalogue.png
     alt: Mobile storage catalogue
   - src: ../../assets/work/storagepal-checkout.png
-    alt: The one-page checkout, reduced from 7 steps to 3
+    alt: Checkout in three steps
 ---
 import { Image } from 'astro:assets';
-import Bars from '../../components/viz/Bars.astro';
 import Delta from '../../components/viz/Delta.astro';
 import before2024 from '../../assets/work/storagepal-catalogue-2024.png';
 import today from '../../assets/work/storagepal-catalogue-grid.png';
 import parked from '../../assets/work/storagepal-parked-payments.png';
 
-## The business and my role
+## My role
 
-StoragePal collects customers' belongings, stores them, and brings them back on request. Its platform supports the daily operation: catalogue, pricing, bookings, warehouse inventory, invoicing, payments and internal administration.
+I lead two developers and two testers, set the technical roadmap and build features. The platform manages bookings, storage and payments.
 
-I lead development, set the technical roadmap and build a large part of the platform myself. I work with **Monder** (reporting, CRM, lead capture, reservations), **Med** (WordPress site, SEO, tools) and two testers who verify every feature before it ships.
+Orders grew **69%** and ad spend per order fell **22%**. Development, advertising and sales all contributed.
 
-## What changed
+## Faster booking
 
-<Bars
-  title="Orders, January to August of each year"
-  note="These results reflect work across development, advertising and sales. The sections below describe my contribution."
-  rows={[
-    { label: '2024', values: [334] },
-    { label: '2025', values: [377] },
-    { label: '2026', values: [639] },
-  ]}
-/>
+I cut catalogue load time from **9.1 s to 0.9 s** and checkout from **7 steps to 3**. The checkout has processed **700+ orders** since December 2025.
 
-Orders grew **69%** while ad spend per order fell **22%**.
-
-## The transport pricing engine
-
-The old pricing used broad regions and calculated collections and returns differently. I built a shared pricing engine that uses driving distance from Google Maps, the items being moved, vehicle and crew costs, floor level and lift access.
-
-<Bars
-  title="Truck bookings, 12 months before and after launch"
-  series={['Before', 'After']}
-  rows={[
-    { label: 'Collections', values: [277, 343] },
-    { label: 'Returns', values: [192, 269] },
-  ]}
-/>
-
-<Delta
-  items={[
-    { label: 'Average collection quote', before: '€109', after: '€75', delta: '-32% for the customer' },
-    { label: 'Transport revenue', before: 'baseline', after: '+34%', delta: 'cheaper quotes, more bookings' },
-  ]}
-/>
-
-## Faster checkout and clearer reporting
-
-I benchmarked the code I inherited against today's: same machine, same database, 15 warm runs each.
-
-<Delta
-  items={[
-    { label: 'Catalogue, warm page load', before: '9.1 s', after: '0.9 s', delta: '10x faster, measured' },
-    { label: 'Catalogue page weight', before: '3.1 MB', after: '376 KB' },
-    { label: 'Orders visible in GA4', before: '58%', after: '84%', delta: 'more complete conversion data' },
-    { label: 'Leads captured per month', before: '31', after: '270+', delta: 'delivered by the team I lead' },
-  ]}
-/>
+The benchmark used the same machine and database, with 15 warm runs per version.
 
 <div class="not-prose my-10 grid gap-4 sm:grid-cols-2">
   <figure class="card fx overflow-hidden">
-    <Image src={before2024} alt="The catalogue in October 2024: a wall of instruction text, and product rows where half the images are missing" widths={[390, 640]} sizes="(min-width: 640px) 500px, 100vw" class="w-full" />
-    <figcaption class="border-t border-line p-4 text-sm leading-relaxed text-muted"><strong class="font-medium text-fg">October 2024, as I found it.</strong> Instructions as a wall of text, product images missing, 9.1 s warm load, 3.1 MB of HTML.</figcaption>
+    <Image src={before2024} alt="October 2024 catalogue with missing product images" widths={[390, 640]} sizes="(min-width: 640px) 500px, 100vw" class="w-full" />
+    <figcaption class="border-t border-line p-4 text-sm leading-relaxed text-muted"><strong class="font-medium text-fg">October 2024.</strong> 9.1 s load, 3.1 MB.</figcaption>
   </figure>
   <figure class="card fx overflow-hidden" style="--d:90ms">
-    <Image src={today} alt="The same product catalogue today: category pills and clean cards with rendered product photos" widths={[390, 640]} sizes="(min-width: 640px) 500px, 100vw" class="w-full" />
-    <figcaption class="border-t border-line p-4 text-sm leading-relaxed text-muted"><strong class="font-medium text-fg">The same products today.</strong> 0.9 s and 376 KB, same data, same machine.</figcaption>
+    <Image src={today} alt="Updated catalogue with categories and product photos" widths={[390, 640]} sizes="(min-width: 640px) 500px, 100vw" class="w-full" />
+    <figcaption class="border-t border-line p-4 text-sm leading-relaxed text-muted"><strong class="font-medium text-fg">Today.</strong> 0.9 s load, 376 KB.</figcaption>
   </figure>
 </div>
 
-The checkout went from **7 steps to 3**, on one page, with Apple Pay and Google Pay. It has processed **700+ orders** since December 2025.
 
-## An AI cart builder in production
+## Better pricing
 
-Customers can describe what they want to store or upload photos. A Gemini assistant turns that into a priced cart. Items are checked against the catalogue, and custom items use the same pricing formula as checkout. **42% of conversations end in a confirmed cart.**
+I replaced region-based quotes with pricing based on driving distance, vehicle, crew and building access.
 
-## Billing that collects the right amount
+<Delta
+  items={[
+    { label: 'Average collection quote', before: '€109', after: '€75' },
+    { label: 'Transport revenue', before: 'baseline', after: '+34%' },
+  ]}
+/>
 
-I found and fixed a billing bug that could collect the same unpaid balance more than once when it carried over to a later invoice. I then rebuilt payment recovery, covering retries, bank transfers, write-offs, partial payments and reminders.
+## Simpler shopping
 
-The new process recovered **77 failed payments** in its first seven weeks. The investigation also revealed that the reported overdue balance was incorrect by a **factor of 13**.
+I built a Gemini assistant that turns text or photos into a priced cart. **42% of conversations end in a confirmed cart.**
+
+## Correct billing
+
+I fixed duplicate billing and rebuilt payment recovery. The new process recovered **77 failed payments in seven weeks**.
 
 <figure class="not-prose card fx my-8 overflow-hidden">
   <Image src={parked} alt="The parked-payments queue in the backoffice, customer names blurred" widths={[720, 1200]} sizes="(min-width: 1152px) 1088px, 100vw" class="w-full" />
-  <figcaption class="border-t border-line p-4 text-sm text-muted">The parked-payments queue: automatic collection stops and a person decides. 688 rows turned out to be 101 real debts.</figcaption>
+  <figcaption class="border-t border-line p-4 text-sm text-muted">Payment review queue. 688 rows represented 101 debts.</figcaption>
 </figure>
 
-## The warehouse link
 
-The [SPS warehouse app](/work/sps/) runs on live order data through a REST API I designed: orders, returns, order changes with Stripe repricing, and retry handling designed to prevent duplicate charges. **835 orders** and **8,600+ status changes** processed.
-
-## How it was built
-
-I write the requirements and use Claude Code to help implement them. Project instructions document billing rules and endpoint permissions, while hooks check for destructive commands and lint edits. I review each change, and the testers verify it in the app before release.
+I also built the API connecting bookings to the [SPS warehouse app](/work/sps/).

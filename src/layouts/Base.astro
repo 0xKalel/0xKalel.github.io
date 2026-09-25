@@ -68,8 +68,9 @@ const GA_ID = 'G-SLJ8G6MSCP';
   <body class="min-h-[100dvh] bg-bg font-sans text-fg">
     {bare ? <slot /> : (
       <>
+        <a class="skip-link" href="#main-content">Skip to content</a>
         <Nav />
-        <main><slot /></main>
+        <main id="main-content" tabindex="-1"><slot /></main>
         <Footer />
         <Palette />
         <script>

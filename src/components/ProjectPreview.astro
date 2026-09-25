@@ -1,0 +1,45 @@
+---
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import raven from '../assets/work/ravenclip-fresh.webp';
+import catalogue from '../assets/work/storagepal-catalogue-grid.png';
+import cart from '../assets/work/storagepal-ai-cart.png';
+import scan from '../assets/work/sps-01-movein-scan.png';
+import bay from '../assets/work/sps-03-bay-move.png';
+
+const previews = [
+  { id: 'ravenclip', name: 'RavenClip', role: 'Founder · AI video', result: 'From idea to paying customers in 4 months', images: [raven], alts: ['RavenClip news-to-video interface'] },
+  { id: 'storagepal', name: 'StoragePal', role: 'Lead developer · Commerce', result: 'Catalogue loads in 0.9 seconds', images: [catalogue, cart], alts: ['StoragePal product catalogue', 'StoragePal AI shopping assistant'] },
+  { id: 'sps', name: 'SPS', role: 'Sole developer · Operations', result: '15,169 barcode scans in daily warehouse use', images: [scan, bay], alts: ['SPS barcode scanning', 'SPS shelf inventory'] },
+];
+---
+
+<div class="project-preview rise" style="--i:2" data-project-preview>
+  <div class="preview-topline">
+    <span class="eyebrow">Built & running</span>
+    <span class="preview-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+  </div>
+  <div class="preview-stage">
+    {previews.map((p, i) => (
+      <div id={`preview-${p.id}`} data-preview-panel hidden={i !== 0}>
+        <a href={`/work/${p.id}/`} class={`preview-art preview-art-${p.id}`} aria-label={`View ${p.name} project`}>
+          {p.images.map((src, n) => (
+            <Image src={src} alt={p.alts[n]} widths={p.images.length === 1 ? [640, 960, 1280] : [240, 480]} sizes={p.images.length === 1 ? '(min-width: 1024px) 560px, 90vw' : '220px'} loading={i === 0 ? 'eager' : 'lazy'} class={`preview-image preview-image-${n}`} />
+          ))}
+          <span class="preview-open" aria-hidden="true"><Icon name="ph:arrow-up-right" /></span>
+        </a>
+        <div class="preview-caption">
+          <p class="eyebrow">{p.role}</p>
+          <p>{p.result}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+  <div class="preview-controls" role="group" aria-label="Preview a project" hidden>
+    {previews.map((p, i) => (
+      <button type="button" data-preview-select={i} aria-pressed={i === 0 ? 'true' : 'false'} aria-controls={`preview-${p.id}`}>
+        <span class="preview-index" aria-hidden="true">0{i + 1}</span>{p.name}
+      </button>
+    ))}
+  </div>
+</div>

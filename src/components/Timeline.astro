@@ -1,36 +1,26 @@
 ---
 import { experience, projects, type Entry } from '../data/cv';
-
-// Short career highlights; the CV carries the full experience.
 const hooks: Record<string, string> = {
-  mawaki3: 'Co-founded an agency with Monder and grew the team to seven developers.',
+  mawaki3: 'Co-founded an agency and grew the team to seven developers.',
   blackyellow: 'Built a ticketing system for major UK retailers.',
   aviadmin: 'Cut calendar load time from 34 seconds to 0.3 seconds.',
   singularity: 'Improved database performance and delivered ten features.',
   atlas: 'Launched five AI products serving 600+ daily users.',
   storagepal: 'Lead two developers and two testers. Built the warehouse app.',
-  ravenclip: 'Built and launched my own AI video product. Paying customers within four months.',
+  ravenclip: 'Launched my own AI video product. Paying customers in four months.',
 };
-
-const entries: Entry[] = [...experience].reverse().concat(projects);
-const year = (e: Entry) => e.period.match(/\d{4}/)?.[0] ?? '';
+const entries: Entry[] = [...projects, ...experience];
 ---
 
-<ol class="tl mt-14 space-y-8">
-  {
-    entries.map((e, i) => (
-      <li class:list={['tl-item fx', i === entries.length - 1 && 'now']}>
-        <span class="tl-dot" aria-hidden="true" />
-        <p class="font-mono text-sm text-accent">{year(e)}</p>
-        <h3 class="display mt-1.5 text-2xl font-semibold tracking-tight">
-          {e.org}
-          <span class="font-normal text-muted"> · {e.title}</span>
-        </h3>
-        <p class="mt-0.5 text-sm text-muted">{e.location}, {e.period}</p>
-        <p class="mt-3 max-w-[62ch] leading-relaxed text-muted">{hooks[e.id]}</p>
-
-      </li>
-    ))
-  }
+<ol class="experience-list">
+  {entries.map((e, i) => (
+    <li class="experience-row fx" style={`--d:${Math.min(i * 30, 120)}ms`}>
+      <p class="experience-date">{e.period}</p>
+      <div>
+        <h3>{e.org}{e.period.includes('present') && <span class="current-tag">Now</span>}</h3>
+        <p class="experience-role">{e.title}</p>
+        <p class="experience-summary">{hooks[e.id]}</p>
+      </div>
+    </li>
+  ))}
 </ol>
-

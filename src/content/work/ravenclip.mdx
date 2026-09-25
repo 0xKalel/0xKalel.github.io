@@ -1,9 +1,9 @@
 ---
 title: RavenClip
-tagline: My own product, turning news stories into short videos for businesses without a video team.
+tagline: I built an AI tool that turns news into short videos.
 role: Founder — product, development and operations
 period: May 2026 - present
-stack: PHP 8.5, Laravel 13 (laravel/ai), React 19, TypeScript, Inertia, Horizon, MariaDB, Redis, Node (Skia), FFmpeg, Caddy, Cloudflare R2
+stack: Laravel, React, TypeScript, MariaDB, Redis, Skia, FFmpeg
 order: 3
 url: https://ravenclip.com
 video:
@@ -11,7 +11,7 @@ video:
   poster: /media/ravenclip-launch.webp
 metrics:
   - value: 4 months
-    label: from first commit to paying customers
+    label: to paying customers
   - value: "28"
     label: AI agents across 10+ providers
   - value: "~1,300"
@@ -20,50 +20,27 @@ metrics:
     label: topic areas in 5 languages
 ---
 import Cards from '../../components/viz/Cards.astro';
-import Chain from '../../components/viz/Chain.astro';
 import PipelineRaven from '../../components/viz/PipelineRaven.astro';
 
-## The story
+## What I built
 
-I wanted to follow AI news without reading twenty tabs a day, so I built a script that turned the day's best story into a short video for myself. Friends asked for their own topics, then for it to post on its own, in their language, on their schedule. That is when a personal tool became RavenClip.
+I built RavenClip for businesses that need short videos without a video team. It started as a tool for following news and reached paying customers four months after the first commit.
 
-Once it was a product, the real customers turned out to be **businesses**: agencies, consultancies and coaches who need consistent short video on their channels and don't have a video team. The first paying customers joined within weeks of launch.
-
-## How a video happens
-
-RavenClip reads news feeds, selects a story, writes a script based on the source, and adds narration and visuals. It then renders a vertical video with captions and publishes it to TikTok and YouTube Shorts. Owners can choose to review videos before publication. Instagram publishing is integrated but awaiting Meta’s app review.
+It selects a story, writes the script, adds narration and visuals, and publishes to TikTok and YouTube Shorts. Customers can review videos before publishing. Instagram approval is pending.
 
 <PipelineRaven />
 
-## The main engineering challenges
+## What I focused on
 
 <Cards
   cols={3}
   items={[
-    { icon: 'ph:seal-check', title: 'Checking scripts before publication', text: 'An inaccurate video can damage a customer’s credibility. Automated checks compare drafts with their sources and flag problems for another attempt. The narration uses the exact text that passed those checks.' },
-    { icon: 'ph:arrows-split', title: 'Handling service outages', text: 'External AI services can fail or run out of credit. The system rotates API keys and tries a fallback provider so a single service outage does not have to stop a video.' },
-    { icon: 'ph:bell-ringing', title: 'Monitoring service health', text: 'The system checks providers every 30 minutes and emails me when action is needed. It reads account balances where available and estimates remaining credit from recorded spending when no balance API exists.' },
-    { icon: 'ph:coins', title: 'Tracking the cost of each video', text: 'Paid API calls are recorded in a cost ledger. A dashboard shows the cost of each video and margins by subscription plan. Tests check that paid integrations include cost tracking.' },
-    { icon: 'ph:film-strip', title: 'Building the video renderer', text: 'Captions, graphics and entity overlays are drawn by a ~10k-line Skia renderer I wrote in Node, composited by FFmpeg, synced word by word to the narration.' },
-    { icon: 'ph:translate', title: 'Running the product', text: '19 topic areas, 5 languages, subscriptions, two-factor authentication and passkeys. An admin interface lets me inspect and regenerate any stage of a video.' },
+    { icon: 'ph:seal-check', title: 'Content checks', text: 'Check drafts against their sources. Keep the approved words unchanged through narration.' },
+    { icon: 'ph:arrows-split', title: 'Failure recovery', text: 'Save progress at each stage. Retry failed calls and switch providers when needed.' },
+    { icon: 'ph:coins', title: 'Cost tracking', text: 'Record paid API calls. Track the cost of each video and the margin on each plan.' },
   ]}
 />
 
-## Recovering from a provider failure
+I built and maintain the product, including the video renderer, subscriptions and publishing tools.
 
-Every external call goes through one shared failover loop. I developed its rules in response to production incidents. In one case, a fallback provider ran out of credit for 25 days, sending requests to a service that cost three times as much. The system now temporarily skips providers with no credit, retries temporary failures, and sends alerts with the key that needs attention.
-
-<Chain
-  rows={[
-    { name: 'Script', steps: ['Gemini', 'DeepSeek via OpenRouter'] },
-    { name: 'Voice', steps: ['Gemini TTS', 'Chirp 3 HD', 'ElevenLabs'], note: 'Fallbacks must preserve the channel’s voice.' },
-    { name: 'Images', steps: ['Runware', 'Pollinations', 'Hugging Face'], note: 'Fallbacks must preserve the selected quality tier.' },
-    { name: 'Embeddings', steps: ['Cloudflare', 'Gemini'], note: 'One provider per call keeps the vector representations consistent.' },
-  ]}
-/>
-
-## How it was built
-
-I built RavenClip with Claude Code and Codex, writing the requirements stage by stage and reviewing each change. Shared rules for retries, costs and content checks help me maintain the product on my own. The codebase has around 1,300 automated tests.
-
-For the architecture decisions and incidents behind them, [read the engineering article](/blog/2026/09/25/ravenclip-engineering/).
+[Read the engineering decisions](/blog/2026/09/25/ravenclip-engineering/).

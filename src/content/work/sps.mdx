@@ -1,9 +1,9 @@
 ---
 title: SPS warehouse app
-tagline: A mobile warehouse app that helps staff receive, locate and return customers’ belongings.
-role: Sole developer — design, backend, frontend, deployment and support
+tagline: I built the app staff use to receive, find and return stored items.
+role: End-to-end developer, from design to support
 period: 2025 - present
-stack: Laravel 13, PHP 8.4, React 19, Inertia v3, Tailwind 4, MySQL, Redis and Horizon, PWA
+stack: Laravel, React, MySQL, Redis, PWA
 order: 2
 metrics:
   - value: 120 / 120
@@ -19,71 +19,37 @@ video:
   poster: /media/sps-launch.jpg
 shots:
   - src: ../../assets/work/sps-01-movein-scan.png
-    alt: "Move-in: every arriving item scanned with the phone camera, with live progress"
+    alt: "Scan arriving items"
   - src: ../../assets/work/sps-02-change-order.png
-    alt: "Discrepancy review: a wrong item type caught and raised as a change order"
+    alt: "Flag a booking mismatch"
   - src: ../../assets/work/sps-03-bay-move.png
-    alt: "Bay inventory: scanned items placed into a physical bay"
+    alt: "Assign a shelf location"
   - src: ../../assets/work/sps-04-moveout-photo.png
-    alt: "Move-out: photo proof captured before an item leaves"
+    alt: "Photograph items before return"
 ---
-import Bars from '../../components/viz/Bars.astro';
 import Cards from '../../components/viz/Cards.astro';
-import Callout from '../../components/viz/Callout.astro';
 
-## The problem
+## What I built
 
-Customers book storage online; movers bring their items to a warehouse and later bring them back. Before SPS, the warehouse had no reliable link to what was booked: staff tracked discrepancies through emails and memory, damage was billed inconsistently, and finding an item meant searching the building.
+Warehouse staff tracked booking errors through email and memory. Finding an item meant searching the building.
 
-## What it covers
+I built a phone app that connects bookings to the warehouse floor. Staff scan items in, record their location and photograph them before return.
 
 <Cards
   cols={3}
   items={[
-    { icon: 'ph:arrows-clockwise', title: 'Keeping orders in sync', text: 'Background jobs pull orders, items and transport orders from the booking platform hourly, push statuses back, and reconcile everything nightly.' },
-    { icon: 'ph:barcode', title: 'Receiving items', text: 'Every arriving item is scanned and compared with the booking. Missing items, extra items and incorrect item types become change requests for an administrator to review.' },
-    { icon: 'ph:receipt', title: 'Charges', text: 'Damage or a missing label creates an invoice request automatically, so customers are charged consistently.' },
-    { icon: 'ph:squares-four', title: 'Finding stored items', text: 'Every item lives in a physical shelf location. Every move is recorded, and cancelling a session undoes all of its moves.' },
-    { icon: 'ph:camera', title: 'Returning items', text: 'Items are scanned and photographed before they leave. A rejected return puts every item back in its previous bay.' },
-    { icon: 'ph:printer', title: 'Instant labels', text: 'I reproduced the platform\'s ID algorithm locally, so labels print the moment a scan ends instead of after the next sync.' },
+    { icon: 'ph:barcode', title: 'Receive', text: 'Compare scanned items with the booking. Flag missing or extra items for review.' },
+    { icon: 'ph:squares-four', title: 'Locate', text: 'Record each item’s shelf location and track every move.' },
+    { icon: 'ph:camera', title: 'Return', text: 'Scan and photograph items before they leave. Keep orders in sync.' },
   ]}
 />
 
-## Usage in the warehouse
+## A failure I fixed
 
-<Bars
-  title="Completed scan sessions by day of the week"
-  note="90-day snapshot. Fridays had the most completed scan sessions."
-  rows={[
-    { label: 'Mon', values: [86] },
-    { label: 'Tue', values: [108] },
-    { label: 'Wed', values: [121] },
-    { label: 'Thu', values: [99] },
-    { label: 'Fri', values: [155] },
-    { label: 'Sat', values: [60] },
-    { label: 'Sun', values: [75] },
-  ]}
-/>
+A sync bug marked **2,533 orders as cancelled**. Only **306** were cancelled. I traced it to four interacting bugs in filtering, date ranges and recovery.
 
-Usage recorded since April 2026: **1,347 scan sessions**, **3,950 evidence photos**, **259 change orders**, **330 invoice requests**, and not one working day without use.
+I added retries, blocked deletion checks on incomplete data and added nightly reconciliation. Eight regression tests cover the fixes.
 
-## Fixing an order sync failure
+## Testing
 
-<Callout
-  title="One morning, 2,533 of 2,548 orders showed as cancelled. The real number was 306."
-  items={[
-    'A PHP <code>empty(0)</code> check silently dropped a status filter, turning an hourly sync into a five-year sweep.',
-    'Failed chunks of that sweep were ignored, and deletion detection then ran on the incomplete data.',
-    'An off-by-one gap between date chunks left 24 hours of data that was never fetched.',
-    'A guard that skipped existing records stopped statuses from ever correcting themselves.',
-  ]}
-  footer="Retries with backoff, no deletion detection when any chunk fails, contiguous date windows, and a nightly reconciliation. Eight regression tests keep it fixed."
-/>
-
-## How I checked the app before release
-
-I used Claude Code during development and reviewed its changes against the project’s requirements. Checks include **659 PHPUnit tests**, Larastan level 5 static analysis, and **65 browser scenarios** run through Chrome DevTools MCP. These cover both successful workflows and failures, with findings recorded in a report.
-
-I also worked with two testers who checked each workflow on the warehouse floor. That helped us verify the app in the setting where staff actually use it.
-
-The project includes **1,110 commits**, with about 48,000 lines of PHP and 42,000 lines of React code.
+**659 automated tests**, **65 browser scenarios** and two testers checking workflows on the warehouse floor.

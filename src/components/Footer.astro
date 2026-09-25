@@ -3,7 +3,7 @@ import { profile } from '../data/cv';
 import { roles } from '../data/roles';
 ---
 
-<footer class="mt-36 border-t border-line">
+<footer class="mt-24 border-t border-line">
   <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-4 md:px-8">
     <div class="md:col-span-2">
       <p class="display text-lg font-semibold tracking-tight">Khalil Hebachi<span class="text-accent">.</span></p>
@@ -15,23 +15,23 @@ import { roles } from '../data/roles';
     <nav aria-label="Pages">
       <p class="text-sm font-medium">Pages</p>
       <ul class="mt-3 space-y-2 text-sm text-muted">
-        <li><a class="hover:text-fg" href="/#work">Work</a></li>
-        <li><a class="hover:text-fg" href="/#journey">Experience</a></li>
-        <li><a class="hover:text-fg" href="/how-i-work/">How I work</a></li>
-        <li><a class="hover:text-fg" href="/blog/">Writing</a></li>
+        <li><a class="inline-block py-1 hover:text-fg" href="/#work">Work</a></li>
+        <li><a class="inline-block py-1 hover:text-fg" href="/#journey">Experience</a></li>
+        <li><a class="inline-block py-1 hover:text-fg" href="/how-i-work/">How I work</a></li>
+        <li><a class="inline-block py-1 hover:text-fg" href="/blog/">Writing</a></li>
       </ul>
     </nav>
     <nav aria-label="CV and contact">
       <p class="text-sm font-medium">CV by role</p>
       <ul class="mt-3 space-y-2 text-sm text-muted">
         {roles.map((r) => (
-          <li><a class="hover:text-fg" href={`/cv/${r.slug}/`}>{r.label}</a></li>
+          <li><a class="inline-block py-1 hover:text-fg" href={`/cv/${r.slug}/`}>{r.label}</a></li>
         ))}
       </ul>
       <ul class="mt-5 space-y-2 text-sm text-muted">
-        <li><a class="hover:text-fg" href={profile.github}>GitHub</a></li>
-        <li><a class="hover:text-fg" href={profile.linkedin}>LinkedIn</a></li>
-        <li><a class="hover:text-fg" href={`mailto:${profile.email}`}>{profile.email}</a></li>
+        <li><a class="inline-block py-1 hover:text-fg" href={profile.github}>GitHub</a></li>
+        <li><a class="inline-block py-1 hover:text-fg" href={profile.linkedin}>LinkedIn</a></li>
+        <li><a class="inline-block py-1 hover:text-fg" href={`mailto:${profile.email}`}>{profile.email}</a></li>
       </ul>
     </nav>
   </div>

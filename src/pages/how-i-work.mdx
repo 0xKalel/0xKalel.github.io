@@ -4,18 +4,46 @@ title: How I work
 description: Plan clearly. Build in small steps. Check the result.
 ---
 
-## Understand the problem
+<div class="not-prose my-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+  <div class="card fx p-5">
+    <p class="display text-3xl font-bold">520</p>
+    <p class="mt-1.5 text-xs leading-snug text-muted">lines of project instructions, loaded every session</p>
+  </div>
+  <div class="card fx p-5" style="--d:70ms">
+    <p class="display text-3xl font-bold">23</p>
+    <p class="mt-1.5 text-xs leading-snug text-muted">reusable task instructions in one codebase</p>
+  </div>
+  <div class="card fx p-5" style="--d:140ms">
+    <p class="display text-3xl font-bold">~140</p>
+    <p class="mt-1.5 text-xs leading-snug text-muted">notes on incidents, APIs and decisions</p>
+  </div>
+  <div class="card fx p-5" style="--d:210ms">
+    <p class="display text-3xl font-bold">65</p>
+    <p class="mt-1.5 text-xs leading-snug text-muted">browser scenarios checked automatically</p>
+  </div>
+</div>
 
-I ask what needs to change, who it affects and what success looks like. I write down the rules and edge cases before building.
+<div class="not-prose my-10 grid gap-4 sm:grid-cols-2">
+  <div class="card fx p-6">
+    <p class="font-mono text-xs text-accent">01</p>
+    <h2 class="mt-2 text-lg font-semibold">Understand the problem</h2>
+    <p class="mt-2 text-sm leading-relaxed text-muted">I ask what needs to change, who it affects and what success looks like. I write down the rules and edge cases before building.</p>
+  </div>
+  <div class="card fx p-6" style="--d:60ms">
+    <p class="font-mono text-xs text-accent">02</p>
+    <h2 class="mt-2 text-lg font-semibold">Build and review</h2>
+    <p class="mt-2 text-sm leading-relaxed text-muted">I use Claude Code and Codex to help implement small changes. I make the technical decisions and review the code for mistakes and unnecessary complexity.</p>
+  </div>
+  <div class="card fx p-6" style="--d:120ms">
+    <p class="font-mono text-xs text-accent">03</p>
+    <h2 class="mt-2 text-lg font-semibold">Test and release</h2>
+    <p class="mt-2 text-sm leading-relaxed text-muted">I check the main workflows, failure cases and automated tests. I release small changes, then check errors, performance and usage.</p>
+  </div>
+  <div class="card fx p-6" style="--d:180ms">
+    <p class="font-mono text-xs text-accent">04</p>
+    <h2 class="mt-2 text-lg font-semibold">Keep the team informed</h2>
+    <p class="mt-2 text-sm leading-relaxed text-muted">I share decisions, progress and problems. I keep instructions and notes with the code so others can pick up the work. I stay involved after release.</p>
+  </div>
+</div>
 
-## Build and review
-
-I use Claude Code and Codex to help implement small changes. I make the technical decisions and review the code for mistakes and unnecessary complexity.
-
-## Test and release
-
-I check the main workflows, failure cases and automated tests. I release small changes, then check errors, performance and usage.
-
-## Keep the team informed
-
-I share decisions, progress and problems. I keep instructions and notes with the code so others can pick up the work. I stay involved after release.
+The deepest worked example is [how I built RavenClip](/blog/2026/09/25/ravenclip-engineering/); the incident stories are in the [SPS case study](/work/sps/).

@@ -12,10 +12,10 @@ const links = [
 const path = Astro.url.pathname;
 ---
 
-<header class="sticky top-0 z-40 border-b border-line/70 bg-bg/80 backdrop-blur-md">
+<header class="site-header sticky top-0 z-40 border-b border-line/70 bg-bg/80 backdrop-blur-md">
   <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-4 md:px-8">
     <a href="/" class="display text-[1.05rem] font-semibold tracking-tight">
-      Khalil Hebachi<span class="text-accent">.</span>
+      <span class="brand-mark" aria-hidden="true">KH</span>Khalil Hebachi<span class="text-accent">.</span>
     </a>
 
     <div class="flex items-center gap-2.5 md:gap-4">
@@ -25,8 +25,10 @@ const path = Astro.url.pathname;
             <li>
               <a
                 href={l.href}
+                data-section-link={l.href.startsWith('/#') ? true : undefined}
+                aria-current={path.startsWith(l.href) && !l.href.startsWith('/#') ? 'page' : undefined}
                 class:list={[
-                  'transition-colors hover:text-fg',
+                  'nav-link transition-colors hover:text-fg',
                   path.startsWith(l.href) && !l.href.startsWith('/#') ? 'text-fg' : 'text-muted',
                 ]}
               >
@@ -63,7 +65,7 @@ const path = Astro.url.pathname;
         type="button"
         id="mnav-btn"
         class="inline-flex size-9 items-center justify-center rounded-ui border border-line text-muted lg:hidden"
-        aria-label="Menu"
+        aria-label="Open menu"
         aria-expanded="false"
         aria-controls="mnav"
       >
@@ -72,9 +74,14 @@ const path = Astro.url.pathname;
     </div>
   </nav>
 
+  <div class="reading-progress" data-reading-progress aria-hidden="true"></div>
 </header>
 
-  <div id="mnav" aria-label="Menu">
+  <dialog id="mnav" aria-label="Navigation">
+    <div class="mb-8 flex items-center justify-between">
+      <span class="eyebrow">Navigation</span>
+      <button type="button" class="btn btn-ghost !size-11 !p-0 justify-center" data-menu-close aria-label="Close menu" autofocus><Icon name="ph:x" /></button>
+    </div>
     <ul class="space-y-1">
       {
         links.map((l, i) => (
@@ -94,7 +101,7 @@ const path = Astro.url.pathname;
       <a href={`mailto:${profile.email}`} class="btn btn-primary">Email me</a>
       <a href={profile.github} class="btn btn-ghost">GitHub</a>
     </div>
-  </div>
+  </dialog>
 
 
 <style>

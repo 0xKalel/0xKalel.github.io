@@ -4,23 +4,29 @@ import { getCollection } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import Base from '../layouts/Base.astro';
 import Timeline from '../components/Timeline.astro';
+import ProjectPreview from '../components/ProjectPreview.astro';
 import { profile } from '../data/cv';
 import { roles } from '../data/roles';
 import { postHref } from '../lib/blog';
-import ravenHome from '../assets/work/ravenclip-fresh.webp';
-import ravenBiz from '../assets/work/ravenclip-business.webp';
-import aiCart from '../assets/work/storagepal-ai-cart.png';
+import raven from '../assets/work/ravenclip-business.webp';
+import catalogue from '../assets/work/storagepal-catalogue-grid.png';
+import cart from '../assets/work/storagepal-ai-cart.png';
+import scan from '../assets/work/sps-01-movein-scan.png';
+import bay from '../assets/work/sps-03-bay-move.png';
 
 const work = Object.fromEntries((await getCollection('work')).map((w) => [w.id, w.data]));
 const [latest] = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.data.date);
-
-const stats = [
-  { n: 14, suffix: '', label: 'years building software' },
-  { n: 300, suffix: '+', label: 'projects delivered worldwide' },
-  { n: 6, suffix: '', label: 'countries with full-time teams' },
-  { n: 3, suffix: '', label: 'live products' },
+const projects = [
+  { id: 'storagepal', role: 'Technical leadership', images: [catalogue, cart], alts: ['StoragePal catalogue', 'StoragePal AI cart'], metrics: [work.storagepal.metrics[3], work.storagepal.metrics[2]], stack: 'PHP · JavaScript · Stripe' },
+  { id: 'sps', role: 'Full-stack development', images: [scan, bay], alts: ['SPS scanning interface', 'SPS inventory interface'], metrics: [work.sps.metrics[1], work.sps.metrics[3]], stack: 'Laravel · React · Redis' },
+  { id: 'ravenclip', role: 'Founder & AI engineering', images: [raven], alts: ['RavenClip video creation interface'], metrics: [work.ravenclip.metrics[0], work.ravenclip.metrics[1]], stack: 'Laravel · React · AI pipelines' },
 ];
-
+const stats = [
+  { value: '14', label: 'years building software' },
+  { value: '300+', label: 'projects delivered' },
+  { value: '6', label: 'countries with full-time teams' },
+  { value: '3', label: 'live products' },
+];
 const loop = [
   { verb: 'Plan', text: 'Define the problem and agree on the result.' },
   { verb: 'Build', text: 'Make small changes. Review and test each one.' },
@@ -29,222 +35,104 @@ const loop = [
 ---
 
 <Base>
-  <!-- Hero -->
-  <section class="relative overflow-hidden">
-    <div class="heroglow" aria-hidden="true"></div>
-    <canvas id="gl" class="gl" aria-hidden="true"></canvas>
-    <div class="relative z-10 mx-auto grid max-w-6xl items-center gap-14 px-4 pt-20 pb-24 md:px-8 md:pt-28 lg:min-h-[86dvh] lg:grid-cols-[1.2fr_1fr] lg:gap-12 lg:pt-16 lg:pb-16">
-      <div>
-        <h1 class="display rise text-[2.6rem] leading-[1.02] font-bold md:text-6xl lg:text-[4.2rem]">
-          <span class="block" data-scramble>Building software</span>
-          <span class="block"><span data-scramble>since 2012.</span></span>
-        </h1>
-        <p class="rise mt-7 max-w-[52ch] text-lg leading-relaxed text-muted" style="--i:2">
-          I’m Khalil, a lead full-stack engineer. I build web apps, lead teams and fix slow software.
-          Based in Algeria, working worldwide.
-        </p>
-        <div class="rise mt-9 flex flex-wrap items-center gap-3" style="--i:3">
-          <a href="#work" class="btn btn-primary" data-magnet>See the work <Icon name="ph:arrow-down" /></a>
-          <a href="/how-i-work/" class="btn btn-ghost">How I work</a>
+  <section class="hero-section">
+    <div class="hero-grid shell">
+      <div class="hero-copy">
+        <p class="eyebrow rise"><span class="status-dot" aria-hidden="true"></span> Lead full-stack engineer</p>
+        <h1 class="hero-title rise" style="--i:1">I build software<br /><span>people rely on.</span></h1>
+        <p class="hero-description rise" style="--i:2">Web apps. AI products. Technical leadership.<br />Building worldwide since 2012.</p>
+        <div class="hero-actions rise" style="--i:3">
+          <a href="#work" class="btn btn-primary">Explore my work <Icon name="ph:arrow-down" /></a>
+          <a href="/cv/" class="btn btn-ghost">View CV <Icon name="ph:arrow-up-right" /></a>
+        </div>
+        <div class="hero-meta rise" style="--i:4">
+          <span><Icon name="ph:map-pin" /> Annaba, Algeria · GMT+1</span>
+          <a href={profile.github} aria-label="Khalil on GitHub"><Icon name="ph:github-logo" /></a>
+          <a href={profile.linkedin} aria-label="Khalil on LinkedIn"><Icon name="ph:linkedin-logo" /></a>
         </div>
       </div>
-      <div class="rise relative pb-12 pl-10 max-lg:mx-auto max-lg:w-full max-lg:max-w-md md:pl-14" style="--i:2" data-tilt="2.5">
-        <div class="float">
-          <Image
-            src={ravenHome}
-            alt="RavenClip, my own SaaS, turning a live news story into a published vertical video"
-            widths={[640, 960, 1280]}
-            sizes="(min-width: 1024px) 520px, 92vw"
-            loading="eager"
-            class="w-full rounded-ui border border-line shadow-[0_30px_80px_-24px_rgb(0_0_0/0.6)]"
-          />
-        </div>
-        <div class="float-late absolute bottom-0 left-0 w-[36%] max-w-[185px]">
-          <Image
-            src={aiCart}
-            alt="StoragePal's AI cart builder on a phone"
-            widths={[240, 480]}
-            sizes="180px"
-            loading="eager"
-            class="w-full rounded-ui border border-line shadow-[0_26px_60px_-18px_rgb(0_0_0/0.65)]"
-          />
-        </div>
-      </div>
+      <ProjectPreview />
     </div>
-  </section>
-
-  <!-- Stats -->
-  <section class="border-y border-line bg-surface/40">
-    <dl class="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-10 px-4 py-12 md:grid-cols-4 md:px-8">
-      {
-        stats.map((s, i) => (
-          <div class="fx" style={`--d:${i * 70}ms`}>
-            <dt class="display text-4xl font-bold tabular-nums md:text-5xl">
-              <span data-count={s.n} data-suffix={s.suffix}>0</span>
-            </dt>
-            <dd class="mt-2 max-w-[22ch] text-sm leading-snug text-muted">{s.label}</dd>
-          </div>
-        ))
-      }
+    <dl class="hero-stats shell">
+      {stats.map((s) => <div><dt>{s.value}</dt><dd>{s.label}</dd></div>)}
     </dl>
   </section>
 
-  <!-- Work -->
-  <section id="work" class="mx-auto max-w-6xl scroll-mt-24 px-4 pt-32 md:px-8">
-    <h2 class="display fx text-4xl font-bold tracking-tight md:text-5xl">Selected work</h2>
-    <p class="fx mt-4 max-w-[60ch] text-lg text-muted" style="--d:80ms">
-      Three live products. My role and results in each.
-    </p>
-
-    <div class="mt-14 grid gap-5 lg:grid-cols-5">
-      <a href="/work/storagepal/" class="card tilt spot fx group grid overflow-hidden lg:col-span-3 md:grid-cols-[1fr_1.05fr]" data-tilt>
-        <div class="flex flex-col p-7 md:p-8">
-          <h3 class="display text-2xl font-semibold tracking-tight">{work.storagepal.title}</h3>
-          <p class="mt-3 leading-relaxed text-muted">{work.storagepal.tagline}</p>
-          <dl class="mt-auto grid grid-cols-2 gap-4 pt-8">
-            {work.storagepal.metrics.slice(0, 2).map((m) => (
-              <div>
-                <dt class="display text-3xl font-semibold tabular-nums">{m.value}</dt>
-                <dd class="mt-1 text-xs leading-snug text-muted">{m.label}</dd>
-              </div>
-            ))}
-          </dl>
-          <span class="mt-7 inline-flex items-center gap-1.5 text-sm font-medium text-accent">
-            View project <Icon name="ph:arrow-right" class="transition-transform group-hover:translate-x-1" />
-          </span>
-        </div>
-        <div class="relative hidden min-h-[380px] overflow-hidden md:block">
-          {work.storagepal.shots.slice(0, 2).map((s, i) => (
-            <Image
-              src={s.src}
-              alt={s.alt}
-              widths={[240, 480]}
-              sizes="230px"
-              class:list={[
-                'absolute w-[47%] rounded-ui border border-line shadow-xl',
-                i === 0 ? 'top-8 left-5' : 'top-24 right-5',
-              ]}
-            />
-          ))}
-        </div>
-      </a>
-
-      <a href="/work/sps/" class="card tilt spot fx group flex flex-col !bg-[color-mix(in_oklch,var(--accent)_9%,var(--surface))] p-7 md:p-8 lg:col-span-2" data-tilt style="--d:90ms">
-        <h3 class="display text-2xl font-semibold tracking-tight">{work.sps.title}</h3>
-        <p class="mt-3 leading-relaxed text-muted">{work.sps.tagline}</p>
-        <dl class="mt-8 grid grid-cols-2 gap-x-4 gap-y-6">
-          {work.sps.metrics.slice(0, 2).map((m) => (
-            <div>
-              <dt class="display text-3xl font-semibold tabular-nums">{m.value}</dt>
-              <dd class="mt-1 text-xs leading-snug text-muted">{m.label}</dd>
+  <section id="work" class="shell section-space">
+    <div class="section-heading fx">
+      <div><p class="eyebrow">01 / Selected work</p><h2>Built for real use.</h2></div>
+      <span class="section-note">Three live products</span>
+    </div>
+    <div class="project-grid">
+      {projects.map((p, i) => (
+        <a href={`/work/${p.id}/`} class={`project-card fx project-${p.id}`} style={`--d:${i * 65}ms`}>
+          <div class="project-cover" data-spotlight>
+            <span class="project-number" aria-hidden="true">0{i + 1}</span>
+            <div class={`project-screens ${p.images.length === 1 ? 'project-screens-wide' : ''}`}>
+              {p.images.map((src, n) => <Image src={src} alt={p.alts[n]} widths={p.images.length === 1 ? [640, 960] : [240, 480]} sizes={p.images.length === 1 ? '(min-width: 768px) 400px, 90vw' : '180px'} class={`project-screen screen-${n}`} />)}
             </div>
-          ))}
-        </dl>
-        <span class="mt-auto inline-flex items-center gap-1.5 pt-8 text-sm font-medium text-accent">
-          View project <Icon name="ph:arrow-right" class="transition-transform group-hover:translate-x-1" />
-        </span>
-      </a>
-
-      <a href="/work/ravenclip/" class="card tilt spot fx group grid overflow-hidden lg:col-span-5 lg:grid-cols-[1fr_1.4fr]" data-tilt="2.5">
-        <div class="flex flex-col p-7 md:p-8">
-          <h3 class="display text-2xl font-semibold tracking-tight">{work.ravenclip.title}</h3>
-          <p class="mt-3 leading-relaxed text-muted">{work.ravenclip.tagline}</p>
-          <ul class="mt-6 space-y-2 text-sm text-muted">
-            {work.ravenclip.metrics.slice(0, 2).map((m) => (
-              <li><span class="font-semibold text-fg tabular-nums">{m.value}</span> {m.label}</li>
-            ))}
-          </ul>
-          <span class="mt-auto inline-flex items-center gap-1.5 pt-8 text-sm font-medium text-accent">
-            View project <Icon name="ph:arrow-right" class="transition-transform group-hover:translate-x-1" />
-          </span>
-        </div>
-        <div class="overflow-hidden border-t border-line lg:border-t-0 lg:border-l">
-          <Image
-            src={ravenBiz}
-            alt="RavenClip turning a live story into a branded vertical video for a business channel"
-            widths={[640, 960, 1440]}
-            sizes="(min-width: 1024px) 640px, 100vw"
-            class="h-full w-full object-cover object-left-top"
-          />
-        </div>
-      </a>
+            <span class="project-arrow" aria-hidden="true"><Icon name="ph:arrow-up-right" /></span>
+          </div>
+          <div class="project-info">
+            <p class="eyebrow">{p.role}</p>
+            <h3>{work[p.id].title}</h3>
+            <p class="project-description">{work[p.id].tagline}</p>
+            <dl class="project-results">
+              {p.metrics.map((m) => <div><dt>{m.value}</dt><dd>{m.label}</dd></div>)}
+            </dl>
+            <p class="project-stack">{p.stack}</p>
+          </div>
+        </a>
+      ))}
     </div>
   </section>
 
-  <!-- Journey -->
-  <section id="journey" class="mx-auto max-w-6xl scroll-mt-24 px-4 pt-36 md:px-8">
-    <div class="max-w-[62ch]">
-      <h2 class="display fx text-4xl font-bold tracking-tight md:text-5xl">My experience</h2>
-      <p class="fx mt-4 text-lg leading-relaxed text-muted" style="--d:80ms">
-        From running an agency to leading product teams.
-      </p>
+  <section id="journey" class="shell section-space experience-section">
+    <div class="section-heading fx">
+      <div><p class="eyebrow">02 / Experience</p><h2>Fourteen years.<br />Still building.</h2></div>
+      <a class="text-link" href="/cv/">Full CV <Icon name="ph:arrow-up-right" /></a>
     </div>
     <Timeline />
   </section>
 
-  <!-- How I work -->
-  <section class="mx-auto grid max-w-6xl gap-12 px-4 pt-36 md:px-8 lg:grid-cols-[0.9fr_1.1fr]">
-    <div class="lg:sticky lg:top-28 lg:self-start">
-      <h2 class="display fx text-4xl font-bold tracking-tight md:text-5xl">How I work</h2>
-      <p class="fx mt-5 max-w-[46ch] text-lg leading-relaxed text-muted" style="--d:80ms">
-        I use AI to help write code. I make the decisions and check the result.
-      </p>
-      <a href="/how-i-work/" class="btn btn-ghost fx mt-8" style="--d:160ms">My process <Icon name="ph:arrow-right" /></a>
+  <section id="process" class="shell section-space">
+    <div class="process-panel">
+      <div class="section-heading fx">
+        <div><p class="eyebrow">03 / How I work</p><h2>Plan. Build. Improve.</h2></div>
+        <a href="/how-i-work/" class="text-link">My process <Icon name="ph:arrow-up-right" /></a>
+      </div>
+      <ol class="process-grid">
+        {loop.map((s, i) => (
+          <li class="fx" style={`--d:${i * 70}ms`}><span class="process-number" aria-hidden="true">0{i + 1}</span><h3>{s.verb}</h3><p>{s.text}</p></li>
+        ))}
+      </ol>
     </div>
-    <ol class="divide-y divide-line border-y border-line">
-      {
-        loop.map((s, i) => (
-          <li class="fx grid gap-1 py-6 sm:grid-cols-[9rem_1fr] sm:gap-6" style={`--d:${i * 60}ms`}>
-            <span class="display text-lg font-semibold">{s.verb}</span>
-            <span class="leading-relaxed text-muted">{s.text}</span>
-          </li>
-        ))
-      }
-    </ol>
   </section>
 
-  <!-- CV + writing -->
-  <section class="mx-auto grid max-w-6xl gap-5 px-4 pt-36 md:px-8 lg:grid-cols-[1.3fr_1fr]">
-    <div class="card fx p-7 md:p-9">
-      <h2 class="display text-3xl font-semibold tracking-tight">CV</h2>
-      <p class="mt-3 max-w-[52ch] text-muted">Choose your role. Download the PDF.</p>
-      <ul class="mt-7 grid gap-2 sm:grid-cols-2">
-        {
-          roles.map((r) => (
-            <li>
-              <a href={`/cv/${r.slug}/`} class="group flex items-center justify-between rounded-ui border border-line px-4 py-3 transition-colors hover:border-accent">
-                {r.label}
-                <Icon name="ph:arrow-up-right" class="text-muted transition-colors group-hover:text-accent" />
-              </a>
-            </li>
-          ))
-        }
+  <section class="shell section-space resources-grid">
+    <div class="resource-panel fx">
+      <p class="eyebrow">For your team</p><h2>CV by role</h2>
+      <ul class="role-links">
+        {roles.map((r) => <li><a href={`/cv/${r.slug}/`}>{r.label}<Icon name="ph:arrow-up-right" /></a></li>)}
       </ul>
     </div>
-    {
-      latest && (
-        <a href={postHref(latest.id)} class="card spot fx group flex flex-col p-7 md:p-9" style="--d:100ms">
-          <h2 class="display text-2xl font-semibold tracking-tight">Latest writing</h2>
-          <h3 class="mt-4 text-lg leading-snug font-medium">{latest.data.title}</h3>
-          <span class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-medium text-accent">
-            Read the article <Icon name="ph:arrow-right" class="transition-transform group-hover:translate-x-1" />
-          </span>
-        </a>
-      )
-    }
+    {latest && (
+      <a href={postHref(latest.id)} class="resource-panel writing-panel fx" style="--d:80ms">
+        <p class="eyebrow">Latest writing</p>
+        <span class="writing-symbol" aria-hidden="true"><Icon name="ph:code" /></span>
+        <h2>{latest.data.title}</h2>
+        <span class="text-link">Read the article <Icon name="ph:arrow-up-right" /></span>
+      </a>
+    )}
   </section>
 
-  <!-- Contact -->
-  <section class="mx-auto max-w-6xl px-4 pt-40 pb-4 md:px-8">
-    <h2 class="display fx max-w-[16ch] text-5xl leading-[1.02] font-bold text-balance md:text-7xl">
-      Have a project <span class="text-accent">in mind?</span>
-    </h2>
-    <p class="fx mt-6 max-w-[52ch] text-lg leading-relaxed text-muted">Tell me what you need built or improved.</p>
-    <div class="fx mt-10 flex flex-wrap items-center gap-3" style="--d:120ms">
-      <a href={`mailto:${profile.email}`} class="btn btn-primary" data-magnet>Email me <Icon name="ph:arrow-right" /></a>
-      <button type="button" class="btn btn-ghost" data-copy={profile.email}>
-        <Icon name="ph:copy" /> <span data-copy-label>{profile.email}</span>
-      </button>
+  <section id="contact" class="shell section-space contact-section">
+    <p class="eyebrow fx">Have a project or role in mind?</p>
+    <h2 class="fx">Let’s build<br /><span>something useful.</span></h2>
+    <div class="contact-actions fx">
+      <a href={`mailto:${profile.email}`} class="btn btn-primary">Email me <Icon name="ph:arrow-up-right" /></a>
+      <button type="button" class="btn btn-ghost" data-copy={profile.email} aria-label="Copy email address"><Icon name="ph:copy" /><span data-copy-label>Copy email</span></button>
+      <span class="sr-only" data-copy-status role="status"></span>
     </div>
   </section>
 </Base>

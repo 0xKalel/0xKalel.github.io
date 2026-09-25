@@ -27,11 +27,50 @@ const lines = [
   'M714 118 L726 118',
   'M820 118 L832 118',
 ];
+const chain = (labels: [string, ('node'|'end')?][]) => labels;
 ---
 
 <figure class="not-prose card fx my-10 overflow-x-auto p-5 md:p-7">
   <figcaption class="text-[0.95rem] font-medium">From a news story to a published video</figcaption>
-  <div class="mt-4 min-w-[760px]">
+
+  <!-- Mobile: the same pipeline, vertical -->
+  <div class="mt-4 sm:hidden">
+    <div class="flow-col">
+      <span class="flow-pill">News feeds</span>
+      <span class="flow-arrow" aria-hidden="true">↓</span>
+      <span class="flow-pill">Context</span>
+      <span class="flow-arrow" aria-hidden="true">↓</span>
+      <span class="flow-pill flow-node">Script</span>
+    </div>
+    <div class="mt-2 grid grid-cols-2 gap-3">
+      <div>
+        <p class="mb-1.5 text-center text-[11px] text-muted">voice branch</p>
+        <div class="flow-col">
+          <span class="flow-pill">Voice</span>
+          <span class="flow-arrow" aria-hidden="true">↓</span>
+          <span class="flow-pill">Transcript</span>
+        </div>
+      </div>
+      <div>
+        <p class="mb-1.5 text-center text-[11px] text-muted">visual branch</p>
+        <div class="flow-col">
+          <span class="flow-pill">Scenes</span>
+          <span class="flow-arrow" aria-hidden="true">↓</span>
+          <span class="flow-pill">Assets</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-col mt-2">
+      <span class="flow-arrow" aria-hidden="true">↓</span>
+      <span class="flow-pill flow-node">Render</span>
+      <span class="flow-arrow" aria-hidden="true">↓</span>
+      <span class="flow-pill">Review</span>
+      <span class="flow-arrow" aria-hidden="true">↓</span>
+      <span class="flow-pill flow-end">Publish</span>
+    </div>
+  </div>
+
+  <div class="mt-4 min-w-[760px] max-sm:hidden">
     <svg viewBox="0 0 920 236" class="w-full" role="img" aria-label="Pipeline diagram: news feeds, context and script run in sequence, then the flow forks into a voice branch (voice, transcript) and a visual branch (scenes, assets) that rejoin at render, followed by review and publish.">
       <defs>
         <marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -64,3 +103,20 @@ const lines = [
     Each stage saves its progress to the database. Processing advances when the next stage is ready, and can resume or retry after a failure.
   </p>
 </figure>
+
+<style>
+  .flow-col { display: flex; flex-direction: column; align-items: stretch; }
+  .flow-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.5rem;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--raised);
+    font-size: 0.875rem;
+  }
+  .flow-node { border-color: var(--accent); border-width: 1.5px; }
+  .flow-end { background: color-mix(in oklch, var(--accent) 16%, var(--surface)); border-color: var(--accent); }
+  .flow-arrow { text-align: center; color: var(--muted); font-size: 0.8rem; line-height: 1.4; }
+</style>
