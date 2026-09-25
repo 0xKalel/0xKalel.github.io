@@ -1,0 +1,61 @@
+---
+/** Horizontal bar chart. One series (accent) or an ordered pair (before = lighter
+ *  step of the same ramp, after = accent), per the dataviz rules: thin marks,
+ *  rounded data-end, values labelled at the tip, legend when two series. */
+interface Row {
+  label: string;
+  values: number[];
+}
+interface Props {
+  title: string;
+  note?: string;
+  unit?: string;
+  /** Legend names; give 2 for before/after pairs. */
+  series?: string[];
+  rows: Row[];
+}
+const { title, note, unit = '', series = [], rows } = Astro.props;
+const max = Math.max(...rows.flatMap((r) => r.values));
+const color = (si: number, n: number) => (n > 1 && si === 0 ? 'var(--viz-before)' : 'var(--accent)');
+const fmt = (v: number) => v.toLocaleString('en-US');
+let bi = 0;
+---
+
+<figure class="not-prose card fx my-10 p-6 md:p-7">
+  <figcaption>
+    <span class="text-[0.95rem] font-medium">{title}</span>
+    {note && <span class="mt-1 block text-xs text-muted">{note}</span>}
+  </figcaption>
+  {
+    series.length > 1 && (
+      <div class="mt-3 flex gap-5 text-xs text-muted">
+        {series.map((s, i) => (
+          <span class="inline-flex items-center gap-1.5">
+            <span class="size-2.5 rounded-[3px]" style={`background:${color(i, series.length)}`} />
+            {s}
+          </span>
+        ))}
+      </div>
+    )
+  }
+  <div class="mt-6 space-y-4">
+    {
+      rows.map((r) => (
+        <div class="grid grid-cols-[5rem_1fr] items-center gap-3 sm:grid-cols-[6.5rem_1fr]">
+          <span class="text-sm text-muted">{r.label}</span>
+          <div class="space-y-[3px]">
+            {r.values.map((v, si) => (
+              <div class="flex items-center gap-2.5">
+                <div
+                  class="grow-bar rounded-r-[4px]"
+                  style={`width:${Math.max((v / max) * 100, 1.5)}%;height:${r.values.length > 1 ? 13 : 19}px;background:${color(si, r.values.length)};--bi:${bi++}`}
+                />
+                <span class="font-mono text-xs whitespace-nowrap text-muted tabular-nums">{fmt(v)}{unit}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</figure>

@@ -1,0 +1,90 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const work = await getCollection('work');
+  return work.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const phones = d.shots.filter((s) => s.src.height > s.src.width);
+const wide = d.shots.filter((s) => s.src.height <= s.src.width);
+---
+
+<Base title={d.title} description={d.tagline}>
+  <article class="mx-auto max-w-6xl px-4 pt-14 md:px-8 md:pt-20">
+    <a href="/#work" class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-fg">
+      <Icon name="ph:arrow-left" /> All work
+    </a>
+    <h1 class="rise mt-8 text-4xl font-semibold tracking-[-0.035em] md:text-6xl">{d.title}</h1>
+    <p class="rise mt-5 max-w-[52ch] text-lg leading-relaxed text-muted" style="--i:1">{d.tagline}</p>
+
+    <dl class="rise mt-10 grid gap-6 border-y border-line py-7 text-sm sm:grid-cols-3" style="--i:2">
+      <div><dt class="text-muted">Role</dt><dd class="mt-1">{d.role}</dd></div>
+      <div><dt class="text-muted">Period</dt><dd class="mt-1">{d.period}</dd></div>
+      <div>
+        <dt class="text-muted">Stack</dt>
+        <dd class="mt-1 leading-relaxed">{d.stack}</dd>
+      </div>
+    </dl>
+
+    <dl class="mt-12 grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
+      {
+        d.metrics.map((m) => (
+          <div >
+            <dt class="text-2xl font-semibold tracking-tight tabular-nums md:text-3xl">{m.value}</dt>
+            <dd class="mt-2 max-w-[26ch] text-sm leading-snug text-muted">{m.label}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    {
+      d.video && (
+        <video
+          class="mt-16 w-full rounded-ui border border-line"
+          controls
+          playsinline
+          preload="metadata"
+          poster={d.video.poster}
+        >
+          <source src={d.video.src} type="video/mp4" />
+        </video>
+      )
+    }
+    {
+      wide.map((s) => (
+        <Image src={s.src} alt={s.alt} widths={[768, 1280, 1440]} sizes="(min-width: 1152px) 1088px, 100vw" class="mt-16 w-full rounded-ui border border-line" />
+      ))
+    }
+    {
+      phones.length > 0 && (
+        <div class:list={['mt-16 grid grid-cols-2 gap-4 md:gap-6', phones.length >= 4 ? 'md:grid-cols-4' : 'md:grid-cols-3']}>
+          {phones.map((s, i) => (
+            <figure class:list={[phones.length === 3 && i === 2 && 'hidden md:block']}>
+              <Image src={s.src} alt={s.alt} widths={[320, 640]} sizes="(min-width: 768px) 340px, 50vw" class="w-full rounded-ui border border-line" />
+              <figcaption class="mt-3 text-sm leading-snug text-muted">{s.alt}</figcaption>
+            </figure>
+          ))}
+        </div>
+      )
+    }
+
+    <div class="prose prose-case mt-16 prose-headings:tracking-tight prose-a:decoration-line prose-a:underline-offset-4 prose-strong:font-semibold prose-h2:mt-14">
+      <Content />
+    </div>
+
+    {
+      d.url && (
+        <a href={d.url} class="btn btn-ghost mt-12">
+          Visit {new URL(d.url).hostname} <Icon name="ph:arrow-up-right" />
+        </a>
+      )
+    }
+  </article>
+</Base>

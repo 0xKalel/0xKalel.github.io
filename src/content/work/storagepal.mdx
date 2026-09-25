@@ -1,0 +1,98 @@
+---
+title: StoragePal platform
+tagline: Leading the platform that runs a Paris storage business, from pricing to payments.
+role: Lead developer, directing 2 developers and 2 testers
+period: Oct 2024 - present
+stack: PHP (Neos Flow), MariaDB, JavaScript, Stripe, Google Maps, GA4, HubSpot, Gemini, Docker, CI/CD
+order: 1
+url: https://storagepal.fr
+video:
+  src: /media/storagepal-launch.mp4
+  poster: /media/storagepal-launch.jpg
+metrics:
+  - value: "+69%"
+    label: orders year over year (Jan to Aug 2026)
+  - value: "-22%"
+    label: ad spend per order
+  - value: "+34%"
+    label: transport revenue after the new pricing engine
+  - value: 250 to 53 ms
+    label: catalogue server time
+shots:
+  - src: ../../assets/work/storagepal-ai-cart.png
+    alt: The AI cart builder turning a description of a studio move into a priced cart
+  - src: ../../assets/work/storagepal-transport.png
+    alt: Booking form collecting address, floor and lift details for the transport quote
+  - src: ../../assets/work/storagepal-catalogue.png
+    alt: Mobile storage catalogue
+---
+import Bars from '../../components/viz/Bars.astro';
+import Delta from '../../components/viz/Delta.astro';
+
+## The setup
+
+StoragePal collects customers' belongings, stores them, and brings them back on request. The platform is the whole business: catalogue, pricing, bookings, warehouse stock, invoicing, payments and the backoffice the team uses all day.
+
+I lead the technical side: I decide what gets built and how, build a large part myself, and direct **Monder** (reporting, CRM, lead capture, reservations), **Med** (WordPress site, SEO, tools) and two testers who verify every feature before it ships.
+
+## What changed
+
+<Bars
+  title="Orders, January to August of each year"
+  note="Growth is a team result, shared with ads and sales. The work below is mine."
+  rows={[
+    { label: '2024', values: [334] },
+    { label: '2025', values: [377] },
+    { label: '2026', values: [639] },
+  ]}
+/>
+
+Orders grew **69%** while ad spend per order fell **22%**.
+
+## The transport pricing engine
+
+Quotes used coarse regions and priced the two directions differently. I replaced that with one engine: real driving distance from Google Maps, the vehicle chosen from the cart contents, the cheapest crew, floors and lift.
+
+<Bars
+  title="Truck bookings, 12 months before and after launch"
+  series={['Before', 'After']}
+  rows={[
+    { label: 'Collections', values: [277, 343] },
+    { label: 'Returns', values: [192, 269] },
+  ]}
+/>
+
+<Delta
+  items={[
+    { label: 'Average collection quote', before: '€109', after: '€75', delta: '-32% for the customer' },
+    { label: 'Transport revenue', before: 'baseline', after: '+34%', delta: 'cheaper quotes, more bookings' },
+  ]}
+/>
+
+## Faster, and measured
+
+<Delta
+  items={[
+    { label: 'Catalogue server time', before: '250 ms', after: '53 ms' },
+    { label: 'Orders visible in GA4', before: '58%', after: '84%', delta: 'ad budgets on real data' },
+    { label: 'Leads captured per month', before: '31', after: '270+', delta: 'work I directed' },
+  ]}
+/>
+
+A one-page checkout with Apple Pay and Google Pay has taken **700+ orders** since December 2025.
+
+## An AI cart builder in production
+
+Customers describe their move in plain words or send photos. A Gemini assistant turns that into a priced cart, every item checked against the real catalogue, made-to-measure items priced by the same formula checkout uses. **42% of conversations end in a confirmed cart.**
+
+## Billing that collects the right amount
+
+I found a fault where unpaid months carried into the next invoice were collected more than once. I fixed it, then rebuilt collection: Stripe-rule retries, bank-transfer settlement, write-offs, partial payments, reminders under French consumer law. **77 failed payments recovered** in the first seven weeks, and the overdue figure the business relied on turned out to be wrong by a **factor of 13**.
+
+## The warehouse link
+
+The [SPS warehouse app](/work/sps/) runs on live order data through a REST API I designed: orders, returns, order changes with Stripe repricing, and retries that never charge twice. **835 orders** and **8,600+ status changes** processed.
+
+## How it was built
+
+Specs first, then Claude Code implements inside project rules that encode the business invariants (which invoice amounts may be summed, which permissions file every endpoint registers in). Hooks block destructive commands and lint every edit. I review every change; the testers verify it in the real app.

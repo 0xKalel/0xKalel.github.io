@@ -1,0 +1,44 @@
+---
+/** Failover chains: primary provider first, arrows to each fallback. */
+import { Icon } from 'astro-icon/components';
+
+interface Row {
+  name: string;
+  steps: string[];
+  note?: string;
+}
+interface Props {
+  rows: Row[];
+}
+const { rows } = Astro.props;
+---
+
+<div class="not-prose card fx my-10 divide-y divide-line">
+  {
+    rows.map((r) => (
+      <div class="grid gap-2 p-5 sm:grid-cols-[7.5rem_1fr] sm:gap-4 md:px-7">
+        <p class="pt-1 text-sm font-medium">{r.name}</p>
+        <div>
+          <div class="flex flex-wrap items-center gap-x-2 gap-y-2">
+            {r.steps.map((s, i) => (
+              <>
+                {i > 0 && <Icon name="ph:arrow-right" class="shrink-0 text-muted" aria-hidden="true" />}
+                <span
+                  class:list={[
+                    'rounded-full border px-3 py-1 text-sm whitespace-nowrap',
+                    i === 0
+                      ? 'border-transparent bg-[color-mix(in_oklch,var(--accent)_14%,transparent)] text-fg'
+                      : 'border-line text-muted',
+                  ]}
+                >
+                  {s}
+                </span>
+              </>
+            ))}
+          </div>
+          {r.note && <p class="mt-2 text-xs leading-relaxed text-muted">{r.note}</p>}
+        </div>
+      </div>
+    ))
+  }
+</div>

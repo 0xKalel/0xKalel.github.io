@@ -1,0 +1,69 @@
+---
+title: RavenClip
+tagline: My own SaaS. A newsroom that runs itself, from the news wire to TikTok.
+role: Founder, built and operated end to end
+period: May 2026 - present
+stack: PHP 8.5, Laravel 13 (laravel/ai), React 19, TypeScript, Inertia, Horizon, MariaDB, Redis, Node (Skia), FFmpeg, Caddy, Cloudflare R2
+order: 3
+url: https://ravenclip.com
+video:
+  src: /media/ravenclip-launch.mp4
+  poster: /media/ravenclip-launch.webp
+metrics:
+  - value: 4 months
+    label: from first commit to paying customers
+  - value: "28"
+    label: AI agents across 10+ providers
+  - value: "~1,300"
+    label: automated tests
+  - value: "19"
+    label: content verticals in 5 languages
+---
+import Cards from '../../components/viz/Cards.astro';
+import Chain from '../../components/viz/Chain.astro';
+import PipelineRaven from '../../components/viz/PipelineRaven.astro';
+
+## The story
+
+I wanted to follow AI news without reading twenty tabs a day, so I built a script that turned the day's best story into a short video for myself. Friends asked for their own topics, then for it to post on its own, in their language, on their schedule. That is when a personal tool became RavenClip.
+
+Once it was a product, the real customers turned out to be **businesses**: agencies, consultancies and coaches who need consistent short video on their channels and don't have a video team. First paying customers within weeks of launch.
+
+## How a video happens
+
+RavenClip watches news feeds, picks the one story worth telling, writes a fact-grounded script, voices it, designs the visuals, renders a vertical video with word-by-word captions, and publishes it to TikTok, YouTube Shorts and Instagram Reels. Nobody is in the loop unless the owner wants a review window.
+
+<PipelineRaven />
+
+## Five hard problems
+
+<Cards
+  cols={3}
+  items={[
+    { icon: 'ph:seal-check', title: 'AI you can publish unattended', text: 'A made-up fact is a fired client. Deterministic gates check every draft against the source; failures are retried with the failure spelled out, and what the gates approved is exactly what gets voiced.' },
+    { icon: 'ph:arrows-split', title: 'Outages I don\'t control', text: 'A dozen external AI services, each down sometimes. Key pools rotate, and when a whole provider dies the call moves down the chain. Customers never see it.' },
+    { icon: 'ph:bell-ringing', title: 'Alerts before customers notice', text: 'The system probes its providers every 30 minutes, reads real balances, and emails me instructions I can follow half-asleep. One provider has no balance API, so it estimates the burn-down itself.' },
+    { icon: 'ph:coins', title: 'Every dollar has a row', text: 'Each API call is priced the moment it is paid. A dashboard shows cost per video and per-plan margins, and a test fails the build if a paid call skips the ledger.' },
+    { icon: 'ph:film-strip', title: 'The render engine itself', text: 'Captions, graphics and entity overlays are drawn by a ~10k-line Skia renderer I wrote in Node, composited by FFmpeg, synced word by word to the narration.' },
+    { icon: 'ph:translate', title: 'A real product around it', text: '19 verticals, 5 languages, 3 platforms, 2FA and passkeys, subscriptions, an admin that can regenerate any stage of any video.' },
+  ]}
+/>
+
+## When a provider dies mid-render
+
+Every external call goes through one shared failover loop. Its rules were each paid for by a production incident, like the fallback that once ran dry for 25 days while every call silently failed over to a lane three times the price. Now the system rests exhausted providers, retries transients, and alerts me with the exact key to replace.
+
+<Chain
+  rows={[
+    { name: 'Script', steps: ['Gemini', 'DeepSeek via OpenRouter'] },
+    { name: 'Voice', steps: ['Gemini TTS', 'Chirp 3 HD', 'ElevenLabs'], note: 'Same-speaker rescue only. Voice consistency forbids swapping voices mid-channel.' },
+    { name: 'Images', steps: ['Runware', 'Pollinations', 'Hugging Face'], note: 'Tier-preserving: failover never silently downgrades quality.' },
+    { name: 'Embeddings', steps: ['Cloudflare', 'Gemini'], note: 'Chosen once per call so vector spaces never mix.' },
+  ]}
+/>
+
+## How it was built
+
+Built with Claude Code and Codex from specs I wrote stage by stage. The agents typed most of the code; I made the architecture calls, reviewed every change, and kept every rule in exactly one place so one pair of hands can hold the whole system: ~130,000 lines of PHP, ~1,450 commits, held together by ~1,300 tests.
+
+The full engineering story, incident by incident: [read the deep dive](/blog/2026/09/25/ravenclip-engineering/).

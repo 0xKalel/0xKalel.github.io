@@ -1,0 +1,118 @@
+---
+import { profile } from '../data/cv';
+import { roles } from '../data/roles';
+
+interface Item {
+  label: string;
+  hint: string;
+  href?: string;
+  action?: 'copy-email' | 'theme';
+}
+
+const items: Item[] = [
+  { label: 'Home', hint: 'Page', href: '/' },
+  { label: 'Selected work', hint: 'Page', href: '/#work' },
+  { label: 'Journey since 2012', hint: 'Page', href: '/#journey' },
+  { label: 'How I work with AI agents', hint: 'Page', href: '/how-i-work/' },
+  { label: 'Writing', hint: 'Page', href: '/blog/' },
+  { label: 'Case study: StoragePal platform', hint: 'Work', href: '/work/storagepal/' },
+  { label: 'Case study: SPS warehouse app', hint: 'Work', href: '/work/sps/' },
+  { label: 'Case study: RavenClip', hint: 'Work', href: '/work/ravenclip/' },
+  ...roles.map((r) => ({ label: `CV: ${r.label}`, hint: 'CV', href: `/cv/${r.slug}/` })),
+  ...roles.map((r) => ({ label: `Download PDF: ${r.label}`, hint: 'PDF', href: `/cv/${r.slug}.pdf` })),
+  { label: 'Email me', hint: 'Action', href: `mailto:${profile.email}` },
+  { label: 'Copy email address', hint: 'Action', action: 'copy-email' },
+  { label: 'Toggle theme', hint: 'Action', action: 'theme' },
+  { label: 'GitHub', hint: 'Link', href: profile.github },
+  { label: 'LinkedIn', hint: 'Link', href: profile.linkedin },
+];
+---
+
+<dialog id="palette" aria-label="Command palette">
+  <input class="pal-input" type="text" name="palette-search" id="palette-search" placeholder="Where to?" autocomplete="off" spellcheck="false" />
+  <ul class="pal-list" role="listbox">
+    {
+      items.map((it) => (
+        <li
+          class="pal-item"
+          role="option"
+          aria-selected="false"
+          data-href={it.href}
+          data-action={it.action}
+        >
+          <span>{it.label}</span>
+          <span class="pal-k">{it.hint}</span>
+        </li>
+      ))
+    }
+  </ul>
+</dialog>
+
+<script>
+  import { profile } from '../data/cv';
+
+  function initPalette() {
+    const dlg = document.getElementById('palette') as HTMLDialogElement | null;
+    if (!dlg || dlg.dataset.bound) return;
+    dlg.dataset.bound = '1';
+    const input = dlg.querySelector<HTMLInputElement>('.pal-input')!;
+    const all = [...dlg.querySelectorAll<HTMLElement>('.pal-item')];
+    let idx = 0;
+
+    const visible = () => all.filter((li) => !li.hidden);
+    const select = (i: number) => {
+      const list = visible();
+      if (!list.length) return;
+      idx = (i + list.length) % list.length;
+      all.forEach((li) => li.setAttribute('aria-selected', 'false'));
+      list[idx].setAttribute('aria-selected', 'true');
+      list[idx].scrollIntoView({ block: 'nearest' });
+    };
+    const filter = () => {
+      const q = input.value.trim().toLowerCase();
+      all.forEach((li) => { li.hidden = !li.textContent!.toLowerCase().includes(q); });
+      select(0);
+    };
+    const run = (li: HTMLElement | undefined) => {
+      if (!li) return;
+      dlg.close();
+      if (li.dataset.action === 'theme') {
+        (document.querySelector('[data-theme-toggle]') as HTMLElement | null)?.click();
+      } else if (li.dataset.action === 'copy-email') {
+        navigator.clipboard?.writeText(profile.email);
+      } else if (li.dataset.href) {
+        if (/^(https?:|mailto:)/.test(li.dataset.href)) location.href = li.dataset.href;
+        else window.location.assign(li.dataset.href);
+      }
+    };
+    const open = () => {
+      input.value = '';
+      filter();
+      dlg.showModal();
+      input.focus();
+    };
+
+    input.addEventListener('input', filter);
+    dlg.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') { e.preventDefault(); select(idx + 1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); select(idx - 1); }
+      else if (e.key === 'Enter') { e.preventDefault(); run(visible()[idx]); }
+    });
+    all.forEach((li) => li.addEventListener('click', () => run(li)));
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+
+    const hotkey = (e: KeyboardEvent) => {
+      if (!dlg.isConnected) { document.removeEventListener('keydown', hotkey); return; }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        dlg.open ? dlg.close() : open();
+      }
+    };
+    document.addEventListener('keydown', hotkey);
+    document.querySelectorAll('[data-palette-open]').forEach((b) =>
+      b.addEventListener('click', open),
+    );
+  }
+
+  document.addEventListener('astro:page-load', initPalette);
+</script>

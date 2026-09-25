@@ -1,0 +1,142 @@
+---
+import { Icon } from 'astro-icon/components';
+import { education, profile, type Entry } from '../data/cv';
+import { roles, type Role } from '../data/roles';
+import { buildCv, trackedHref } from '../lib/cv';
+import { inline } from '../lib/inline';
+
+interface Props {
+  role: Role;
+}
+
+const { role } = Astro.props;
+const cv = buildCv(role);
+const abs = (href: string) => new URL(trackedHref(href, role), profile.site).href;
+const siteHref = abs('/');
+const contacts = [
+  { label: profile.email, href: `mailto:${profile.email}` },
+  { label: 'LinkedIn', href: profile.linkedin },
+  { label: 'GitHub', href: profile.github },
+  { label: 'Portfolio', href: siteHref },
+];
+const sectionTitle = { experience: 'Experience', projects: 'Own product', skills: 'Skills', education: 'Education' };
+---
+
+<div class="toolbar mx-auto flex max-w-[210mm] flex-wrap items-center justify-between gap-4 px-4 pt-6 pb-4 text-sm print:hidden">
+  <a href="/" class="inline-flex items-center gap-1.5 text-muted hover:text-fg"><Icon name="ph:arrow-left" /> Portfolio</a>
+  <nav aria-label="CV version" class="flex flex-wrap gap-1 rounded-ui border border-line p-1">
+    {
+      roles.map((r) => (
+        <a
+          href={`/cv/${r.slug}/`}
+          aria-current={r.slug === role.slug ? 'page' : undefined}
+          class:list={[
+            'rounded-[8px] px-3 py-1.5 transition-colors',
+            r.slug === role.slug ? 'bg-fg text-bg' : 'text-muted hover:text-fg',
+          ]}
+        >
+          {r.label}
+        </a>
+      ))
+    }
+  </nav>
+  <a href={`/cv/${role.slug}.pdf`} class="btn btn-primary !h-9 !px-3.5" download>PDF <Icon name="ph:download-simple" /></a>
+</div>
+
+<article class="paper mx-auto mb-16 max-w-[210mm] bg-bg px-[14mm] py-[13mm] text-[10pt] leading-[1.45] text-fg shadow-[0_30px_80px_-30px_oklch(0.1_0.02_250/0.5)] print:m-0 print:max-w-none print:p-0 print:shadow-none">
+  <header>
+    <h1 class="text-[22pt] leading-none font-semibold tracking-tight">{profile.name}</h1>
+    <p class="mt-2 text-[11.5pt] font-medium text-accent">{role.headline}</p>
+    <p class="mt-2.5 flex flex-wrap gap-x-4 gap-y-1 text-[9pt] text-muted">
+      <span>{profile.location}</span>
+      {contacts.map((c) => <a href={c.href} class="underline decoration-line underline-offset-2">{c.label}</a>)}
+    </p>
+  </header>
+
+  <p class="mt-5 text-[10pt] leading-[1.55]">{role.summary}</p>
+
+  <p class="mt-3 text-[9pt] text-muted">
+    <span class="font-medium text-fg">See also:</span>{' '}
+    {role.links.map((l, i) => (
+      <>
+        {i > 0 && ', '}
+        <a href={abs(l.href)} class="underline decoration-line underline-offset-2">{l.label}</a>
+      </>
+    ))}
+  </p>
+
+  {
+    role.sections.map((section) => (
+      <section class="mt-6">
+        <h2 class="border-b border-line pb-1 text-[9pt] font-semibold tracking-[0.08em] text-muted uppercase">{sectionTitle[section]}</h2>
+
+        {(section === 'experience' || section === 'projects') &&
+          (section === 'experience' ? cv.experience : cv.projects).map((e: Entry) => (
+            <div class="mt-4 break-inside-avoid-page">
+              <div class="flex flex-wrap items-baseline justify-between gap-x-4">
+                <h3 class="font-semibold">
+                  {e.title},{' '}
+                  {e.url ? <a href={e.url} class="underline decoration-line underline-offset-2">{e.org}</a> : e.org}
+                </h3>
+                <span class="text-[9pt] text-muted tabular-nums">
+                  {e.location}, {e.period}
+                </span>
+              </div>
+              {e.intro && <p class="mt-1 text-[9.5pt] text-muted">{e.intro}</p>}
+              <ul class="mt-1.5 list-disc space-y-1 pl-4 marker:text-line">
+                {e.bullets.map((b) => (
+                  <li set:html={inline(b.text)} />
+                ))}
+              </ul>
+              {e.stack && <p class="mt-1.5 text-[8.5pt] text-muted">{e.stack}</p>}
+            </div>
+          ))}
+
+        {section === 'skills' && (
+          <dl class="mt-3 grid grid-cols-[8.5rem_1fr] gap-x-4 gap-y-1.5 text-[9.5pt]">
+            {cv.skills.map((s) => (
+              <>
+                <dt class="font-medium">{s.label}</dt>
+                <dd class="text-muted">{s.items}</dd>
+              </>
+            ))}
+            <dt class="font-medium">Languages</dt>
+            <dd class="text-muted">{profile.languages}</dd>
+          </dl>
+        )}
+
+        {section === 'education' && (
+          <p class="mt-3 text-[9.5pt]">
+            <span class="font-medium">{education.degree}</span>, {education.school}, {education.year}.{' '}
+            <span class="text-muted">{education.focus}.</span>
+          </p>
+        )}
+      </section>
+    ))
+  }
+</article>
+
+<style is:global>
+  /* The CV is a document: always light, whatever the site theme. */
+  .paper {
+    --bg: oklch(0.995 0 0);
+    --fg: oklch(0.19 0.012 250);
+    --muted: oklch(0.44 0.012 250);
+    --line: oklch(0.86 0.006 250);
+    --accent: oklch(0.47 0.12 160);
+    color-scheme: light;
+  }
+  .paper strong {
+    font-weight: 600;
+  }
+  @page {
+    size: A4;
+    margin: 13mm 14mm;
+  }
+  @media print {
+    html,
+    body {
+      background: white !important;
+    }
+  }
+</style>

@@ -1,0 +1,31 @@
+---
+/** An incident story: what happened, the numbered causes, the fix. */
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  title: string;
+  items: string[];
+  footer?: string;
+}
+const { title, items, footer } = Astro.props;
+---
+
+<aside class="not-prose card fx my-10 p-6 md:p-8">
+  <p class="flex items-start gap-3">
+    <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-ui bg-[color-mix(in_oklch,var(--accent)_13%,transparent)] text-accent">
+      <Icon name="ph:detective" size={20} />
+    </span>
+    <span class="display pt-1.5 text-lg leading-snug font-semibold">{title}</span>
+  </p>
+  <ol class="mt-6 space-y-3">
+    {
+      items.map((it, i) => (
+        <li class="grid grid-cols-[1.75rem_1fr] gap-3">
+          <span class="flex size-7 items-center justify-center rounded-full border border-line font-mono text-xs text-muted">{i + 1}</span>
+          <span class="pt-0.5 text-sm leading-relaxed text-muted" set:html={it} />
+        </li>
+      ))
+    }
+  </ol>
+  {footer && <p class="mt-6 border-t border-line pt-5 text-sm leading-relaxed"><strong class="font-semibold">The fix.</strong> {footer}</p>}
+</aside>

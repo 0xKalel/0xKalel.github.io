@@ -1,0 +1,9 @@
+---
+import Base from '../../layouts/Base.astro';
+import CvDocument from '../../components/CvDocument.astro';
+import { defaultRole } from '../../data/roles';
+---
+
+<Base title="CV" description={defaultRole.summary} bare>
+  <CvDocument role={defaultRole} />
+</Base>

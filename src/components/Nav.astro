@@ -1,0 +1,109 @@
+---
+import { Icon } from 'astro-icon/components';
+import { profile } from '../data/cv';
+
+const links = [
+  { href: '/#work', label: 'Work' },
+  { href: '/#journey', label: 'Journey' },
+  { href: '/how-i-work/', label: 'How I work' },
+  { href: '/blog/', label: 'Writing' },
+  { href: '/cv/', label: 'CV' },
+];
+const path = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-40 border-b border-line/70 bg-bg/80 backdrop-blur-md">
+  <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-4 md:px-8">
+    <a href="/" class="display text-[1.05rem] font-semibold tracking-tight">
+      Khalil Hebachi<span class="text-accent">.</span>
+    </a>
+
+    <div class="flex items-center gap-2.5 md:gap-4">
+      <ul class="hidden items-center gap-6 text-sm lg:flex">
+        {
+          links.map((l) => (
+            <li>
+              <a
+                href={l.href}
+                class:list={[
+                  'transition-colors hover:text-fg',
+                  path.startsWith(l.href) && !l.href.startsWith('/#') ? 'text-fg' : 'text-muted',
+                ]}
+              >
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <button
+        type="button"
+        data-palette-open
+        class="hidden items-center gap-2 rounded-ui border border-line px-2.5 py-1.5 text-sm text-muted transition-colors hover:border-muted hover:text-fg lg:inline-flex"
+        aria-label="Open command palette"
+      >
+        <Icon name="ph:magnifying-glass" />
+        <kbd class="key !border-0 !p-0">⌘K</kbd>
+      </button>
+
+      <button
+        type="button"
+        data-theme-toggle
+        class="inline-flex size-9 items-center justify-center rounded-ui border border-line text-muted transition-colors hover:border-muted hover:text-fg"
+        aria-label="Toggle color theme"
+      >
+        <Icon name="ph:sun" class="theme-sun" />
+        <Icon name="ph:moon" class="theme-moon" />
+      </button>
+
+      <a href={`mailto:${profile.email}`} class="btn btn-primary !h-9 !px-3.5 text-sm max-sm:hidden">Email me</a>
+
+      <button
+        type="button"
+        id="mnav-btn"
+        class="inline-flex size-9 items-center justify-center rounded-ui border border-line text-muted lg:hidden"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="mnav"
+      >
+        <Icon name="ph:list" />
+      </button>
+    </div>
+  </nav>
+
+</header>
+
+  <div id="mnav" aria-label="Menu">
+    <ul class="space-y-1">
+      {
+        links.map((l, i) => (
+          <li>
+            <a
+              href={l.href}
+              class="display block rounded-ui px-3 py-3.5 text-2xl font-semibold tracking-tight transition-colors hover:bg-surface"
+              style={`--d:${i * 40}ms`}
+            >
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mt-6 flex flex-wrap gap-3 px-3">
+      <a href={`mailto:${profile.email}`} class="btn btn-primary">Email me</a>
+      <a href={profile.github} class="btn btn-ghost">GitHub</a>
+    </div>
+  </div>
+
+
+<style>
+  /* Sun in dark mode (click to go light), moon in light mode. */
+  [data-icon].theme-moon { display: none; }
+  :global([data-theme='light']) [data-icon].theme-sun { display: none; }
+  :global([data-theme='light']) [data-icon].theme-moon { display: block; }
+  @media (prefers-color-scheme: light) {
+    :global(:root:not([data-theme='dark'])) [data-icon].theme-sun { display: none; }
+    :global(:root:not([data-theme='dark'])) [data-icon].theme-moon { display: block; }
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+title: SPS warehouse app
+tagline: The phone app a warehouse team uses every working day, built and run end to end.
+role: Developer, end to end (design, backend, frontend, DevOps, support)
+period: 2025 - present
+stack: Laravel 13, PHP 8.4, React 19, Inertia v3, Tailwind 4, MySQL, Redis and Horizon, PWA
+order: 2
+metrics:
+  - value: 120 / 120
+    label: weekdays in use since April 2026
+  - value: "15,169"
+    label: barcode scans
+  - value: "8,847"
+    label: items moved between bays
+  - value: "99.1%"
+    label: sync success over 20,400 runs
+video:
+  src: /media/sps-launch.mp4
+  poster: /media/sps-launch.jpg
+shots:
+  - src: ../../assets/work/sps-01-movein-scan.png
+    alt: "Move-in: every arriving item scanned with the phone camera, with live progress"
+  - src: ../../assets/work/sps-02-change-order.png
+    alt: "Discrepancy review: a wrong item type caught and raised as a change order"
+  - src: ../../assets/work/sps-03-bay-move.png
+    alt: "Bay inventory: scanned items placed into a physical bay"
+  - src: ../../assets/work/sps-04-moveout-photo.png
+    alt: "Move-out: photo proof captured before an item leaves"
+---
+import Bars from '../../components/viz/Bars.astro';
+import Cards from '../../components/viz/Cards.astro';
+import Callout from '../../components/viz/Callout.astro';
+
+## The problem
+
+Customers book storage online; movers bring their items to a warehouse and later bring them back. Before SPS, the warehouse had no reliable link to what was booked: discrepancies lived in email and memory, damage was billed inconsistently, and finding an item meant searching the building.
+
+## What it covers
+
+<Cards
+  cols={3}
+  items={[
+    { icon: 'ph:arrows-clockwise', title: 'Sync', text: 'Background jobs pull orders, items and transport orders from the booking platform hourly, push statuses back, and reconcile everything nightly.' },
+    { icon: 'ph:barcode', title: 'Move-in', text: 'Every arriving item is scanned and compared with the booking. Anything missing, extra or wrong-typed becomes a change order for an admin to approve.' },
+    { icon: 'ph:receipt', title: 'Charges', text: 'Damage or a missing label creates an invoice request automatically, so customers are charged consistently.' },
+    { icon: 'ph:squares-four', title: 'Bays', text: 'Every item lives in a physical shelf location. Every move is recorded, and cancelling a session undoes all of its moves.' },
+    { icon: 'ph:camera', title: 'Move-out', text: 'Items are scanned and photographed before they leave. A rejected return puts every item back in its previous bay.' },
+    { icon: 'ph:printer', title: 'Instant labels', text: 'I reproduced the platform\'s ID algorithm locally, so labels print the moment a scan ends instead of after the next sync.' },
+  ]}
+/>
+
+## A normal week
+
+<Bars
+  title="Completed scan sessions by weekday"
+  note="Last 90 days. Friday peaks: customers schedule moves before the weekend."
+  rows={[
+    { label: 'Mon', values: [86] },
+    { label: 'Tue', values: [108] },
+    { label: 'Wed', values: [121] },
+    { label: 'Thu', values: [99] },
+    { label: 'Fri', values: [155] },
+    { label: 'Sat', values: [60] },
+    { label: 'Sun', values: [75] },
+  ]}
+/>
+
+Since April 2026: **1,347 scan sessions**, **3,950 evidence photos**, **259 change orders**, **330 invoice requests**, and not one working day without use.
+
+## The incident that hardened it
+
+<Callout
+  title="One morning, 2,533 of 2,548 orders showed as cancelled. The real number was 306."
+  items={[
+    'A PHP <code>empty(0)</code> check silently dropped a status filter, turning an hourly sync into a five-year sweep.',
+    'Failed chunks of that sweep were ignored, and deletion detection then ran on the incomplete data.',
+    'An off-by-one gap between date chunks left 24 hours of data that was never fetched.',
+    'A guard that skipped existing records stopped statuses from ever correcting themselves.',
+  ]}
+  footer="Retries with backoff, no deletion detection when any chunk fails, contiguous date windows, and a nightly reconciliation. Eight regression tests keep it fixed."
+/>
+
+## Quality with AI in the loop
+
+I built it with Claude Code as a pair programmer, and invested in making its output trustworthy: **659 PHPUnit tests** and Larastan level 5, **65 browser scenarios the agent runs itself** through Chrome DevTools MCP (recording every network, console, database and log error into a report), project rules loaded every session, and two testers I directed verifying each flow on the warehouse floor.
+
+**1,110 commits**: about 48k lines of PHP and 42k lines of React.

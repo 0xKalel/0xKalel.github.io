@@ -1,0 +1,357 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Dark is the home theme; light is the override. One accent, one radius. */
+:root {
+  --bg: oklch(0.145 0.01 250);
+  --surface: oklch(0.183 0.012 250);
+  --raised: oklch(0.222 0.014 250);
+  --line: oklch(0.285 0.012 250);
+  --fg: oklch(0.95 0.005 250);
+  --muted: oklch(0.68 0.012 250);
+  --accent: oklch(0.83 0.155 160);
+  --accent-deep: oklch(0.62 0.14 162);
+  --accent-fg: oklch(0.17 0.03 160);
+  --radius: 14px;
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  --bg: oklch(0.985 0.002 250);
+  --surface: oklch(0.958 0.004 250);
+  --raised: oklch(1 0 0);
+  --line: oklch(0.885 0.006 250);
+  --fg: oklch(0.19 0.012 250);
+  --muted: oklch(0.45 0.012 250);
+  --accent: oklch(0.47 0.12 162);
+  --accent-deep: oklch(0.4 0.11 162);
+  --accent-fg: oklch(0.985 0.002 250);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --bg: oklch(0.985 0.002 250);
+    --surface: oklch(0.958 0.004 250);
+    --raised: oklch(1 0 0);
+    --line: oklch(0.885 0.006 250);
+    --fg: oklch(0.19 0.012 250);
+    --muted: oklch(0.45 0.012 250);
+    --accent: oklch(0.47 0.12 162);
+    --accent-deep: oklch(0.4 0.11 162);
+    --accent-fg: oklch(0.985 0.002 250);
+    color-scheme: light;
+  }
+}
+
+@theme inline {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+  --font-display: "Space Grotesk Variable", "Geist Variable", ui-sans-serif, sans-serif;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-deep: var(--accent-deep);
+  --color-accent-fg: var(--accent-fg);
+  --radius-ui: var(--radius);
+}
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+::selection { background: var(--accent); color: var(--accent-fg); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@layer components {
+.display { font-family: var(--font-display); letter-spacing: -0.03em; }
+
+/* ---------- Motion ---------- */
+
+/* Load-in for the hero: settles once, strong ease-out. */
+.rise {
+  animation: rise 0.7s cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+@keyframes fade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .rise { animation-name: fade; animation-duration: 0.3s; }
+}
+
+/* Scroll reveals: hidden only once JS is present, revealed by IntersectionObserver. */
+.js .fx { opacity: 0; transform: translateY(20px); }
+.js .fx.in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  transition-delay: var(--d, 0ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .fx { transform: none; }
+  .js .fx.in { transition: opacity 0.3s ease; }
+}
+
+/* Gentle float for the hero artwork. */
+@media (prefers-reduced-motion: no-preference) {
+  .float { animation: float 7s ease-in-out infinite alternate; }
+  .float-late { animation: float 8s 0.8s ease-in-out infinite alternate; }
+  @keyframes float { to { transform: translateY(-9px); } }
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.75rem;
+  padding: 0 1.15rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(var(--press, 1));
+  transition:
+    transform 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.3s ease;
+}
+.btn:active { --press: 0.965; }
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-fg);
+  box-shadow: 0 10px 34px -14px color-mix(in oklch, var(--accent) 65%, transparent);
+}
+.btn-primary:hover { background: color-mix(in oklch, var(--accent) 86%, var(--fg)); }
+.btn-ghost { border: 1px solid var(--line); color: var(--fg); }
+.btn-ghost:hover { border-color: var(--muted); }
+
+.link {
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s ease;
+}
+.link:hover { text-decoration-color: var(--accent); }
+
+kbd.key {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.2rem 0.45rem;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 7px;
+  color: var(--muted);
+}
+
+/* ---------- Cards: tilt + cursor spotlight ---------- */
+.card {
+  position: relative;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.tilt {
+  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.spot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    520px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklch, var(--accent) 11%, transparent),
+    transparent 65%
+  );
+}
+.spot:hover::after { opacity: 1; }
+@media (hover: none) { .spot::after { display: none; } }
+
+/* ---------- Hero canvas ---------- */
+.gl { position: absolute; inset: 0; width: 100%; height: 100%; }
+.heroglow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 70% 30%, color-mix(in oklch, var(--accent-deep) 16%, transparent), transparent 70%),
+    radial-gradient(45% 40% at 20% 80%, color-mix(in oklch, var(--accent-deep) 9%, transparent), transparent 70%);
+}
+
+/* ---------- Timeline ---------- */
+.tl { position: relative; }
+.tl::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background: var(--line);
+}
+.tl-item { position: relative; padding-left: 52px; }
+.tl-dot {
+  position: absolute;
+  left: 3px;
+  top: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: var(--bg);
+}
+.tl-item.now .tl-dot::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tl-item.now .tl-dot { box-shadow: 0 0 0 0 color-mix(in oklch, var(--accent) 45%, transparent); animation: pulse 2.6s ease-out infinite; }
+  @keyframes pulse {
+    60% { box-shadow: 0 0 0 12px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+}
+
+/* Accordion (timeline details) */
+.acc { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.45s cubic-bezier(0.23, 1, 0.32, 1); }
+.acc > div { overflow: hidden; }
+.acc-item.open .acc { grid-template-rows: 1fr; }
+.acc-btn .ph-plus { transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
+.acc-item.open .acc-btn .ph-plus { transform: rotate(45deg); }
+@media (prefers-reduced-motion: reduce) { .acc { transition: none; } }
+
+/* ---------- Command palette ---------- */
+#palette {
+  border: 1px solid var(--line);
+  background: color-mix(in oklch, var(--surface) 94%, transparent);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: var(--radius);
+  padding: 0;
+  width: min(600px, 92vw);
+  margin: 12vh auto auto;
+  box-shadow: 0 40px 110px -24px rgb(0 0 0 / 0.55);
+  color: var(--fg);
+}
+#palette::backdrop { background: rgb(0 0 0 / 0.45); }
+#palette[open] { animation: rise 0.25s cubic-bezier(0.23, 1, 0.32, 1); }
+@media (prefers-reduced-motion: reduce) { #palette[open] { animation: fade 0.2s ease; } }
+.pal-input {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 15px 18px;
+  font: inherit;
+  color: inherit;
+  outline: none;
+}
+.pal-input::placeholder { color: var(--muted); }
+.pal-list { max-height: 330px; overflow: auto; padding: 8px; }
+.pal-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.pal-item .pal-k { font-family: var(--font-mono); font-size: 0.7rem; opacity: 0.7; }
+.pal-item[aria-selected="true"] {
+  background: color-mix(in oklch, var(--accent) 14%, transparent);
+  color: var(--fg);
+}
+
+/* ---------- Mobile menu ---------- */
+#mnav {
+  position: fixed;
+  inset: 4rem 0 0 0;
+  z-index: 30;
+  background: var(--bg);
+  padding: 1.5rem 1rem 2rem;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+#mnav.open { opacity: 1; transform: none; pointer-events: auto; }
+@media (prefers-reduced-motion: reduce) { #mnav { transform: none; } }
+}
+
+/* ---------- Long-form text ---------- */
+.prose {
+  --tw-prose-body: color-mix(in oklch, var(--fg) 82%, var(--bg));
+  --tw-prose-headings: var(--fg);
+  --tw-prose-bold: var(--fg);
+  --tw-prose-links: var(--fg);
+  --tw-prose-code: var(--fg);
+  --tw-prose-counters: var(--muted);
+  --tw-prose-bullets: var(--muted);
+  --tw-prose-hr: var(--line);
+  --tw-prose-quotes: var(--fg);
+  --tw-prose-quote-borders: var(--line);
+  --tw-prose-captions: var(--muted);
+  --tw-prose-pre-code: var(--fg);
+  --tw-prose-pre-bg: var(--surface);
+  --tw-prose-th-borders: var(--line);
+  --tw-prose-td-borders: var(--line);
+}
+.prose :where(pre) { border: 1px solid var(--line); border-radius: var(--radius); }
+.prose :where(code):not(:where(pre code))::before,
+.prose :where(code):not(:where(pre code))::after { content: none; }
+
+
+/* ---------- Case-study visuals ---------- */
+:root { --viz-before: oklch(0.55 0.1 162); }
+[data-theme='light'] { --viz-before: oklch(0.62 0.1 162); }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) { --viz-before: oklch(0.62 0.1 162); }
+}
+
+/* Case-study prose: text keeps its measure, visual blocks span the page. */
+.prose-case { max-width: none; }
+.prose-case > :where(p, ul, ol, h2, h3, blockquote, pre, table) { max-width: 68ch; }
+
+@layer components {
+  /* Bars animate open once their figure reveals. */
+  .js .fx .grow-bar { transform: scaleX(0); transform-origin: left; }
+  .js .fx.in .grow-bar {
+    transform: scaleX(1);
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    transition-delay: calc(var(--bi, 0) * 70ms + 120ms);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .js .fx .grow-bar { transform: none; transition: none; }
+  }
+}
