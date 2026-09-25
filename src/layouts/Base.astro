@@ -41,6 +41,17 @@ const GA_ID = 'G-SLJ8G6MSCP';
     <meta property="og:url" content={canonical} />
     <meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: profile.name,
+      jobTitle: 'Lead Full-Stack Engineer',
+      email: `mailto:${profile.email}`,
+      url: profile.site,
+      sameAs: [profile.github, profile.linkedin],
+      address: { '@type': 'PostalAddress', addressLocality: 'Annaba', addressCountry: 'DZ' },
+      knowsLanguage: ['en', 'fr', 'ar'],
+    })} />
     {!bare && <ClientRouter />}
     <script is:inline>
       try {

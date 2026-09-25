@@ -1,0 +1,23 @@
+# Khalil Hebachi
+
+> Lead full-stack engineer (Laravel, React, PHP) building for clients worldwide since 2012.
+> Leads the StoragePal platform, built the SPS warehouse app end to end, and founded RavenClip,
+> an AI news-to-video SaaS with paying customers.
+
+## CV
+- [CV (HTML)](https://0xkalel.github.io/cv/): the canonical, parseable version
+- [CV (PDF)](https://0xkalel.github.io/cv/lead-fullstack.pdf)
+
+## Case studies
+- [StoragePal platform](https://0xkalel.github.io/work/storagepal/): lead role, measured results
+- [SPS warehouse app](https://0xkalel.github.io/work/sps/): built end to end, in daily production use
+- [RavenClip](https://0xkalel.github.io/work/ravenclip/): own SaaS, 28 AI agents, 10+ providers
+
+## Writing
+- [How I built RavenClip](https://0xkalel.github.io/blog/2026/09/25/ravenclip-engineering/): engineering deep dive
+- [How I work](https://0xkalel.github.io/how-i-work/): AI-assisted development process
+
+## Contact
+- Email: hebachikhalil@gmail.com
+- GitHub: https://github.com/0xKalel
+- LinkedIn: https://www.linkedin.com/in/hebachi-khalil/
