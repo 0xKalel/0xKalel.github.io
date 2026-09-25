@@ -6,7 +6,7 @@ import Base from '../layouts/Base.astro';
 import Timeline from '../components/Timeline.astro';
 import ProjectPreview from '../components/ProjectPreview.astro';
 import { profile } from '../data/cv';
-import { roles } from '../data/roles';
+import { defaultRole } from '../data/roles';
 import { postHref } from '../lib/blog';
 import raven from '../assets/work/ravenclip-business.webp';
 import catalogue from '../assets/work/storagepal-catalogue-grid.png';
@@ -111,9 +111,10 @@ const loop = [
 
   <section class="shell section-space resources-grid">
     <div class="resource-panel fx">
-      <p class="eyebrow">For your team</p><h2>CV by role</h2>
+      <p class="eyebrow">For your team</p><h2>My CV</h2>
       <ul class="role-links">
-        {roles.map((r) => <li><a href={`/cv/${r.slug}/`}>{r.label}<Icon name="ph:arrow-up-right" /></a></li>)}
+        <li><a href="/cv/">View online<Icon name="ph:arrow-up-right" /></a></li>
+        <li><a href={`/cv/${defaultRole.slug}.pdf`}>Download PDF<Icon name="ph:download-simple" /></a></li>
       </ul>
     </div>
     {latest && (

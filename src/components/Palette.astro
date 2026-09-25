@@ -1,6 +1,6 @@
 ---
 import { profile } from '../data/cv';
-import { roles } from '../data/roles';
+import { defaultRole } from '../data/roles';
 
 interface Item {
   label: string;
@@ -18,8 +18,8 @@ const items: Item[] = [
   { label: 'Case study: StoragePal platform', hint: 'Work', href: '/work/storagepal/' },
   { label: 'Case study: SPS warehouse app', hint: 'Work', href: '/work/sps/' },
   { label: 'Case study: RavenClip', hint: 'Work', href: '/work/ravenclip/' },
-  ...roles.map((r) => ({ label: `CV: ${r.label}`, hint: 'CV', href: `/cv/${r.slug}/` })),
-  ...roles.map((r) => ({ label: `Download PDF: ${r.label}`, hint: 'PDF', href: `/cv/${r.slug}.pdf` })),
+  { label: 'CV', hint: 'Page', href: '/cv/' },
+  { label: 'Download CV (PDF)', hint: 'PDF', href: `/cv/${defaultRole.slug}.pdf` },
   { label: 'Email me', hint: 'Action', href: `mailto:${profile.email}` },
   { label: 'Copy email address', hint: 'Action', action: 'copy-email' },
   { label: 'Switch light or dark theme', hint: 'Action', action: 'theme' },
