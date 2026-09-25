@@ -1,0 +1,67 @@
+---
+layout: ../layouts/Prose.astro
+title: How I work with AI agents
+description: Agents type most of my code. This is the setup that makes their output something I sign my name under.
+---
+import Cards from '../components/viz/Cards.astro';
+
+I have shipped software for 14 years. Today Claude Code, and sometimes Codex, types most of my code. That moved my job upstream and downstream of the typing: deciding what to build, writing it down precisely enough that an agent cannot misread it, and reviewing what comes back until I would defend every line. A bug in agent-written code is my bug.
+
+<div class="not-prose my-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+  <div class="card fx p-5">
+    <p class="display text-3xl font-bold">520</p>
+    <p class="mt-1.5 text-xs leading-snug text-muted">lines of project rules loaded every session</p>
+  </div>
+  <div class="card fx p-5" style="--d:70ms">
+    <p class="display text-3xl font-bold">23</p>
+    <p class="mt-1.5 text-xs leading-snug text-muted">project skills in one codebase</p>
+  </div>
+  <div class="card fx p-5" style="--d:140ms">
+    <p class="display text-3xl font-bold">~140</p>
+    <p class="mt-1.5 text-xs leading-snug text-muted">memory files of incidents and decisions</p>
+  </div>
+  <div class="card fx p-5" style="--d:210ms">
+    <p class="display text-3xl font-bold">65</p>
+    <p class="mt-1.5 text-xs leading-snug text-muted">browser scenarios the agent runs itself</p>
+  </div>
+</div>
+
+## The loop
+
+**Specify.** What must be true and what must never happen, written before any code exists.
+
+**Delegate.** The agent implements in small steps inside the project's rules. A 2,000-line diff is not reviewable, whoever wrote it.
+
+**Review.** Every diff, for three things: is it correct, does it duplicate something that exists, is it more complicated than the problem needs.
+
+**Verify.** Tests, static analysis and agent-run browser checks against the real app. Then people.
+
+**Measure.** Small releases, checked afterwards against production data.
+
+## The setup, concretely
+
+Good prompts are the smallest part. The leverage is in what the repository itself teaches the agent, so the same instructions never drift between sessions. From my two main codebases:
+
+<Cards
+  cols={2}
+  items={[
+    { icon: 'ph:book-open', title: 'A rule file the agent cannot skip', text: 'RavenClip\'s project rules run ~520 lines: Docker-only dev rules, database safety, a pipeline map pointing at per-stage docs, and conventions like the cost-ledger rules. StoragePal\'s encodes business invariants, such as which invoice amounts may ever be summed.' },
+    { icon: 'ph:shield-check', title: 'Hooks that block disasters', text: 'A guard hook blocks destructive migrations and the exact command class that once silently killed production. Another reminds that config edits need a queue restart. On the warehouse app, every PHP file the agent edits is formatted and linted the moment it is saved.' },
+    { icon: 'ph:stack', title: 'Skills, structured like a team', text: '23 project skills: conductor skills that sequence specialists, ops skills that are decode tables distilled from real incidents (status codes, cooldowns, cost forensics), and a 20-line pointer skill whose only job is auto-loading the prompt-design doc.' },
+    { icon: 'ph:detective', title: 'Read-only subagents', text: 'pipeline-detective and prod-auditor investigate with no write access at all, so diagnosis can run wide without ever being able to touch anything.' },
+    { icon: 'ph:brain', title: 'Persistent memory', text: '~140 fact files the agent carries between sessions: incident write-ups, how external APIs really behave (checked live, not assumed), and decisions recorded with their why.' },
+    { icon: 'ph:plugs-connected', title: 'MCP servers, wired deliberately', text: 'Laravel Boost bridged from host into Docker, a third-party SEO server wrapped in a read-only launcher, Chrome DevTools for real-browser work, and analytics servers for marketing data.' },
+    { icon: 'ph:browser', title: 'Tests the agent runs itself', text: '65 browser scenarios on the warehouse app: the agent drives a real Chrome, breaks things on purpose, and reports every network, console, database and log error it finds.' },
+    { icon: 'ph:file-text', title: 'Decisions that stay decided', text: 'Investigated-and-deferred records live in the rule file (prompt caching, embedding curation), each with its evidence, so the agent never relitigates a closed question.' },
+  ]}
+/>
+
+## What I do not delegate
+
+- **Architecture.** On RavenClip, a database state machine over job chains and one shared failover loop instead of six were my calls. Agents implement decisions well; they do not make good ones unprompted.
+- **Money and data.** Billing rules, payment retries and anything destructive are specified line by line and reviewed twice.
+- **Incidents.** When 99% of orders suddenly showed as cancelled, the agent helped me read logs faster, but finding [four compounding bugs](/work/sps/) took understanding the system.
+
+## Why this matters for a team
+
+The value of an engineer is shifting from producing code to judging it. I bring 14 years of judgment to a workflow where code is cheap, and a setup that makes agent output consistent, reviewable and safe to ship. The deepest worked example is the [RavenClip engineering deep dive](/blog/2026/09/25/ravenclip-engineering/).
