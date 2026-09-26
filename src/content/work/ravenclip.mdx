@@ -3,8 +3,8 @@ title: RavenClip
 headline: From a personal tool to paying customers.
 tagline: I founded, built, and operate a product that turns news into short videos and publishes them to YouTube Shorts and TikTok.
 category: Founder · AI product and operations
-role: Founder-engineer — product, engineering, operations
-period: May 2026 – present
+role: Founder-engineer, product, engineering, operations
+period: May 2026 - present
 stack: Laravel, React, TypeScript, MariaDB, Redis, Skia, FFmpeg
 order: 2
 decision: Prioritize unattended publishing, then build around the people who pay.
@@ -23,7 +23,7 @@ shots:
   - src: ../../assets/work/ravenclip-shot-review.png
     alt: Choose automatic publishing, a review window, or a schedule
   - src: ../../assets/work/ravenclip-shot-finds.png
-    alt: Configure a channel’s topic and news sources
+    alt: Configure a channel's topic and news sources
   - src: ../../assets/work/ravenclip-shot-visuals.png
     alt: Combine story images, data graphics, and captions
 ---
@@ -32,42 +32,44 @@ import { evidence } from '../../data/evidence';
 
 ## Start with a complete workflow
 
-I wanted a simpler way to follow the news myself. The first version produced a complete video with each stage started manually. By the third week, it could run on a schedule and publish automatically.
+I wanted a simpler way to follow the news myself. The first version made a complete video, with each stage started by hand. By week three, it ran on a schedule and published on its own.
 
-At that stage I built a manual story picker and removed it the same day. The immediate priority was a channel that could keep publishing while its owner was busy. More controls could follow once that workflow worked.
+Around then I built a manual story picker and removed it the same day. The priority was a channel that keeps publishing while its owner is busy. More controls could come once that worked.
 
 ## Learn from the people who pay
 
-The audience I initially imagined was creators running news channels. The first three paying customers were an agency, an AI consultancy, and a coach.
+I first pictured creators running news channels. The first three paying customers were an agency, an AI consultancy, and a coach.
 
-That changed the positioning and priorities toward businesses building an audience around their expertise. I added brand controls and support for more channels per account. Three customers are an early signal, and I treat them as such.
+So I moved the product toward businesses building an audience around their expertise. I added brand controls and more channels per account. Three customers is an early signal, and I treat it that way.
 
-The first external customer paid **{evidence.ravenclip.daysToCustomer} days** after the first commit. As of 26 September 2026, all thirty published posts from those three customers had gone through automatic publishing.
+The first external customer paid **{evidence.ravenclip.daysToCustomer} days** after the first commit. As of 26 September 2026, all thirty posts from those three customers were published automatically.
 
 ## Choose architecture around recovery needs
 
-Unattended generation passes through several paid services. Restarting everything after a failed render would waste completed work and repeat costs.
+A video passes through several paid services. Restarting everything after one failed step would throw away finished work and repeat costs.
 
-Each stage has persisted status, and a runner advances whichever stages are ready. Voice and visuals run in parallel before rendering. Stage claims use database locks, and failed renders can reuse existing assets. Publishing has separate protections against duplicate posts.
+So each stage saves its status, and a runner moves forward whatever is ready. Voice and visuals run in parallel before rendering. Database locks stop two workers from claiming the same stage, and a failed render can reuse the assets it already has. Publishing has its own protection against duplicate posts.
 
 <PipelineRaven />
 
-The cost is more state and recovery logic to maintain. For a short user-initiated rebuild, I still use a bounded job chain: its fixed sequence does not need the full orchestration mechanism.
+The price is more state and recovery code to maintain. For a short user-triggered rebuild, I still use a simple job chain: a fixed sequence does not need the full machinery.
 
 ## Notice when fallback hides a problem
 
-A provider ran out of credit for 25 days. Fallback kept the pipeline running, but the underlying problem remained unnoticed and calls moved to a more expensive service.
+A provider ran out of credit for 25 days. Fallback kept videos coming, so nothing looked wrong, while calls quietly moved to a more expensive service.
 
-I added provider probes, classified failure alerts, and a cooldown for exhausted balances. A daily check runs outside the job queue so it can still report trouble when workers are down. A completed video alone does not show whether the system is operating as intended.
+I added provider health checks, clear failure alerts, and a cooldown for empty balances. A daily check runs outside the job queue, so it can still report trouble when the workers themselves are down.
 
 ## Define what AI checks can prove
 
-The pipeline checks script structure, length, subject grounding, and preservation of the approved narration. Retries receive the specific failures they need to correct. On-screen figures come from data sources.
+The pipeline checks script structure, length, and that the story stays about its subject. It also protects the approved narration from later changes. Retries are told exactly what to fix. On-screen figures come from data sources, not from the model.
 
-These checks do not verify every factual claim. Customers have review controls, and warned videos wait for approval. The product supports nineteen content categories and five interface languages; paying-customer use is narrower, in English and French.
+These checks cannot verify every factual claim, so customers keep review controls, and flagged videos wait for approval.
 
-Recorded direct API spend averaged **$0.36 per rendered video** across 183 videos from 1–25 September. Same-key retries have a known accounting gap, and the figure excludes payment fees and my time. It is a cost observation rather than a profitability claim.
+The product supports nineteen content categories and five interface languages. Paying customers so far publish in English and French.
 
-TikTok and YouTube publishing are live. Instagram is implemented but disabled pending app review.
+Recorded API spend averaged **$0.36 per rendered video** across 183 videos from 1-25 September. That excludes payment fees and my time.
+
+TikTok and YouTube publishing are live. Instagram is built but waiting on app review.
 
 [Read the engineering decisions and operating lessons](/blog/2026/09/25/ravenclip-engineering/).

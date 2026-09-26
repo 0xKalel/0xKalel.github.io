@@ -118,7 +118,7 @@ html {
 
 .link {
   text-decoration: underline;
-  text-decoration-color: var(--line);
+  text-decoration-color: color-mix(in oklch, var(--muted) 50%, var(--line));
   text-underline-offset: 4px;
   transition: text-decoration-color 0.2s ease;
 }
@@ -156,7 +156,7 @@ kbd.key {
   width: 100%;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid color-mix(in oklch, var(--muted) 30%, var(--line));
   padding: 15px 18px;
   font: inherit;
   color: inherit;
@@ -175,7 +175,7 @@ kbd.key {
   color: var(--muted);
   font-size: 0.95rem;
 }
-.pal-item .pal-k { font-family: var(--font-mono); font-size: 0.7rem; opacity: 0.7; }
+.pal-item .pal-k { font-family: var(--font-mono); font-size: 0.72rem; }
 .pal-item[aria-selected="true"] {
   background: color-mix(in oklch, var(--accent) 14%, transparent);
   color: var(--fg);
@@ -217,8 +217,6 @@ kbd.key {
 .prose :where(code):not(:where(pre code))::after { content: none; }
 
 
-.preview-role { font-size: 13px; color: var(--muted); }
-
 /* ---------- Case-study visuals ---------- */
 :root { --viz-before: oklch(0.55 0.1 162); }
 [data-theme='light'] { --viz-before: oklch(0.62 0.1 162); }
@@ -228,7 +226,7 @@ kbd.key {
 
 /* Case-study prose: text keeps its measure, visual blocks span the page. */
 .prose-case { max-width: none; }
-.prose-case > :where(p, ul, ol, h2, h3, blockquote, pre, table) { max-width: 68ch; }
+.prose-case > :where(p, ul, ol, h2, h3, blockquote, pre, table, details) { max-width: 60ch; }
 
 @layer components {
   /* Bars animate open once their figure reveals. */
@@ -326,7 +324,7 @@ kbd.key {
 .process-grid p { margin-top: 10px; font-size: 15px; line-height: 1.75; color: var(--muted); }
 .process-grid .text-link { margin-top: 14px; font-size: 13px; }
 .ai-note { display: grid; grid-template-columns: 1fr 2fr; gap: 28px; padding: 26px 30px; margin-top: 35px; background: var(--surface); border-left: 2px solid var(--accent); }
-.ai-note > p:last-child { font-size: 15px; line-height: 1.75; color: var(--muted); }
+.ai-note > p:last-child { max-width: 62ch; font-size: 15px; line-height: 1.75; color: var(--muted); }
 .ai-note .eyebrow { color: var(--fg); padding-top: 4px; }
 .writing-panel { display: grid; grid-template-columns: 170px 1fr; gap: 32px; padding: 32px 0; border-block: 1px solid var(--line); }
 .writing-panel time { padding-top: 5px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
@@ -343,7 +341,7 @@ kbd.key {
 .experience-row h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-weight: 500; font-size: 17px; }
 .current-tag { padding: 2px 6px; border-radius: 4px; background: color-mix(in oklch, var(--accent) 10%, transparent); color: var(--accent); font-family: var(--font-mono); font-size: 10px; }
 .experience-role { margin-top: 5px; font-size: 13px; color: var(--muted); }
-.experience-summary { margin-top: 10px; font-size: 14px; line-height: 1.7; color: var(--muted); }
+.experience-summary { margin-top: 10px; max-width: 55ch; font-size: 14px; line-height: 1.7; color: var(--muted); }
 .contact-section { padding-bottom: 12px; }
 .contact-section h2 { max-width: 24ch; font-family: var(--font-display); font-size: clamp(36px, 4.8vw, 64px); font-weight: 500; line-height: 1.1; letter-spacing: -.045em; margin-top: 20px; text-wrap: balance; }
 .contact-description { max-width: 58ch; font-size: 17px; color: var(--muted); margin-top: 24px; line-height: 1.7; }
@@ -353,7 +351,7 @@ kbd.key {
 .case-header { margin-top: 38px; }
 .case-header h1 { margin-top: 18px; font-family: var(--font-display); font-size: clamp(40px, 5vw, 64px); font-weight: 500; line-height: 1.1; letter-spacing: -.045em; }
 .case-header h1 span { display: block; max-width: 25ch; margin-top: 12px; color: var(--muted); font-size: .67em; line-height: 1.2; text-wrap: balance; }
-.case-intro { max-width: 66ch; margin-top: 25px; font-size: 18px; line-height: 1.75; color: var(--muted); }
+.case-intro { max-width: 60ch; margin-top: 25px; font-size: 18px; line-height: 1.75; color: var(--muted); }
 .case-meta { display: grid; grid-template-columns: 1.2fr .8fr 1fr; gap: 30px; padding-block: 26px; margin-top: 34px; border-block: 1px solid var(--line); font-size: 14px; line-height: 1.7; }
 .case-meta dt { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
 .case-evidence { padding-block: 34px; border-bottom: 1px solid var(--line); }
@@ -364,7 +362,7 @@ kbd.key {
 .case-body { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 65px; margin-top: 54px; }
 .case-nav { align-self: start; position: sticky; top: 98px; }
 .case-nav ul { margin-top: 12px; }
-.case-nav a { display: block; padding: 9px 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.case-nav a { display: block; padding: 11px 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
 .case-nav a:hover { color: var(--accent); }
 .case-body .prose { font-size: 17px; line-height: 1.85; min-width: 0; }
 .case-body .prose > h2:first-child { margin-top: 0; }
@@ -377,7 +375,7 @@ kbd.key {
 .comparison-image img { height: 100%; width: 100%; object-fit: contain; }
 .comparison figcaption { margin-top: 12px; font-size: 12px; color: var(--muted); line-height: 1.7; }
 .evidence-detail { margin-block: 28px; padding: 18px 22px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; line-height: 1.85; color: var(--muted); }
-.evidence-detail summary { cursor: pointer; font-weight: 500; color: var(--fg); min-height: 28px; }
+.evidence-detail summary { cursor: pointer; font-weight: 500; color: var(--fg); min-height: 44px; padding-block: 9px; }
 .evidence-detail p { margin-top: 16px; }
 .case-gallery { margin-top: 70px; padding-top: 40px; border-top: 1px solid var(--line); }
 .case-related { margin-top: 70px; border-top: 1px solid var(--line); padding-top: 32px; }
@@ -392,7 +390,6 @@ kbd.key {
 
 @media (max-width: 1023px) {
   .hero-grid { gap: 32px; padding-block: 56px; }
-  .hero-title { font-size: 46px; }
   .hero-description { font-size: 16px; }
   .preview-art { height: 220px; }
   .project-storagepal .project-info { padding: 28px; }
@@ -406,7 +403,7 @@ kbd.key {
 @media (max-width: 767px) {
   .shell { width: calc(100% - 40px); }
   .hero-grid { grid-template-columns: 1fr; gap: 34px; padding-block: 42px 32px; }
-  .hero-title { font-size: clamp(40px, 9.8vw, 56px); }
+  .hero-title { font-size: clamp(38px, 8vw, 46px); }
   .hero-description { font-size: 16px; margin-top: 20px; }
   .hero-meta { margin-top: 20px; font-size: 11px; }
   .preview-art { height: 220px; }
@@ -444,12 +441,15 @@ kbd.key {
   .case-metrics dd { font-size: 13px; }
   .case-body { grid-template-columns: 1fr; gap: 38px; margin-top: 34px; }
   .case-nav { position: static; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
-  .case-nav a { padding-block: 8px; font-size: 14px; }
+  .case-nav a { padding-block: 11px; font-size: 14px; }
   .case-body .prose { font-size: 16px; }
   .case-body .prose h2 { font-size: 24px; }
   .comparison { gap: 12px; }
   .comparison-image { height: 250px; padding: 8px; }
   .case-related > div { gap: 14px; grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .comparison { grid-template-columns: 1fr; }
 }
 @media (max-width: 360px) {
   .brand-mark { display: none; }

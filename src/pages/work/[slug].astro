@@ -20,7 +20,7 @@ const related = (await getCollection('work')).filter((w) => w.id !== entry.id).s
     <a href="/#work" class="text-link"><Icon name="ph:arrow-left" /> Selected work</a>
     <header class="case-header">
       <p class="eyebrow rise">{d.category}</p>
-      <h1 class="rise">{d.title}<span>{d.headline}</span></h1>
+      <h1 class="rise">{d.title}<span class="sr-only">: </span><span>{d.headline}</span></h1>
       <p class="case-intro rise">{d.tagline}</p>
       <dl class="case-meta"><div><dt>My role</dt><dd>{d.role}</dd></div><div><dt>Period</dt><dd>{d.period}</dd></div><div><dt>Core stack</dt><dd>{d.stack}</dd></div></dl>
     </header>

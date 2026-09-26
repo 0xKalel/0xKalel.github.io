@@ -19,14 +19,14 @@ import bay from '../assets/work/sps-03-bay-move.png';
 const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
 const [latest] = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.data.date);
 const visuals = {
-  storagepal: { images: [catalogue, cart], alts: ['StoragePal product catalogue', 'A proposed StoragePal cart ready for customer review'] },
+  storagepal: { images: [catalogue, cart], alts: ['StoragePal product catalog', 'A proposed StoragePal cart ready for customer review'] },
   ravenclip: { images: [raven], alts: ['RavenClip workspace for generating and reviewing news videos'] },
   sps: { images: [scan, bay], alts: ['Receiving items in SPS', 'Moving items between warehouse bays in SPS'] },
 };
 const principles = [
-  { title: 'Choose the right first step.', text: 'Find the constraint that costs the business most. Separate what needs to ship now from what can wait.', href: '/work/storagepal/#start-where-staff-were-blocked', link: 'Start with daily operations' },
-  { title: 'Make the tradeoff explicit.', text: 'Choose architecture around the real conditions. Added complexity needs to earn its place.', href: '/work/sps/#remove-complexity-the-warehouse-does-not-need', link: 'Why I removed offline mode' },
-  { title: 'Follow through after release.', text: 'Check how people use the product, what fails, and what it costs. Use those findings to choose the next change.', href: '/work/ravenclip/#learn-from-the-people-who-pay', link: 'What paying customers taught me' },
+  { title: 'Choose the right first step.', text: 'Find what costs the business most. Ship that first, and leave the rest for later.', href: '/work/storagepal/#start-where-staff-were-blocked', link: 'Start with daily operations' },
+  { title: 'Make the tradeoff explicit.', text: 'Pick the design that fits the real conditions. Extra complexity has to pay for itself.', href: '/work/sps/#remove-complexity-the-warehouse-does-not-need', link: 'Why I removed offline mode' },
+  { title: 'Follow through after release.', text: 'Watch how people use the product, what breaks, and what it costs. Let that choose the next change.', href: '/work/ravenclip/#learn-from-the-people-who-pay', link: 'What paying customers taught me' },
 ];
 ---
 
@@ -49,8 +49,8 @@ const principles = [
 
   <section id="work" class="shell section-space">
     <div class="section-heading fx">
-      <div><p class="eyebrow">Selected work</p><h2>Decisions, delivery, and real use.</h2></div>
-      <p class="section-note">Three projects. Different constraints.<br />A clear account of what I owned.</p>
+      <div><p class="eyebrow">Selected work</p><h2>What I built, and proof it works.</h2></div>
+      <p class="section-note">Three projects, three different problems. I say exactly what I owned.</p>
     </div>
     <div class="project-grid">
       {work.map(({ id, data: p }, i) => {
@@ -70,7 +70,7 @@ const principles = [
               <p class="project-headline">{p.headline}</p>
               <p class="project-description">{p.tagline}</p>
               <p class="project-proof">{fact.preview}</p>
-              <p class="project-date">{id === 'sps' ? '13 April–25 September 2026' : id === 'ravenclip' ? 'First payment: 6 September 2026' : 'Lead developer · October 2024–present'}</p>
+              <p class="project-date">{id === 'sps' ? '13 April - 25 September 2026' : id === 'ravenclip' ? 'First payment: 6 September 2026' : 'Lead developer · Oct 2024 - present'}</p>
               <a class="project-decision" href={`/work/${id}/#${p.decisionAnchor}`}><span>A decision inside</span>{p.decision}<Icon name="ph:arrow-right" /></a>
             </div>
           </article>
@@ -81,7 +81,7 @@ const principles = [
 
   <section id="process" class="shell section-space">
     <div class="section-heading fx">
-      <div><p class="eyebrow">How I work</p><h2>Judgment is part of the job.</h2></div>
+      <div><p class="eyebrow">How I work</p><h2>Good decisions come before good code.</h2></div>
       <a href="/how-i-work/" class="text-link">My approach <Icon name="ph:arrow-up-right" /></a>
     </div>
     <ol class="process-grid">
@@ -89,13 +89,13 @@ const principles = [
         <li class="fx" style={`--d:${i * 70}ms`}><span class="process-number" aria-hidden="true">0{i + 1}</span><h3>{p.title}</h3><p>{p.text}</p><a class="text-link" href={p.href}>{p.link}<Icon name="ph:arrow-right" /></a></li>
       ))}
     </ol>
-    <div class="ai-note fx"><p class="eyebrow">Human-led, AI-assisted</p><p>I use AI to explore and implement. I own the priorities, architecture, review, and consequences. Faster output still needs an engineer who understands what should happen—and what could go wrong.</p></div>
+    <div class="ai-note fx"><p class="eyebrow">Human-led, AI-assisted</p><p>I use AI to explore and build. I own the priorities, the architecture, the review, and the results. Fast output still needs an engineer who knows what should happen, and what could go wrong.</p></div>
   </section>
 
   {latest && <section class="shell section-space">
-    <div class="section-heading fx"><div><p class="eyebrow">Writing</p><h2>Behind the implementation.</h2></div><a href="/blog/" class="text-link">All writing <Icon name="ph:arrow-right" /></a></div>
+    <div class="section-heading fx"><div><p class="eyebrow">Writing</p><h2>Notes from the work.</h2></div><a href="/blog/" class="text-link">All writing <Icon name="ph:arrow-right" /></a></div>
     <a href={postHref(latest.id)} class="writing-panel fx">
-      <time datetime={latest.data.date.toISOString()}>September 2026</time>
+      <time datetime={latest.data.date.toISOString()}>{latest.data.date.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}</time>
       <div><h3>{latest.data.title}</h3><p>{latest.data.description}</p><span class="text-link">Read the engineering notes <Icon name="ph:arrow-up-right" /></span></div>
     </a>
   </section>}

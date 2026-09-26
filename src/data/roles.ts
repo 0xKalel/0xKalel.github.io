@@ -31,7 +31,7 @@ export const roles: Role[] = [
     label: 'Lead full-stack',
     headline: 'Lead Full-Stack Engineer, Laravel and React',
     summary:
-      'Lead full-stack engineer building since 2012. I translate business priorities into scoped releases, lead technical decisions, and implement software for commerce, operations, and AI products.',
+      'Lead full-stack engineer building since 2012. I turn business priorities into planned releases, lead the technical decisions, and build software for commerce, operations, and AI products.',
     focus: ['lead', 'laravel', 'perf', 'frontend'],
     bullets: [4, 2, 1, 2, 1, 1],
     projectBullets: 3,
@@ -64,7 +64,7 @@ export const roles: Role[] = [
     label: 'Founding engineer',
     headline: 'Founding Engineer, product development and launch',
     summary:
-      'I turn business problems into products people can use and pay for. Co-founded a development agency, launched RavenClip, and lead development at StoragePal. I prioritise small releases and learn from production use.',
+      'I turn business problems into products people can use and pay for. Co-founded a development agency, launched RavenClip, and lead development at StoragePal. I ship small releases and learn from production use.',
     focus: ['founder', 'ai', 'lead', 'freelance'],
     bullets: [4, 2, 1, 2, 1, 1],
     projectBullets: 3,
@@ -81,7 +81,7 @@ export const roles: Role[] = [
     label: 'Freelance',
     headline: 'Senior Full-Stack Developer, Laravel and React',
     summary:
-      'I build Laravel and React apps, modernise older systems and fix performance problems. Fourteen years of experience working with clients worldwide.',
+      'I build Laravel and React apps, modernize older systems and fix performance problems. Fourteen years of experience working with clients worldwide.',
     focus: ['freelance', 'perf', 'laravel', 'frontend'],
     bullets: [4, 2, 1, 2, 1, 1],
     projectBullets: 3,

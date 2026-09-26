@@ -1,33 +1,33 @@
 ---
 layout: ../layouts/Prose.astro
 title: How I turn priorities into software
-description: Start with the business problem. Choose a useful scope. Stay responsible through delivery and production use.
+description: Start with the business problem. Pick a useful scope. Stay responsible through delivery and production use.
 ---
 
 ## Decide what matters now
 
-I ask what needs to change, who depends on it, and what a useful first result looks like. Then I separate what is necessary now from what can wait, and break the work into releases that deliver a complete, usable workflow.
+I ask what needs to change, who depends on it, and what a useful first result looks like. Then I split what is needed now from what can wait, and cut the work into releases that each deliver a complete, usable workflow.
 
-For RavenClip, that meant [prioritizing unattended publishing](/work/ravenclip/#start-with-a-complete-workflow) and later adapting the product around its paying customers. At StoragePal, operations screens were among my first priorities because they blocked work staff needed to do every day.
+For RavenClip, that meant [unattended publishing first](/work/ravenclip/#start-with-a-complete-workflow), then reshaping the product around its paying customers. At StoragePal, I started with the operations screens, because staff needed them every day.
 
 ## Make the technical choices fit the context
 
-I consider performance, data correctness, failure recovery, and the cost of maintaining the system. A pattern earns its place by solving a problem we have.
+I weigh performance, data correctness, failure recovery, and the cost of maintaining the system. A pattern has to solve a problem we actually have.
 
-At StoragePal, shared catalogue data can be cached, but [personal cart state stays separate](/work/storagepal/#cache-what-customers-share). For SPS, I [removed offline support](/work/sps/#remove-complexity-the-warehouse-does-not-need) after establishing that every warehouse had internet. Maintaining less code was the useful choice there; scanning without a connection became an accepted limitation.
+At StoragePal, shared catalog data can be cached, but [each customer's cart stays separate](/work/storagepal/#cache-what-customers-share). For SPS, I [removed offline support](/work/sps/#remove-complexity-the-warehouse-does-not-need) once I knew every warehouse had internet. Less code to maintain mattered more than scanning without a connection.
 
 ## Use AI with clear responsibility
 
-AI helps me implement, investigate, and test scoped changes. Product priorities, pricing, architectural tradeoffs, and acceptance criteria remain my responsibility. I write down constraints, challenge proposals, and ask for evidence that the result works.
+AI helps me build, investigate, and test scoped changes. Priorities, pricing, architecture, and acceptance stay my responsibility. I write down constraints, challenge proposals, and ask for proof that the result works.
 
-That responsibility includes learning from failures. An agent-assisted bulk edit once reached RavenClip production with a syntax error. I added a check that PHP files parse and a deployment sweep that stops before migrations if syntax is invalid. Those checks enforce a requirement that instructions alone had failed to protect.
+That includes learning from failures. An AI-assisted bulk edit once reached RavenClip production with a syntax error. I added a check that PHP files parse, and a deploy step that stops before database changes if syntax is broken.
 
 [Read the incident and what changed](/blog/2026/09/25/ravenclip-engineering/#building-with-ai-and-owning-the-mistakes).
 
 ## Keep the team informed and follow the result
 
-I make decisions, progress, and problems visible. Specifications and implementation notes give the team enough context to carry work forward, and I stay involved after release.
+I make decisions, progress, and problems visible. Specs and notes give the team enough context to carry work forward, and I stay involved after release.
 
-Errors, staff feedback, costs, and actual use help decide what to improve next. I distinguish a working mechanism from a measured outcome and revisit assumptions when the evidence changes.
+Errors, staff feedback, costs, and real use decide what to improve next. When the evidence changes, I change the plan.
 
 Have a product to build or a system that needs attention? [Tell me what needs to change](mailto:hebachikhalil@gmail.com).

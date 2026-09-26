@@ -13,9 +13,12 @@
 - [SPS warehouse app](https://0xkalel.github.io/work/sps/): built end to end; completed scan sessions on all 120 weekdays from 13 April to 25 September 2026
 - [RavenClip](https://0xkalel.github.io/work/ravenclip/): own SaaS, first external paying customer in 105 days; three paying customers as of 26 September 2026
 
+## How I work
+- [How I work](https://0xkalel.github.io/how-i-work/): business priorities first, clear tradeoffs, human-led AI-assisted development
+
 ## Writing
 - [Building RavenClip: recovery, AI checks, and costs](https://0xkalel.github.io/blog/2026/09/25/ravenclip-engineering/): engineering deep dive
-- [How I work](https://0xkalel.github.io/how-i-work/): business priorities, engineering tradeoffs, and human-led AI-assisted development
+- [Connect Claude Code to Chrome in WSL](https://0xkalel.github.io/blog/2025/11/02/chrome-devtools-mcp-wsl-claude-code/): setup guide
 
 ## Contact
 - Email: hebachikhalil@gmail.com

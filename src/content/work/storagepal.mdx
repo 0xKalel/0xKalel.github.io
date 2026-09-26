@@ -1,13 +1,13 @@
 ---
 title: StoragePal
 headline: Improving the software behind a storage business.
-tagline: I lead development of the platform behind a Paris storage business, from staff workflows and customer bookings to pricing and payments.
+tagline: I lead development of the platform behind a Paris storage business, from staff tools and customer bookings to pricing and payments.
 category: Technical leadership · Storage and logistics
-role: Lead developer — technical direction and implementation
-period: Oct 2024 – present
+role: Lead developer, technical direction and implementation
+period: Oct 2024 - present
 stack: PHP, Neos Flow, MariaDB, JavaScript, Stripe, Gemini
 order: 1
-decision: Cache the shared catalogue. Keep each customer’s cart separate.
+decision: Cache the shared catalog. Keep each customer's cart separate.
 decisionAnchor: cache-what-customers-share
 url: https://storagepal.fr
 video:
@@ -15,7 +15,7 @@ video:
   poster: /media/storagepal-launch.jpg
 shots:
   - src: ../../assets/work/storagepal-catalogue.png
-    alt: Catalogue categories and item selection
+    alt: Catalog categories and item selection
   - src: ../../assets/work/storagepal-checkout.png
     alt: Payment details together on one page
   - src: ../../assets/work/storagepal-ai-cart.png
@@ -30,60 +30,64 @@ import { evidence } from '../../data/evidence';
 
 ## A business already in operation
 
-StoragePal customers book collection, storage, and return of their belongings online. Staff use the platform to manage orders, stock, invoicing, and payments.
+StoragePal customers book collection, storage, and return of their belongings online. Staff use the platform to manage orders, stock, invoices, and payments.
 
-I inherited an existing application and improved it in stages. I set priorities, write specifications, review work, and implement major parts myself. Other developers contributed reporting, CRM integration, and reservation features. I also built the [SPS warehouse app](/work/sps/) end to end.
+I took over an existing app and improve it in stages. I set the priorities, write the specs, review work, and build major parts myself.
+
+Other developers added reporting, CRM integration, and reservations. I also built the [SPS warehouse app](/work/sps/) end to end.
 
 ## Start where staff were blocked
 
-Inventory and reservation screens were among my first priorities. Staff needed them every day, but filters could take minutes or time out, and full exports could exhaust server memory.
+Staff used the inventory and reservation screens every day. Filters could take minutes or time out. Big exports could run the server out of memory.
 
-I moved pagination and filtering into database queries and introduced batched exports. Later, I consolidated **twelve backoffice pages** around shared definitions for columns, filters, sorting, and exports.
+I moved filtering and paging into database queries and made exports run in batches. Later I brought **twelve backoffice pages** onto one shared system for columns, filters, sorting, and exports.
 
-This involved limits as well as improvements. Some expensive derived columns are not sortable, and several unfiltered exports still require a filter to finish within the server timeout. The objective was to make daily work manageable while improving an inherited system.
+Some limits remain: a few heavy computed columns cannot be sorted, and some exports still need a filter to finish in time.
 
 ## Cache what customers share
 
-The catalogue rendered too much data and repeated database work on each visit. I first reduced queries and added eager loading and indexes. Later, I introduced a server-rendered page built from cached catalogue data.
+The catalog loaded too much data and repeated the same database work on every visit. I first cut queries and added indexes. Then I rebuilt the page on the server from cached catalog data.
 
-The cache holds product information by locale. Customer quantities are merged into each response, and custom items stay outside the shared cache. Backoffice changes trigger invalidation; a 24-hour expiry provides a backstop. Import paths still need consistent invalidation coverage.
+The cache stores product data per language. Customer quantities are merged in on each request, and custom items stay outside the shared cache.
+
+Backoffice changes clear the cache, and a 24-hour expiry catches anything missed. Some import paths do not clear it yet.
 
 <div class="decision-note not-prose">
   <p class="eyebrow">The boundary</p>
-  <p>Shared catalogue → cached by locale<br />Personal cart → read for each request</p>
+  <p>Shared catalog → cached per language<br />Personal cart → read fresh on each request</p>
 </div>
 
 <div class="comparison not-prose">
   <figure>
-    <div class="comparison-image"><Image src={before} alt="Earlier StoragePal catalogue with a dense item list" widths={[390, 640]} sizes="(min-width: 768px) 320px, 80vw" /></div>
-    <figcaption><strong>Before</strong> — a dense catalogue and repeated data loading.</figcaption>
+    <div class="comparison-image"><Image src={before} alt="Earlier StoragePal catalog with a dense item list" widths={[390, 640]} sizes="(min-width: 768px) 320px, 80vw" /></div>
+    <figcaption><strong>Before:</strong> a dense list that reloaded its data on every visit.</figcaption>
   </figure>
   <figure>
-    <div class="comparison-image"><Image src={after} alt="Updated StoragePal catalogue with grouped items and product photos" widths={[390, 640]} sizes="(min-width: 768px) 320px, 80vw" /></div>
-    <figcaption><strong>After</strong> — grouped products, backed by shared catalogue data.</figcaption>
+    <div class="comparison-image"><Image src={after} alt="Updated StoragePal catalog with grouped items and product photos" widths={[390, 640]} sizes="(min-width: 768px) 320px, 80vw" /></div>
+    <figcaption><strong>After:</strong> grouped products, built from shared cached data.</figcaption>
   </figure>
 </div>
 
-A local warm benchmark measured median server response time falling from **{evidence.storagepal.responseBefore} to {evidence.storagepal.responseAfter}**, across 15 runs per version on the same database. This was time to first byte, not full page load. The old code ran against the current database; the measurement is retained in a session note, without a reproducible script.
+On a local benchmark, the median server response time went from **{evidence.storagepal.responseBefore} to {evidence.storagepal.responseAfter}** (15 runs per version, same database). This measures how fast the server answers, not the full page load.
 
-I also combined a three-page payment flow into one page. That describes pages in the payment flow, rather than a change in analytics funnel events.
+I also merged the three-page payment flow into one page.
 
-## Establish the live claim before chasing payment
+## Sort out what is owed before charging
 
-Unpaid balances carried into later invoices could still be treated as separate claims. Extending retries before resolving that would risk collecting the wrong amount.
+Unpaid amounts carried over into later invoices, but the system could still treat them as separate debts. Adding more payment retries on top of that could charge the wrong amount.
 
-I established one rule for the live claim: the current invoice at the head of the chain. The payment-attempt engine checks that claim and any existing payment intent before charging. I then added retry handling, a review queue for blocked payments, and bounded reminders that check payment state again before sending.
+I set one rule: the current invoice at the head of the chain is the amount owed. The payment engine checks that rule, and any payment already in progress, before it charges.
 
-These protections apply to the rebuilt attempt engine. They do not establish that every checkout and refund path has the same safeguards.
+Then I added retry handling, a review queue for blocked payments, and reminders that check the payment state again before they send.
 
-## Price transport around the work involved
+## Price transport by the real job
 
-I replaced coarse regional quotes with an engine that considers driving distance, vehicle capacity, crew, and building access. Customer care and logistics helped shape the parameters. Collections and returns now use the same engine.
+I replaced flat regional quotes with an engine that looks at driving distance, vehicle size, crew, and building access. Customer care and logistics helped shape the rules. Collections and returns now use the same engine.
 
-Transport revenue was **34% higher** in the twelve months after the collection-pricing launch than in the preceding twelve months. Overall volume and customer mix changed too, so this is an observed business result, not an isolated measure of the engine’s effect.
+Transport revenue was **34% higher** in the twelve months after launch than in the twelve months before. Order volume and customer mix changed in that time too.
 
 ## Keep AI proposals inside the business rules
 
-The shopping assistant proposes items from text or photos. Server code rejects unknown catalogue items, limits quantities, and supplies the prices. Customers can edit the proposal, and the cart endpoint prices each line again.
+The shopping assistant suggests items from text or photos. Server code rejects unknown items, limits quantities, and sets the prices. Customers can edit the proposal, and the cart prices every line again.
 
-The model helps the customer describe what they need. The catalogue and pricing rules determine what can be sold and at what price.
+The model helps the customer describe what they need. The catalog and the pricing rules decide what can be sold and at what price.

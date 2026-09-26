@@ -18,7 +18,7 @@ const entries: Entry[] = [...projects, ...experience];
     <li class="experience-row fx" style={`--d:${Math.min(i * 30, 120)}ms`}>
       <p class="experience-date">{e.period}</p>
       <div>
-        <h3>{e.org}{e.period.includes('present') && <span class="current-tag">Now</span>}</h3>
+        <h3>{e.org}{e.period.includes('present') && <> <span class="current-tag">Now</span></>}</h3>
         <p class="experience-role">{e.title}</p>
         <p class="experience-summary">{hooks[e.id]}</p>
       </div>

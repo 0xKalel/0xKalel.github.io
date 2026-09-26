@@ -48,7 +48,7 @@ export const experience: Entry[] = [
     stack: 'PHP (Neos Flow, Laravel), React, MariaDB, Redis, Stripe, Google Maps, GA4, Gemini, Docker, CI/CD',
     bullets: [
       {
-        text: 'Lead development of an operating storage business: set priorities, scope releases, review work, and implement pricing, payments, and customer workflows.',
+        text: 'Lead development for a working storage business: set priorities, plan releases, review work, and build pricing, payments, and customer workflows.',
         tags: ['lead', 'founder', 'freelance'], weight: 10,
       },
       {
@@ -64,7 +64,7 @@ export const experience: Entry[] = [
         tags: ['founder', 'freelance'], weight: 7,
       },
       {
-        text: 'Built a **Gemini shopping assistant** with catalogue validation, quantity limits, server-owned pricing, and an editable customer proposal.',
+        text: 'Built a **Gemini shopping assistant** with catalog validation, quantity limits, server-owned pricing, and an editable customer proposal.',
         tags: ['ai', 'founder', 'frontend'], weight: 8,
       },
       {
@@ -76,7 +76,7 @@ export const experience: Entry[] = [
         tags: ['lead', 'founder', 'freelance'], weight: 6,
       },
       {
-        text: `Cached shared catalogue data separately from personal carts. Local warm median **TTFB: ${evidence.storagepal.responseBefore} → ${evidence.storagepal.responseAfter}** (15 runs/version, same database).`,
+        text: `Cached shared catalog data separately from personal carts. Median server response **${evidence.storagepal.responseBefore} → ${evidence.storagepal.responseAfter}** on a local benchmark (15 runs per version, same database).`,
         tags: ['perf', 'frontend', 'freelance'], weight: 7,
       },
       {
@@ -126,12 +126,12 @@ export const experience: Entry[] = [
     period: 'Dec 2022 - May 2023',
     bullets: [
       {
-        text: 'Improved application performance **60%** through MySQL query optimisation and indexing.',
+        text: 'Improved application performance **60%** through MySQL query optimization and indexing.',
         tags: ['perf', 'lead', 'freelance', 'laravel'],
         weight: 8,
       },
       {
-        text: 'Delivered **10 production features**, including dynamic PDF generation, and modernised a legacy codebase.',
+        text: 'Delivered **10 production features**, including dynamic PDF generation, and modernized a legacy codebase.',
         tags: ['freelance', 'laravel'],
         weight: 5,
       },
@@ -193,7 +193,7 @@ export const experience: Entry[] = [
     period: 'Jun 2012 - Jan 2018',
     bullets: [
       {
-        text: 'Grew the agency from **2 to 7 developers** and delivered **100+ projects** for clients around the world, via freelancer.com and direct.',
+        text: 'Grew the agency from **2 to 7 developers** and delivered **300 projects** for clients around the world via freelancer.com, plus direct client work.',
         tags: ['founder', 'lead', 'freelance'],
         weight: 10,
       },
@@ -278,7 +278,7 @@ export const skills: SkillGroup[] = [
   {
     id: 'practice',
     label: 'Engineering',
-    items: 'Product scoping, prioritisation, architecture, caching, code review, PHPUnit and Pest, static analysis, technical leadership',
+    items: 'Product scoping, prioritization, architecture, caching, code review, PHPUnit and Pest, static analysis, technical leadership',
   },
 ];
 

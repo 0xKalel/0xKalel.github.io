@@ -19,7 +19,7 @@ export const evidence = {
     bayChanges: '8,847',
     bayMoves: '3,602',
     preview: 'Completed scan sessions on every weekday in the measured period.',
-    period: 'Production use, 13 April–25 September 2026. Counts reviewed 26 September.',
+    period: 'Production use, 13 April - 25 September 2026. Counts reviewed 26 September.',
     metrics: [
       { value: '120 / 120', label: 'weekdays with a completed scan session' },
       { value: '1,348', label: 'completed scanning sessions' },

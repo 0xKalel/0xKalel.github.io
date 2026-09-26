@@ -12,7 +12,7 @@ const path = Astro.url.pathname;
 ---
 
 <header class="site-header sticky top-0 z-40 border-b border-line/70 bg-bg/80 backdrop-blur-md">
-  <nav class="shell flex h-16 items-center justify-between gap-6">
+  <nav class="shell flex h-16 items-center justify-between gap-6" aria-label="Main">
     <a href="/" class="display text-[1.05rem] font-semibold tracking-tight">
       <span class="brand-mark" aria-hidden="true">KH</span>Khalil Hebachi<span class="text-accent">.</span>
     </a>
@@ -45,7 +45,7 @@ const path = Astro.url.pathname;
         aria-label="Find a page or action"
       >
         <Icon name="ph:magnifying-glass" />
-        <kbd class="key !border-0 !p-0">⌘K</kbd>
+        <kbd class="key border-0! p-0!">⌘K</kbd>
       </button>
 
       <button
@@ -58,7 +58,7 @@ const path = Astro.url.pathname;
         <Icon name="ph:moon" class="theme-moon" />
       </button>
 
-      <a href={`mailto:${profile.email}`} class="btn btn-primary !h-11 !px-3.5 text-sm !shadow-none max-sm:hidden lg:!h-10">Email me</a>
+      <a href={`mailto:${profile.email}`} class="btn btn-primary h-11! px-3.5! text-sm shadow-none! max-sm:hidden lg:h-10!">Email me</a>
 
       <button
         type="button"
@@ -79,7 +79,7 @@ const path = Astro.url.pathname;
 
   <dialog id="mnav" aria-label="Navigation">
     <div class="mb-8 flex items-center justify-end">
-      <button type="button" class="btn btn-ghost !size-11 !p-0 justify-center" data-menu-close aria-label="Close menu" autofocus><Icon name="ph:x" /></button>
+      <button type="button" class="btn btn-ghost size-11! p-0! justify-center" data-menu-close aria-label="Close menu" autofocus><Icon name="ph:x" /></button>
     </div>
     <ul class="space-y-1">
       {
