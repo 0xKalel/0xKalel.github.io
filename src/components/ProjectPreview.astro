@@ -8,14 +8,15 @@ import cart from '../assets/work/storagepal-ai-cart.png';
 import scan from '../assets/work/sps-01-movein-scan.png';
 import bay from '../assets/work/sps-03-bay-move.png';
 const previews = [
-  { id: 'ravenclip', name: 'RavenClip', role: 'Founder · News-to-video product', result: evidence.ravenclip.preview, images: [raven], alts: ['RavenClip video creation workspace'] },
-  { id: 'storagepal', name: 'StoragePal', role: 'Lead developer · Storage and logistics', result: evidence.storagepal.preview, images: [catalogue, cart], alts: ['StoragePal catalogue', 'StoragePal cart proposal'] },
-  { id: 'sps', name: 'SPS', role: 'Built end to end · Warehouse operations', result: `${evidence.sps.sessions} completed scan sessions, April - September 2026.`, images: [scan, bay], alts: ['SPS receiving workflow', 'SPS bay movement workflow'] },
+  { id: 'ravenclip', name: 'RavenClip', host: 'ravenclip.com', role: 'Founder · News-to-video product', result: evidence.ravenclip.preview, images: [raven], alts: ['RavenClip video creation workspace'] },
+  { id: 'storagepal', name: 'StoragePal', host: 'storagepal.fr', role: 'Lead developer · Storage and logistics', result: evidence.storagepal.preview, images: [catalogue, cart], alts: ['StoragePal catalogue', 'StoragePal cart proposal'] },
+  { id: 'sps', name: 'SPS', host: 'SPS warehouse app', role: 'Built end to end · Warehouse operations', result: `${evidence.sps.sessions} completed scan sessions, April - September 2026.`, images: [scan, bay], alts: ['SPS receiving workflow', 'SPS bay movement workflow'] },
 ];
 ---
 <div class="project-preview rise" style="--i:2" data-project-preview>
   <div class="preview-stage">
     {previews.map((p, i) => <div id={`preview-${p.id}`} data-preview-panel hidden={i !== 0}>
+      <p class="frame-bar preview-bar"><span>{p.host}</span></p>
       <a href={`/work/${p.id}/`} class={`preview-art preview-art-${p.id}`} aria-label={`View ${p.name} case study`}>
         {p.images.map((src, n) => <Image src={src} alt={p.alts[n]} widths={p.images.length === 1 ? [640, 960] : [240, 480]} sizes={p.images.length === 1 ? '(min-width: 1024px) 470px, 90vw' : '190px'} loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} class={`preview-image preview-image-${n}`} />)}
         <span class="preview-open" aria-hidden="true"><Icon name="ph:arrow-up-right" /></span>

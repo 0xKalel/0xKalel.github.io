@@ -90,8 +90,8 @@ const chain = (labels: [string, ('node'|'end')?][]) => labels;
               y={p.y}
               width={p.w}
               height={H}
-              rx="10"
-              fill={p.kind === 'end' ? 'color-mix(in oklch, var(--accent) 16%, var(--surface))' : 'var(--raised)'}
+              rx="0"
+              fill={p.kind === 'end' ? 'color-mix(in oklab, var(--accent) 16%, var(--surface))' : 'var(--raised)'}
               stroke={p.kind ? 'var(--accent)' : 'var(--line)'}
               stroke-width={p.kind === 'node' ? 1.5 : 1}
             />
@@ -113,13 +113,12 @@ const chain = (labels: [string, ('node'|'end')?][]) => labels;
     align-items: center;
     justify-content: center;
     height: 2.5rem;
-    border-radius: 10px;
     border: 1px solid var(--line);
     background: var(--raised);
     font-size: 0.875rem;
   }
   .flow-node { border-color: var(--accent); border-width: 1.5px; }
-  .flow-end { background: color-mix(in oklch, var(--accent) 16%, var(--surface)); border-color: var(--accent); }
+  .flow-end { background: color-mix(in oklab, var(--accent) 16%, var(--surface)); border-color: var(--accent); }
   .flow-arrow { text-align: center; color: var(--muted); font-size: 0.8rem; line-height: 1.4; }
 
   /* The autopilot, visualised: stages light up in run order, forever.
@@ -135,7 +134,7 @@ const chain = (labels: [string, ('node'|'end')?][]) => labels;
     6%, 12% {
       stroke: var(--accent);
       border-color: var(--accent);
-      filter: drop-shadow(0 0 6px color-mix(in oklch, var(--accent) 55%, transparent));
+      filter: drop-shadow(0 0 6px color-mix(in oklab, var(--accent) 55%, transparent));
     }
     18%, 100% { filter: none; }
   }

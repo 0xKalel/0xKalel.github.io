@@ -11,145 +11,249 @@ import { evidence, type ProjectId } from '../data/evidence';
 import { defaultRole } from '../data/roles';
 import { ASK_READY, ASK_SUGGESTIONS } from '../lib/ask';
 import { postHref } from '../lib/blog';
-import raven from '../assets/work/ravenclip-fresh.webp';
-import catalogue from '../assets/work/storagepal-catalogue-grid.png';
-import cart from '../assets/work/storagepal-ai-cart.png';
-import scan from '../assets/work/sps-01-movein-scan.png';
-import bay from '../assets/work/sps-03-bay-move.png';
+import catalogue from '../assets/work/storagepal-catalogue.png';
+import checkout from '../assets/work/storagepal-checkout.png';
+import transport from '../assets/work/storagepal-transport.png';
+import ravenMakes from '../assets/work/ravenclip-shot-makes.png';
 
 const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
 const [latest] = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.data.date);
-const visuals = {
-  storagepal: { images: [catalogue, cart], alts: ['StoragePal product catalog', 'A proposed StoragePal cart ready for customer review'] },
-  ravenclip: { images: [raven], alts: ['RavenClip workspace for generating and reviewing news videos'] },
-  sps: { images: [scan, bay], alts: ['Receiving items in SPS', 'Moving items between warehouse bays in SPS'] },
-};
+
+const phones = [
+  { src: catalogue, alt: 'StoragePal catalog categories and item selection' },
+  { src: checkout, alt: 'StoragePal payment details together on one page' },
+  { src: transport, alt: 'A StoragePal transport quote based on the collection details' },
+];
+
+// SPS use, one cell per weekday from Monday 13 April to Friday 25 September 2026 (24 weeks).
+const spsStart = Date.UTC(2026, 3, 13);
+const day = (offset: number) => new Date(spsStart + offset * 864e5);
+const weekdays = Array.from({ length: 120 }, (_, i) => {
+  const c = Math.floor(i / 5);
+  const r = i % 5;
+  return { c, r, label: day(c * 7 + r).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' }) };
+});
+const months = Array.from({ length: 24 }, (_, c) => day(c * 7))
+  .map((monday, c, all) => ({ c: c + 1, name: monday.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' }), first: c === 0 || monday.getUTCMonth() !== all[c - 1].getUTCMonth() }))
+  .filter((m) => m.first);
+
 const principles = [
   { title: 'Choose the right first step.', text: 'Find what costs the business most. Ship that first, and leave the rest for later.', href: '/work/storagepal/#start-where-staff-were-blocked', link: 'Start with daily operations' },
   { title: 'Make the tradeoff explicit.', text: 'Pick the design that fits the real conditions. Extra complexity has to pay for itself.', href: '/work/sps/#remove-complexity-the-warehouse-does-not-need', link: 'Why I removed offline mode' },
   { title: 'Follow through after release.', text: 'Watch how people use the product, what breaks, and what it costs. Let that choose the next change.', href: '/work/ravenclip/#learn-from-the-people-who-pay', link: 'What paying customers taught me' },
 ];
-const stackWhere: Record<(typeof skills)[number]['id'], string> = {
-  ai: 'RavenClip end to end, plus the cart assistant at StoragePal.',
-  backend: 'Neos Flow at StoragePal. Laravel in SPS and RavenClip.',
-  frontend: 'React and TypeScript in SPS and RavenClip. This site runs on Astro.',
-  infra: 'Everything above runs on it, from Redis queues to FFmpeg rendering.',
-  practice: 'The part the case studies walk through, decision by decision.',
+const stackMeta: Record<(typeof skills)[number]['id'], { icon: string; where: string }> = {
+  ai: { icon: 'ph:cpu', where: 'RavenClip end to end, plus the cart assistant at StoragePal.' },
+  backend: { icon: 'ph:database', where: 'Neos Flow at StoragePal. Laravel in SPS and RavenClip.' },
+  frontend: { icon: 'ph:browser', where: 'React and TypeScript in SPS and RavenClip. This site runs on Astro.' },
+  infra: { icon: 'ph:cloud', where: 'Everything above runs on it, from Redis queues to FFmpeg rendering.' },
+  practice: { icon: 'ph:path', where: 'The part the case studies walk through, decision by decision.' },
 };
 ---
 
 <Base>
-  <section class="hero-section">
-    <div class="hero-grid shell">
-      <div class="hero-copy">
-        <p class="eyebrow rise">Khalil Hebachi · Lead full-stack engineer</p>
-        <h1 class="hero-title rise" style="--i:1">I turn business priorities into <span>working software.</span></h1>
-        <p class="hero-description rise" style="--i:2">I help teams decide what to build first, make the engineering tradeoffs, and deliver in useful steps. Building products and leading development since 2012.</p>
-        <div class="hero-actions rise" style="--i:3">
-          <a href="#work" class="btn btn-primary">See selected work <Icon name="ph:arrow-down" /></a>
-          <a href={`mailto:${profile.email}`} class="btn btn-ghost">Discuss a project <Icon name="ph:arrow-up-right" /></a>
+  <section class="hero">
+    <div class="shell">
+      <p class="hero-kicker mono-label rise"><span>Lead full-stack engineer</span><span>Remote from Annaba, Algeria · GMT+1</span></p>
+      <h1 class="hero-title">
+        <span class="sr-only">Khalil Hebachi</span>
+        <span class="hero-name" aria-hidden="true"><span class="w"><span>Khalil</span></span> <span class="w"><span style="--i:1">Hebachi</span></span></span>
+      </h1>
+      <div class="hero-grid">
+        <div>
+          <p class="hero-statement rise" style="--i:2">I turn business priorities into <mark>working software.</mark></p>
+          <p class="hero-sub rise" style="--i:3">I help teams decide what to build first, make the engineering tradeoffs, and deliver in useful steps.</p>
+          <div class="hero-actions rise" style="--i:4">
+            <a href="#work" class="btn btn-primary">See selected work <Icon name="ph:arrow-down" /></a>
+            <a href={`mailto:${profile.email}`} class="btn btn-ghost">Email me <Icon name="ph:arrow-up-right" /></a>
+          </div>
         </div>
-        <p class="hero-meta rise" style="--i:4"><Icon name="ph:map-pin" /> Annaba, Algeria · Remote worldwide · GMT+1</p>
+        <ProjectPreview />
       </div>
-      <ProjectPreview />
     </div>
   </section>
 
-  <section id="work" class="shell section-space">
-    <div class="section-heading fx">
-      <div><p class="eyebrow">Selected work</p><h2>What I built, and proof it works.</h2></div>
-      <p class="section-note">Three projects, three different problems. I say exactly what I owned.</p>
-    </div>
-    <div class="project-grid">
-      {work.map(({ id, data: p }, i) => {
-        const key = id as ProjectId;
-        const visual = visuals[key];
-        const fact = evidence[key];
-        return (
-          <article class={`project-card fx project-${id}`} style={`--d:${i * 65}ms`}>
-            <a class="project-cover" href={`/work/${id}/`} aria-label={`Read the ${p.title} case study`} tabindex="-1">
-              <div class={`project-screens ${visual.images.length === 1 ? 'project-screens-wide' : ''}`}>
-                {visual.images.map((src, n) => <Image src={src} alt={visual.alts[n]} widths={visual.images.length === 1 ? [640, 960] : [240, 480]} sizes={visual.images.length === 1 ? '(min-width: 768px) 550px, 90vw' : '(min-width: 768px) 230px, 38vw'} />)}
-              </div>
-            </a>
-            <div class="project-info">
-              <p class="eyebrow">{p.category}</p>
-              <h3><a href={`/work/${id}/`}>{p.title}<Icon name="ph:arrow-up-right" /></a></h3>
-              <p class="project-headline">{p.headline}</p>
-              <p class="project-description">{p.tagline}</p>
-              <p class="project-proof">{fact.preview}</p>
-              <p class="project-date">{id === 'sps' ? '13 April - 25 September 2026' : id === 'ravenclip' ? 'First payment: 6 September 2026' : 'Lead developer · Oct 2024 - present'}</p>
-              <a class="project-decision" href={`/work/${id}/#${p.decisionAnchor}`}><span>A decision inside</span>{p.decision}<Icon name="ph:arrow-right" /></a>
-            </div>
-          </article>
-        );
-      })}
+  <section id="work" class="band">
+    <div class="shell section-space">
+      <header class="sec-head fx">
+        <p class="sec-label">Selected work</p>
+        <h2>What I built, and proof it works.</h2>
+        <p class="sec-note">Three projects, three different problems. I say exactly what I owned.</p>
+      </header>
+
+      <div class="work-list">
+        {work.map(({ id, data: p }) => {
+          const key = id as ProjectId;
+          const fact = evidence[key];
+          const metrics = key === 'sps' ? fact.metrics.slice(1) : fact.metrics;
+          const layout = key === 'sps' ? 'is-wide' : key === 'ravenclip' ? 'is-flipped' : '';
+          const copy = (
+            <>
+              <p class="work-headline">{p.headline}</p>
+              <p class="work-text">{p.tagline}</p>
+            </>
+          );
+          const proof = (
+            <>
+              <dl class="work-metrics">{metrics.map((m) => <div><dt>{m.value}</dt><dd>{m.label}</dd></div>)}</dl>
+              <p class="evidence-period">{fact.period}</p>
+              <a class="work-decision" href={`/work/${id}/#${p.decisionAnchor}`}><span class="mono-label">A decision inside</span>{p.decision}<Icon name="ph:arrow-right" /></a>
+              <a class="work-cta mono-label" href={`/work/${id}/`}>Read the {p.title} case study <Icon name="ph:arrow-right" /></a>
+            </>
+          );
+          return (
+            <article class={`work-item fx ${layout}`}>
+              <p class="work-meta mono-label"><span>{p.category}</span><span>{p.period}</span></p>
+              <h3 class="work-title"><a href={`/work/${id}/`}>{p.title}</a></h3>
+
+              {key === 'storagepal' && (
+                <>
+                  <div class="work-copy">{copy}{proof}</div>
+                  <a class="work-visual frame-box" href={`/work/${id}/`} tabindex="-1" aria-label={`Read the ${p.title} case study`}>
+                    <p class="frame-bar"><span>storagepal.fr</span><Icon name="ph:arrow-up-right" /></p>
+                    <div class="phones">
+                      {phones.map((s) => <Image src={s.src} alt={s.alt} widths={[240, 480]} sizes="(min-width: 1024px) 200px, 28vw" />)}
+                    </div>
+                  </a>
+                </>
+              )}
+
+              {key === 'ravenclip' && (
+                <>
+                  <div class="work-copy">{copy}{proof}</div>
+                  <a class="work-visual frame-box browser" href={`/work/${id}/`} tabindex="-1" aria-label={`Read the ${p.title} case study`}>
+                    <p class="frame-bar"><span>ravenclip.com</span><Icon name="ph:arrow-up-right" /></p>
+                    <Image src={ravenMakes} alt="RavenClip: review the script, narration, and visuals scene by scene" widths={[640, 960, 1400]} sizes="(min-width: 1024px) 640px, 92vw" />
+                  </a>
+                </>
+              )}
+
+              {key === 'sps' && (
+                <>
+                  <figure class="work-visual frame-box">
+                    <figcaption class="frame-bar"><span>SPS scan sessions</span><span>13 Apr - 25 Sep 2026</span></figcaption>
+                    <div class="weekdays-body">
+                      <p class="weekdays-figure"><strong>{evidence.sps.weekdays}</strong><span>weekdays with a completed scan session</span></p>
+                      <div>
+                        <div class="weekdays-grid" role="img" aria-label="120 of 120 weekdays from 13 April to 25 September 2026, each with a completed scan session.">
+                          {weekdays.map((d) => <span style={`--c:${d.c};--r:${d.r}`} title={d.label} />)}
+                        </div>
+                        <div class="weekdays-axis" aria-hidden="true">{months.map((m) => <span style={`--c:${m.c}`}>{m.name}</span>)}</div>
+                      </div>
+                    </div>
+                  </figure>
+                  <div class="work-copy">{copy}</div>
+                  <div class="work-side">{proof}</div>
+                </>
+              )}
+            </article>
+          );
+        })}
+      </div>
     </div>
   </section>
 
-  <section id="process" class="shell section-space">
-    <div class="section-heading fx">
-      <div><p class="eyebrow">How I work</p><h2>Good decisions come before good code.</h2></div>
-      <a href="/how-i-work/" class="text-link">My approach <Icon name="ph:arrow-up-right" /></a>
+  <section id="process" class="band">
+    <div class="shell section-space">
+      <header class="sec-head fx">
+        <p class="sec-label">How I work</p>
+        <h2>Good decisions come before good code.</h2>
+        <div class="sec-links"><a href="/how-i-work/" class="text-link">My approach <Icon name="ph:arrow-up-right" /></a></div>
+      </header>
+      <ol class="method">
+        {principles.map((p, i) => (
+          <li class="method-row fx">
+            <span class="method-num" aria-hidden="true">0{i + 1}</span>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+            <a class="method-link" href={p.href}>{p.link}<Icon name="ph:arrow-right" /></a>
+          </li>
+        ))}
+      </ol>
+      <div class="ai-note fx"><p class="mono-label">Human-led, AI-assisted</p><p>I use AI to explore and build. I own the priorities, the architecture, the review, and the results. Fast output still needs an engineer who knows what should happen, and what could go wrong.</p></div>
     </div>
-    <ol class="process-grid">
-      {principles.map((p, i) => (
-        <li class="fx" style={`--d:${i * 70}ms`}><span class="process-number" aria-hidden="true">0{i + 1}</span><h3>{p.title}</h3><p>{p.text}</p><a class="text-link" href={p.href}>{p.link}<Icon name="ph:arrow-right" /></a></li>
-      ))}
-    </ol>
-    <div class="ai-note fx"><p class="eyebrow">Human-led, AI-assisted</p><p>I use AI to explore and build. I own the priorities, the architecture, the review, and the results. Fast output still needs an engineer who knows what should happen, and what could go wrong.</p></div>
   </section>
 
-  <section id="stack" class="shell section-space">
-    <div class="section-heading fx">
-      <div><p class="eyebrow">Stack</p><h2>Tools with a track record.</h2></div>
-      <p class="section-note">Grouped the way I use them, with where each runs in production.</p>
+  <section id="stack" class="band">
+    <div class="shell section-space">
+      <header class="sec-head fx">
+        <p class="sec-label">Stack</p>
+        <h2>Tools with a track record.</h2>
+        <p class="sec-note">Grouped the way I use them, with where each runs in production.</p>
+      </header>
+      <div class="stack-bento">
+        {skills.map((g) => (
+          <div class:list={['stack-cell fx', g.id === 'ai' && 'is-lead']}>
+            <h3>{g.label}<Icon name={stackMeta[g.id].icon} /></h3>
+            <p class="stack-chips">{g.items.split(', ').map((item) => <span class="stack-chip">{item}</span>)}</p>
+            <p class="stack-where">{stackMeta[g.id].where}</p>
+          </div>
+        ))}
+      </div>
     </div>
-    <dl class="stack-list">
-      {skills.map((g, i) => (
-        <div class="stack-row fx" style={`--d:${i * 60}ms`}>
-          <dt>{g.label}</dt>
-          <dd class="stack-chips">{g.items.split(', ').map((item) => <span class="stack-chip">{item}</span>)}</dd>
-          <dd class="stack-where">{stackWhere[g.id]}</dd>
+  </section>
+
+  {ASK_READY && <section id="ask" class="band">
+    <div class="shell section-space">
+      <header class="sec-head fx">
+        <p class="sec-label">Ask</p>
+        <h2>Questions? Ask my assistant.</h2>
+        <p class="sec-note">AI answers from my CV and case studies. For anything serious, email me.</p>
+      </header>
+      <div class="fx">
+        <button type="button" class="ask-prompt" data-ask-open aria-haspopup="dialog"><span aria-hidden="true">&gt;</span>Ask about my projects, results, or how I work<span class="ask-cursor" aria-hidden="true"></span><Icon name="ph:arrow-right" /></button>
+        <div class="ask-suggestions">
+          {ASK_SUGGESTIONS.map((question) => (
+            <button type="button" data-ask-chip={question}>{question}<Icon name="ph:arrow-right" /></button>
+          ))}
         </div>
-      ))}
-    </dl>
-  </section>
-
-  {ASK_READY && <section id="ask" class="shell section-space">
-    <div class="section-heading fx">
-      <div><p class="eyebrow">Ask</p><h2>Questions? Ask my assistant.</h2></div>
-      <p class="section-note">AI answers from my CV and case studies. For anything serious, email me.</p>
-    </div>
-    <div class="ask-suggestions fx">
-      {ASK_SUGGESTIONS.map((question) => (
-        <button type="button" class="btn btn-ghost" data-ask-chip={question}>{question}<Icon name="ph:chat-circle-dots" /></button>
-      ))}
+      </div>
     </div>
   </section>}
 
-  {latest && <section class="shell section-space">
-    <div class="section-heading fx"><div><p class="eyebrow">Writing</p><h2>Notes from the work.</h2></div><a href="/blog/" class="text-link">All writing <Icon name="ph:arrow-right" /></a></div>
-    <a href={postHref(latest.id)} class="writing-panel fx">
-      <time datetime={latest.data.date.toISOString()}>{latest.data.date.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}</time>
-      <div><h3>{latest.data.title}</h3><p>{latest.data.description}</p><span class="text-link">Read the engineering notes <Icon name="ph:arrow-up-right" /></span></div>
-    </a>
+  {latest && <section id="writing" class="band">
+    <div class="shell section-space">
+      <header class="sec-head fx">
+        <p class="sec-label">Writing</p>
+        <h2>Notes from the work.</h2>
+        <div class="sec-links"><a href="/blog/" class="text-link">All writing <Icon name="ph:arrow-right" /></a></div>
+      </header>
+      <a href={postHref(latest.id)} class="writing-feature fx">
+        <time class="mono-label text-muted" datetime={latest.data.date.toISOString()}>{latest.data.date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</time>
+        <div><h3><span>{latest.data.title}</span></h3><p>{latest.data.description}</p></div>
+        <span class="writing-arrow" aria-hidden="true"><Icon name="ph:arrow-up-right" /></span>
+      </a>
+    </div>
   </section>}
 
-  <section id="journey" class="shell section-space experience-section">
-    <div class="section-heading fx"><div><p class="eyebrow">Experience</p><h2>Building since 2012.</h2><p class="section-note">From co-founding an agency to leading development and launching my own product.</p></div><a class="text-link" href="/cv/">Full experience & CV <Icon name="ph:arrow-up-right" /></a><a class="text-link" href={`/cv/${defaultRole.slug}.pdf`}>Download PDF <Icon name="ph:download-simple" /></a></div>
-    <Timeline />
-    <Reviews />
+  <section id="journey" class="band">
+    <div class="shell section-space">
+      <header class="sec-head fx">
+        <p class="sec-label">Experience</p>
+        <h2>Building since 2012.</h2>
+        <p class="sec-note">From co-founding an agency to leading development and launching my own product.</p>
+        <div class="sec-links">
+          <a class="text-link" href="/cv/">Full experience and CV <Icon name="ph:arrow-up-right" /></a>
+          <a class="text-link" href={`/cv/${defaultRole.slug}.pdf`}>Download PDF <Icon name="ph:download-simple" /></a>
+        </div>
+      </header>
+      <Timeline />
+      <Reviews />
+    </div>
   </section>
 
-  <section id="contact" class="shell section-space contact-section">
-    <p class="eyebrow fx">Let’s talk</p>
-    <h2 class="fx">What does your business<br class="hidden sm:block" /> need to do next?</h2>
-    <p class="contact-description fx">Tell me what you’re building, what is getting in the way, and what a useful result would look like.</p>
-    <div class="contact-actions fx">
-      <a href={`mailto:${profile.email}`} class="btn btn-primary">Email me <Icon name="ph:arrow-up-right" /></a>
-      <button type="button" class="btn btn-ghost" data-copy={profile.email} aria-label="Copy email address"><Icon name="ph:copy" /><span data-copy-label>Copy email</span></button>
-      <span class="sr-only" data-copy-status role="status"></span>
+  <section id="contact" class="contact-band">
+    <div class="shell section-space">
+      <p class="sec-label fx">Let’s talk</p>
+      <h2 class="fx">What does your business need to do next?</h2>
+      <p class="contact-description fx">Tell me what you’re building, what is getting in the way, and what a useful result would look like.</p>
+      <a class="contact-mail fx" href={`mailto:${profile.email}`}><span>{profile.email}</span><Icon name="ph:arrow-up-right" /></a>
+      <div class="contact-actions fx">
+        <button type="button" class="btn btn-ghost" data-copy={profile.email} aria-label="Copy email address"><Icon name="ph:copy" /><span data-copy-label>Copy email</span></button>
+        <a class="text-link" href={profile.linkedin}>LinkedIn <Icon name="ph:arrow-up-right" /></a>
+        <a class="text-link" href={profile.github}>GitHub <Icon name="ph:arrow-up-right" /></a>
+        <span class="sr-only" data-copy-status role="status"></span>
+      </div>
     </div>
   </section>
 </Base>

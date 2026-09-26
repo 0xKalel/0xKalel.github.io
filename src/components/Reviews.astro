@@ -47,22 +47,26 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
 
 <style>
   .review-strip {
-    /* .experience-section is a two-column grid; the strip spans it. */
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-top: 3rem;
+    columns: 3 300px;
+    column-gap: 1.25rem;
+    margin-top: clamp(3.5rem, 6vw, 5.5rem);
   }
   .review {
-    margin: 0;
+    break-inside: avoid;
+    margin: 0 0 1.25rem;
     display: flex;
     flex-direction: column;
     gap: 0.9rem;
     padding: 1.4rem 1.5rem;
     border: 1px solid var(--line);
-    border-radius: var(--radius);
+    border-top: 1.5px solid var(--fg);
     background: var(--surface);
+    transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out), border-color 200ms ease;
+  }
+  .review:hover {
+    border-color: var(--fg);
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 var(--hi);
   }
   .review-head {
     display: flex;
@@ -70,73 +74,69 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
     gap: 0.75rem;
   }
   .review-avatar {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
+    width: 2.75rem;
+    height: 2.75rem;
     object-fit: cover;
     flex: none;
+    border: 1px solid var(--fg);
   }
   .review-monogram {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    font-family: var(--font-mono);
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--muted);
-    background: color-mix(in oklch, var(--fg) 6%, var(--surface));
-    border: 1px solid var(--line);
+    color: var(--inv-accent);
+    background: var(--fg);
   }
   .review-name {
     display: inline-block;
     padding-block: 6px;
     margin-block: -6px;
-    font-size: 0.92rem;
-    font-weight: 600;
+    font-size: 0.95rem;
+    font-weight: 700;
     color: var(--fg);
   }
   .review-name:hover {
     text-decoration: underline;
+    text-decoration-color: var(--accent);
     text-underline-offset: 3px;
   }
   .review-role {
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     color: var(--muted);
     margin-top: 0.1rem;
   }
   .review blockquote {
-    flex: 1;
-    font-size: 0.92rem;
+    font-size: 0.95rem;
     line-height: 1.65;
     color: var(--fg);
   }
   .review > blockquote:first-child::before {
     content: '“';
     display: block;
-    font-size: 1.9rem;
+    height: 1.4rem;
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 900;
     line-height: 1;
-    color: color-mix(in oklch, var(--accent) 70%, var(--muted));
-    margin-bottom: 0.35rem;
+    color: var(--accent);
   }
   .review figcaption {
-    font-size: 0.78rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     color: var(--muted);
     line-height: 1.5;
   }
   .review-source {
-    grid-column: 1 / -1;
+    column-span: all;
     max-width: 68ch;
-    font-size: 0.82rem;
+    padding-top: 0.5rem;
+    font-size: 0.85rem;
     color: var(--muted);
     line-height: 1.6;
-  }
-  @media (max-width: 1023px) {
-    .review-strip {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-  @media (max-width: 767px) {
-    .review-strip {
-      grid-template-columns: 1fr;
-    }
   }
 </style>

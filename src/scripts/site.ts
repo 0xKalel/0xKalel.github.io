@@ -150,7 +150,7 @@ function theme() {
     const next = light ? 'dark' : 'light';
     html.dataset.theme = next;
     // Keep the browser chrome color in sync with the chosen theme.
-    const color = next === 'light' ? '#f9fafb' : '#070a0e';
+    const color = next === 'light' ? '#f4f4f1' : '#0f1012';
     document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
       meta.content = color;
       meta.removeAttribute('media');

@@ -9,27 +9,25 @@ const links = [
   { href: '/cv/', label: 'CV' },
 ];
 const path = Astro.url.pathname;
+const current = (href: string) => !href.startsWith('/#') && path.startsWith(href);
 ---
 
-<header class="site-header sticky top-0 z-40 border-b border-line/70 bg-bg/80 backdrop-blur-md">
-  <nav class="shell flex h-16 items-center justify-between gap-6" aria-label="Main">
-    <a href="/" class="display text-[1.05rem] font-semibold tracking-tight">
-      <span class="brand-mark" aria-hidden="true">KH</span>Khalil Hebachi<span class="text-accent">.</span>
+<header class="site-header">
+  <nav class="shell nav-row" aria-label="Main">
+    <a href="/" class="brand">
+      <span class="brand-mark" aria-hidden="true">KH</span><span class="brand-name">Khalil Hebachi</span>
     </a>
 
-    <div class="flex items-center gap-2.5 md:gap-4">
-      <ul class="hidden items-center gap-6 text-sm lg:flex">
+    <div class="flex items-center gap-4 lg:gap-6">
+      <ul class="nav-links">
         {
           links.map((l) => (
             <li>
               <a
                 href={l.href}
+                class="nav-link"
                 data-section-link={l.href.startsWith('/#') ? true : undefined}
-                aria-current={path.startsWith(l.href) && !l.href.startsWith('/#') ? 'page' : undefined}
-                class:list={[
-                  'nav-link transition-colors hover:text-fg',
-                  path.startsWith(l.href) && !l.href.startsWith('/#') ? 'text-fg' : 'text-muted',
-                ]}
+                aria-current={current(l.href) ? 'page' : undefined}
               >
                 {l.label}
               </a>
@@ -38,38 +36,30 @@ const path = Astro.url.pathname;
         }
       </ul>
 
-      <button
-        type="button"
-        data-palette-open
-        class="hidden h-10 items-center gap-2 rounded-ui border border-line px-3 text-sm text-muted transition-colors hover:border-muted hover:text-fg lg:inline-flex"
-        aria-label="Find a page or action"
-      >
-        <Icon name="ph:magnifying-glass" />
-        <kbd class="key border-0! p-0!">⌘K</kbd>
-      </button>
+      <div class="nav-tools">
+        <button type="button" data-palette-open class="nav-icon nav-search" aria-label="Find a page or action">
+          <Icon name="ph:magnifying-glass" />
+          <span aria-hidden="true">⌘K</span>
+        </button>
 
-      <button
-        type="button"
-        data-theme-toggle
-        class="inline-flex size-11 items-center justify-center rounded-ui border border-line text-muted transition-colors hover:border-muted hover:text-fg lg:size-10"
-        aria-label="Switch between light and dark theme"
-      >
-        <Icon name="ph:sun" class="theme-sun" />
-        <Icon name="ph:moon" class="theme-moon" />
-      </button>
+        <button type="button" data-theme-toggle class="nav-icon" aria-label="Switch between light and dark theme">
+          <Icon name="ph:sun" class="theme-sun" />
+          <Icon name="ph:moon" class="theme-moon" />
+        </button>
 
-      <a href={`mailto:${profile.email}`} class="btn btn-primary h-11! px-3.5! text-sm shadow-none! max-sm:hidden lg:h-10!">Email me</a>
+        <a href={`mailto:${profile.email}`} class="btn btn-primary nav-cta">Email me</a>
 
-      <button
-        type="button"
-        id="mnav-btn"
-        class="inline-flex size-11 items-center justify-center rounded-ui border border-line text-muted lg:hidden"
-        aria-label="Open menu"
-        aria-expanded="false"
-        aria-controls="mnav"
-      >
-        <Icon name="ph:list" />
-      </button>
+        <button
+          type="button"
+          id="mnav-btn"
+          class="nav-icon nav-menu"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mnav"
+        >
+          <Icon name="ph:list" />
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -77,31 +67,29 @@ const path = Astro.url.pathname;
   <div class="reading-progress" data-reading-progress aria-hidden="true"></div>
 </header>
 
-  <dialog id="mnav" aria-label="Navigation">
-    <div class="mb-8 flex items-center justify-end">
-      <button type="button" class="btn btn-ghost size-11! p-0! justify-center" data-menu-close aria-label="Close menu" autofocus><Icon name="ph:x" /></button>
-    </div>
-    <ul class="space-y-1">
-      {
-        links.map((l, i) => (
-          <li>
-            <a
-              href={l.href}
-              class="display block rounded-ui px-3 py-3.5 text-2xl font-semibold tracking-tight transition-colors hover:bg-surface"
-              style={`--d:${i * 40}ms`}
-            >
-              {l.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-    <div class="mt-6 flex flex-wrap gap-3 px-3">
-      <a href={`mailto:${profile.email}`} class="btn btn-primary">Email me</a>
-      <a href={profile.github} class="btn btn-ghost">GitHub</a>
-    </div>
-  </dialog>
-
+<dialog id="mnav" aria-label="Navigation">
+  <div class="mb-8 flex h-12 items-center justify-between">
+    <span class="brand"><span class="brand-mark" aria-hidden="true">KH</span>Khalil Hebachi</span>
+    <button type="button" class="nav-icon size-11!" data-menu-close aria-label="Close menu" autofocus><Icon name="ph:x" /></button>
+  </div>
+  <ul class="mnav-list">
+    {
+      links.map((l) => (
+        <li>
+          <a href={l.href}>
+            {l.label}
+            <Icon name="ph:arrow-up-right" />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <div class="mt-10 flex flex-wrap gap-4">
+    <a href={`mailto:${profile.email}`} class="btn btn-primary">Email me</a>
+    <a href={profile.github} class="btn btn-ghost">GitHub</a>
+    <a href={profile.linkedin} class="btn btn-ghost">LinkedIn</a>
+  </div>
+</dialog>
 
 <style>
   /* Sun in dark mode (click to go light), moon in light mode. */

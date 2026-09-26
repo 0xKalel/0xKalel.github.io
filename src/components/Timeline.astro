@@ -13,7 +13,7 @@ const hooks: Record<string, string> = {
 const entries: Entry[] = [...projects, ...experience];
 ---
 
-<ol class="experience-list">
+<ol class="xp-list">
   {entries.map((e, i) => (
     <li class="experience-row fx" style={`--d:${Math.min(i * 30, 120)}ms`}>
       <p class="experience-date">{e.period}</p>

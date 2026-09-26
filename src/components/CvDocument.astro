@@ -68,7 +68,7 @@ const sectionTitle = { experience: 'Experience', projects: 'Independent product'
                 {' · '}{e.location}{' · '}<span class="tabular-nums">{e.period}</span>
               </p>
               {e.intro && <p class="mt-1 text-[9.5pt] text-muted">{e.intro}</p>}
-              <ul class="mt-1.5 list-disc space-y-1 pl-[1.05rem] marker:text-[color-mix(in_oklch,var(--accent)_55%,var(--line))]">
+              <ul class="mt-1.5 list-disc space-y-1 pl-[1.05rem] marker:text-[color-mix(in_oklab,var(--accent)_55%,var(--line))]">
                 {e.bullets.map((b) => (
                   <li set:html={inline(b.text)} />
                 ))}

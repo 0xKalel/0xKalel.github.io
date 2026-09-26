@@ -1,7 +1,7 @@
 ---
 /** Horizontal bar chart. One series (accent) or an ordered pair (before = lighter
  *  step of the same ramp, after = accent), per the dataviz rules: thin marks,
- *  rounded data-end, values labelled at the tip, legend when two series. */
+ *  square data-end, values labelled at the tip, legend when two series. */
 interface Row {
   label: string;
   values: number[];
@@ -31,7 +31,7 @@ let bi = 0;
       <div class="mt-3 flex gap-5 text-xs text-muted">
         {series.map((s, i) => (
           <span class="inline-flex items-center gap-1.5">
-            <span class="size-2.5 rounded-[3px]" style={`background:${color(i, series.length)}`} />
+            <span class="size-2.5" style={`background:${color(i, series.length)}`} />
             {s}
           </span>
         ))}
@@ -47,7 +47,7 @@ let bi = 0;
             {r.values.map((v, si) => (
               <div class="flex items-center gap-2.5">
                 <div
-                  class="grow-bar rounded-r-[4px]"
+                  class="grow-bar"
                   style={`width:${Math.max((v / max) * 100, 1.5)}%;height:${r.values.length > 1 ? 13 : 19}px;background:${color(si, r.values.length)};--bi:${bi++}`}
                 />
                 <span class="font-mono text-xs whitespace-nowrap text-muted tabular-nums">{fmt(v)}{unit}</span>

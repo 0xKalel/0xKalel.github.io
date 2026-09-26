@@ -1,7 +1,6 @@
 ---
 import '@fontsource-variable/geist';
 import '@fontsource-variable/geist-mono';
-import '@fontsource-variable/space-grotesk';
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Nav from '../components/Nav.astro';
@@ -59,8 +58,8 @@ const GA_ID = 'G-SLJ8G6MSCP';
     <meta name="twitter:image:alt" content="Khalil Hebachi. I turn business priorities into working software." />
     {published && <meta property="article:published_time" content={published.toISOString()} />}
     {updated && <meta property="article:modified_time" content={updated.toISOString()} />}
-    <meta name="theme-color" content="#070a0e" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#f9fafb" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1012" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f4f4f1" media="(prefers-color-scheme: light)" />
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Person',
@@ -94,7 +93,7 @@ const GA_ID = 'G-SLJ8G6MSCP';
         const t = localStorage.getItem('theme');
         if (t === 'light' || t === 'dark') {
           document.documentElement.dataset.theme = t;
-          const color = t === 'light' ? '#f9fafb' : '#070a0e';
+          const color = t === 'light' ? '#f4f4f1' : '#0f1012';
           document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
             m.setAttribute('content', color);
             m.removeAttribute('media');
@@ -119,10 +118,11 @@ const GA_ID = 'G-SLJ8G6MSCP';
       )
     }
   </head>
-  <body class="min-h-dvh bg-bg font-sans text-fg">
+  <body class="min-h-dvh font-sans text-fg">
     {bare ? <slot /> : (
       <>
         <a class="skip-link" href="#main-content">Skip to content</a>
+        <div class="page-frame" aria-hidden="true"></div>
         <Nav />
         <main id="main-content" tabindex="-1"><slot /></main>
         <Footer />

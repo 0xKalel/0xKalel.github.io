@@ -25,9 +25,9 @@ const { rows } = Astro.props;
                 {i > 0 && <Icon name="ph:arrow-right" class="shrink-0 text-muted" aria-hidden="true" />}
                 <span
                   class:list={[
-                    'rounded-full border px-3 py-1 text-sm whitespace-nowrap',
+                    'border px-3 py-1 text-sm whitespace-nowrap',
                     i === 0
-                      ? 'border-transparent bg-[color-mix(in_oklch,var(--accent)_14%,transparent)] text-fg'
+                      ? 'border-transparent bg-[color-mix(in_oklab,var(--accent)_14%,transparent)] text-fg'
                       : 'border-line text-muted',
                   ]}
                 >

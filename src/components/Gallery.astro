@@ -80,8 +80,7 @@ const count = videos.length + chunks.length;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
+    border: 1.5px solid var(--fg);
     background: var(--surface);
   }
   .gallery-track::-webkit-scrollbar { display: none; }
@@ -98,7 +97,7 @@ const count = videos.length + chunks.length;
     width: 100%;
     aspect-ratio: 16 / 9;
     max-height: min(62vh, 600px);
-    background: color-mix(in oklch, var(--fg) 4%, var(--surface));
+    background: color-mix(in oklab, var(--fg) 4%, var(--surface));
   }
   .gallery-media video {
     position: absolute;
@@ -128,7 +127,6 @@ const count = videos.length + chunks.length;
   .gallery-pair :global(img) {
     height: 100%;
     border: 1px solid var(--line);
-    border-radius: calc(var(--radius) - 6px);
   }
   .gallery-slide figcaption {
     padding: 0.85rem 1rem;
@@ -138,12 +136,12 @@ const count = videos.length + chunks.length;
     color: var(--muted);
   }
   .gallery-controls { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; }
-  .gallery-btn { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
+  .gallery-btn { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 44px; height: 44px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
   .gallery-btn:hover { border-color: var(--muted); }
   .gallery-btn[disabled] { opacity: .35; cursor: default; }
   .gallery-dots { display: flex; justify-content: center; flex-wrap: wrap; }
   .gallery-dots button { display: grid; place-items: center; width: 44px; height: 44px; cursor: pointer; }
-  .gallery-dots button span { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+  .gallery-dots button span { width: 8px; height: 8px; background: var(--muted); }
   .gallery-dots button[aria-pressed='true'] span { background: var(--accent); width: 10px; height: 10px; }
   @media (max-width: 640px) {
     .gallery-media { aspect-ratio: 4 / 3; }
