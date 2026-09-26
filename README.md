@@ -23,7 +23,16 @@ Astro 7 · Tailwind 4 (design tokens via `@theme`) · MDX content collections ·
 ```bash
 npm install
 npm run dev      # astro dev
-npm run build    # site + all CV PDFs into dist/
+npm run build    # site + one PDF per CV role in dist/cv/
 ```
 
 Deploys from `main` via GitHub Actions to GitHub Pages.
+
+## Editing content
+
+- **CV facts:** `src/data/cv.ts`. Every bullet has tags (`lead`, `ai`, `founder`, `freelance`, `laravel`, `frontend`, `perf`) and a weight.
+- **CV versions:** `src/data/roles.ts`. Each role sets its headline, summary, tag priority, bullet counts, section order and links. Adding a role adds `/cv/<slug>/` and `/cv/<slug>.pdf`.
+- **Case studies:** `src/content/work/*.mdx`. Screenshots live in `src/assets/work/`, videos in `public/media/`.
+- **Writing:** `src/content/blog/YYYY-MM-DD-slug.md`, served at `/blog/YYYY/MM/DD/slug/`.
+
+Links from a CV to the portfolio carry `?ref=cv-<role>`, so GA4 shows which version sent the visit.
