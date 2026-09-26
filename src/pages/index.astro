@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import Base from '../layouts/Base.astro';
 import Timeline from '../components/Timeline.astro';
+import Reviews from '../components/Reviews.astro';
 import ProjectPreview from '../components/ProjectPreview.astro';
 import { profile } from '../data/cv';
 import { evidence, type ProjectId } from '../data/evidence';
@@ -102,6 +103,7 @@ const principles = [
   <section id="journey" class="shell section-space experience-section">
     <div class="section-heading fx"><div><p class="eyebrow">Experience</p><h2>Building since 2012.</h2><p class="section-note">From co-founding an agency to leading development and launching my own product.</p></div><a class="text-link" href="/cv/">Full experience & CV <Icon name="ph:arrow-up-right" /></a><a class="text-link" href={`/cv/${defaultRole.slug}.pdf`}>Download PDF <Icon name="ph:download-simple" /></a></div>
     <Timeline />
+    <Reviews />
   </section>
 
   <section id="contact" class="shell section-space contact-section">

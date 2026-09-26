@@ -1,0 +1,85 @@
+---
+/** Client reviews from the freelance era, quoted verbatim from
+ *  khalil.mawaki3.com. Source: the shared freelancer.com profile
+ *  (mondersky) that Mawaki3 delivered through. */
+const reviews = [
+  {
+    quote:
+      'Excellent. Delivered perfect solution, ensured requirements were well understood, asked good questions, excellent technical skills. One of the best freelancers I have had the pleasure to work with.',
+    name: 'Steven G. M.',
+  },
+  {
+    quote:
+      'Very honest guy. Perfect execution on the vision I had. A big, big bonus for actually giving a demo before hiring. Will definitely come back.',
+    name: 'Adam A.',
+  },
+  {
+    quote:
+      'His expertise is top drawer and he is totally focused on the customer being more than satisfied. Very happy with hiring him for all 3 phases of this project, and will hire again.',
+    name: 'Talbot S.',
+  },
+];
+---
+
+<div class="review-strip">
+  {reviews.map((r, i) => (
+    <figure class="review fx" style={`--d:${i * 60}ms`}>
+      <blockquote>{r.quote}</blockquote>
+      <figcaption>{r.name} · freelancer.com</figcaption>
+    </figure>
+  ))}
+  <p class="review-source fx">
+    Client reviews from the freelance years — nearly 300 projects for clients worldwide through Mawaki3’s
+    freelancer.com profile (mondersky), 2012–2018.
+  </p>
+</div>
+
+<style>
+  .review-strip {
+    /* .experience-section is a two-column grid; the strip spans it. */
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+  .review {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 1.4rem 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .review blockquote {
+    flex: 1;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--fg);
+  }
+  .review blockquote::before {
+    content: '“';
+    display: block;
+    font-size: 1.9rem;
+    line-height: 1;
+    color: color-mix(in oklch, var(--accent) 70%, var(--muted));
+    margin-bottom: 0.35rem;
+  }
+  .review figcaption {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  .review-source {
+    grid-column: 1 / -1;
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  @media (max-width: 767px) {
+    .review-strip {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
