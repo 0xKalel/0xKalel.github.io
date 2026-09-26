@@ -2,18 +2,18 @@
 /** RavenClip's pipeline as a diagram: the fork into voice and visual branches,
  *  rejoining at render. Pure SVG on theme tokens. */
 const H = 34;
-type Pill = { x: number; y: number; w: number; label: string; kind?: 'node' | 'end' };
+type Pill = { x: number; y: number; w: number; label: string; kind?: 'node' | 'end'; step: number };
 const pills: Pill[] = [
-  { x: 6, y: 101, w: 88, label: 'News feeds' },
-  { x: 112, y: 101, w: 88, label: 'Context' },
-  { x: 218, y: 101, w: 88, label: 'Script', kind: 'node' },
-  { x: 348, y: 30, w: 88, label: 'Voice' },
-  { x: 454, y: 30, w: 104, label: 'Transcript' },
-  { x: 348, y: 172, w: 88, label: 'Scenes' },
-  { x: 454, y: 172, w: 104, label: 'Assets' },
-  { x: 622, y: 101, w: 92, label: 'Render', kind: 'node' },
-  { x: 732, y: 101, w: 88, label: 'Review' },
-  { x: 838, y: 101, w: 76, label: 'Publish', kind: 'end' },
+  { x: 6, y: 101, w: 88, label: 'News feeds', step: 0 },
+  { x: 112, y: 101, w: 88, label: 'Context', step: 1 },
+  { x: 218, y: 101, w: 88, label: 'Script', kind: 'node', step: 2 },
+  { x: 348, y: 30, w: 88, label: 'Voice', step: 3 },
+  { x: 454, y: 30, w: 104, label: 'Transcript', step: 4 },
+  { x: 348, y: 172, w: 88, label: 'Scenes', step: 3 },
+  { x: 454, y: 172, w: 104, label: 'Assets', step: 4 },
+  { x: 622, y: 101, w: 92, label: 'Render', kind: 'node', step: 5 },
+  { x: 732, y: 101, w: 88, label: 'Review', step: 6 },
+  { x: 838, y: 101, w: 76, label: 'Publish', kind: 'end', step: 7 },
 ];
 const lines = [
   'M94 118 L106 118',
@@ -36,37 +36,37 @@ const chain = (labels: [string, ('node'|'end')?][]) => labels;
   <!-- Mobile: the same pipeline, vertical -->
   <div class="mt-4 sm:hidden">
     <div class="flow-col">
-      <span class="flow-pill">News feeds</span>
+      <span class="flow-pill run-pill" style="--step:0">News feeds</span>
       <span class="flow-arrow" aria-hidden="true">↓</span>
-      <span class="flow-pill">Context</span>
+      <span class="flow-pill run-pill" style="--step:1">Context</span>
       <span class="flow-arrow" aria-hidden="true">↓</span>
-      <span class="flow-pill flow-node">Script</span>
+      <span class="flow-pill flow-node run-pill" style="--step:2">Script</span>
     </div>
     <div class="mt-2 grid grid-cols-2 gap-3">
       <div>
         <p class="mb-1.5 text-center text-[11px] text-muted">voice branch</p>
         <div class="flow-col">
-          <span class="flow-pill">Voice</span>
+          <span class="flow-pill run-pill" style="--step:3">Voice</span>
           <span class="flow-arrow" aria-hidden="true">↓</span>
-          <span class="flow-pill">Transcript</span>
+          <span class="flow-pill run-pill" style="--step:4">Transcript</span>
         </div>
       </div>
       <div>
         <p class="mb-1.5 text-center text-[11px] text-muted">visual branch</p>
         <div class="flow-col">
-          <span class="flow-pill">Scenes</span>
+          <span class="flow-pill run-pill" style="--step:3">Scenes</span>
           <span class="flow-arrow" aria-hidden="true">↓</span>
-          <span class="flow-pill">Assets</span>
+          <span class="flow-pill run-pill" style="--step:4">Assets</span>
         </div>
       </div>
     </div>
     <div class="flow-col mt-2">
       <span class="flow-arrow" aria-hidden="true">↓</span>
-      <span class="flow-pill flow-node">Render</span>
+      <span class="flow-pill flow-node run-pill" style="--step:5">Render</span>
       <span class="flow-arrow" aria-hidden="true">↓</span>
-      <span class="flow-pill">Review</span>
+      <span class="flow-pill run-pill" style="--step:6">Review</span>
       <span class="flow-arrow" aria-hidden="true">↓</span>
-      <span class="flow-pill flow-end">Publish</span>
+      <span class="flow-pill flow-end run-pill" style="--step:7">Publish</span>
     </div>
   </div>
 
@@ -84,6 +84,8 @@ const chain = (labels: [string, ('node'|'end')?][]) => labels;
         pills.map((p) => (
           <g>
             <rect
+              class="run-pill"
+              style={`--step:${p.step}`}
               x={p.x}
               y={p.y}
               width={p.w}
@@ -100,7 +102,7 @@ const chain = (labels: [string, ('node'|'end')?][]) => labels;
     </svg>
   </div>
   <p class="mt-3 text-xs leading-relaxed text-muted">
-    Each stage saves its progress to the database. Processing advances when the next stage is ready, and can resume or retry after a failure.
+    Watch it run: a story enters on the left and a published video leaves on the right, with the voice and visual branches processed in parallel. Each stage saves its progress, so a run can resume or retry after any failure.
   </p>
 </figure>
 
@@ -119,4 +121,22 @@ const chain = (labels: [string, ('node'|'end')?][]) => labels;
   .flow-node { border-color: var(--accent); border-width: 1.5px; }
   .flow-end { background: color-mix(in oklch, var(--accent) 16%, var(--surface)); border-color: var(--accent); }
   .flow-arrow { text-align: center; color: var(--muted); font-size: 0.8rem; line-height: 1.4; }
+
+  /* The autopilot, visualised: stages light up in run order, forever.
+     One slow, motivated loop; removed entirely under reduced motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .run-pill {
+      animation: stage-run 9s calc(var(--step) * 0.55s) infinite;
+    }
+    svg .run-pill { transform-box: fill-box; transform-origin: center; }
+  }
+  @keyframes stage-run {
+    0%, 4% { filter: none; }
+    6%, 12% {
+      stroke: var(--accent);
+      border-color: var(--accent);
+      filter: drop-shadow(0 0 6px color-mix(in oklch, var(--accent) 55%, transparent));
+    }
+    18%, 100% { filter: none; }
+  }
 </style>
