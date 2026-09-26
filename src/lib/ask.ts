@@ -5,10 +5,9 @@ export interface ChatMessage {
   text: string;
 }
 
-// TODO: replace with the real workers.dev URL (or custom route) after `npm run deploy` in worker/.
 export const ASK_ENDPOINT = import.meta.env.DEV
   ? 'http://localhost:8787/chat'
-  : 'https://portfolio-ask.example.workers.dev/chat';
+  : 'https://portfolio-ask.hebachikhalil.workers.dev/chat';
 
 /** Keeps the widget out of production builds until the real endpoint is configured. */
 export const ASK_READY = import.meta.env.DEV || !ASK_ENDPOINT.includes('.example.');
