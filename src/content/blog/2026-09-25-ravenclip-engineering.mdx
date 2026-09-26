@@ -1,0 +1,292 @@
+---
+title: "Building RavenClip: recovery, AI checks, and costs"
+description: "Why I chose persistent stages, what automated checks can prove, and what a hidden provider failure taught me."
+date: 2026-09-25
+updated: 2026-09-26
+tags: [ravenclip, ai-engineering, laravel, reliability]
+---
+
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import PipelineRaven from '../../components/viz/PipelineRaven.astro';
+import scenesShot from '../../assets/work/ravenclip-shot-makes.png';
+import reviewShot from '../../assets/work/ravenclip-shot-review.png';
+
+RavenClip turns news into short videos and publishes them on a schedule. I built and operate it on Laravel, React, a Node/Skia renderer and FFmpeg. The [case study](/work/ravenclip/) covers the product; this post covers the technical choices and their limits.
+
+<div class="post-tldr not-prose">
+  <p class="eyebrow">The short version</p>
+  <ol>
+    <li class="fx"><a href="#persist-progress-where-recovery-matters"><span class="post-tldr-topic"><span>01</span><span>Recovery</span></span><strong>9 s → 2 s</strong><span class="post-tldr-text">Median wait before rendering, once each stage starts the moment the last one finishes.</span></a></li>
+    <li class="fx" style="--d:70ms"><a href="#give-models-a-structure-then-check-the-result"><span class="post-tldr-topic"><span>02</span><span>Prompts</span></span><strong>−15–18%</strong><span class="post-tldr-text">Input tokens per call after replacing a banned-phrase list with three principles.</span></a></li>
+    <li class="fx" style="--d:140ms"><a href="#be-precise-about-what-a-check-proves"><span class="post-tldr-topic"><span>03</span><span>Checks</span></span><strong>Shape, not truth</strong><span class="post-tldr-text">Gates catch drift, bad hooks and length. They cannot confirm that a claim is true.</span></a></li>
+    <li class="fx"><a href="#monitor-the-fallback-path"><span class="post-tldr-topic"><span>04</span><span>Fallback</span></span><strong>25 days</strong><span class="post-tldr-text">A provider sat out of credit while fallback hid it. Monitors now catch this within hours.</span></a></li>
+    <li class="fx" style="--d:70ms"><a href="#record-costs-and-understand-the-omissions"><span class="post-tldr-topic"><span>05</span><span>Costs</span></span><strong>$0.36</strong><span class="post-tldr-text">Recorded API spend per rendered video, 1–25 September 2026.</span></a></li>
+    <li class="fx" style="--d:140ms"><a href="#building-with-ai-and-owning-the-mistakes"><span class="post-tldr-topic"><span>06</span><span>AI agents</span></span><strong>18 hours</strong><span class="post-tldr-text">Scene-asset jobs failed after an agent's bulk edit. Three safeguards followed.</span></a></li>
+  </ol>
+</div>
+
+## Persist progress where recovery matters
+
+Every stage saves its status in the database, so a failure resumes where it stopped instead of paying for the same generation twice. Voice and visuals run in parallel, then meet again at rendering.
+
+<PipelineRaven />
+
+<div class="post-cards not-prose">
+  <div class="card fx">
+    <span class="post-icon"><Icon name="ph:lock-simple" /></span>
+    <h3>One worker per stage</h3>
+    <p>A runner moves forward whatever is ready. A row lock stops two workers from claiming the same stage.</p>
+  </div>
+  <div class="card fx" style="--d:70ms">
+    <span class="post-icon"><Icon name="ph:timer" /></span>
+    <h3>Ordered timeouts</h3>
+    <p>Job timeout, then supervisor timeout, then queue redelivery. Recovery retries a stuck render with the assets it already has.</p>
+  </div>
+  <div class="card fx" style="--d:140ms">
+    <span class="post-icon"><Icon name="ph:seal-check" /></span>
+    <h3>Publish once</h3>
+    <p>State checks plus a unique database constraint: the same video cannot post twice.</p>
+  </div>
+</div>
+
+One measurement corrected me. Starting each stage the moment the previous one finished fixed the median, not the whole delay.
+
+<dl class="post-figures not-prose">
+  <div class="fx"><dt><span class="post-was">9 s →</span> 2 s</dt><dd>Median wait before rendering</dd></div>
+  <div class="fx" style="--d:70ms"><dt>~1 min</dt><dd>Slowest waits, unchanged</dd></div>
+</dl>
+
+<div class="decision-note not-prose">
+  <p class="eyebrow">When I skip it</p>
+  <p>This adds state and recovery paths to maintain. For the short, fixed sequence after a user edits a scene, a simple job chain is still the better choice. The full machinery is for generation that runs unattended and publishes in public.</p>
+</div>
+
+## Give models a structure, then check the result
+
+Outputs are structured and checked against schemas. Each stage gets its own thinking budget: simple sorting does not need the budget of scriptwriting.
+
+```ts
+// One narration beat, as the writer model returns it
+type Beat = {
+  adds: string;        // what new information this line brings; checked, then thrown away
+  contentText: string; // the narration itself
+};
+```
+
+Naming the new information before writing the line pushes the model to say something new every time.
+
+<figure class="post-shot not-prose fx">
+  <Image src={scenesShot} alt="RavenClip scene editor: each scene lists its narration line, its photos and its timing, next to a phone preview of the video" widths={[640, 1100, 1720]} sizes="(max-width: 767px) 100vw, 860px" />
+  <figcaption>Where the beats end up: each scene keeps its narration line, photos and timing, and a user can edit any of it.</figcaption>
+</figure>
+
+<div class="post-principles not-prose">
+  <div class="card post-before fx">
+    <p class="eyebrow">Before</p>
+    <div class="post-before-lines" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <p>A long list of banned phrases. Fixing one phrase just produced a new version of the same problem.</p>
+  </div>
+  <div class="card post-after fx" style="--d:70ms">
+    <p class="eyebrow">After: three principles</p>
+    <dl>
+      <div><dt>True</dt><dd>Use facts from the source.</dd></div>
+      <div><dt>Dense</dt><dd>Add information in each sentence.</dd></div>
+      <div><dt>Spoken</dt><dd>Write words that work read aloud.</dd></div>
+    </dl>
+    <p class="post-after-foot"><span>Plus one example for each recurring failure.</span><span>Input tokens <strong>−15–18%</strong> per call</span></p>
+  </div>
+</div>
+
+Simpler instructions helped, but prompts alone still let some bad output through. That is what the gates are for.
+
+## Be precise about what a check proves
+
+The system ranks drafts by their defects and tells a failed attempt exactly what to fix. A critic's rewrite wins only if it also passes the gates and scores higher.
+
+<div class="post-split not-prose">
+  <div class="card post-yes fx">
+    <p class="post-split-label"><Icon name="ph:check-circle" /> Checked or enforced</p>
+    <ul>
+      <li>The script stays on its subject</li>
+      <li>The hook has the right shape</li>
+      <li>Length and endings fit</li>
+      <li>Later stages keep the approved narration, or fall back to the checked lines</li>
+      <li>On-screen scores, standings and prices come from data sources, not from the model</li>
+    </ul>
+  </div>
+  <div class="card post-no fx" style="--d:70ms">
+    <p class="post-split-label"><Icon name="ph:warning-circle" /> Not proven</p>
+    <ul>
+      <li><strong>That a claim is true.</strong> A false sentence built from words in the source can still pass.</li>
+      <li><strong>Spoken figures.</strong> They are not checked.</li>
+      <li><strong>Non-Latin scripts.</strong> They skip the subject check.</li>
+    </ul>
+  </div>
+</div>
+
+<figure class="post-shot not-prose fx">
+  <Image src={reviewShot} alt="RavenClip publish tab with three options for one video: Auto, Hold and Schedule" widths={[640, 1100, 1720]} sizes="(max-width: 767px) 100vw, 860px" />
+  <figcaption>So customers keep review controls, and flagged videos wait for approval.</figcaption>
+</figure>
+
+## Monitor the fallback path
+
+External calls share one mechanism for retries, key rotation and switching providers. Each task also has its own rule for what a fallback must keep.
+
+<div class="post-split not-prose">
+  <div class="card post-rules fx">
+    <p class="eyebrow">When a call fails</p>
+    <ul>
+      <li><span class="post-trigger">Temporary error</span><Icon name="ph:arrow-right" /><span>A few retries with growing delays</span></li>
+      <li><span class="post-trigger">2 timeouts in a row</span><Icon name="ph:arrow-right" /><span>Switch provider</span></li>
+      <li><span class="post-trigger">Empty balance</span><Icon name="ph:arrow-right" /><span>Shared 30-minute cooldown</span></li>
+    </ul>
+  </div>
+  <div class="card post-rules fx" style="--d:70ms">
+    <p class="eyebrow">What a fallback must keep</p>
+    <ul>
+      <li><span class="post-trigger">Voice</span><Icon name="ph:arrow-right" /><span>The same speaker</span></li>
+      <li><span class="post-trigger">Images</span><Icon name="ph:arrow-right" /><span>The same quality level</span></li>
+      <li><span class="post-trigger">Embeddings</span><Icon name="ph:arrow-right" /><span>Never mixed: their outputs do not compare</span></li>
+    </ul>
+  </div>
+</div>
+
+Checking only whether videos finished hid one failure for weeks.
+
+<aside class="post-incident card not-prose fx">
+  <div class="post-incident-head">
+    <span class="post-icon"><Icon name="ph:detective" /></span>
+    <div>
+      <p class="eyebrow">Production incident</p>
+      <p class="post-incident-title">A provider ran out of credit, and fallback hid it for 25 days</p>
+    </div>
+  </div>
+  <dl class="post-figures">
+    <div><dt>25 days</dt><dd>provider out of credit</dd></div>
+    <div><dt>8,162</dt><dd>calls quietly moved to another service</dd></div>
+    <div><dt>≈3.16×</dt><dd>the price per call</dd></div>
+    <div><dt>$11–15</dt><dd>extra spend</dd></div>
+  </dl>
+  <div class="post-meter">
+    <p class="post-meter-title">Price per call</p>
+    <div class="post-meter-row"><span>Primary</span><span><span class="post-meter-bar grow-bar" style="--w:27.8%"></span><b>1×</b></span></div>
+    <div class="post-meter-row"><span>Fallback</span><span><span class="post-meter-bar is-accent grow-bar" style="--w:88%"></span><b>≈3.16×</b></span></div>
+  </div>
+  <p class="post-incident-lesson">The extra spend was small. The lesson was the missing visibility, not the money.</p>
+  <div class="post-incident-foot">
+    <p class="eyebrow">The fix</p>
+    <ol class="post-fix">
+      <li>Classify failures, and check provider health every thirty minutes.</li>
+      <li>Read balances where an API exists; estimate remaining credit from recorded spend where it does not.</li>
+      <li>Run a daily check outside the queue, so it reports even when a worker is down.</li>
+    </ol>
+    <p class="post-outcome"><Icon name="ph:check-circle" /> The monitors have since caught two prepaid-credit incidents within hours.</p>
+  </div>
+</aside>
+
+## Record costs and understand the omissions
+
+Billable calls are recorded before the output is validated, because an unusable answer can still cost money. Each entry keeps the rate that applied at the time, and replaced attempts keep their cost rows.
+
+<figure class="post-cost card not-prose fx">
+  <figcaption>
+    <span class="post-cost-total">≈ $0.45</span>
+    <span class="post-cost-caption">per rendered video, with a share of infrastructure added</span>
+  </figcaption>
+  <div class="post-stack" aria-hidden="true"><span class="grow-bar" style="--f:36"></span><span class="grow-bar" style="--f:9"></span></div>
+  <div class="post-legend">
+    <p><strong>$0.36</strong> recorded API spend</p>
+    <p><strong>≈ $0.09</strong> infrastructure share</p>
+  </div>
+  <dl class="post-cost-basis">
+    <div><dt>Period</dt><dd>1–25 September 2026</dd></div>
+    <div><dt>Recorded API spend</dt><dd>$66.59</dd></div>
+    <div><dt>Rendered videos</dt><dd>183</dd></div>
+  </dl>
+  <p class="post-cost-excluded"><span>Not included</span><span class="stack-chip">Payment fees</span><span class="stack-chip">My time</span><span class="stack-chip">Same-key retries, not fully priced apart</span></p>
+</figure>
+
+<div class="post-cards is-2 not-prose">
+  <div class="card fx">
+    <span class="post-icon"><Icon name="ph:magnifying-glass" /></span>
+    <h3>Code-scanning test</h3>
+    <p>Finds paid integrations with no cost recording. It proves the recording exists, not that the price is right.</p>
+  </div>
+  <div class="card fx" style="--d:70ms">
+    <span class="post-icon"><Icon name="ph:calendar-check" /></span>
+    <h3>Daily audit</h3>
+    <p>Checks for missing prices and for differences from what providers report.</p>
+  </div>
+</div>
+
+Caching also needs enough traffic to pay off.
+
+<div class="card post-rules post-solo not-prose fx">
+  <p class="eyebrow">Caching, by call type</p>
+  <ul>
+    <li><span class="post-trigger">Enrichment</span><Icon name="ph:arrow-right" /><span>Frequent: provider cache hits</span></li>
+    <li><span class="post-trigger">Scene direction</span><Icon name="ph:arrow-right" /><span>Too rare to keep a cache warm, so I cut prompt size instead and left caching until volume justifies it</span></li>
+  </ul>
+</div>
+
+## Building with AI and owning the mistakes
+
+<div class="post-split not-prose">
+  <div class="card fx">
+    <p class="post-split-label"><Icon name="ph:robot" /> Coding agents</p>
+    <p class="post-chips"><span class="stack-chip">Build</span><span class="stack-chip">Investigate</span><span class="stack-chip">Test</span></p>
+  </div>
+  <div class="card fx" style="--d:70ms">
+    <p class="post-split-label"><Icon name="ph:compass" /> Under my direction</p>
+    <p class="post-chips"><span class="stack-chip">Product scope</span><span class="stack-chip">Pricing</span><span class="stack-chip">Architecture</span></p>
+  </div>
+</div>
+
+My session records include corrections to both code and business proposals, down to which features belong in paid plans. Agents still make mistakes that reach production.
+
+<aside class="post-incident card not-prose fx">
+  <div class="post-incident-head">
+    <span class="post-icon"><Icon name="ph:bug" /></span>
+    <div>
+      <p class="eyebrow">Production incident · 2 September 2026</p>
+      <p class="post-incident-title">One bulk edit, eighteen hours of failed jobs</p>
+    </div>
+  </div>
+  <ol class="post-timeline">
+    <li>An agent's bulk edit put code above the PHP opening tag.</li>
+    <li>The tests it chose never loaded that file. The change merged and deployed.</li>
+    <li class="is-hit"><b>Scene-asset jobs failed for about eighteen hours.</b> Three videos stalled.</li>
+    <li>A reviewer's email surfaced the problem before my monitoring did.</li>
+    <li>After the fix, the three videos recovered.</li>
+  </ol>
+  <div class="post-incident-foot">
+    <p class="eyebrow">Safeguards added</p>
+    <ol class="post-fix">
+      <li>A test that every PHP file parses.</li>
+      <li>A deploy step that stops before database changes if syntax is broken.</li>
+      <li>A second review before merges.</li>
+    </ol>
+    <p class="post-incident-lesson">Those are real safeguards. Asking a tool to be more careful is not.</p>
+  </div>
+</aside>
+
+<dl class="post-figures not-prose">
+  <div class="fx"><dt>23</dt><dd>stale or leaking tests, collected after I removed CI to speed up releases, cleaned on 25 September</dd></div>
+  <div class="fx" style="--d:70ms"><dt>~1,300</dt><dd>test definitions: a measure of coverage, not the absence of bugs</dd></div>
+</dl>
+
+Next time I would keep a small syntax-and-smoke check from day one. The useful question is which failure paths are checked, and what happens when a check misses.
+
+## Keep the next improvement grounded
+
+<div class="post-next not-prose">
+  <ol class="process-grid">
+    <li><span class="process-number">01</span><h3>Keep the raw data</h3><p>Store the data behind each measurement, not just the result.</p></li>
+    <li><span class="process-number">02</span><h3>Keep incident evidence</h3><p>Hold it past short log windows.</p></li>
+    <li><span class="process-number">03</span><h3>Close the cost gaps</h3><p>Finish the cost accounting, including retries on the same key.</p></li>
+  </ol>
+</div>
+
+RavenClip is an early product with three paying customers as of 26 September 2026. Running it shows me which abstractions help and which assumptions need another look. The [case study](/work/ravenclip/) tells the product side.

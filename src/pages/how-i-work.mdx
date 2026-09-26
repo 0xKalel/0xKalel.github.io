@@ -4,30 +4,125 @@ title: How I turn priorities into software
 description: Start with the business problem. Pick a useful scope. Stay responsible through delivery and production use.
 ---
 
+import { Icon } from 'astro-icon/components';
+
 ## Decide what matters now
 
-I ask what needs to change, who depends on it, and what a useful first result looks like. Then I split what is needed now from what can wait, and cut the work into releases that each deliver a complete, usable workflow.
+<figure class="post-flow card not-prose fx">
+  <ol>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:target" /></span><strong>Ask</strong><span>What needs to change, who depends on it, and what a useful first result looks like.</span></li>
+    <li class="post-flow-link"><Icon name="ph:arrow-right" /></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:scales" /></span><strong>Split</strong><span>What is needed now from what can wait.</span></li>
+    <li class="post-flow-link"><Icon name="ph:arrow-right" /></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:package" /></span><strong>Release</strong><span>Cut the work into releases that each deliver a complete, usable workflow.</span></li>
+  </ol>
+</figure>
 
-For RavenClip, that meant [unattended publishing first](/work/ravenclip/#start-with-a-complete-workflow), then reshaping the product around its paying customers. At StoragePal, I started with the operations screens, because staff needed them every day.
+<div class="post-cards is-2 not-prose">
+  <div class="card fx post-decision">
+    <p class="eyebrow">RavenClip</p>
+    <h3>Unattended publishing first</h3>
+    <p>Then I reshaped the product around its paying customers.</p>
+    <p class="post-more">[See the decision](/work/ravenclip/#start-with-a-complete-workflow)</p>
+  </div>
+  <div class="card fx post-decision" style="--d:70ms">
+    <p class="eyebrow">StoragePal</p>
+    <h3>Operations screens first</h3>
+    <p>Staff needed them every day.</p>
+    <p class="post-more">[See the decision](/work/storagepal/#start-where-staff-were-blocked)</p>
+  </div>
+</div>
 
 ## Make the technical choices fit the context
 
-I weigh performance, data correctness, failure recovery, and the cost of maintaining the system. A pattern has to solve a problem we actually have.
+<div class="post-group not-prose">
+  <p class="eyebrow">What I weigh</p>
+  <ul class="post-pills">
+    <li><Icon name="ph:gauge" />Performance</li>
+    <li><Icon name="ph:database" />Data correctness</li>
+    <li><Icon name="ph:arrow-counter-clockwise" />Failure recovery</li>
+    <li><Icon name="ph:wrench" />Cost of maintaining the system</li>
+  </ul>
+</div>
 
-At StoragePal, shared catalog data can be cached, but [each customer's cart stays separate](/work/storagepal/#cache-what-customers-share). For SPS, I [removed offline support](/work/sps/#remove-complexity-the-warehouse-does-not-need) once I knew every warehouse had internet. Less code to maintain mattered more than scanning without a connection.
+A pattern has to solve a problem we actually have.
+
+<div class="post-cards is-2 not-prose">
+  <div class="card fx post-decision">
+    <p class="eyebrow">StoragePal</p>
+    <h3>Cache what customers share</h3>
+    <p>Shared catalog data can be cached, but each customer's cart stays separate.</p>
+    <p class="post-more">[See the decision](/work/storagepal/#cache-what-customers-share)</p>
+  </div>
+  <div class="card fx post-decision" style="--d:70ms">
+    <p class="eyebrow">SPS</p>
+    <h3>Remove offline support</h3>
+    <p>Every warehouse had internet. Less code to maintain mattered more than scanning without a connection.</p>
+    <p class="post-more">[See the decision](/work/sps/#remove-complexity-the-warehouse-does-not-need)</p>
+  </div>
+</div>
 
 ## Use AI with clear responsibility
 
-AI helps me build, investigate, and test scoped changes. Priorities, pricing, architecture, and acceptance stay my responsibility. I write down constraints, challenge proposals, and ask for proof that the result works.
+<div class="post-split not-prose">
+  <div class="card fx">
+    <p class="post-split-label"><Icon name="ph:robot" /> AI helps me</p>
+    <p class="post-chips"><span class="stack-chip">Build</span><span class="stack-chip">Investigate</span><span class="stack-chip">Test scoped changes</span></p>
+  </div>
+  <div class="card fx" style="--d:70ms">
+    <p class="post-split-label"><Icon name="ph:compass" /> Stays my responsibility</p>
+    <p class="post-chips"><span class="stack-chip">Priorities</span><span class="stack-chip">Pricing</span><span class="stack-chip">Architecture</span><span class="stack-chip">Acceptance</span></p>
+  </div>
+</div>
 
-That includes learning from failures. An AI-assisted bulk edit once reached RavenClip production with a syntax error. I added a check that PHP files parse, and a deploy step that stops before database changes if syntax is broken.
+<div class="post-group not-prose">
+  <p class="eyebrow">On every change</p>
+  <ol class="post-chain">
+    <li><span>Write down constraints</span></li>
+    <li><span>Challenge proposals</span></li>
+    <li><span>Ask for proof that the result works</span></li>
+  </ol>
+</div>
 
-[Read the incident and what changed](/blog/2026/09/25/ravenclip-engineering/#building-with-ai-and-owning-the-mistakes).
+<aside class="post-incident card not-prose fx">
+  <div class="post-incident-head">
+    <span class="post-icon"><Icon name="ph:bug" /></span>
+    <div>
+      <p class="eyebrow">Learning from failures</p>
+      <p class="post-incident-title">An AI-assisted bulk edit once reached RavenClip production with a syntax error</p>
+    </div>
+  </div>
+  <div class="post-incident-foot">
+    <p class="eyebrow">What I added</p>
+    <ol class="post-fix">
+      <li>A check that PHP files parse.</li>
+      <li>A deploy step that stops before database changes if syntax is broken.</li>
+    </ol>
+    <p class="post-more">[Read the incident and what changed](/blog/2026/09/25/ravenclip-engineering/#building-with-ai-and-owning-the-mistakes)</p>
+  </div>
+</aside>
 
 ## Keep the team informed and follow the result
 
-I make decisions, progress, and problems visible. Specs and notes give the team enough context to carry work forward, and I stay involved after release.
+<div class="post-split not-prose">
+  <div class="card fx">
+    <p class="post-split-label"><Icon name="ph:megaphone" /> During the work</p>
+    <p class="post-chips"><span class="stack-chip">Decisions</span><span class="stack-chip">Progress</span><span class="stack-chip">Problems</span></p>
+    <p class="post-split-note">I make them visible. Specs and notes give the team enough context to carry work forward.</p>
+  </div>
+  <div class="card fx" style="--d:70ms">
+    <p class="post-split-label"><Icon name="ph:chart-line-up" /> After release</p>
+    <p class="post-chips"><span class="stack-chip">Errors</span><span class="stack-chip">Staff feedback</span><span class="stack-chip">Costs</span><span class="stack-chip">Real use</span></p>
+    <p class="post-split-note">I stay involved, and these decide what to improve next.</p>
+  </div>
+</div>
 
-Errors, staff feedback, costs, and real use decide what to improve next. When the evidence changes, I change the plan.
+<div class="decision-note not-prose">
+  <p class="eyebrow">The rule</p>
+  <p>When the evidence changes, I change the plan.</p>
+</div>
 
-Have a product to build or a system that needs attention? [Tell me what needs to change](mailto:hebachikhalil@gmail.com).
+<div class="post-cta card not-prose fx">
+  <p>Have a product to build or a system that needs attention?</p>
+  <a class="btn btn-primary" href="mailto:hebachikhalil@gmail.com">Tell me what needs to change</a>
+</div>
