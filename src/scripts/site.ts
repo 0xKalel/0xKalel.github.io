@@ -177,6 +177,44 @@ function copyEmail() {
   });
 }
 
+function galleries() {
+  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((g) => {
+    const track = g.querySelector<HTMLElement>('[data-gallery-track]');
+    const slides = [...g.querySelectorAll<HTMLElement>('[data-gallery-slide]')];
+    const dots = [...g.querySelectorAll<HTMLButtonElement>('[data-gallery-dot]')];
+    const prev = g.querySelector<HTMLButtonElement>('[data-gallery-prev]');
+    const next = g.querySelector<HTMLButtonElement>('[data-gallery-next]');
+    if (!track || slides.length < 2) return;
+    let index = 0;
+    const setActive = (i: number) => {
+      index = i;
+      dots.forEach((d, n) => d.setAttribute('aria-selected', String(n === i)));
+      if (prev) prev.disabled = i === 0;
+      if (next) next.disabled = i === slides.length - 1;
+      // Pause any playing video that scrolled away.
+      slides.forEach((sl, n) => { if (n !== i) sl.querySelector('video')?.pause(); });
+    };
+    const goTo = (i: number) => {
+      const target = Math.max(0, Math.min(slides.length - 1, i));
+      track.scrollTo({ left: slides[target].offsetLeft, behavior: 'smooth' });
+    };
+    const io = new IntersectionObserver(
+      (es) => es.forEach((e) => { if (e.isIntersecting) setActive(slides.indexOf(e.target as HTMLElement)); }),
+      { root: track, threshold: 0.6 },
+    );
+    slides.forEach((sl) => io.observe(sl));
+    cleanups.push(() => io.disconnect());
+    if (prev) listen(prev, 'click', () => goTo(index - 1));
+    if (next) listen(next, 'click', () => goTo(index + 1));
+    dots.forEach((d, n) => listen(d, 'click', () => goTo(n)));
+    listen(track, 'keydown', (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); goTo(index + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(index - 1); }
+    });
+    setActive(0);
+  });
+}
+
 function init() {
   cleanup();
   reveals();
@@ -186,6 +224,7 @@ function init() {
   menu();
   theme();
   copyEmail();
+  galleries();
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
   listen(preference, 'change', init);
 }

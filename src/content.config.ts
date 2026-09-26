@@ -16,6 +16,7 @@ const work = defineCollection({
       metrics: z.array(z.object({ value: z.string(), label: z.string() })),
       shots: z.array(z.object({ src: image(), alt: z.string() })).default([]),
       video: z.object({ src: z.string(), poster: z.string() }).optional(),
+      videos: z.array(z.object({ src: z.string(), poster: z.string(), caption: z.string() })).default([]),
     }),
 });
 
