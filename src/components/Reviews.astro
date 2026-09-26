@@ -1,8 +1,74 @@
 ---
-/** Client reviews from the freelance era, quoted verbatim from
- *  khalil.mawaki3.com. Source: the shared freelancer.com profile
- *  (mondersky) that Mawaki3 delivered through. */
-const reviews = [
+/** Third-party voices: LinkedIn recommendations (quoted from public
+ *  profiles, trimmed) and freelancer.com client reviews quoted verbatim
+ *  from khalil.mawaki3.com. Avatars are served locally because LinkedIn
+ *  media URLs expire. */
+import { Image } from 'astro:assets';
+import jesse from '../assets/reviews/jesse.jpg';
+import med from '../assets/reviews/med.jpg';
+import fateh from '../assets/reviews/fateh.jpg';
+import richard from '../assets/reviews/richard.jpg';
+import zach from '../assets/reviews/zach.jpg';
+
+const linkedin = [
+  {
+    quote:
+      'One of the best people I’ve ever worked with. I just write a few lines or share a quick prototype, and Khalil immediately gets it. We skip long documents and unnecessary meetings, which makes us truly agile and able to move fast.',
+    name: 'Jesse Bouman',
+    role: 'Strategic Partnerships · former Google',
+    tag: 'Works with Khalil at StoragePal · Dec 2025',
+    href: 'https://www.linkedin.com/in/jessebouman/',
+    avatar: jesse,
+  },
+  {
+    quote:
+      'We have worked together for a number of years on a large project. Khalil has always been very attentive and fast to respond to design changes and issues. Would highly recommend him and his team.',
+    name: 'Richard Harvey',
+    role: 'IT Director, Black and Yellow Ltd',
+    tag: 'Khalil’s manager · Jun 2022',
+    href: 'https://www.linkedin.com/in/richard-harvey/',
+    avatar: richard,
+  },
+  {
+    quote:
+      'Khalil has been and will always be one of the biggest influences in my career. As a mentor, Khalil brought the best out of everyone under his wing.',
+    name: 'Zach Rachedi',
+    role: 'Senior Product Engineer, IDnow',
+    tag: 'Reported to Khalil · Jun 2022',
+    href: 'https://www.linkedin.com/in/zach-rachedi/',
+    avatar: zach,
+  },
+  {
+    quote:
+      'I never saw him fail to deliver, no matter the tech stack or the complexity of the situation. Every company or client I saw hire him ended up extending his contracts.',
+    name: 'Med Rezzag',
+    role: 'Senior Web Developer',
+    tag: 'Worked under Khalil for two years · Jun 2025',
+    href: 'https://www.linkedin.com/in/algerian/',
+    avatar: med,
+  },
+  {
+    quote:
+      'Ce qui définit Khalil, c’est sa remarquable clairvoyance en tant qu’architecte logiciel. Je recommande Khalil sans la moindre hésitation.',
+    name: 'Fateh Hadjarsi',
+    role: 'Frontend & 3D developer',
+    tag: 'Worked under Khalil on Web3 projects · Jun 2025',
+    href: 'https://www.linkedin.com/in/fateh-h/',
+    avatar: fateh,
+    lang: 'fr',
+  },
+  {
+    quote:
+      'His technical proficiency in both front-end and back-end development surpassed expectations. Khalil’s teamwork, work ethic, and attention to detail shone throughout our collaboration.',
+    name: 'Imran Saleem',
+    role: 'Full-stack developer',
+    tag: 'Worked with Khalil at Singularity Creations · Apr 2024',
+    href: 'https://www.linkedin.com/in/imran-saleem-396797a6/',
+    avatar: null,
+  },
+];
+
+const freelance = [
   {
     quote:
       'Excellent. Delivered perfect solution, ensured requirements were well understood, asked good questions, excellent technical skills. One of the best freelancers I have had the pleasure to work with.',
@@ -19,18 +85,37 @@ const reviews = [
     name: 'Talbot S.',
   },
 ];
+
+const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).join('');
 ---
 
 <div class="review-strip">
-  {reviews.map((r, i) => (
+  {linkedin.map((r, i) => (
+    <figure class="review fx" style={`--d:${(i % 3) * 60}ms`}>
+      <div class="review-head">
+        {r.avatar ? (
+          <Image src={r.avatar} alt="" widths={[80]} sizes="40px" class="review-avatar" />
+        ) : (
+          <span class="review-avatar review-monogram" aria-hidden="true">{initials(r.name)}</span>
+        )}
+        <div>
+          <a class="review-name" href={r.href} rel="noopener">{r.name}</a>
+          <p class="review-role">{r.role}</p>
+        </div>
+      </div>
+      <blockquote lang={r.lang}>{r.quote}</blockquote>
+      <figcaption>{r.tag} · LinkedIn</figcaption>
+    </figure>
+  ))}
+  {freelance.map((r, i) => (
     <figure class="review fx" style={`--d:${i * 60}ms`}>
       <blockquote>{r.quote}</blockquote>
       <figcaption>{r.name} · freelancer.com</figcaption>
     </figure>
   ))}
   <p class="review-source fx">
-    Client reviews from the freelance years — nearly 300 projects for clients worldwide through Mawaki3’s
-    freelancer.com profile (mondersky), 2012–2018.
+    Recommendations from LinkedIn, and client reviews from the freelance years — nearly 300 projects for
+    clients worldwide through Mawaki3’s freelancer.com profile (mondersky), 2012–2018.
   </p>
 </div>
 
@@ -53,13 +138,49 @@ const reviews = [
     border-radius: var(--radius);
     background: var(--surface);
   }
+  .review-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .review-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    flex: none;
+  }
+  .review-monogram {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted);
+    background: color-mix(in oklch, var(--fg) 6%, var(--surface));
+    border: 1px solid var(--line);
+  }
+  .review-name {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--fg);
+  }
+  .review-name:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .review-role {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.1rem;
+  }
   .review blockquote {
     flex: 1;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     line-height: 1.65;
     color: var(--fg);
   }
-  .review blockquote::before {
+  .review > blockquote:first-child::before {
     content: '“';
     display: block;
     font-size: 1.9rem;
@@ -68,8 +189,9 @@ const reviews = [
     margin-bottom: 0.35rem;
   }
   .review figcaption {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     color: var(--muted);
+    line-height: 1.5;
   }
   .review-source {
     grid-column: 1 / -1;
