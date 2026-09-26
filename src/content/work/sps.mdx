@@ -22,58 +22,157 @@ shots:
   - src: ../../assets/work/sps-04-moveout-photo.png
     alt: Photograph items before return
 ---
-import Cards from '../../components/viz/Cards.astro';
+
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import Weekdays from '../../components/viz/Weekdays.astro';
+import scan from '../../assets/work/sps-01-movein-scan.png';
+import order from '../../assets/work/sps-02-change-order.png';
+import bay from '../../assets/work/sps-03-bay-move.png';
+import photo from '../../assets/work/sps-04-moveout-photo.png';
 import { evidence } from '../../data/evidence';
+
+<div class="post-tldr not-prose">
+  <p class="eyebrow">The short version</p>
+  <ol>
+    <li class="fx"><a href="#connect-the-booking-to-the-warehouse-floor"><span class="post-tldr-topic"><span>01</span><span>Workflow</span></span><strong>4 steps</strong><span class="post-tldr-text">Receive, check, locate, and return items, all from a phone.</span></a></li>
+    <li class="fx" style="--d:70ms"><a href="#remove-complexity-the-warehouse-does-not-need"><span class="post-tldr-topic"><span>02</span><span>Scope</span></span><strong>Online only</strong><span class="post-tldr-text">I removed offline mode before daily use. Much less code to maintain.</span></a></li>
+    <li class="fx" style="--d:140ms"><a href="#make-a-retry-understandable"><span class="post-tldr-topic"><span>03</span><span>Retries</span></span><strong>Saved result</strong><span class="post-tldr-text">A repeated completion returns the first result instead of running again.</span></a></li>
+    <li class="fx"><a href="#keep-work-moving-across-system-boundaries"><span class="post-tldr-topic"><span>04</span><span>Labels</span></span><strong>Label now</strong><span class="post-tldr-text">Staff label items before approval. SPS checks its guess afterward.</span></a></li>
+    <li class="fx" style="--d:70ms"><a href="#check-the-behaviors-that-matter"><span class="post-tldr-topic"><span>05</span><span>Daily use</span></span><strong>{evidence.sps.weekdays}</strong><span class="post-tldr-text">Weekdays with a completed scan session, 13 April - 25 September 2026.</span></a></li>
+    <li class="fx" style="--d:140ms"><a href="#check-the-behaviors-that-matter"><span class="post-tldr-topic"><span>06</span><span>Reliability</span></span><strong>1,175 / 1,187</strong><span class="post-tldr-text">Push jobs that worked on the first try, 28 June - 26 September. The rest worked on a retry.</span></a></li>
+  </ol>
+</div>
 
 ## Connect the booking to the warehouse floor
 
-Before SPS, staff sorted out booking differences over email, and item locations were not always recorded. I built the app that compares what arrives with the booking, records condition and location, and prepares returns for approval.
+Before SPS, staff sorted out booking differences over email, and item locations were not always recorded. SPS puts the whole flow on a phone.
 
-I built it end to end, from first commit to production. I also maintain the StoragePal platform it connects to, so the integration and the warehouse workflow are both mine to keep working.
+<div class="post-screens not-prose">
+  <figure class="fx"><div class="post-screen-img"><Image src={scan} alt="SPS receiving screen: scan arriving items and check them against the booking" widths={[240, 480]} sizes="(min-width: 768px) 200px, 45vw" /></div><figcaption><strong>Receive</strong><span>Scan arriving items and compare them with the booking.</span></figcaption></figure>
+  <figure class="fx" style="--d:70ms"><div class="post-screen-img"><Image src={order} alt="SPS screen listing the differences between a booking and the received items" widths={[240, 480]} sizes="(min-width: 768px) 200px, 45vw" /></div><figcaption><strong>Check</strong><span>Review differences between the booking and what arrived.</span></figcaption></figure>
+  <figure class="fx" style="--d:140ms"><div class="post-screen-img"><Image src={bay} alt="SPS screen recording the warehouse bay of an item" widths={[240, 480]} sizes="(min-width: 768px) 200px, 45vw" /></div><figcaption><strong>Locate</strong><span>Record the bay, with a history of every placement and move.</span></figcaption></figure>
+  <figure class="fx" style="--d:210ms"><div class="post-screen-img"><Image src={photo} alt="SPS return screen with photos of the items before they leave" widths={[240, 480]} sizes="(min-width: 768px) 200px, 45vw" /></div><figcaption><strong>Return</strong><span>Scan and photograph items, then approve the return or restore their locations.</span></figcaption></figure>
+</div>
 
-<Cards cols={3} items={[
-  { icon: 'ph:barcode', title: 'Receive', text: 'Scan arriving items. Compare them with the booking and flag differences.' },
-  { icon: 'ph:squares-four', title: 'Locate', text: 'Record the bay and keep a history of placements, moves, and returns.' },
-  { icon: 'ph:camera', title: 'Return', text: 'Scan and photograph items, then approve the return or restore their locations.' },
-]} />
+I built SPS end to end, from first commit to production. I also maintain the StoragePal platform it connects to, so both sides of the integration are mine to keep working.
 
 ## Remove complexity the warehouse does not need
 
-An earlier version worked offline. But every warehouse already had internet, and offline state was a lot of extra code to maintain next to the main StoragePal platform.
+An earlier version worked offline. But every warehouse already had internet, and offline support was a lot of extra code to maintain.
 
-I removed offline support before daily production use began. Scanning now needs a connection. Sessions live on the server and survive a page reload, but the app does not queue offline writes.
+<div class="post-principles not-prose">
+  <div class="card post-before fx">
+    <p class="eyebrow">Before: offline mode</p>
+    <div class="post-before-lines" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <p>Extra offline state to maintain, next to the main StoragePal platform.</p>
+  </div>
+  <div class="card post-after fx" style="--d:70ms">
+    <p class="eyebrow">After: online only</p>
+    <dl>
+      <div><dt>Online</dt><dd>Scanning needs a connection</dd></div>
+      <div><dt>Saved</dt><dd>Sessions live on the server and survive a reload</dd></div>
+      <div><dt>Smaller</dt><dd>Much less code to maintain</dd></div>
+    </dl>
+    <p class="post-after-foot"><span>Removed before daily production use began.</span></p>
+  </div>
+</div>
 
-The result is a clear limit, and a much smaller system to maintain.
+The app does not queue offline writes. The result is a clear limit, and a much smaller system to maintain.
 
 ## Make a retry understandable
 
-In one production incident, a completion succeeded on the server but the phone never got the response. Staff retried, got errors, and thought the scan had failed.
-
-Now a repeated completion from the same user returns the saved result instead of running again. A regression test covers it.
-
-One change fixed two problems: the double processing, and the confusing errors after a lost response.
+<aside class="post-incident card not-prose fx">
+  <div class="post-incident-head">
+    <span class="post-icon"><Icon name="ph:wifi-slash" /></span>
+    <div>
+      <p class="eyebrow">Production incident</p>
+      <p class="post-incident-title">The scan worked, but the phone never heard back</p>
+    </div>
+  </div>
+  <ol class="post-timeline">
+    <li>Staff complete a scan session. The server saves it.</li>
+    <li>The response never reaches the phone.</li>
+    <li class="is-hit"><b>Staff retry, get errors, and think the scan failed.</b></li>
+  </ol>
+  <div class="post-incident-foot">
+    <p class="eyebrow">The fix</p>
+    <ol class="post-fix">
+      <li>A repeated completion from the same user returns the saved result instead of running again.</li>
+      <li>A test covers this case.</li>
+    </ol>
+    <p class="post-outcome"><Icon name="ph:check-circle" /> One change fixed two problems: the double processing, and the confusing errors.</p>
+  </div>
+</aside>
 
 ## Keep work moving across system boundaries
 
-StoragePal owns orders and article IDs. SPS owns scan sessions, photos, and bay history. Staff sometimes need to print a label before StoragePal has approved a change.
+Each system owns its own data. Staff sometimes need to print a label before StoragePal approves a change, and SPS does not make them wait.
 
-SPS predicts the ID so staff can label and place the item right away. After approval, it checks the prediction against StoragePal's answer. If the prediction was wrong, the item is flagged for a new label.
+<div class="post-split not-prose">
+  <div class="card fx">
+    <p class="post-split-label"><Icon name="ph:storefront" /> StoragePal owns</p>
+    <p class="post-chips"><span class="stack-chip">Orders</span><span class="stack-chip">Article IDs</span></p>
+  </div>
+  <div class="card fx" style="--d:70ms">
+    <p class="post-split-label"><Icon name="ph:barcode" /> SPS owns</p>
+    <p class="post-chips"><span class="stack-chip">Scan sessions</span><span class="stack-chip">Photos</span><span class="stack-chip">Bay history</span></p>
+  </div>
+</div>
+
+<figure class="post-flow card not-prose fx">
+  <ol>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:magic-wand" /></span><strong>Predict</strong><span>SPS predicts the article ID.</span></li>
+    <li class="post-flow-link"><Icon name="ph:arrow-right" /></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:tag" /></span><strong>Label</strong><span>Staff label and place the item right away.</span></li>
+    <li class="post-flow-link"><Icon name="ph:arrow-right" /></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:check-square" /></span><strong>Confirm</strong><span>After approval, SPS checks its guess against StoragePal.</span></li>
+    <li class="post-flow-link"><Icon name="ph:arrow-right" /></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:flag" /></span><strong>Fix</strong><span>A wrong guess flags the item for a new label.</span></li>
+  </ol>
+</figure>
 
 Staff keep moving, and the rare wrong guess becomes a small correction later.
 
 ## Check the behaviors that matter
 
-Tests cover repeated completion, duplicate approval, rejected returns restoring locations, and cancelled bay sessions rolling back.
+Tests cover the cases that would hurt most on the warehouse floor.
 
-Daily use shaped the details: one-tap verification, a less prominent Cancel button, and name search that accepts either word order.
+<ul class="post-pills not-prose">
+  <li><Icon name="ph:check-circle" />Repeated completion</li>
+  <li><Icon name="ph:check-circle" />Duplicate approval</li>
+  <li><Icon name="ph:check-circle" />Rejected returns restore locations</li>
+  <li><Icon name="ph:check-circle" />Cancelled bay sessions roll back</li>
+</ul>
 
-From 13 April to 25 September 2026, staff completed **{evidence.sps.sessions} scanning sessions**, with sessions on **all 120 weekdays**. The records include **{evidence.sps.verifications} item verifications** and **{evidence.sps.bayChanges} bay changes**, of which **{evidence.sps.bayMoves} were moves between bays**. These counts are workflow events, and they show steady daily use.
+Daily use shaped the small details.
+
+<div class="post-cards not-prose">
+  <div class="card fx"><span class="post-icon"><Icon name="ph:hand-tap" /></span><h3>One-tap verification</h3><p>Checking an item takes a single tap.</p></div>
+  <div class="card fx" style="--d:70ms"><span class="post-icon"><Icon name="ph:x-circle" /></span><h3>A quieter Cancel</h3><p>The Cancel button is less prominent.</p></div>
+  <div class="card fx" style="--d:140ms"><span class="post-icon"><Icon name="ph:magnifying-glass" /></span><h3>Flexible name search</h3><p>First name or last name first: both work.</p></div>
+</div>
+
+Staff used SPS on all 120 weekdays from 13 April to 25 September 2026.
+
+<Weekdays class="not-prose fx my-10" />
+
+<dl class="post-figures not-prose">
+  <div class="fx"><dt>{evidence.sps.sessions}</dt><dd>completed scanning sessions</dd></div>
+  <div class="fx" style="--d:70ms"><dt>{evidence.sps.verifications}</dt><dd>item verifications</dd></div>
+  <div class="fx" style="--d:140ms"><dt>{evidence.sps.bayChanges}</dt><dd>bay changes, {evidence.sps.bayMoves} of them moves between bays</dd></div>
+</dl>
+
+These counts are workflow events from the same period. They show steady daily use.
+
+<dl class="post-figures not-prose">
+  <div class="fx"><dt>1,175 / 1,187</dt><dd>push jobs worked on the first try, 28 June - 26 September. The other 12 worked on a retry, 3 seconds to 10 minutes later.</dd></div>
+  <div class="fx" style="--d:70ms"><dt>2,047 / 2,200</dt><dd>hourly pulls finished without a recorded failed step. They are counted separately.</dd></div>
+</dl>
 
 <details class="evidence-detail not-prose">
-  <summary>The reliability and testing numbers</summary>
+  <summary>The testing numbers</summary>
   <div>
-    <p>From 28 June to 26 September, 1,175 of 1,187 push jobs succeeded on the first try. The other twelve succeeded after a retry, between three seconds and ten minutes later.</p>
-    <p>Hourly pulls are counted separately: 2,047 of 2,200 finished without a recorded failed step.</p>
     <p>The 15 September code had 659 test methods, run manually, plus 65 scripted agent scenarios: 57 browser and 8 API, with 28 documented runs in April and May.</p>
   </div>
 </details>
