@@ -33,6 +33,7 @@ import Delta from '../../components/viz/Delta.astro';
 import before2024 from '../../assets/work/storagepal-catalogue-2024.png';
 import today from '../../assets/work/storagepal-catalogue-grid.png';
 import parked from '../../assets/work/storagepal-parked-payments.png';
+import compare from '../../assets/work/storagepal-compare.png';
 
 ## My role
 
@@ -46,7 +47,12 @@ I cut catalogue load time from **9.1 s to 0.9 s** and checkout from **7 steps to
 
 The benchmark used the same machine and database, with 15 warm runs per version.
 
-<div class="not-prose my-10 grid gap-4 sm:grid-cols-2">
+<figure class="not-prose card fx my-10 overflow-hidden max-sm:hidden">
+  <Image src={compare} alt="The catalogue in October 2024 next to the same page today: a text wall with a numbered seven-step sidebar against a clean card grid with the AI assistant" widths={[900, 1600, 2360]} sizes="(min-width: 1152px) 1088px, 100vw" class="w-full" />
+  <figcaption class="border-t border-line p-4 text-sm leading-relaxed text-muted"><strong class="font-medium text-fg">The same page, two eras.</strong> October 2024's numbered seven-step sidebar and wall of text, against today's card grid with the AI assistant. 9.1 s to 0.9 s warm, 3.1 MB to 376 KB.</figcaption>
+</figure>
+
+<div class="not-prose my-10 grid gap-4 sm:hidden">
   <figure class="card fx overflow-hidden">
     <Image src={before2024} alt="October 2024 catalogue with missing product images" widths={[390, 640]} sizes="(min-width: 640px) 500px, 100vw" class="w-full" />
     <figcaption class="border-t border-line p-4 text-sm leading-relaxed text-muted"><strong class="font-medium text-fg">October 2024.</strong> 9.1 s load, 3.1 MB.</figcaption>
