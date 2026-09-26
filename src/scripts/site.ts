@@ -149,6 +149,12 @@ function theme() {
     const light = html.dataset.theme === 'light' || (!html.dataset.theme && matchMedia('(prefers-color-scheme: light)').matches);
     const next = light ? 'dark' : 'light';
     html.dataset.theme = next;
+    // Keep the browser chrome color in sync with the chosen theme.
+    const color = next === 'light' ? '#f9fafb' : '#070a0e';
+    document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
+      meta.content = color;
+      meta.removeAttribute('media');
+    });
     try { localStorage.setItem('theme', next); } catch {}
   }));
 }

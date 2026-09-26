@@ -10,6 +10,6 @@ export function getStaticPaths() {
 const { role } = Astro.props;
 ---
 
-<Base title={`CV, ${role.label}`} description={role.summary} bare>
-  <CvDocument role={role} />
+<Base title={`CV, ${role.label}`} description={role.summary} bare noindex>
+  <main><CvDocument role={role} /></main>
 </Base>

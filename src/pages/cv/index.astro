@@ -12,5 +12,5 @@ const slugs = roles.map((r) => r.slug);
     const role = new URLSearchParams(location.search).get('role');
     if (role && slugs.includes(role)) location.replace(`/cv/${role}/`);
   </script>
-  <CvDocument role={defaultRole} />
+  <main><CvDocument role={defaultRole} /></main>
 </Base>
