@@ -10,11 +10,12 @@ import { ASK_READY, ASK_SUGGESTIONS, MAX_QUESTION_CHARS } from '../lib/ask';
 <button
   type="button"
   data-ask-open
-  class="ask-launcher inline-flex size-11 items-center justify-center rounded-ui border border-line text-muted transition-colors hover:border-muted hover:text-fg lg:size-10"
+  class="ask-launcher"
   aria-label="Ask about my work"
   aria-haspopup="dialog"
 >
   <Icon name="ph:chat-circle-dots" />
+  <span class="ask-launcher-label">Ask about my work</span>
 </button>
 
 <dialog id="ask-panel" aria-label="Ask about Khalil's work">
