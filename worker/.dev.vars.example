@@ -1,0 +1,4 @@
+# Copy to .dev.vars (gitignored) for `npm run dev`.
+GEMINI_API_KEY=your-gemini-api-key
+# Point at the local Astro dev server while developing:
+KNOWLEDGE_URL=http://localhost:4321/ask/knowledge.txt
