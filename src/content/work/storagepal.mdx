@@ -1,92 +1,89 @@
 ---
-title: StoragePal platform
-tagline: I lead development for a Paris storage business.
-role: Lead developer — 2 developers, 2 testers
-period: Oct 2024 - present
+title: StoragePal
+headline: Improving the software behind a storage business.
+tagline: I lead development of the platform behind a Paris storage business, from staff workflows and customer bookings to pricing and payments.
+category: Technical leadership · Storage and logistics
+role: Lead developer — technical direction and implementation
+period: Oct 2024 – present
 stack: PHP, Neos Flow, MariaDB, JavaScript, Stripe, Gemini
 order: 1
+decision: Cache the shared catalogue. Keep each customer’s cart separate.
+decisionAnchor: cache-what-customers-share
 url: https://storagepal.fr
 video:
   src: /media/storagepal-launch.mp4
   poster: /media/storagepal-launch.jpg
-metrics:
-  - value: "+69%"
-    label: orders year over year (Jan to Aug 2026)
-  - value: "-22%"
-    label: ad spend per order
-  - value: "+34%"
-    label: transport revenue after the new pricing engine
-  - value: "10x"
-    label: "faster catalogue: 9.1 s to 0.9 s"
 shots:
-  - src: ../../assets/work/storagepal-ai-cart.png
-    alt: Build a cart from a description
-  - src: ../../assets/work/storagepal-transport.png
-    alt: Get a transport quote
   - src: ../../assets/work/storagepal-catalogue.png
-    alt: Mobile storage catalogue
+    alt: Catalogue categories and item selection
   - src: ../../assets/work/storagepal-checkout.png
-    alt: Checkout in three steps
+    alt: Payment details together on one page
+  - src: ../../assets/work/storagepal-ai-cart.png
+    alt: A proposed cart that the customer can review and edit
+  - src: ../../assets/work/storagepal-transport.png
+    alt: A transport quote based on the collection details
 ---
 import { Image } from 'astro:assets';
-import Delta from '../../components/viz/Delta.astro';
-import before2024 from '../../assets/work/storagepal-catalogue-2024.png';
-import today from '../../assets/work/storagepal-catalogue-grid.png';
-import parked from '../../assets/work/storagepal-parked-payments.png';
-import compare from '../../assets/work/storagepal-compare.png';
+import before from '../../assets/work/storagepal-catalogue-2024.png';
+import after from '../../assets/work/storagepal-catalogue-grid.png';
+import { evidence } from '../../data/evidence';
 
-## My role
+## A business already in operation
 
-I lead two developers and two testers, set the technical roadmap and build features. The platform manages bookings, storage and payments.
+StoragePal customers book collection, storage, and return of their belongings online. Staff use the platform to manage orders, stock, invoicing, and payments.
 
-Orders grew **69%** and ad spend per order fell **22%**. Development, advertising and sales all contributed.
+I inherited an existing application and improved it in stages. I set priorities, write specifications, review work, and implement major parts myself. Other developers contributed reporting, CRM integration, and reservation features. I also built the [SPS warehouse app](/work/sps/) end to end.
 
-## Faster booking
+## Start where staff were blocked
 
-I cut catalogue load time from **9.1 s to 0.9 s** and checkout from **7 steps to 3**. The checkout has processed **700+ orders** since December 2025.
+Inventory and reservation screens were among my first priorities. Staff needed them every day, but filters could take minutes or time out, and full exports could exhaust server memory.
 
-The benchmark used the same machine and database, with 15 warm runs per version.
+I moved pagination and filtering into database queries and introduced batched exports. Later, I consolidated **twelve backoffice pages** around shared definitions for columns, filters, sorting, and exports.
 
-<figure class="not-prose card fx my-10 overflow-hidden max-sm:hidden">
-  <Image src={compare} alt="The catalogue in October 2024 next to the same page today: a text wall with a numbered seven-step sidebar against a clean card grid with the AI assistant" widths={[900, 1600, 2360]} sizes="(min-width: 1152px) 1088px, 100vw" class="w-full" />
-  <figcaption class="border-t border-line p-4 text-sm leading-relaxed text-muted"><strong class="font-medium text-fg">The same page, two eras.</strong> October 2024's numbered seven-step sidebar and wall of text, against today's card grid with the AI assistant. 9.1 s to 0.9 s warm, 3.1 MB to 376 KB.</figcaption>
-</figure>
+This involved limits as well as improvements. Some expensive derived columns are not sortable, and several unfiltered exports still require a filter to finish within the server timeout. The objective was to make daily work manageable while improving an inherited system.
 
-<div class="not-prose my-10 grid gap-4 sm:hidden">
-  <figure class="card fx overflow-hidden">
-    <Image src={before2024} alt="October 2024 catalogue with missing product images" widths={[390, 640]} sizes="(min-width: 640px) 500px, 100vw" class="w-full" />
-    <figcaption class="border-t border-line p-4 text-sm leading-relaxed text-muted"><strong class="font-medium text-fg">October 2024.</strong> 9.1 s load, 3.1 MB.</figcaption>
+## Cache what customers share
+
+The catalogue rendered too much data and repeated database work on each visit. I first reduced queries and added eager loading and indexes. Later, I introduced a server-rendered page built from cached catalogue data.
+
+The cache holds product information by locale. Customer quantities are merged into each response, and custom items stay outside the shared cache. Backoffice changes trigger invalidation; a 24-hour expiry provides a backstop. Import paths still need consistent invalidation coverage.
+
+<div class="decision-note not-prose">
+  <p class="eyebrow">The boundary</p>
+  <p>Shared catalogue → cached by locale<br />Personal cart → read for each request</p>
+</div>
+
+<div class="comparison not-prose">
+  <figure>
+    <div class="comparison-image"><Image src={before} alt="Earlier StoragePal catalogue with a dense item list" widths={[390, 640]} sizes="(min-width: 768px) 320px, 80vw" /></div>
+    <figcaption><strong>Before</strong> — a dense catalogue and repeated data loading.</figcaption>
   </figure>
-  <figure class="card fx overflow-hidden" style="--d:90ms">
-    <Image src={today} alt="Updated catalogue with categories and product photos" widths={[390, 640]} sizes="(min-width: 640px) 500px, 100vw" class="w-full" />
-    <figcaption class="border-t border-line p-4 text-sm leading-relaxed text-muted"><strong class="font-medium text-fg">Today.</strong> 0.9 s load, 376 KB.</figcaption>
+  <figure>
+    <div class="comparison-image"><Image src={after} alt="Updated StoragePal catalogue with grouped items and product photos" widths={[390, 640]} sizes="(min-width: 768px) 320px, 80vw" /></div>
+    <figcaption><strong>After</strong> — grouped products, backed by shared catalogue data.</figcaption>
   </figure>
 </div>
 
+A local warm benchmark measured median server response time falling from **{evidence.storagepal.responseBefore} to {evidence.storagepal.responseAfter}**, across 15 runs per version on the same database. This was time to first byte, not full page load. The old code ran against the current database; the measurement is retained in a session note, without a reproducible script.
 
-## Better pricing
+I also combined a three-page payment flow into one page. That describes pages in the payment flow, rather than a change in analytics funnel events.
 
-I replaced region-based quotes with pricing based on driving distance, vehicle, crew and building access.
+## Establish the live claim before chasing payment
 
-<Delta
-  items={[
-    { label: 'Average collection quote', before: '€109', after: '€75' },
-    { label: 'Transport revenue', before: 'baseline', after: '+34%' },
-  ]}
-/>
+Unpaid balances carried into later invoices could still be treated as separate claims. Extending retries before resolving that would risk collecting the wrong amount.
 
-## Simpler shopping
+I established one rule for the live claim: the current invoice at the head of the chain. The payment-attempt engine checks that claim and any existing payment intent before charging. I then added retry handling, a review queue for blocked payments, and bounded reminders that check payment state again before sending.
 
-I built a Gemini assistant that turns text or photos into a priced cart. **42% of conversations end in a confirmed cart.**
+These protections apply to the rebuilt attempt engine. They do not establish that every checkout and refund path has the same safeguards.
 
-## Correct billing
+## Price transport around the work involved
 
-I fixed duplicate billing and rebuilt payment recovery. The new process recovered **77 failed payments in seven weeks**.
+I replaced coarse regional quotes with an engine that considers driving distance, vehicle capacity, crew, and building access. Customer care and logistics helped shape the parameters. Collections and returns now use the same engine.
 
-<figure class="not-prose card fx my-8 overflow-hidden">
-  <Image src={parked} alt="The parked-payments queue in the backoffice, customer names blurred" widths={[720, 1200]} sizes="(min-width: 1152px) 1088px, 100vw" class="w-full" />
-  <figcaption class="border-t border-line p-4 text-sm text-muted">Payment review queue. 688 rows represented 101 debts.</figcaption>
-</figure>
+Transport revenue was **34% higher** in the twelve months after the collection-pricing launch than in the preceding twelve months. Overall volume and customer mix changed too, so this is an observed business result, not an isolated measure of the engine’s effect.
 
+## Keep AI proposals inside the business rules
 
-I also built the API connecting bookings to the [SPS warehouse app](/work/sps/).
+The shopping assistant proposes items from text or photos. Server code rejects unknown catalogue items, limits quantities, and supplies the prices. Customers can edit the proposal, and the cart endpoint prices each line again.
+
+The model helps the customer describe what they need. The catalogue and pricing rules determine what can be sold and at what price.

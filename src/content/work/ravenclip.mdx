@@ -1,63 +1,73 @@
 ---
 title: RavenClip
-tagline: I built an AI tool that turns news into short videos.
-role: Founder — product, development and operations
-period: May 2026 - present
+headline: From a personal tool to paying customers.
+tagline: I founded, built, and operate a product that turns news into short videos and publishes them to YouTube Shorts and TikTok.
+category: Founder · AI product and operations
+role: Founder-engineer — product, engineering, operations
+period: May 2026 – present
 stack: Laravel, React, TypeScript, MariaDB, Redis, Skia, FFmpeg
-order: 3
+order: 2
+decision: Prioritize unattended publishing, then build around the people who pay.
+decisionAnchor: learn-from-the-people-who-pay
 url: https://ravenclip.com
 video:
-  src: /media/ravenclip-launch.mp4
-  poster: /media/ravenclip-launch.webp
+  src: /media/ravenclip-business.mp4
+  poster: /media/ravenclip-business.webp
 videos:
-  - src: /media/ravenclip-business.mp4
-    poster: /media/ravenclip-business.webp
-    caption: The cut for the buyers it found, agencies and consultancies publishing in their own name
+  - src: /media/ravenclip-launch.mp4
+    poster: /media/ravenclip-launch.webp
+    caption: The news-to-video workflow
 shots:
-  - src: ../../assets/work/ravenclip-shot-poster.png
-    alt: "RavenClip: breaking news into published vertical videos, on autopilot"
-  - src: ../../assets/work/ravenclip-shot-finds.png
-    alt: "Channel setup: pick a topic and keywords, each checked against live headlines before you start"
   - src: ../../assets/work/ravenclip-shot-makes.png
-    alt: "The scene editor: every scene shows its script, real photos and timing next to the finished vertical video"
-  - src: ../../assets/work/ravenclip-shot-visuals.png
-    alt: "Real photos, charts and animated captions: the people, places and numbers from the story, not stock footage"
+    alt: Review the script, narration, and visuals scene by scene
   - src: ../../assets/work/ravenclip-shot-review.png
-    alt: "Publishing controls: auto, hold or schedule, with a review window the owner sets"
-  - src: ../../assets/work/ravenclip-shot-how.png
-    alt: "Set it up once, wake up to published videos: finds the story, makes the video, posts it"
-metrics:
-  - value: 4 months
-    label: to paying customers
-  - value: "28"
-    label: AI agents across 10+ providers
-  - value: "~1,300"
-    label: automated tests
-  - value: "19"
-    label: topic areas in 5 languages
+    alt: Choose automatic publishing, a review window, or a schedule
+  - src: ../../assets/work/ravenclip-shot-finds.png
+    alt: Configure a channel’s topic and news sources
+  - src: ../../assets/work/ravenclip-shot-visuals.png
+    alt: Combine story images, data graphics, and captions
 ---
-import Cards from '../../components/viz/Cards.astro';
 import PipelineRaven from '../../components/viz/PipelineRaven.astro';
+import { evidence } from '../../data/evidence';
 
-## What I built
+## Start with a complete workflow
 
-I built RavenClip for businesses that need short videos without a video team. It started as a tool for following news and reached paying customers four months after the first commit.
+I wanted a simpler way to follow the news myself. The first version produced a complete video with each stage started manually. By the third week, it could run on a schedule and publish automatically.
 
-It selects a story, writes the script, adds narration and visuals, and publishes to TikTok and YouTube Shorts. Customers can review videos before publishing. Instagram approval is pending.
+At that stage I built a manual story picker and removed it the same day. The immediate priority was a channel that could keep publishing while its owner was busy. More controls could follow once that workflow worked.
+
+## Learn from the people who pay
+
+The audience I initially imagined was creators running news channels. The first three paying customers were an agency, an AI consultancy, and a coach.
+
+That changed the positioning and priorities toward businesses building an audience around their expertise. I added brand controls and support for more channels per account. Three customers are an early signal, and I treat them as such.
+
+The first external customer paid **{evidence.ravenclip.daysToCustomer} days** after the first commit. As of 26 September 2026, all thirty published posts from those three customers had gone through automatic publishing.
+
+## Choose architecture around recovery needs
+
+Unattended generation passes through several paid services. Restarting everything after a failed render would waste completed work and repeat costs.
+
+Each stage has persisted status, and a runner advances whichever stages are ready. Voice and visuals run in parallel before rendering. Stage claims use database locks, and failed renders can reuse existing assets. Publishing has separate protections against duplicate posts.
 
 <PipelineRaven />
 
-## What I focused on
+The cost is more state and recovery logic to maintain. For a short user-initiated rebuild, I still use a bounded job chain: its fixed sequence does not need the full orchestration mechanism.
 
-<Cards
-  cols={3}
-  items={[
-    { icon: 'ph:seal-check', title: 'Content checks', text: 'Check drafts against their sources. Keep the approved words unchanged through narration.' },
-    { icon: 'ph:arrows-split', title: 'Failure recovery', text: 'Save progress at each stage. Retry failed calls and switch providers when needed.' },
-    { icon: 'ph:coins', title: 'Cost tracking', text: 'Record paid API calls. Track the cost of each video and the margin on each plan.' },
-  ]}
-/>
+## Notice when fallback hides a problem
 
-I built and maintain the product, including the video renderer, subscriptions and publishing tools.
+A provider ran out of credit for 25 days. Fallback kept the pipeline running, but the underlying problem remained unnoticed and calls moved to a more expensive service.
 
-[Read the engineering decisions](/blog/2026/09/25/ravenclip-engineering/).
+I added provider probes, classified failure alerts, and a cooldown for exhausted balances. A daily check runs outside the job queue so it can still report trouble when workers are down. A completed video alone does not show whether the system is operating as intended.
+
+## Define what AI checks can prove
+
+The pipeline checks script structure, length, subject grounding, and preservation of the approved narration. Retries receive the specific failures they need to correct. On-screen figures come from data sources.
+
+These checks do not verify every factual claim. Customers have review controls, and warned videos wait for approval. The product supports nineteen content categories and five interface languages; paying-customer use is narrower, in English and French.
+
+Recorded direct API spend averaged **$0.36 per rendered video** across 183 videos from 1–25 September. Same-key retries have a known accounting gap, and the figure excludes payment fees and my time. It is a cost observation rather than a profitability claim.
+
+TikTok and YouTube publishing are live. Instagram is implemented but disabled pending app review.
+
+[Read the engineering decisions and operating lessons](/blog/2026/09/25/ravenclip-engineering/).

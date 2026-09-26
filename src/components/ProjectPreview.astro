@@ -1,43 +1,29 @@
 ---
 import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
+import { evidence } from '../data/evidence';
 import raven from '../assets/work/ravenclip-fresh.webp';
 import catalogue from '../assets/work/storagepal-catalogue-grid.png';
 import cart from '../assets/work/storagepal-ai-cart.png';
 import scan from '../assets/work/sps-01-movein-scan.png';
 import bay from '../assets/work/sps-03-bay-move.png';
-
 const previews = [
-  { id: 'ravenclip', name: 'RavenClip', role: 'Founder · AI video', result: 'From idea to paying customers in 4 months', images: [raven], alts: ['RavenClip news-to-video interface'] },
-  { id: 'storagepal', name: 'StoragePal', role: 'Lead developer · Commerce', result: 'Catalogue loads in 0.9 seconds', images: [catalogue, cart], alts: ['StoragePal product catalogue', 'StoragePal AI shopping assistant'] },
-  { id: 'sps', name: 'SPS', role: 'Built end to end · Operations', result: '15,169 barcode scans in daily warehouse use', images: [scan, bay], alts: ['SPS barcode scanning', 'SPS shelf inventory'] },
+  { id: 'ravenclip', name: 'RavenClip', role: 'Founder · News-to-video product', result: evidence.ravenclip.preview, images: [raven], alts: ['RavenClip video creation workspace'] },
+  { id: 'storagepal', name: 'StoragePal', role: 'Lead developer · Storage and logistics', result: evidence.storagepal.preview, images: [catalogue, cart], alts: ['StoragePal catalogue', 'StoragePal cart proposal'] },
+  { id: 'sps', name: 'SPS', role: 'Built end to end · Warehouse operations', result: `${evidence.sps.sessions} completed scan sessions, April–September 2026.`, images: [scan, bay], alts: ['SPS receiving workflow', 'SPS bay movement workflow'] },
 ];
 ---
-
 <div class="project-preview rise" style="--i:2" data-project-preview>
   <div class="preview-stage">
-    {previews.map((p, i) => (
-      <div id={`preview-${p.id}`} data-preview-panel hidden={i !== 0}>
-        <a href={`/work/${p.id}/`} class={`preview-art preview-art-${p.id}`} aria-label={`View ${p.name} project`}>
-          {p.images.map((src, n) => (
-            <Image src={src} alt={p.alts[n]} widths={p.images.length === 1 ? [640, 960, 1280] : [240, 480]} sizes={p.images.length === 1 ? '(min-width: 1024px) 560px, 90vw' : '220px'} loading={i === 0 ? 'eager' : 'lazy'} class={`preview-image preview-image-${n}`} />
-          ))}
-          <span class="preview-open" aria-hidden="true"><Icon name="ph:arrow-up-right" /></span>
-        </a>
-        <div class="preview-caption">
-          <p class="preview-role">{p.role}</p>
-          <p>{p.result}{p.id === 'ravenclip' && <> · <a class="preview-live" href="https://ravenclip.com">try it live</a></>}</p>
-        </div>
-      </div>
-    ))}
+    {previews.map((p, i) => <div id={`preview-${p.id}`} data-preview-panel hidden={i !== 0}>
+      <a href={`/work/${p.id}/`} class={`preview-art preview-art-${p.id}`} aria-label={`View ${p.name} case study`}>
+        {p.images.map((src, n) => <Image src={src} alt={p.alts[n]} widths={p.images.length === 1 ? [640, 960] : [240, 480]} sizes={p.images.length === 1 ? '(min-width: 1024px) 470px, 90vw' : '190px'} loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} class={`preview-image preview-image-${n}`} />)}
+        <span class="preview-open" aria-hidden="true"><Icon name="ph:arrow-up-right" /></span>
+      </a>
+      <div class="preview-caption"><p class="preview-role">{p.role}</p><p>{p.result}</p></div>
+    </div>)}
   </div>
   <div class="preview-controls" role="group" aria-label="Preview a project" hidden>
-    {previews.map((p, i) => (
-      <button type="button" data-preview-select={i} aria-pressed={i === 0 ? 'true' : 'false'} aria-controls={`preview-${p.id}`}>
-        {p.name}
-      </button>
-    ))}
+    {previews.map((p, i) => <button type="button" data-preview-select={i} aria-pressed={i === 0 ? 'true' : 'false'} aria-controls={`preview-${p.id}`}>{p.name}</button>)}
   </div>
 </div>
-
-<style>.preview-live { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }</style>

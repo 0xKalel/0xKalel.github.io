@@ -33,12 +33,12 @@ const count = videos.length + chunks.length;
 
 <section class="gallery rise" data-gallery aria-roledescription="carousel" aria-label={`Media gallery, ${count} items`} style="--i:2">
   <div class="gallery-frame">
-    <div class="gallery-track" data-gallery-track tabindex="0">
+    <div id="project-gallery-track" class="gallery-track" data-gallery-track tabindex="0" role="group" aria-label="Product media. Use left and right arrow keys to browse.">
       {
         videos.map((v, i) => (
-          <figure class="gallery-slide" data-gallery-slide aria-label={`${i + 1} of ${count}`}>
+          <figure id={`gallery-slide-${i}`} class="gallery-slide" data-gallery-slide aria-roledescription="slide" aria-label={`${i + 1} of ${count}`}>
             <div class="gallery-media">
-              <video controls playsinline preload="metadata" poster={v.poster}>
+              <video controls playsinline preload="none" poster={v.poster}>
                 <source src={v.src} type="video/mp4" />
               </video>
             </div>
@@ -48,7 +48,7 @@ const count = videos.length + chunks.length;
       }
       {
         chunks.map((c, i) => (
-          <figure class="gallery-slide" data-gallery-slide aria-label={`${videos.length + i + 1} of ${count}`}>
+          <figure id={`gallery-slide-${videos.length + i}`} class="gallery-slide" data-gallery-slide aria-roledescription="slide" aria-label={`${videos.length + i + 1} of ${count}`}>
             <div class="gallery-media">
               <div class:list={['gallery-fit', c.length > 1 && 'gallery-pair']}>
                 {c.map((s) => (
@@ -61,12 +61,15 @@ const count = videos.length + chunks.length;
         ))
       }
     </div>
-    <button type="button" class="gallery-btn gallery-prev" data-gallery-prev aria-label="Previous item"><Icon name="ph:caret-left" /></button>
-    <button type="button" class="gallery-btn gallery-next" data-gallery-next aria-label="Next item"><Icon name="ph:caret-right" /></button>
   </div>
-  <div class="gallery-dots" data-gallery-dots role="tablist" aria-label="Go to item">
-    {Array.from({ length: count }).map((_, i) => <button type="button" role="tab" data-gallery-dot={i} aria-label={`Item ${i + 1}`} />)}
+  <div class="gallery-controls" data-gallery-controls hidden>
+    <button type="button" class="gallery-btn" data-gallery-prev aria-controls="project-gallery-track" aria-label="Previous item"><Icon name="ph:caret-left" /></button>
+    <div class="gallery-dots" data-gallery-dots role="group" aria-label="Choose an item">
+      {Array.from({ length: count }).map((_, i) => <button type="button" data-gallery-dot={i} aria-pressed={i === 0 ? 'true' : 'false'} aria-controls={`gallery-slide-${i}`} aria-label={`Show item ${i + 1} of ${count}`}><span aria-hidden="true"></span></button>)}
+    </div>
+    <button type="button" class="gallery-btn" data-gallery-next aria-controls="project-gallery-track" aria-label="Next item"><Icon name="ph:caret-right" /></button>
   </div>
+  <p class="sr-only" data-gallery-status role="status" aria-atomic="true"></p>
 </section>
 
 <style>
@@ -134,39 +137,17 @@ const count = videos.length + chunks.length;
     line-height: 1.5;
     color: var(--muted);
   }
-  .gallery-btn {
-    position: absolute;
-    top: calc((100% - 3.2rem) / 2);
-    transform: translateY(-50%);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    border: 1px solid var(--line);
-    background: color-mix(in oklch, var(--bg) 85%, transparent);
-    backdrop-filter: blur(6px);
-    color: var(--fg);
-    transition: border-color 0.2s ease, transform 0.15s ease;
-  }
+  .gallery-controls { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; }
+  .gallery-btn { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
   .gallery-btn:hover { border-color: var(--muted); }
-  .gallery-btn:active { transform: translateY(-50%) scale(0.94); }
-  .gallery-btn[disabled] { opacity: 0.35; pointer-events: none; }
-  .gallery-prev { left: 0.75rem; }
-  .gallery-next { right: 0.75rem; }
-  .gallery-dots { display: flex; justify-content: center; gap: 0.5rem; margin-top: 0.9rem; }
-  .gallery-dots button {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background: var(--line);
-    transition: background-color 0.2s ease, transform 0.2s ease;
-  }
-  .gallery-dots button[aria-selected='true'] { background: var(--accent); transform: scale(1.25); }
+  .gallery-btn[disabled] { opacity: .35; cursor: default; }
+  .gallery-dots { display: flex; justify-content: center; flex-wrap: wrap; }
+  .gallery-dots button { display: grid; place-items: center; width: 44px; height: 44px; cursor: pointer; }
+  .gallery-dots button span { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+  .gallery-dots button[aria-pressed='true'] span { background: var(--accent); width: 10px; height: 10px; }
   @media (max-width: 640px) {
-    .gallery-btn { display: none; }
     .gallery-media { aspect-ratio: 4 / 3; }
-    .gallery-pair { gap: 0.75rem; padding: 0.75rem; }
+    .gallery-pair { gap: .75rem; padding: .75rem; }
+    .gallery-controls { gap: 0; }
   }
 </style>

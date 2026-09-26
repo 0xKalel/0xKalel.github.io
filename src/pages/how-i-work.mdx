@@ -1,49 +1,33 @@
 ---
 layout: ../layouts/Prose.astro
-title: How I work
-description: Plan clearly. Build in small steps. Check the result.
+title: How I turn priorities into software
+description: Start with the business problem. Choose a useful scope. Stay responsible through delivery and production use.
 ---
 
-<div class="not-prose my-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
-  <div class="card fx p-5">
-    <p class="display text-3xl font-bold">520</p>
-    <p class="mt-1.5 text-xs leading-snug text-muted">lines of project instructions, loaded every session</p>
-  </div>
-  <div class="card fx p-5" style="--d:70ms">
-    <p class="display text-3xl font-bold">23</p>
-    <p class="mt-1.5 text-xs leading-snug text-muted">reusable task instructions in one codebase</p>
-  </div>
-  <div class="card fx p-5" style="--d:140ms">
-    <p class="display text-3xl font-bold">~140</p>
-    <p class="mt-1.5 text-xs leading-snug text-muted">notes on incidents, APIs and decisions</p>
-  </div>
-  <div class="card fx p-5" style="--d:210ms">
-    <p class="display text-3xl font-bold">65</p>
-    <p class="mt-1.5 text-xs leading-snug text-muted">browser scenarios checked automatically</p>
-  </div>
-</div>
+## Decide what matters now
 
-<div class="not-prose my-10 grid gap-4 sm:grid-cols-2">
-  <div class="card fx p-6">
-    <p class="font-mono text-xs text-accent">01</p>
-    <h2 class="mt-2 text-lg font-semibold">Understand the problem</h2>
-    <p class="mt-2 text-sm leading-relaxed text-muted">I ask what needs to change, who it affects and what success looks like. I write down the rules and edge cases before building.</p>
-  </div>
-  <div class="card fx p-6" style="--d:60ms">
-    <p class="font-mono text-xs text-accent">02</p>
-    <h2 class="mt-2 text-lg font-semibold">Build and review</h2>
-    <p class="mt-2 text-sm leading-relaxed text-muted">I use Claude Code and Codex to help implement small changes. I make the technical decisions and review the code for mistakes and unnecessary complexity.</p>
-  </div>
-  <div class="card fx p-6" style="--d:120ms">
-    <p class="font-mono text-xs text-accent">03</p>
-    <h2 class="mt-2 text-lg font-semibold">Test and release</h2>
-    <p class="mt-2 text-sm leading-relaxed text-muted">I check the main workflows, failure cases and automated tests. I release small changes, then check errors, performance and usage.</p>
-  </div>
-  <div class="card fx p-6" style="--d:180ms">
-    <p class="font-mono text-xs text-accent">04</p>
-    <h2 class="mt-2 text-lg font-semibold">Keep the team informed</h2>
-    <p class="mt-2 text-sm leading-relaxed text-muted">I share decisions, progress and problems. I keep instructions and notes with the code so others can pick up the work. I stay involved after release.</p>
-  </div>
-</div>
+I ask what needs to change, who depends on it, and what a useful first result looks like. Then I separate what is necessary now from what can wait, and break the work into releases that deliver a complete, usable workflow.
 
-The deepest worked example is [how I built RavenClip](/blog/2026/09/25/ravenclip-engineering/); the incident stories are in the [SPS case study](/work/sps/).
+For RavenClip, that meant [prioritizing unattended publishing](/work/ravenclip/#start-with-a-complete-workflow) and later adapting the product around its paying customers. At StoragePal, operations screens were among my first priorities because they blocked work staff needed to do every day.
+
+## Make the technical choices fit the context
+
+I consider performance, data correctness, failure recovery, and the cost of maintaining the system. A pattern earns its place by solving a problem we have.
+
+At StoragePal, shared catalogue data can be cached, but [personal cart state stays separate](/work/storagepal/#cache-what-customers-share). For SPS, I [removed offline support](/work/sps/#remove-complexity-the-warehouse-does-not-need) after establishing that every warehouse had internet. Maintaining less code was the useful choice there; scanning without a connection became an accepted limitation.
+
+## Use AI with clear responsibility
+
+AI helps me implement, investigate, and test scoped changes. Product priorities, pricing, architectural tradeoffs, and acceptance criteria remain my responsibility. I write down constraints, challenge proposals, and ask for evidence that the result works.
+
+That responsibility includes learning from failures. An agent-assisted bulk edit once reached RavenClip production with a syntax error. I added a check that PHP files parse and a deployment sweep that stops before migrations if syntax is invalid. Those checks enforce a requirement that instructions alone had failed to protect.
+
+[Read the incident and what changed](/blog/2026/09/25/ravenclip-engineering/#building-with-ai-and-owning-the-mistakes).
+
+## Keep the team informed and follow the result
+
+I make decisions, progress, and problems visible. Specifications and implementation notes give the team enough context to carry work forward, and I stay involved after release.
+
+Errors, staff feedback, costs, and actual use help decide what to improve next. I distinguish a working mechanism from a measured outcome and revisit assumptions when the evidence changes.
+
+Have a product to build or a system that needs attention? [Tell me what needs to change](mailto:hebachikhalil@gmail.com).

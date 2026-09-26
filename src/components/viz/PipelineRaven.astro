@@ -102,7 +102,7 @@ const chain = (labels: [string, ('node'|'end')?][]) => labels;
     </svg>
   </div>
   <p class="mt-3 text-xs leading-relaxed text-muted">
-    Watch it run: a story enters on the left and a published video leaves on the right, with the voice and visual branches processed in parallel. Each stage saves its progress, so a run can resume or retry after any failure.
+    Voice and visual work run in parallel before rendering. Persisted stage results let retries reuse completed work. Publishing runs automatically or after customer review, according to the channel settings.
   </p>
 </figure>
 

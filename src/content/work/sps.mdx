@@ -1,55 +1,73 @@
 ---
 title: SPS warehouse app
-tagline: I built the app staff use to receive, find and return stored items.
-role: End-to-end developer, from design to support
-period: 2025 - present
+headline: Warehouse software shaped by daily use.
+tagline: I built the app StoragePal staff use to receive items, record their locations, and prepare returns. I own its design, implementation, and production support.
+category: Built end to end · Warehouse operations
+role: Developer — design through production support
+period: Feb 2025 – present
 stack: Laravel, React, MySQL, Redis, PWA
-order: 2
-metrics:
-  - value: 120 / 120
-    label: weekdays in use since April 2026
-  - value: "15,169"
-    label: barcode scans
-  - value: "8,847"
-    label: items moved between bays
-  - value: "99.1%"
-    label: sync success over 20,400 runs
+order: 3
+decision: Remove offline support when its maintenance cost outweighs the need.
+decisionAnchor: remove-complexity-the-warehouse-does-not-need
 video:
   src: /media/sps-launch.mp4
   poster: /media/sps-launch.jpg
 shots:
   - src: ../../assets/work/sps-01-movein-scan.png
-    alt: "Scan arriving items"
+    alt: Receive and verify arriving items
   - src: ../../assets/work/sps-02-change-order.png
-    alt: "Flag a booking mismatch"
+    alt: Review differences between a booking and the received items
   - src: ../../assets/work/sps-03-bay-move.png
-    alt: "Assign a shelf location"
+    alt: Record an item’s warehouse location
   - src: ../../assets/work/sps-04-moveout-photo.png
-    alt: "Photograph items before return"
+    alt: Photograph items before return
 ---
 import Cards from '../../components/viz/Cards.astro';
+import { evidence } from '../../data/evidence';
 
-## What I built
+## Connect the booking to the warehouse floor
 
-Warehouse staff tracked booking errors through email and memory. Finding an item meant searching the building.
+Before SPS, staff handled discrepancies through email and item locations were not recorded consistently. I built the app to compare what arrives with the booking, record condition and location, and prepare returns for approval.
 
-I built a phone app that connects bookings to the warehouse floor. Staff scan items in, record their location and photograph them before return.
+I built it end to end, from first commit to production. I also maintain the StoragePal platform it connects to, so the integration and the warehouse workflow are both part of my responsibility.
 
-<Cards
-  cols={3}
-  items={[
-    { icon: 'ph:barcode', title: 'Receive', text: 'Compare scanned items with the booking. Flag missing or extra items for review.' },
-    { icon: 'ph:squares-four', title: 'Locate', text: 'Record each item’s shelf location and track every move.' },
-    { icon: 'ph:camera', title: 'Return', text: 'Scan and photograph items before they leave. Keep orders in sync.' },
-  ]}
-/>
+<Cards cols={3} items={[
+  { icon: 'ph:barcode', title: 'Receive', text: 'Scan arriving items. Compare them with the booking and flag discrepancies.' },
+  { icon: 'ph:squares-four', title: 'Locate', text: 'Record the bay and keep a history of placements, moves, and returns.' },
+  { icon: 'ph:camera', title: 'Return', text: 'Scan and photograph items, then approve the return or restore their locations.' },
+]} />
 
-## A failure I fixed
+## Remove complexity the warehouse does not need
 
-A sync bug marked **2,533 orders as cancelled**. Only **306** were cancelled. I traced it to four interacting bugs in filtering, date ranges and recovery.
+An earlier version supported offline inventory work. Every warehouse already had internet, while offline state added a substantial maintenance burden alongside the main StoragePal application.
 
-I added retries, blocked deletion checks on incomplete data and added nightly reconciliation. Eight regression tests cover the fixes.
+I removed offline support before daily production use began. Scanning now requires a connection. Sessions live on the server and can resume after a reload, but the app does not queue offline writes. That is an explicit operating constraint and a smaller system to maintain.
 
-## Testing
+## Make a retry understandable
 
-**659 automated tests**, **65 browser scenarios** and two testers checking workflows on the warehouse floor.
+In one production incident, completion succeeded on the server but the phone never received the response. Staff retried, received errors, and thought the scan could not be completed.
+
+I changed a repeated completion from the same user to return the saved successful result without repeating its side effects. A regression test covers this behavior. It addresses both duplicate processing and the misleading experience after a lost response.
+
+## Keep work moving across system boundaries
+
+StoragePal owns orders and article identifiers. SPS owns scan sessions, photos, and bay history. Staff sometimes need to print a label before an approved change has returned from StoragePal.
+
+SPS predicts the identifier so they can label and place the item immediately. After approval, it reconciles against StoragePal’s response. If the prediction is wrong, the item is flagged for relabelling. This trades waiting on the warehouse floor for correction work in the exceptional case.
+
+## Check the behaviors that matter
+
+Tests cover repeated completion, duplicate approval, rejected returns restoring locations, and cancelled bay sessions rolling back. Staff use also shaped one-tap verification, a less prominent Cancel button, and customer-name search that accepts either word order.
+
+From 13 April to 25 September 2026, staff completed **{evidence.sps.sessions} scanning sessions**, including sessions on **all 120 weekdays**. The records include **{evidence.sps.verifications} item verifications** and **{evidence.sps.bayChanges} bay changes**, of which **{evidence.sps.bayMoves} were moves between bays**. Verification counts are workflow events, not distinct physical items.
+
+There is no measured before-and-after time saving. These figures establish regular use rather than an efficiency percentage.
+
+<details class="evidence-detail not-prose">
+  <summary>What the reliability and testing figures measure</summary>
+  <div>
+    <p>From 28 June to 26 September, 1,175 of 1,187 push jobs succeeded on their first queue attempt. The remaining twelve succeeded after retry, within three seconds to ten minutes. This is the outcome of that cohort, not an uptime guarantee.</p>
+    <p>Hourly pulls are a separate measure: 2,047 of 2,200 completed without a failed step recorded. HTTP retries can happen inside a successful operation. One single-order refresh has no verified recovery for that order.</p>
+    <p>The September 15 code contained 659 test methods, run manually. There were 65 scripted agent scenarios: 57 browser and eight API scenarios, with 28 documented runs in April–May. Tests simulate the upstream platform; they do not prove every integration behavior in production.</p>
+  </div>
+</details>

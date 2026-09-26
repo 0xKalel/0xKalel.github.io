@@ -178,39 +178,52 @@ function copyEmail() {
 }
 
 function galleries() {
-  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((g) => {
-    const track = g.querySelector<HTMLElement>('[data-gallery-track]');
-    const slides = [...g.querySelectorAll<HTMLElement>('[data-gallery-slide]')];
-    const dots = [...g.querySelectorAll<HTMLButtonElement>('[data-gallery-dot]')];
-    const prev = g.querySelector<HTMLButtonElement>('[data-gallery-prev]');
-    const next = g.querySelector<HTMLButtonElement>('[data-gallery-next]');
+  $$('[data-gallery]').forEach((gallery) => {
+    const track = gallery.querySelector<HTMLElement>('[data-gallery-track]');
+    const slides = [...gallery.querySelectorAll<HTMLElement>('[data-gallery-slide]')];
+    const dots = [...gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-dot]')];
+    const prev = gallery.querySelector<HTMLButtonElement>('[data-gallery-prev]');
+    const next = gallery.querySelector<HTMLButtonElement>('[data-gallery-next]');
+    const controls = gallery.querySelector<HTMLElement>('[data-gallery-controls]');
+    const status = gallery.querySelector<HTMLElement>('[data-gallery-status]');
     if (!track || slides.length < 2) return;
+    if (controls) controls.hidden = false;
     let index = 0;
+    let interacted = false;
     const setActive = (i: number) => {
       index = i;
-      dots.forEach((d, n) => d.setAttribute('aria-selected', String(n === i)));
+      dots.forEach((dot, n) => dot.setAttribute('aria-pressed', String(n === i)));
       if (prev) prev.disabled = i === 0;
       if (next) next.disabled = i === slides.length - 1;
-      // Pause any playing video that scrolled away.
-      slides.forEach((sl, n) => { if (n !== i) sl.querySelector('video')?.pause(); });
+      slides.forEach((slide, n) => {
+        slide.inert = n !== i;
+        if (n !== i) slide.querySelector('video')?.pause();
+      });
+      if (status && interacted) status.textContent = `Item ${i + 1} of ${slides.length}`;
     };
     const goTo = (i: number) => {
+      interacted = true;
       const target = Math.max(0, Math.min(slides.length - 1, i));
-      track.scrollTo({ left: slides[target].offsetLeft, behavior: 'smooth' });
+      const left = slides[target].getBoundingClientRect().left - slides[0].getBoundingClientRect().left;
+      track.scrollTo({ left, behavior: reduced() ? 'instant' : 'smooth' });
     };
-    const io = new IntersectionObserver(
-      (es) => es.forEach((e) => { if (e.isIntersecting) setActive(slides.indexOf(e.target as HTMLElement)); }),
-      { root: track, threshold: 0.6 },
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((entry) => { if (entry.isIntersecting) setActive(slides.indexOf(entry.target as HTMLElement)); }),
+      { root: track, threshold: .6 },
     );
-    slides.forEach((sl) => io.observe(sl));
-    cleanups.push(() => io.disconnect());
+    slides.forEach((slide) => observer.observe(slide));
+    cleanups.push(() => observer.disconnect());
     if (prev) listen(prev, 'click', () => goTo(index - 1));
     if (next) listen(next, 'click', () => goTo(index + 1));
-    dots.forEach((d, n) => listen(d, 'click', () => goTo(n)));
-    listen(track, 'keydown', (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') { e.preventDefault(); goTo(index + 1); }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(index - 1); }
-    });
+    dots.forEach((dot, n) => listen(dot, 'click', () => goTo(n)));
+    listen(track, 'pointerdown', () => { interacted = true; });
+    listen(track, 'keydown', ((event: KeyboardEvent) => {
+      if (event.target !== track) return;
+      const targets: Record<string, number> = { ArrowRight: index + 1, ArrowLeft: index - 1, Home: 0, End: slides.length - 1 };
+      if (!(event.key in targets)) return;
+      event.preventDefault();
+      goTo(targets[event.key]);
+    }) as EventListener);
     setActive(0);
   });
 }

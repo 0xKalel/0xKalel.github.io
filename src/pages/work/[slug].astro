@@ -1,94 +1,39 @@
 ---
-import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import Base from '../../layouts/Base.astro';
 import Gallery from '../../components/Gallery.astro';
-
+import { evidence, type ProjectId } from '../../data/evidence';
+import { profile } from '../../data/cv';
 export async function getStaticPaths() {
-  const work = await getCollection('work');
-  return work.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+  return (await getCollection('work')).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
-
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 const d = entry.data;
-const galleryVideos = [...(d.video ? [{ ...d.video, caption: `${d.title}, in under a minute` }] : []), ...d.videos];
-const useGallery = galleryVideos.length + d.shots.length >= 3;
-const phones = useGallery ? [] : d.shots.filter((s) => s.src.height > s.src.width);
-const wide = useGallery ? [] : d.shots.filter((s) => s.src.height <= s.src.width);
+const facts = evidence[entry.id as ProjectId];
+const galleryVideos = [...(d.video ? [{ ...d.video, caption: `${d.title} product walkthrough` }] : []), ...d.videos];
+const related = (await getCollection('work')).filter((w) => w.id !== entry.id).sort((a, b) => a.data.order - b.data.order);
 ---
-
-<Base title={d.title} description={d.tagline}>
-  <article class="mx-auto max-w-6xl px-4 pt-14 md:px-8 md:pt-20">
-    <a href="/#work" class="inline-flex items-center gap-1.5 py-2 text-sm text-muted hover:text-fg">
-      <Icon name="ph:arrow-left" /> Back to selected work
-    </a>
-    <h1 class="rise mt-8 text-4xl font-semibold tracking-[-0.035em] md:text-6xl">{d.title}</h1>
-    <p class="rise mt-5 max-w-[52ch] text-lg leading-relaxed text-muted" style="--i:1">{d.tagline}</p>
-
-    <dl class="rise mt-10 grid gap-6 border-y border-line py-7 text-sm sm:grid-cols-3" style="--i:2">
-      <div><dt class="text-muted">Role</dt><dd class="mt-1">{d.role}</dd></div>
-      <div><dt class="text-muted">Period</dt><dd class="mt-1">{d.period}</dd></div>
-      <div>
-        <dt class="text-muted">Technologies</dt>
-        <dd class="mt-1 leading-relaxed">{d.stack}</dd>
-      </div>
-    </dl>
-
-    <dl class="mt-12 grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
-      {
-        d.metrics.map((m) => (
-          <div >
-            <dt class="text-2xl font-semibold tracking-tight tabular-nums md:text-3xl">{m.value}</dt>
-            <dd class="mt-2 max-w-[26ch] text-sm leading-snug text-muted">{m.label}</dd>
-          </div>
-        ))
-      }
-    </dl>
-
-    {useGallery && <Gallery videos={galleryVideos} shots={d.shots} />}
-    {
-      !useGallery && d.video && (
-        <video
-          class="mt-16 w-full rounded-ui border border-line"
-          controls
-          playsinline
-          preload="metadata"
-          poster={d.video.poster}
-        >
-          <source src={d.video.src} type="video/mp4" />
-        </video>
-      )
-    }
-    {
-      wide.map((s) => (
-        <Image src={s.src} alt={s.alt} widths={[768, 1280, 1440]} sizes="(min-width: 1152px) 1088px, 100vw" class="mt-16 w-full rounded-ui border border-line" />
-      ))
-    }
-    {
-      phones.length > 0 && (
-        <div class:list={['mt-16 grid grid-cols-2 gap-4 md:gap-6', phones.length >= 4 ? 'md:grid-cols-4' : 'md:grid-cols-3']}>
-          {phones.map((s, i) => (
-            <figure class:list={[phones.length === 3 && i === 2 && 'hidden md:block']}>
-              <Image src={s.src} alt={s.alt} widths={[320, 640]} sizes="(min-width: 768px) 340px, 50vw" class="w-full rounded-ui border border-line" />
-              <figcaption class="mt-3 text-sm leading-snug text-muted">{s.alt}</figcaption>
-            </figure>
-          ))}
-        </div>
-      )
-    }
-
-    <div class="prose prose-case mt-16 prose-headings:tracking-tight prose-a:decoration-line prose-a:underline-offset-4 prose-strong:font-semibold prose-h2:mt-14">
-      <Content />
+<Base title={`${d.title}: ${d.headline.replace(/\.$/, '')}`} description={d.tagline}>
+  <article class="shell case-study">
+    <a href="/#work" class="text-link"><Icon name="ph:arrow-left" /> Selected work</a>
+    <header class="case-header">
+      <p class="eyebrow rise">{d.category}</p>
+      <h1 class="rise">{d.title}<span>{d.headline}</span></h1>
+      <p class="case-intro rise">{d.tagline}</p>
+      <dl class="case-meta"><div><dt>My role</dt><dd>{d.role}</dd></div><div><dt>Period</dt><dd>{d.period}</dd></div><div><dt>Core stack</dt><dd>{d.stack}</dd></div></dl>
+    </header>
+    <div class="case-evidence">
+      <dl class="case-metrics">{facts.metrics.map((m) => <div><dt>{m.value}</dt><dd>{m.label}</dd></div>)}</dl>
+      <p class="evidence-period">{facts.period}</p>
     </div>
-
-    {
-      d.url && (
-        <a href={d.url} class="btn btn-ghost mt-12">
-          Visit {new URL(d.url).hostname} <Icon name="ph:arrow-up-right" />
-        </a>
-      )
-    }
+    <div class="case-body">
+      <nav class="case-nav" aria-label="In this case study"><p class="eyebrow">In this case study</p><ul>{headings.filter((h) => h.depth === 2).map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}<li><a href="#product-walkthrough">Product walkthrough</a></li></ul></nav>
+      <div class="prose prose-case prose-headings:tracking-tight prose-a:decoration-line prose-a:underline-offset-4 prose-strong:font-semibold"><Content /></div>
+    </div>
+    <section id="product-walkthrough" class="case-gallery"><div class="section-heading"><div><p class="eyebrow">Inside the product</p><h2>Product walkthrough</h2></div>{d.url && <a href={d.url} class="text-link">Visit {d.title} <Icon name="ph:arrow-up-right" /></a>}</div><Gallery videos={galleryVideos} shots={d.shots} /></section>
+    <section class="case-related" aria-labelledby="related-heading"><h2 id="related-heading">More work</h2><div>{related.map((w) => <a href={`/work/${w.id}/`}><span>{w.data.title}<Icon name="ph:arrow-up-right" /></span><p>{w.data.headline}</p></a>)}</div></section>
+    <p class="case-contact">Working through a similar problem? <a class="link" href={`mailto:${profile.email}`}>Tell me about it.</a></p>
   </article>
 </Base>

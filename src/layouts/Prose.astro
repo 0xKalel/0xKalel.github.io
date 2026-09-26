@@ -5,16 +5,17 @@ interface Props {
   title: string;
   description: string;
   date?: Date;
+  updated?: Date;
   /** Set by Astro when this layout wraps a Markdown page. */
-  frontmatter?: { title: string; description: string };
+  frontmatter?: { title: string; description: string; date?: Date; updated?: Date };
 }
 
-const { title, description, date } = Astro.props.frontmatter ?? Astro.props;
+const { title, description, date, updated } = Astro.props.frontmatter ?? Astro.props;
 ---
 
-<Base title={title} description={description}>
+<Base title={title} description={description} published={date} updated={updated}>
   <article class="mx-auto max-w-3xl px-4 pt-14 md:px-8 md:pt-20">
-    {date && <p class="rise font-mono text-xs text-muted">{date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>}
+    {date && <p class="rise font-mono text-xs text-muted"><time datetime={date.toISOString()}>{date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</time>{updated && <> · Updated <time datetime={updated.toISOString()}>{updated.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</time></>}</p>}
     <h1 class="rise mt-4 text-4xl leading-[1.08] font-semibold tracking-[-0.035em] text-balance md:text-5xl">{title}</h1>
     <p class="rise mt-5 text-lg leading-relaxed text-muted" style="--i:1">{description}</p>
     <div class="prose mt-12 max-w-none prose-headings:tracking-tight prose-a:decoration-line prose-a:underline-offset-4 prose-strong:font-semibold prose-h2:mt-14">

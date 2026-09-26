@@ -10,12 +10,12 @@
 
 ## Case studies
 - [StoragePal platform](https://0xkalel.github.io/work/storagepal/): lead role, measured results
-- [SPS warehouse app](https://0xkalel.github.io/work/sps/): built end to end, in daily production use
-- [RavenClip](https://0xkalel.github.io/work/ravenclip/): own SaaS, 28 AI agents, 10+ providers
+- [SPS warehouse app](https://0xkalel.github.io/work/sps/): built end to end; completed scan sessions on all 120 weekdays from 13 April to 25 September 2026
+- [RavenClip](https://0xkalel.github.io/work/ravenclip/): own SaaS, first external paying customer in 105 days; three paying customers as of 26 September 2026
 
 ## Writing
-- [How I built RavenClip](https://0xkalel.github.io/blog/2026/09/25/ravenclip-engineering/): engineering deep dive
-- [How I work](https://0xkalel.github.io/how-i-work/): AI-assisted development process
+- [Building RavenClip: recovery, AI checks, and costs](https://0xkalel.github.io/blog/2026/09/25/ravenclip-engineering/): engineering deep dive
+- [How I work](https://0xkalel.github.io/how-i-work/): business priorities, engineering tradeoffs, and human-led AI-assisted development
 
 ## Contact
 - Email: hebachikhalil@gmail.com

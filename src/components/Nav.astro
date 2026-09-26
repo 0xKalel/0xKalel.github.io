@@ -4,7 +4,6 @@ import { profile } from '../data/cv';
 
 const links = [
   { href: '/#work', label: 'Work' },
-  { href: '/#journey', label: 'Experience' },
   { href: '/how-i-work/', label: 'How I work' },
   { href: '/blog/', label: 'Writing' },
   { href: '/cv/', label: 'CV' },
@@ -52,19 +51,19 @@ const path = Astro.url.pathname;
       <button
         type="button"
         data-theme-toggle
-        class="inline-flex size-9 items-center justify-center rounded-ui border border-line text-muted transition-colors hover:border-muted hover:text-fg"
+        class="inline-flex size-11 items-center justify-center rounded-ui border border-line text-muted transition-colors hover:border-muted hover:text-fg"
         aria-label="Switch between light and dark theme"
       >
         <Icon name="ph:sun" class="theme-sun" />
         <Icon name="ph:moon" class="theme-moon" />
       </button>
 
-      <a href={`mailto:${profile.email}`} class="btn btn-primary !h-9 !px-3.5 text-sm max-sm:hidden">Email me</a>
+      <a href={`mailto:${profile.email}`} class="btn btn-primary !h-11 !px-3.5 text-sm max-sm:hidden">Email me</a>
 
       <button
         type="button"
         id="mnav-btn"
-        class="inline-flex size-9 items-center justify-center rounded-ui border border-line text-muted lg:hidden"
+        class="inline-flex size-11 items-center justify-center rounded-ui border border-line text-muted lg:hidden"
         aria-label="Open menu"
         aria-expanded="false"
         aria-controls="mnav"
@@ -74,6 +73,7 @@ const path = Astro.url.pathname;
     </div>
   </nav>
 
+  <noscript><nav aria-label="Pages without JavaScript" class="flex flex-wrap justify-center gap-x-5 gap-y-2 px-4 pb-3 text-sm">{links.map((l) => <a class="link py-2" href={l.href}>{l.label}</a>)}</nav></noscript>
   <div class="reading-progress" data-reading-progress aria-hidden="true"></div>
 </header>
 
