@@ -6,7 +6,7 @@ import Base from '../layouts/Base.astro';
 import Timeline from '../components/Timeline.astro';
 import Reviews from '../components/Reviews.astro';
 import ProjectPreview from '../components/ProjectPreview.astro';
-import { profile } from '../data/cv';
+import { profile, skills } from '../data/cv';
 import { evidence, type ProjectId } from '../data/evidence';
 import { defaultRole } from '../data/roles';
 import { postHref } from '../lib/blog';
@@ -28,6 +28,13 @@ const principles = [
   { title: 'Make the tradeoff explicit.', text: 'Pick the design that fits the real conditions. Extra complexity has to pay for itself.', href: '/work/sps/#remove-complexity-the-warehouse-does-not-need', link: 'Why I removed offline mode' },
   { title: 'Follow through after release.', text: 'Watch how people use the product, what breaks, and what it costs. Let that choose the next change.', href: '/work/ravenclip/#learn-from-the-people-who-pay', link: 'What paying customers taught me' },
 ];
+const stackWhere: Record<(typeof skills)[number]['id'], string> = {
+  ai: 'RavenClip end to end, plus the cart assistant at StoragePal.',
+  backend: 'Neos Flow at StoragePal. Laravel in SPS and RavenClip.',
+  frontend: 'React and TypeScript in SPS and RavenClip. This site runs on Astro.',
+  infra: 'Everything above runs on it, from Redis queues to FFmpeg rendering.',
+  practice: 'The part the case studies walk through, decision by decision.',
+};
 ---
 
 <Base>
@@ -90,6 +97,22 @@ const principles = [
       ))}
     </ol>
     <div class="ai-note fx"><p class="eyebrow">Human-led, AI-assisted</p><p>I use AI to explore and build. I own the priorities, the architecture, the review, and the results. Fast output still needs an engineer who knows what should happen, and what could go wrong.</p></div>
+  </section>
+
+  <section id="stack" class="shell section-space">
+    <div class="section-heading fx">
+      <div><p class="eyebrow">Stack</p><h2>Tools with a track record.</h2></div>
+      <p class="section-note">Grouped the way I use them, with where each runs in production.</p>
+    </div>
+    <dl class="stack-list">
+      {skills.map((g, i) => (
+        <div class="stack-row fx" style={`--d:${i * 60}ms`}>
+          <dt>{g.label}</dt>
+          <dd class="stack-chips">{g.items.split(', ').map((item) => <span class="stack-chip">{item}</span>)}</dd>
+          <dd class="stack-where">{stackWhere[g.id]}</dd>
+        </div>
+      ))}
+    </dl>
   </section>
 
   {latest && <section class="shell section-space">
