@@ -18,6 +18,8 @@ Astro 7 · Tailwind 4 (design tokens via `@theme`) · MDX content collections ·
 
 **Interactions in one file.** `src/scripts/site.ts` wires reveals, galleries, theme, the command palette and view transitions — plain DOM, no framework runtime on the page.
 
+**Ask-my-work chat.** A floating assistant (`src/components/Ask.astro`) answers visitor questions about the work, grounded in a knowledge document the build generates from the same data sources and serves at `/ask/knowledge.txt`. A small Cloudflare Worker (`worker/`) holds the Gemini API key, enforces a CORS allowlist and per-IP rate limits, and streams answers back over SSE. No RAG machinery: the whole public corpus fits in the model's context, and content deploys update the assistant without touching the Worker.
+
 ## Run it
 
 ```bash
@@ -26,7 +28,16 @@ npm run dev      # astro dev
 npm run build    # site + one PDF per CV role in dist/cv/
 ```
 
-Deploys from `main` via GitHub Actions to GitHub Pages.
+For the chat endpoint (optional in local dev):
+
+```bash
+cd worker
+npm install
+cp .dev.vars.example .dev.vars   # add your Gemini API key
+npm run dev                      # wrangler dev on :8787
+```
+
+Deploys from `main` via GitHub Actions to GitHub Pages. The Worker deploys separately: `npx wrangler secret put GEMINI_API_KEY` once, then `npm run deploy` in `worker/`.
 
 ## Editing content
 

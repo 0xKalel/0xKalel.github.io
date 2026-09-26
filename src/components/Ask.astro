@@ -1,0 +1,207 @@
+---
+/** "Ask about my work" chat: a floating launcher and a native <dialog> panel.
+ *  Answers stream from the worker in worker/, grounded in /ask/knowledge.txt. */
+import { Icon } from 'astro-icon/components';
+import { profile } from '../data/cv';
+import { ASK_READY, ASK_SUGGESTIONS, MAX_QUESTION_CHARS } from '../lib/ask';
+---
+
+{ASK_READY && <>
+<button
+  type="button"
+  data-ask-open
+  class="ask-launcher inline-flex size-11 items-center justify-center rounded-ui border border-line text-muted transition-colors hover:border-muted hover:text-fg lg:size-10"
+  aria-label="Ask about my work"
+  aria-haspopup="dialog"
+>
+  <Icon name="ph:chat-circle-dots" />
+</button>
+
+<dialog id="ask-panel" aria-label="Ask about Khalil's work">
+  <header class="ask-head">
+    <div>
+      <p class="ask-title display">Ask about my work</p>
+      <p class="ask-note">AI answers from my CV and case studies. It can make mistakes.</p>
+    </div>
+    <button type="button" class="btn btn-ghost size-11! justify-center p-0!" data-ask-close aria-label="Close">
+      <Icon name="ph:x" />
+    </button>
+  </header>
+  <div class="ask-log" role="log" aria-label="Conversation">
+    <div class="ask-empty" data-ask-empty>
+      <p>Ask anything about my projects, results, or how I work.</p>
+      <div class="ask-chips">
+        {ASK_SUGGESTIONS.map((question) => (
+          <button type="button" class="ask-chip" data-ask-chip={question}>{question}</button>
+        ))}
+      </div>
+    </div>
+  </div>
+  <p class="ask-status" data-ask-status role="status" hidden>
+    <span data-ask-status-text></span>
+    <a class="link" href={`mailto:${profile.email}`}>Email me instead</a>
+  </p>
+  <form class="ask-form" data-ask-form>
+    <input
+      class="ask-input"
+      name="ask-question"
+      type="text"
+      maxlength={MAX_QUESTION_CHARS}
+      placeholder="Ask about my projects…"
+      autocomplete="off"
+      spellcheck="false"
+      aria-label="Your question"
+    />
+    <button type="submit" class="btn btn-primary h-11! px-3.5!" data-ask-send aria-label="Send question">
+      <Icon name="ph:paper-plane-right" />
+    </button>
+  </form>
+</dialog>
+</>}
+
+<script>
+  import {
+    streamChat,
+    loadConversation,
+    saveConversation,
+    AskError,
+    MAX_QUESTION_CHARS,
+    type ChatMessage,
+  } from '../lib/ask';
+
+  let controller: AbortController | undefined;
+  let streamAbort: AbortController | undefined;
+
+  function initAsk() {
+    controller?.abort();
+    const panel = document.getElementById('ask-panel');
+    if (!(panel instanceof HTMLDialogElement)) return;
+    const dlg = panel;
+    controller = new AbortController();
+    const options = { signal: controller.signal };
+    const log = dlg.querySelector<HTMLElement>('.ask-log')!;
+    const empty = dlg.querySelector<HTMLElement>('[data-ask-empty]')!;
+    const form = dlg.querySelector<HTMLFormElement>('[data-ask-form]')!;
+    const input = dlg.querySelector<HTMLInputElement>('.ask-input')!;
+    const send = dlg.querySelector<HTMLButtonElement>('[data-ask-send]')!;
+    const status = dlg.querySelector<HTMLElement>('[data-ask-status]')!;
+    const statusText = dlg.querySelector<HTMLElement>('[data-ask-status-text]')!;
+
+    let messages = loadConversation();
+    let streaming = false;
+
+    const track = (name: string) => {
+      const gtag = (window as { gtag?: (...args: unknown[]) => void }).gtag;
+      if (typeof gtag === 'function') gtag('event', name);
+    };
+    const scroll = () => {
+      log.scrollTop = log.scrollHeight;
+    };
+    const bubble = (role: ChatMessage['role'], text: string) => {
+      const element = document.createElement('div');
+      element.className = 'ask-msg';
+      element.dataset.role = role;
+      element.textContent = text;
+      log.append(element);
+      scroll();
+      return element;
+    };
+    const render = () => {
+      log.querySelectorAll('.ask-msg').forEach((element) => element.remove());
+      messages.forEach((message) => bubble(message.role, message.text));
+      empty.hidden = messages.length > 0;
+    };
+    const showStatus = (message: string) => {
+      statusText.textContent = message;
+      status.hidden = false;
+    };
+    const persist = () => {
+      messages = messages.slice(-16);
+      if (messages[0]?.role === 'model') messages = messages.slice(1);
+      saveConversation(messages);
+    };
+    const open = () => {
+      if (dlg.open) return;
+      render();
+      dlg.showModal();
+      scroll();
+      input.focus();
+      track('ask_open');
+    };
+
+    async function submit(raw: string) {
+      const question = raw.trim().slice(0, MAX_QUESTION_CHARS);
+      if (!question || streaming) return;
+      status.hidden = true;
+      empty.hidden = true;
+      const history = [...messages];
+      messages.push({ role: 'user', text: question });
+      const asked = bubble('user', question);
+      persist();
+      streaming = true;
+      input.value = '';
+      input.disabled = true;
+      send.disabled = true;
+      const element = bubble('model', '');
+      element.dataset.streaming = 'true';
+      element.setAttribute('aria-hidden', 'true'); // announce once on completion, not per delta
+      streamAbort = new AbortController();
+      let answer = '';
+      try {
+        for await (const delta of streamChat(question, history, streamAbort.signal)) {
+          answer += delta;
+          element.textContent = answer;
+          scroll();
+        }
+        if (!answer) throw new AskError(502, 'No answer arrived.');
+      } catch (error) {
+        if (!answer) {
+          element.remove();
+          asked.remove();
+          messages.pop();
+          input.value = question;
+          empty.hidden = messages.length > 0;
+        }
+        if (!streamAbort.signal.aborted) {
+          showStatus(error instanceof AskError ? error.message : 'Something went wrong.');
+        }
+      } finally {
+        if (answer) {
+          messages.push({ role: 'model', text: answer });
+          delete element.dataset.streaming;
+          element.removeAttribute('aria-hidden');
+          track('ask_message');
+        }
+        persist();
+        streaming = false;
+        input.disabled = false;
+        send.disabled = false;
+        if (dlg.open) input.focus();
+      }
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      void submit(input.value);
+    }, options);
+    dlg.addEventListener('click', (event) => {
+      if (event.target === dlg) dlg.close();
+    }, options);
+    dlg.querySelector('[data-ask-close]')!.addEventListener('click', () => dlg.close(), options);
+    document.querySelectorAll<HTMLElement>('[data-ask-open]').forEach((button) => {
+      button.addEventListener('click', open, options);
+    });
+    document.querySelectorAll<HTMLElement>('[data-ask-chip]').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        open();
+        void submit(chip.dataset.askChip ?? chip.textContent ?? '');
+      }, options);
+    });
+  }
+
+  document.addEventListener('astro:before-swap', () => {
+    streamAbort?.abort();
+    controller?.abort();
+  });
+  document.addEventListener('astro:page-load', initAsk);
+</script>

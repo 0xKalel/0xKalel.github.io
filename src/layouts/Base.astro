@@ -7,6 +7,7 @@ import { ClientRouter } from 'astro:transitions';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Palette from '../components/Palette.astro';
+import Ask from '../components/Ask.astro';
 import { profile } from '../data/cv';
 
 interface Props {
@@ -126,6 +127,7 @@ const GA_ID = 'G-SLJ8G6MSCP';
         <main id="main-content" tabindex="-1"><slot /></main>
         <Footer />
         <Palette />
+        <Ask />
         <script>
           import '../scripts/site';
         </script>

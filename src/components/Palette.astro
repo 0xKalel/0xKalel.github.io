@@ -1,12 +1,13 @@
 ---
 import { profile } from '../data/cv';
 import { defaultRole } from '../data/roles';
+import { ASK_READY } from '../lib/ask';
 
 interface Item {
   label: string;
   hint: string;
   href?: string;
-  action?: 'copy-email' | 'theme';
+  action?: 'copy-email' | 'theme' | 'ask';
 }
 
 const items: Item[] = [
@@ -22,6 +23,7 @@ const items: Item[] = [
   { label: 'Download CV (PDF)', hint: 'PDF', href: `/cv/${defaultRole.slug}.pdf` },
   { label: 'Email me', hint: 'Action', href: `mailto:${profile.email}` },
   { label: 'Copy email address', hint: 'Action', action: 'copy-email' },
+  ...(ASK_READY ? [{ label: 'Ask about my work', hint: 'Action', action: 'ask' } as Item] : []),
   { label: 'Switch light or dark theme', hint: 'Action', action: 'theme' },
   { label: 'RavenClip, my live product', hint: 'Link', href: 'https://ravenclip.com' },
   { label: 'GitHub', hint: 'Link', href: profile.github },
@@ -97,6 +99,8 @@ const items: Item[] = [
       dlg.close();
       if (li.dataset.action === 'theme') {
         document.querySelector<HTMLElement>('[data-theme-toggle]')?.click();
+      } else if (li.dataset.action === 'ask') {
+        document.querySelector<HTMLElement>('[data-ask-open]')?.click();
       } else if (li.dataset.href) {
         window.location.assign(li.dataset.href);
       }

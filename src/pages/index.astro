@@ -9,6 +9,7 @@ import ProjectPreview from '../components/ProjectPreview.astro';
 import { profile, skills } from '../data/cv';
 import { evidence, type ProjectId } from '../data/evidence';
 import { defaultRole } from '../data/roles';
+import { ASK_READY, ASK_SUGGESTIONS } from '../lib/ask';
 import { postHref } from '../lib/blog';
 import raven from '../assets/work/ravenclip-fresh.webp';
 import catalogue from '../assets/work/storagepal-catalogue-grid.png';
@@ -114,6 +115,18 @@ const stackWhere: Record<(typeof skills)[number]['id'], string> = {
       ))}
     </dl>
   </section>
+
+  {ASK_READY && <section id="ask" class="shell section-space">
+    <div class="section-heading fx">
+      <div><p class="eyebrow">Ask</p><h2>Questions? Ask my assistant.</h2></div>
+      <p class="section-note">AI answers from my CV and case studies. For anything serious, email me.</p>
+    </div>
+    <div class="ask-suggestions fx">
+      {ASK_SUGGESTIONS.map((question) => (
+        <button type="button" class="btn btn-ghost" data-ask-chip={question}>{question}<Icon name="ph:chat-circle-dots" /></button>
+      ))}
+    </div>
+  </section>}
 
   {latest && <section class="shell section-space">
     <div class="section-heading fx"><div><p class="eyebrow">Writing</p><h2>Notes from the work.</h2></div><a href="/blog/" class="text-link">All writing <Icon name="ph:arrow-right" /></a></div>
