@@ -41,7 +41,7 @@ const path = Astro.url.pathname;
       <button
         type="button"
         data-palette-open
-        class="hidden items-center gap-2 rounded-ui border border-line px-2.5 py-1.5 text-sm text-muted transition-colors hover:border-muted hover:text-fg lg:inline-flex"
+        class="hidden h-10 items-center gap-2 rounded-ui border border-line px-3 text-sm text-muted transition-colors hover:border-muted hover:text-fg lg:inline-flex"
         aria-label="Find a page or action"
       >
         <Icon name="ph:magnifying-glass" />
@@ -51,14 +51,14 @@ const path = Astro.url.pathname;
       <button
         type="button"
         data-theme-toggle
-        class="inline-flex size-11 items-center justify-center rounded-ui border border-line text-muted transition-colors hover:border-muted hover:text-fg"
+        class="inline-flex size-11 items-center justify-center rounded-ui border border-line text-muted transition-colors hover:border-muted hover:text-fg lg:size-10"
         aria-label="Switch between light and dark theme"
       >
         <Icon name="ph:sun" class="theme-sun" />
         <Icon name="ph:moon" class="theme-moon" />
       </button>
 
-      <a href={`mailto:${profile.email}`} class="btn btn-primary !h-11 !px-3.5 text-sm max-sm:hidden">Email me</a>
+      <a href={`mailto:${profile.email}`} class="btn btn-primary !h-11 !px-3.5 text-sm !shadow-none max-sm:hidden lg:!h-10">Email me</a>
 
       <button
         type="button"
