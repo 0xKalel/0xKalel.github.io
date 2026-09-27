@@ -42,9 +42,9 @@ const current = (href: string) => !href.startsWith('/#') && path.startsWith(href
           <span aria-hidden="true">⌘K</span>
         </button>
 
-        <button type="button" data-theme-toggle class="nav-icon" aria-label="Switch between light and dark theme">
-          <Icon name="ph:sun" class="theme-sun" />
-          <Icon name="ph:moon" class="theme-moon" />
+        <button type="button" data-theme-toggle class="nav-icon" aria-label="Switch between the palace (light) and dungeon (dark) theme">
+          <Icon name="px-sun" class="theme-sun" />
+          <Icon name="px-torch" class="theme-moon" />
         </button>
 
         <a href={`mailto:${profile.email}`} class="btn btn-primary nav-cta">Email me</a>
@@ -64,7 +64,6 @@ const current = (href: string) => !href.startsWith('/#') && path.startsWith(href
   </nav>
 
   <noscript><nav aria-label="Pages without JavaScript" class="flex flex-wrap justify-center gap-x-5 gap-y-2 px-4 pb-3 text-sm">{links.map((l) => <a class="link py-2" href={l.href}>{l.label}</a>)}</nav></noscript>
-  <div class="reading-progress" data-reading-progress aria-hidden="true"></div>
 </header>
 
 <dialog id="mnav" aria-label="Navigation">
@@ -78,7 +77,7 @@ const current = (href: string) => !href.startsWith('/#') && path.startsWith(href
         <li>
           <a href={l.href}>
             {l.label}
-            <Icon name="ph:arrow-right" />
+            <Icon name="px-arrow-right" />
           </a>
         </li>
       ))

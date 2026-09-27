@@ -138,17 +138,17 @@ External calls share one mechanism for retries, key rotation and switching provi
   <div class="card post-rules fx">
     <p class="eyebrow">When a call fails</p>
     <ul>
-      <li><span class="post-trigger">Temporary error</span><Icon name="ph:arrow-right" /><span>A few retries with growing delays</span></li>
-      <li><span class="post-trigger">2 timeouts in a row</span><Icon name="ph:arrow-right" /><span>Switch provider</span></li>
-      <li><span class="post-trigger">Empty balance</span><Icon name="ph:arrow-right" /><span>Shared 30-minute cooldown</span></li>
+      <li><span class="post-trigger">Temporary error</span><Icon name="px-arrow-right" /><span>A few retries with growing delays</span></li>
+      <li><span class="post-trigger">2 timeouts in a row</span><Icon name="px-arrow-right" /><span>Switch provider</span></li>
+      <li><span class="post-trigger">Empty balance</span><Icon name="px-arrow-right" /><span>Shared 30-minute cooldown</span></li>
     </ul>
   </div>
   <div class="card post-rules fx" style="--d:70ms">
     <p class="eyebrow">What a fallback must keep</p>
     <ul>
-      <li><span class="post-trigger">Voice</span><Icon name="ph:arrow-right" /><span>The same speaker</span></li>
-      <li><span class="post-trigger">Images</span><Icon name="ph:arrow-right" /><span>The same quality level</span></li>
-      <li><span class="post-trigger">Embeddings</span><Icon name="ph:arrow-right" /><span>Never mixed: their outputs do not compare</span></li>
+      <li><span class="post-trigger">Voice</span><Icon name="px-arrow-right" /><span>The same speaker</span></li>
+      <li><span class="post-trigger">Images</span><Icon name="px-arrow-right" /><span>The same quality level</span></li>
+      <li><span class="post-trigger">Embeddings</span><Icon name="px-arrow-right" /><span>Never mixed: their outputs do not compare</span></li>
     </ul>
   </div>
 </div>
@@ -226,8 +226,8 @@ Caching also needs enough traffic to pay off.
 <div class="card post-rules post-solo not-prose fx">
   <p class="eyebrow">Caching, by call type</p>
   <ul>
-    <li><span class="post-trigger">Enrichment</span><Icon name="ph:arrow-right" /><span>Frequent: provider cache hits</span></li>
-    <li><span class="post-trigger">Scene direction</span><Icon name="ph:arrow-right" /><span>Too rare to keep a cache warm, so I cut prompt size instead and left caching until volume justifies it</span></li>
+    <li><span class="post-trigger">Enrichment</span><Icon name="px-arrow-right" /><span>Frequent: provider cache hits</span></li>
+    <li><span class="post-trigger">Scene direction</span><Icon name="px-arrow-right" /><span>Too rare to keep a cache warm, so I cut prompt size instead and left caching until volume justifies it</span></li>
   </ul>
 </div>
 

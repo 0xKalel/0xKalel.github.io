@@ -63,24 +63,25 @@ const count = videos.length + chunks.length;
     </div>
   </div>
   <div class="gallery-controls" data-gallery-controls hidden>
-    <button type="button" class="gallery-btn" data-gallery-prev aria-controls="project-gallery-track" aria-label="Previous item"><Icon name="ph:caret-left" /></button>
+    <button type="button" class="gallery-btn" data-gallery-prev aria-controls="project-gallery-track" aria-label="Previous item"><Icon name="px-caret-left" /></button>
     <div class="gallery-dots" data-gallery-dots role="group" aria-label="Choose an item">
       {Array.from({ length: count }).map((_, i) => <button type="button" data-gallery-dot={i} aria-pressed={i === 0 ? 'true' : 'false'} aria-controls={`gallery-slide-${i}`} aria-label={`Show item ${i + 1} of ${count}`}><span aria-hidden="true"></span></button>)}
     </div>
-    <button type="button" class="gallery-btn" data-gallery-next aria-controls="project-gallery-track" aria-label="Next item"><Icon name="ph:caret-right" /></button>
+    <button type="button" class="gallery-btn" data-gallery-next aria-controls="project-gallery-track" aria-label="Next item"><Icon name="px-caret-right" /></button>
   </div>
   <p class="sr-only" data-gallery-status role="status" aria-atomic="true"></p>
 </section>
 
 <style>
   .gallery { margin-block: 2.5rem; }
-  .gallery-frame { position: relative; }
+  /* The gallery hangs in a stone window, like the exhibits on the homepage. */
+  .gallery-frame { position: relative; padding: 8px; border: 2px solid var(--cave); background: var(--stone); box-shadow: var(--bevel), 12px 12px 0 var(--hi); }
   .gallery-track {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    border: 1.5px solid var(--fg);
+    outline: 2px solid var(--stone-lo);
     background: var(--surface);
   }
   .gallery-track::-webkit-scrollbar { display: none; }
@@ -135,14 +136,16 @@ const count = videos.length + chunks.length;
     line-height: 1.5;
     color: var(--muted);
   }
-  .gallery-controls { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; }
-  .gallery-btn { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 44px; height: 44px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
-  .gallery-btn:hover { border-color: var(--muted); }
+  .gallery-controls { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 24px; }
+  .gallery-btn { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 44px; height: 44px; border: 2px solid var(--fg); background: var(--surface); box-shadow: var(--bevel); color: var(--fg); font-size: 18px; cursor: pointer; transition: background-color 150ms ease; }
+  .gallery-btn:not([disabled]):hover { background: color-mix(in oklab, var(--hi) 26%, var(--surface)); }
+  .gallery-btn:not([disabled]):active { transform: translateY(2px); }
   .gallery-btn[disabled] { opacity: .35; cursor: default; }
   .gallery-dots { display: flex; justify-content: center; flex-wrap: wrap; }
   .gallery-dots button { display: grid; place-items: center; width: 44px; height: 44px; cursor: pointer; }
-  .gallery-dots button span { width: 8px; height: 8px; background: var(--muted); }
-  .gallery-dots button[aria-pressed='true'] span { background: var(--accent); width: 10px; height: 10px; }
+  /* Dots are small stone blocks; the one on show is a lit gold brick. */
+  .gallery-dots button span { width: 12px; height: 12px; background: var(--stone); box-shadow: var(--bevel); }
+  .gallery-dots button[aria-pressed='true'] span { width: 16px; height: 16px; background: var(--hi); box-shadow: inset 2px 2px 0 var(--flame-1), inset -2px -2px 0 var(--accent-deep); }
   @media (max-width: 640px) {
     .gallery-media { aspect-ratio: 4 / 3; }
     .gallery-pair { gap: .75rem; padding: .75rem; }

@@ -1,0 +1,60 @@
+---
+/** The level exit: a stone archway with lit stairs behind a heavy door. The door slides up in
+ *  mechanical steps when the contact email (or the door itself) is hovered or focused. */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+
+const stone = '#2f3d58';
+const stoneHi = '#485974';
+const stoneLo = '#19233a';
+const mortar = '#0e1626';
+const cave = '#070b14';
+// Archway: a stepped arch over the frame and over the opening.
+const frame = [[13, 0, 10, 2], [9, 2, 18, 2], [5, 4, 26, 2], [2, 6, 32, 2], [0, 8, 36, 34]];
+const opening = [[15, 10, 6, 2], [12, 12, 12, 2], [9, 14, 18, 2], [7, 16, 22, 26]];
+const stairs = Array.from({ length: 5 }, (_, k) => [7 + 4 * k, 38 - 4 * k, 22 - 4 * k, 4]);
+const bricks = [[0, 14, 7, 1], [29, 14, 7, 1], [0, 22, 7, 1], [29, 22, 7, 1], [0, 30, 7, 1], [29, 30, 7, 1], [3, 22, 1, 8], [32, 14, 1, 8], [4, 30, 1, 12], [31, 30, 1, 12]];
+---
+
+<svg class:list={['exit', className]} viewBox="0 0 36 46" shape-rendering="crispEdges" aria-hidden="true">
+  <defs>
+    <clipPath id="exit-opening">{opening.map(([x, y, w, h]) => <rect x={x} y={y} width={w} height={h} />)}</clipPath>
+    <radialGradient id="exit-light" cx="0.8" cy="0.15" r="0.9">
+      <stop offset="0" stop-color="#ffe7a8" stop-opacity=".95" />
+      <stop offset=".45" stop-color="#ffb846" stop-opacity=".45" />
+      <stop offset="1" stop-color="#ffb846" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  {frame.map(([x, y, w, h]) => <rect x={x} y={y} width={w} height={h} fill={stone} />)}
+  {frame.map(([x, y, w]) => <rect x={x} y={y} width={w} height="1" fill={stoneHi} />)}
+  <rect x="0" y="8" width="1" height="34" fill={stoneHi} />
+  <rect x="35" y="8" width="1" height="34" fill={stoneLo} />
+  {bricks.map(([x, y, w, h]) => <rect x={x} y={y} width={w} height={h} fill={mortar} />)}
+  <g clip-path="url(#exit-opening)">
+    <rect x="7" y="10" width="22" height="32" fill={cave} />
+    <rect x="7" y="10" width="22" height="32" fill="url(#exit-light)" />
+    {stairs.map(([x, y, w, h]) => <rect x={x} y={y} width={w} height={h} fill="#b8894d" />)}
+    {stairs.map(([x, y, w]) => <rect x={x} y={y} width={w} height="1" fill="#f3d193" />)}
+    {stairs.map(([x, y]) => <rect x={x} y={y + 1} width="1" height="3" fill="#7d5a30" />)}
+    <g class="exit-door">
+      <rect x="7" y="10" width="22" height="32" fill="#3b2a1b" />
+      {[11, 15, 19, 23, 27].map((x) => <rect x={x} y="10" width="1" height="32" fill="#24180e" />)}
+      {[19, 33].map((y) => <rect x="7" y={y} width="22" height="2" fill="#4a5263" />)}
+      {[19, 33].map((y) => <rect x="7" y={y} width="22" height="1" fill="#737c8e" />)}
+      {[9, 13, 17, 21, 25].flatMap((x) => [19, 33].map((y) => <rect x={x} y={y} width="1" height="1" fill="#c3c9d4" />))}
+      <rect x="7" y="41" width="22" height="1" fill="#1a120a" />
+    </g>
+  </g>
+  <rect x="7" y="16" width="1" height="26" fill={stoneLo} />
+  <rect x="0" y="42" width="36" height="4" fill={stone} />
+  <rect x="0" y="42" width="36" height="1" fill={stoneHi} />
+  <rect x="0" y="45" width="36" height="1" fill={stoneLo} />
+  <rect x="11" y="41" width="14" height="1" fill={stoneHi} />
+</svg>
+
+<style>
+  .exit { display: block; width: 100%; height: auto; overflow: visible; }
+  .exit-door { transform-box: fill-box; transition: transform 900ms steps(10, end); }
+</style>

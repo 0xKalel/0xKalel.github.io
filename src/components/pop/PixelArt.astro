@@ -1,0 +1,61 @@
+---
+/** Small multi-color pixel items (12 x 12), drawn with theme tokens: i = ink, g = torch gold,
+ *  h = gold highlight, d = gold shadow. Used as item icons in inventory-style slots. */
+import { pixels } from '../../lib/pixels';
+
+interface Props {
+  name: keyof typeof arts;
+  class?: string;
+}
+
+const arts = {
+  // A first step up a staircase.
+  stairs: `
+    ............
+    ............
+    .........hhh
+    .........ggd
+    ......hhhggd
+    ......gggggd
+    ...hhhgggggd
+    ...ggggggggd
+    hhhggggggggd
+    gggggggggggd
+    iiiiiiiiiiii
+    ............`,
+  // A balance: two pans on one beam.
+  scales: `
+    .....hh.....
+    .iiiiiiiiii.
+    .i...ii...i.
+    i.i..ii..i.i
+    i.i..ii..i.i
+    hhh..ii..ggg
+    ggd..ii..ggd
+    .....ii.....
+    .....ii.....
+    ...iiiiii...
+    ..iiiiiiii..
+    ............`,
+  // The hourglass, sand mostly run through.
+  hourglass: `
+    .iiiiiiiiii.
+    ..i......i..
+    ..i......i..
+    ...ihhggi...
+    ....iggi....
+    .....ii.....
+    .....ii.....
+    ....i.gi....
+    ...i..g.i...
+    ..i..hgg.i..
+    ..ihgggggi..
+    .iiiiiiiiii.`,
+};
+const { name, class: className } = Astro.props;
+const rects = pixels(arts[name], { i: 'var(--fg)', g: 'var(--hi)', h: 'var(--flame-1)', d: 'var(--accent-deep)' });
+---
+
+<svg class:list={['pixel-art', className]} viewBox="0 0 12 12" shape-rendering="crispEdges" aria-hidden="true">
+  {rects.map((r) => <rect x={r.x} y={r.y} width={r.w} height={r.h} style={`fill: ${r.fill}`} />)}
+</svg>

@@ -1,0 +1,96 @@
+---
+/** A wall torch in pixel art: an iron bracket and a three-frame flame that flickers at about six
+ *  frames a second, with a soft glow on the wall behind it. Under reduced motion the first frame stays lit. */
+import { pixels } from '../../lib/pixels';
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+
+const flame = { r: 'var(--flame-3)', o: 'var(--flame-2)', y: 'var(--flame-1)', w: 'oklch(0.99 0.04 95)' };
+const frames = [
+  `
+  ...r......
+  ...rr.....
+  ...rrr....
+  ..rroor...
+  ..rooor...
+  .rrooyor..
+  .rooyyor..
+  .roywwyor.
+  .roywwyor.
+  ..royyor..
+  ...rrrr...`,
+  `
+  ......r...
+  .....rr...
+  ....rrr...
+  ...roorr..
+  ...rooor..
+  ..rooyorr.
+  ..royyoor.
+  .roywwyor.
+  .roywwyor.
+  ..royyor..
+  ...rrrr...`,
+  `
+  ....r.....
+  ....r.....
+  ....rr....
+  ...rrr....
+  ...roor...
+  ..roooor..
+  ..rooyor..
+  .roywwyor.
+  .roywwyor.
+  ..royyor..
+  ...rrrr...`,
+].map((art) => pixels(art, flame));
+
+const body = pixels(
+  `
+  .kkkkkkkk.
+  ..kIIIIk..
+  ...kIIk...
+  ....kk....
+  ....kk....
+  ...kkkk...
+  ..kk..kk..
+  ..k....k..`,
+  { k: 'oklch(0.2 0.02 260)', I: 'oklch(0.48 0.03 255)' },
+  0,
+  11,
+);
+---
+
+<span class:list={['torch', className]} aria-hidden="true">
+  <svg viewBox="0 0 10 19" shape-rendering="crispEdges">
+    {frames.map((frame, i) => (
+      <g class="torch-frame" style={`--f:${i}`}>
+        {frame.map((r) => <rect x={r.x} y={r.y} width={r.w} height={r.h} style={`fill: ${r.fill}`} />)}
+      </g>
+    ))}
+    {body.map((r) => <rect x={r.x} y={r.y} width={r.w} height={r.h} style={`fill: ${r.fill}`} />)}
+  </svg>
+</span>
+
+<style>
+  /* Size comes from --px (CSS pixels per art pixel), set by the parent; 4px when unset. */
+  .torch { position: relative; display: block; width: calc(10 * var(--px, 4px)); height: calc(19 * var(--px, 4px)); }
+  .torch::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 26%;
+    width: 520%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    background: radial-gradient(closest-side, color-mix(in oklab, var(--flame-2) 34%, transparent), color-mix(in oklab, var(--flame-2) 10%, transparent) 55%, transparent);
+    pointer-events: none;
+  }
+  .torch svg { position: relative; display: block; width: 100%; height: 100%; }
+  .torch-frame { opacity: 0; animation: torch-flicker 540ms step-end infinite; animation-delay: calc(var(--f) * 180ms); }
+  .torch-frame:first-child { opacity: 1; }
+  @keyframes torch-flicker { 0% { opacity: 1; } 33.333%, 100% { opacity: 0; } }
+</style>

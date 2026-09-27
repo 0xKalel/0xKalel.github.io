@@ -1,0 +1,45 @@
+---
+/** Hero exhibit, "three gates": a stone wall with a doorway per project and a torch between each
+ *  pair. Behind every gate is the real work. On load the torches light and the gates rise once, in
+ *  turn; after that only the visitor moves things: stepping on a gate (hover or focus, on the gate
+ *  or its caption) sinks its pressure plate, lifts the gate the rest of the way and lights the doorway.
+ *  Gate and scene styles live with the castle materials in global.css. */
+import { evidence } from '../data/evidence';
+import { archPolygon } from '../lib/arch';
+import Wall from './pop/Wall.astro';
+import Torch from './pop/Torch.astro';
+import Gate, { type GateId } from './pop/Gate.astro';
+
+const items: { id: GateId; n: string; name: string; figure: string; text: string }[] = [
+  { id: 'storagepal', n: '01', name: 'StoragePal', figure: 'Since Oct 2024,', text: 'leading the booking, warehouse and payment platform.' },
+  { id: 'sps', n: '02', name: 'SPS warehouse app', figure: `${evidence.sps.weekdays.replace(' / ', ' of ')} weekdays`, text: 'in use, 13 Apr - 25 Sep 2026.' },
+  { id: 'ravenclip', n: '03', name: 'RavenClip', figure: `${evidence.ravenclip.daysToCustomer} days`, text: 'from the first commit to the first external paying customer.' },
+];
+const aspect = 0.7;
+---
+
+<div class="gates" style={`--arch: ${archPolygon(aspect)}; --aspect: ${aspect}`}>
+  <div class="scene" aria-hidden="true">
+    <Wall id="hero-wall" />
+    <div class="gates-row">
+      {items.map((c, i) => (
+        <>
+          {i > 0 && <Torch class="scene-torch" />}
+          <Gate id={c.id} i={i} href={`#${c.id}`} />
+        </>
+      ))}
+    </div>
+    <div class="scene-floor"></div>
+  </div>
+  <ol class="gates-captions" aria-label="Recent work">
+    {items.map((c, i) => (
+      <li>
+        <a class="gates-cap" href={`#${c.id}`} data-i={i}>
+          <span class="gates-num" aria-hidden="true">{c.n}</span>
+          <strong>{c.name}</strong>
+          <span class="gates-proof"><b>{c.figure}</b> {c.text}</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+</div>

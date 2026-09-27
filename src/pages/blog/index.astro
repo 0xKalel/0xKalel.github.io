@@ -1,6 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-import { Icon } from 'astro-icon/components';
 import Base from '../../layouts/Base.astro';
 import { postHref } from '../../lib/blog';
 
@@ -25,7 +24,7 @@ const posts = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.dat
                 <strong><span>{p.data.title}</span></strong>
                 <p>{p.data.description}</p>
               </div>
-              <Icon name="ph:arrow-up-right" aria-hidden="true" />
+              <span class="door-icon" aria-hidden="true"></span>
             </a>
           </li>
         ))

@@ -1,0 +1,26 @@
+---
+/** The game HUD along the bottom of the screen. Left: eight potion triangles that fill as the
+ *  page scrolls. Middle: the current level on the homepage, the reading time left on long pages,
+ *  the page name elsewhere (set by scrollPosition in scripts/site.ts). Right: the ask chat. */
+import { Icon } from 'astro-icon/components';
+import { ASK_READY } from '../lib/ask';
+
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+const lives = Array.from({ length: 8 });
+---
+
+<div class="hud">
+  <div class="hud-life" aria-hidden="true">
+    {lives.map((_, i) => <span class="hud-tri" style={`--n:${i}`} />)}
+  </div>
+  <p class="hud-text" aria-hidden="true" data-hud-text data-hud-title={title}>{title}</p>
+  {ASK_READY && (
+    <button type="button" class="hud-ask" data-ask-open aria-haspopup="dialog">
+      <Icon name="ph:chat-circle-dots" />
+      <span>Ask <span class="hud-ask-more">about my work</span></span>
+    </button>
+  )}
+</div>

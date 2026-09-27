@@ -1,0 +1,24 @@
+---
+/** The entrance to a case study: the project's gate from the homepage, alone in a torchlit wall.
+ *  It rises once on load; hovering the scene lifts it the rest of the way. Decorative. */
+import { archPolygon } from '../../lib/arch';
+import Wall from './Wall.astro';
+import Torch from './Torch.astro';
+import Gate, { type GateId } from './Gate.astro';
+
+interface Props {
+  id: GateId;
+}
+const { id } = Astro.props;
+const aspect = 0.7;
+---
+
+<div class="scene level-scene" aria-hidden="true" style={`--arch: ${archPolygon(aspect)}; --aspect: ${aspect}`}>
+  <Wall id={`level-wall-${id}`} />
+  <div class="level-row">
+    <Torch class="scene-torch" />
+    <Gate id={id} sizes="240px" />
+    <Torch class="scene-torch" />
+  </div>
+  <div class="scene-floor"></div>
+</div>

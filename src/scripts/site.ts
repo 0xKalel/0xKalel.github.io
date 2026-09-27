@@ -83,21 +83,49 @@ function spotlight() {
   });
 }
 
+// The HUD line: "Level N · Section" on the homepage, reading time left on long text, else the page name.
+const escape = (text: string) => text.replace(/[&<>]/g, (c) => `&#${c.charCodeAt(0)};`);
+function hudLine(sections: HTMLElement[], current: HTMLElement | undefined, prose: { el: HTMLElement; words: number } | null, title: string) {
+  title = escape(title);
+  if (location.pathname === '/') {
+    if (!current) return title;
+    if (current.dataset.hud) return current.dataset.hud;
+    const numbered = sections.filter((section) => section.querySelector('.sec-num'));
+    const heading = current.querySelector('.sec-head h2')?.textContent?.trim();
+    return heading ? `<b>Level ${numbered.indexOf(current) + 1}</b> · ${escape(heading)}` : title;
+  }
+  if (prose) {
+    const box = prose.el.getBoundingClientRect();
+    const left = Math.min(1, Math.max(0, (box.bottom - innerHeight) / box.height));
+    const minutes = Math.ceil((prose.words * left) / 220);
+    return minutes > 0 ? `<b>${minutes}</b> min left` : '<b>Level complete</b>';
+  }
+  return title;
+}
+
 function scrollPosition() {
-  const bar = document.querySelector<HTMLElement>('[data-reading-progress]');
+  const hud = document.querySelector<HTMLElement>('.hud');
+  const hudText = document.querySelector<HTMLElement>('[data-hud-text]');
+  const title = hudText?.dataset.hudTitle ?? '';
   const sections = $$<HTMLElement>('main section[id]');
   const links = $$<HTMLAnchorElement>('[data-section-link]');
+  const proseEl = document.querySelector<HTMLElement>('main .prose');
+  const words = proseEl?.textContent?.trim().split(/\s+/).length ?? 0;
+  const prose = proseEl && words > 300 ? { el: proseEl, words } : null;
+  let line = '';
   let frame = 0;
   const update = () => {
     const distance = document.documentElement.scrollHeight - innerHeight;
-    if (bar) bar.style.transform = `scaleX(${distance > 0 ? Math.min(1, Math.max(0, scrollY / distance)) : 0})`;
+    hud?.style.setProperty('--fill', String(8 * (distance > 0 ? Math.min(1, Math.max(0, scrollY / distance)) : 0)));
+    const current = location.pathname === '/' ? [...sections].reverse().find((section) => section.getBoundingClientRect().top <= 150) : undefined;
     if (location.pathname === '/') {
-      const current = [...sections].reverse().find((section) => section.getBoundingClientRect().top <= 150)?.id;
       links.forEach((link) => {
-        if (link.hash === `#${current}`) link.setAttribute('aria-current', 'location');
+        if (link.hash === `#${current?.id}`) link.setAttribute('aria-current', 'location');
         else link.removeAttribute('aria-current');
       });
     }
+    const next = hudLine(sections, current, prose, title);
+    if (hudText && next !== line) hudText.innerHTML = line = next;
     frame = 0;
   };
   const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
@@ -106,6 +134,32 @@ function scrollPosition() {
   const observer = new ResizeObserver(schedule);
   observer.observe(document.body);
   cleanups.push(() => { cancelAnimationFrame(frame); observer.disconnect(); });
+  update();
+}
+
+// On pages with a section nav, mark the room being read and the rooms already passed.
+function caseNav() {
+  const links = $$<HTMLAnchorElement>('.case-nav a[href^="#"]');
+  const rooms = links.map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))));
+  if (!links.length) return;
+  let frame = 0;
+  let last = -2;
+  const update = () => {
+    frame = 0;
+    let current = -1;
+    rooms.forEach((room, i) => { if (room && room.getBoundingClientRect().top <= 160) current = i; });
+    if (current === last) return;
+    last = current;
+    links.forEach((link, i) => {
+      if (i === current) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+      link.toggleAttribute('data-visited', i < current);
+    });
+  };
+  const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+  listen(window, 'scroll', schedule, { passive: true });
+  listen(window, 'resize', schedule);
+  cleanups.push(() => cancelAnimationFrame(frame));
   update();
 }
 
@@ -138,7 +192,7 @@ function theme() {
     const next = light ? 'dark' : 'light';
     html.dataset.theme = next;
     // Keep the browser chrome color in sync with the chosen theme.
-    const color = next === 'light' ? '#f4f4f1' : '#0f1012';
+    const color = next === 'light' ? '#f6efe3' : '#090f1c';
     document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
       meta.content = color;
       meta.removeAttribute('media');
@@ -228,6 +282,7 @@ function init() {
   moreToggles();
   spotlight();
   scrollPosition();
+  caseNav();
   menu();
   theme();
   copyEmail();

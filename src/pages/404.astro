@@ -1,13 +1,15 @@
 ---
 import Base from '../layouts/Base.astro';
+import SpikePit from '../components/pop/SpikePit.astro';
 ---
 <Base title="Page not found" description="This page is missing. Explore Khalil Hebachi’s work or return to the homepage." noindex>
   <section class="shell">
     <header class="page-head">
       <p class="mono-label rise">Page not found</p>
       <h1 class="rise mt-6" style="--i:1">404</h1>
-      <p class="rise" style="--i:2">That page isn’t here. The link may be old or incomplete. My latest projects, writing, and contact details are on the homepage.</p>
-      <div class="rise mt-10 flex flex-wrap gap-4" style="--i:3"><a class="btn btn-primary" href="/">Back to the homepage</a><a class="btn btn-ghost" href="/#work">Selected work</a></div>
+      <div class="rise mt-8" style="--i:2"><SpikePit /></div>
+      <p class="rise" style="--i:3">That page isn’t here. The link may be old or incomplete. My latest projects, writing, and contact details are on the homepage.</p>
+      <div class="rise mt-10 flex flex-wrap gap-4" style="--i:4"><a class="btn btn-primary" href="/">Back to the homepage</a><a class="btn btn-ghost" href="/#work">Selected work</a></div>
     </header>
   </section>
 </Base>

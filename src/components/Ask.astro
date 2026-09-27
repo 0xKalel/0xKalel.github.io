@@ -1,5 +1,5 @@
 ---
-/** "Ask about my work" chat: a floating launcher and a native <dialog> panel.
+/** "Ask about my work" chat: a native <dialog> panel, opened from the HUD and the contact band.
  *  Answers stream from the worker in worker/, grounded in /ask/knowledge.txt. */
 import { Icon } from 'astro-icon/components';
 import { profile } from '../data/cv';
@@ -7,17 +7,6 @@ import { ASK_READY, ASK_SUGGESTIONS, MAX_QUESTION_CHARS } from '../lib/ask';
 ---
 
 {ASK_READY && <>
-<button
-  type="button"
-  data-ask-open
-  class="ask-launcher"
-  aria-label="Ask about my work"
-  aria-haspopup="dialog"
->
-  <Icon name="ph:chat-circle-dots" />
-  <span class="ask-launcher-label">Ask about my work</span>
-</button>
-
 <dialog id="ask-panel" aria-label="Ask about Khalil's work">
   <header class="ask-head">
     <div>
@@ -87,26 +76,6 @@ import { ASK_READY, ASK_SUGGESTIONS, MAX_QUESTION_CHARS } from '../lib/ask';
     const send = dlg.querySelector<HTMLButtonElement>('[data-ask-send]')!;
     const status = dlg.querySelector<HTMLElement>('[data-ask-status]')!;
     const statusText = dlg.querySelector<HTMLElement>('[data-ask-status-text]')!;
-
-    // The launcher steps aside on the hero, which has its own calls to action, and on the
-    // contact band, which already offers the assistant, so it never covers either.
-    const launcher = document.querySelector<HTMLElement>('.ask-launcher');
-    const hero = document.querySelector('.hero');
-    const contact = document.querySelector('#contact');
-    if (launcher && (hero || contact)) {
-      const visible = new Set<Element>();
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => (entry.isIntersecting ? visible.add(entry.target) : visible.delete(entry.target)));
-        launcher.classList.toggle('is-away', visible.size > 0);
-      });
-      if (hero) {
-        visible.add(hero);
-        launcher.classList.add('is-away');
-        observer.observe(hero);
-      }
-      if (contact) observer.observe(contact);
-      controller.signal.addEventListener('abort', () => observer.disconnect());
-    }
 
     let messages = loadConversation();
     let streaming = false;

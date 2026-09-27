@@ -1,0 +1,38 @@
+---
+/** A floor with a missing tile and a row of spikes in the pit below, for the 404 page. */
+const steel = '#8f98ab';
+const steelHi = '#dde2ea';
+const steelLo = '#566076';
+const spikes = Array.from({ length: 6 }, (_, i) => 19 + i * 4);
+const tile = (x: number) => [
+  { x, y: 0, w: 18, h: 5, fill: 'var(--stone)' },
+  { x, y: 0, w: 18, h: 1, fill: 'var(--stone-hi)' },
+  { x, y: 4, w: 18, h: 1, fill: 'var(--stone-lo)' },
+  { x: x + 8, y: 1, w: 1, h: 3, fill: 'var(--mortar)' },
+];
+const parts = [
+  ...tile(0),
+  ...tile(42),
+  { x: 18, y: 0, w: 24, h: 18, fill: 'var(--cave)' },
+  { x: 18, y: 16, w: 24, h: 2, fill: 'var(--stone-lo)' },
+  // The fallen tile, broken in two on the pit floor.
+  { x: 20, y: 14, w: 7, h: 2, fill: 'var(--stone)' },
+  { x: 20, y: 14, w: 7, h: 1, fill: 'var(--stone-hi)' },
+  { x: 34, y: 13, w: 6, h: 3, fill: 'var(--stone)' },
+  { x: 34, y: 13, w: 6, h: 1, fill: 'var(--stone-hi)' },
+  ...spikes.flatMap((x) => [
+    { x: x + 1, y: 7, w: 1, h: 3, fill: steelHi },
+    { x, y: 10, w: 3, h: 6, fill: steel },
+    { x, y: 10, w: 1, h: 6, fill: steelHi },
+    { x: x + 2, y: 10, w: 1, h: 6, fill: steelLo },
+  ]),
+];
+---
+
+<svg class="pit" viewBox="0 0 60 18" shape-rendering="crispEdges" aria-hidden="true">
+  {parts.map((p) => <rect x={p.x} y={p.y} width={p.w} height={p.h} style={`fill: ${p.fill}`} />)}
+</svg>
+
+<style>
+  .pit { display: block; width: min(420px, 100%); height: auto; }
+</style>

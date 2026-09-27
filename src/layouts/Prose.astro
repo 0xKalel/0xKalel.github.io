@@ -25,7 +25,7 @@ const long = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month:
   {
     sections.length > 1 ? (
       <article class="shell case-study post">
-        {date && <a href="/blog/" class="text-link"><Icon name="ph:arrow-left" /> Writing</a>}
+        {date && <a href="/blog/" class="text-link"><Icon name="px-arrow-left" /> Writing</a>}
         <header class="case-header">
           {date && <p class="eyebrow rise"><time datetime={date.toISOString()}>{long(date)}</time>{updated && <> · Updated <time datetime={updated.toISOString()}>{long(updated)}</time></>}</p>}
           <h1 class="rise">{title}</h1>

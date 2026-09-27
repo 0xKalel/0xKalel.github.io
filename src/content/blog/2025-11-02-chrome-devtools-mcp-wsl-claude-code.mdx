@@ -13,11 +13,11 @@ This setup lets Claude inspect pages, check console errors and test browser inte
   <figcaption class="eyebrow">How the pieces connect</figcaption>
   <ol>
     <li class="post-flow-node"><span class="post-icon"><Icon name="ph:terminal-window" /></span><strong>Claude Code</strong><span>VS Code extension</span></li>
-    <li class="post-flow-link"><span>stdio</span><Icon name="ph:arrow-right" /></li>
+    <li class="post-flow-link"><span>stdio</span><Icon name="px-arrow-right" /></li>
     <li class="post-flow-node"><span class="post-icon"><Icon name="ph:plugs-connected" /></span><strong>chrome-devtools-mcp</strong><span>MCP server, started with npx</span></li>
-    <li class="post-flow-link"><span>DevTools protocol</span><Icon name="ph:arrow-right" /></li>
+    <li class="post-flow-link"><span>DevTools protocol</span><Icon name="px-arrow-right" /></li>
     <li class="post-flow-node"><span class="post-icon"><Icon name="ph:browser" /></span><strong>Chrome for Testing</strong><span>Linux build, temporary profile</span></li>
-    <li class="post-flow-link"><span>opens</span><Icon name="ph:arrow-right" /></li>
+    <li class="post-flow-link"><span>opens</span><Icon name="px-arrow-right" /></li>
     <li class="post-flow-node"><span class="post-icon"><Icon name="ph:app-window" /></span><strong>Your local app</strong><span>Pages, console, interactions</span></li>
   </ol>
   <p class="post-flow-caps">Claude can then <span class="stack-chip">Inspect pages</span><span class="stack-chip">Check console errors</span><span class="stack-chip">Test interactions</span></p>
@@ -90,10 +90,10 @@ Add this server entry under your project:
 <div class="card post-rules post-solo not-prose fx">
   <p class="eyebrow">What to change, and what the flags do</p>
   <ul>
-    <li><span class="post-trigger">/path/to/your/project</span><Icon name="ph:arrow-right" /><span>Replace with your project path</span></li>
-    <li><span class="post-trigger">/home/username/…/chrome</span><Icon name="ph:arrow-right" /><span>Replace with the Chrome path from step 1</span></li>
-    <li><span class="post-trigger">`-e`</span><Icon name="ph:arrow-right" /><span>Selects the executable</span></li>
-    <li><span class="post-trigger">`--isolated`</span><Icon name="ph:arrow-right" /><span>Uses a temporary browser profile</span></li>
+    <li><span class="post-trigger">/path/to/your/project</span><Icon name="px-arrow-right" /><span>Replace with your project path</span></li>
+    <li><span class="post-trigger">/home/username/…/chrome</span><Icon name="px-arrow-right" /><span>Replace with the Chrome path from step 1</span></li>
+    <li><span class="post-trigger">`-e`</span><Icon name="px-arrow-right" /><span>Selects the executable</span></li>
+    <li><span class="post-trigger">`--isolated`</span><Icon name="px-arrow-right" /><span>Uses a temporary browser profile</span></li>
   </ul>
 </div>
 
@@ -132,10 +132,10 @@ claude mcp list
 <div class="card post-rules post-solo not-prose fx">
   <p class="eyebrow">Symptom, then what to check</p>
   <ul>
-    <li><span class="post-trigger">Chrome not found</span><Icon name="ph:arrow-right" /><span>Check the installed version folder and update the `-e` path.</span></li>
-    <li><span class="post-trigger">Target closed</span><Icon name="ph:arrow-right" /><span>Check whether Chrome starts. If you are launching Windows Chrome, try the Linux installation above.</span></li>
-    <li><span class="post-trigger">Server missing</span><Icon name="ph:arrow-right" /><span>Check the JSON syntax, reload VS Code and inspect the extension logs.</span></li>
-    <li><span class="post-trigger">Permission denied</span><Icon name="ph:arrow-right" /><span>Check the allow list in your global or project settings.</span></li>
+    <li><span class="post-trigger">Chrome not found</span><Icon name="px-arrow-right" /><span>Check the installed version folder and update the `-e` path.</span></li>
+    <li><span class="post-trigger">Target closed</span><Icon name="px-arrow-right" /><span>Check whether Chrome starts. If you are launching Windows Chrome, try the Linux installation above.</span></li>
+    <li><span class="post-trigger">Server missing</span><Icon name="px-arrow-right" /><span>Check the JSON syntax, reload VS Code and inspect the extension logs.</span></li>
+    <li><span class="post-trigger">Permission denied</span><Icon name="px-arrow-right" /><span>Check the allow list in your global or project settings.</span></li>
   </ul>
 </div>
 
@@ -150,7 +150,7 @@ claude mcp list
 ## Documentation
 
 <div class="post-links not-prose">
-  <a href="https://github.com/ChromeDevTools/chrome-devtools-mcp"><Icon name="ph:github-logo" /><strong>Chrome DevTools MCP</strong><small>github.com/ChromeDevTools/chrome-devtools-mcp</small><Icon name="ph:arrow-up-right" /></a>
-  <a href="https://docs.claude.com/en/docs/claude-code"><Icon name="ph:book-open" /><strong>Claude Code</strong><small>docs.claude.com/en/docs/claude-code</small><Icon name="ph:arrow-up-right" /></a>
-  <a href="https://developer.chrome.com/blog/chrome-for-testing/"><Icon name="ph:browser" /><strong>Chrome for Testing</strong><small>developer.chrome.com/blog/chrome-for-testing</small><Icon name="ph:arrow-up-right" /></a>
+  <a href="https://github.com/ChromeDevTools/chrome-devtools-mcp"><Icon name="ph:github-logo" /><strong>Chrome DevTools MCP</strong><small>github.com/ChromeDevTools/chrome-devtools-mcp</small><Icon name="px-arrow-up-right" /></a>
+  <a href="https://docs.claude.com/en/docs/claude-code"><Icon name="ph:book-open" /><strong>Claude Code</strong><small>docs.claude.com/en/docs/claude-code</small><Icon name="px-arrow-up-right" /></a>
+  <a href="https://developer.chrome.com/blog/chrome-for-testing/"><Icon name="ph:browser" /><strong>Chrome for Testing</strong><small>developer.chrome.com/blog/chrome-for-testing</small><Icon name="px-arrow-up-right" /></a>
 </div>

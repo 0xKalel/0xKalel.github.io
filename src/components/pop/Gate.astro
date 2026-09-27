@@ -1,0 +1,37 @@
+---
+/** One castle gate: a numbered plaque, a pointed arch with the project's real work behind a
+ *  portcullis, and a pressure plate in front. The arch shape comes from --arch and --aspect on an
+ *  ancestor (see lib/arch.ts); the styles live with the other castle materials in global.css. */
+import { Image } from 'astro:assets';
+import spCatalog from '../../assets/work/storagepal-catalogue-grid.png';
+import ravenPreview from '../../assets/work/ravenclip-preview-portrait.png';
+
+export type GateId = 'storagepal' | 'sps' | 'ravenclip';
+interface Props {
+  id: GateId;
+  /** Position in a row of gates, used to stagger the load animation. */
+  i?: number;
+  /** Makes the gate a link (kept out of the tab order; captions carry the accessible link). */
+  href?: string;
+  sizes?: string;
+}
+const { id, i = 0, href, sizes = '160px' } = Astro.props;
+const plaques: Record<GateId, [string, string]> = { storagepal: ['01', 'StoragePal'], sps: ['02', 'SPS'], ravenclip: ['03', 'RavenClip'] };
+const [n, label] = plaques[id];
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag class={`gate is-${id}`} href={href} data-i={i} style={`--i:${i}`} tabindex={href ? -1 : undefined}>
+  <span class="gate-plaque"><b>{n}</b><span>{label}</span></span>
+  <span class="gate-arch">
+    <span class="gate-hole">
+      <span class="gate-view">
+        {id === 'storagepal' && <Image src={spCatalog} alt="" widths={[200, 400, 600]} sizes={sizes} loading="eager" />}
+        {id === 'sps' && <span class="gate-grid">{Array.from({ length: 120 }, () => <span />)}</span>}
+        {id === 'ravenclip' && <Image src={ravenPreview} alt="" widths={[200, 400, 600]} sizes={sizes} loading="eager" />}
+      </span>
+      <span class="gate-bars"></span>
+    </span>
+  </span>
+  <span class="gate-plate"></span>
+</Tag>
