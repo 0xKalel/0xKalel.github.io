@@ -6,6 +6,7 @@ tags: [claude-code, mcp, wsl, chrome-devtools]
 ---
 
 import { Icon } from 'astro-icon/components';
+import Potion from '../../components/pop/Potion.astro';
 
 This setup lets Claude inspect pages, check console errors and test browser interactions in WSL.
 
@@ -138,6 +139,8 @@ claude mcp list
     <li><span class="post-trigger">Permission denied</span><Icon name="px-arrow-right" /><span>Check the allow list in your global or project settings.</span></li>
   </ul>
 </div>
+
+<Potion id="devtools" />
 
 ## Try it
 

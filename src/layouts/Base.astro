@@ -12,6 +12,7 @@ import Palette from '../components/Palette.astro';
 import Ask from '../components/Ask.astro';
 import Hud from '../components/Hud.astro';
 import { profile } from '../data/cv';
+import { POTIONS, SOUND_ON_BY_DEFAULT } from '../lib/potions';
 
 interface Props {
   title?: string;
@@ -92,13 +93,27 @@ const GA_ID = 'G-SLJ8G6MSCP';
       url: profile.site,
     })} />}
     {!bare && <ClientRouter />}
-    <script is:inline>
+    <script is:inline define:vars={{ potionIds: POTIONS, soundDefault: SOUND_ON_BY_DEFAULT }}>
       // The router copies each new page's <html> attributes over the current ones, and this
-      // head script runs only once, so re-apply the saved theme and the js flag after every swap.
+      // head script runs only once, so re-apply the saved theme, the potion game (lib/potions.ts)
+      // and the js flag after every swap. Applying them here, before paint, keeps the HUD from flickering.
       (() => {
         const apply = () => {
           const html = document.documentElement;
           html.classList.add('js');
+          let drunk = [];
+          let exit;
+          let sound;
+          try {
+            drunk = JSON.parse(localStorage.getItem('potions') || '[]');
+            exit = localStorage.getItem('potions:exit');
+            sound = localStorage.getItem('sound');
+          } catch {}
+          const count = Array.isArray(drunk) ? potionIds.filter((id) => drunk.includes(id)).length : 0;
+          html.style.setProperty('--potions', count);
+          if (count === potionIds.length) html.dataset.potions = 'full';
+          if (exit === 'open') html.dataset.exit = 'open';
+          if (sound ? sound === 'on' : soundDefault) html.dataset.sound = 'on';
           let t;
           try { t = localStorage.getItem('theme'); } catch {}
           if (t !== 'light' && t !== 'dark') return;

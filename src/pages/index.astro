@@ -14,6 +14,7 @@ import { evidence, type ProjectId } from '../data/evidence';
 import { defaultRole } from '../data/roles';
 import { ASK_READY } from '../lib/ask';
 import { postHref } from '../lib/blog';
+import { POTIONS } from '../lib/potions';
 import Stat from '../components/Stat.astro';
 import catalogue from '../assets/work/storagepal-catalogue.png';
 import checkout from '../assets/work/storagepal-checkout.png';
@@ -201,6 +202,7 @@ const stackWhere: Record<(typeof skills)[number]['id'], string> = {
       <h2 class="fx">Hiring, or need something built?</h2>
       <p class="contact-description fx">Tell me about the role or the product. A few lines are enough to start.</p>
       <a class="contact-mail fx" href={`mailto:${profile.email}`}><span>{profile.email}</span><Icon name="px-arrow-up-right" /></a>
+      <p class="potion-reward"><PixelArt name="potion" /><span>You found all {POTIONS.length} potions. Mention it when you write.</span><button type="button" class="text-link" data-potion-reset>Play again</button></p>
       <div class="contact-actions fx">
         <button type="button" class="btn btn-ghost" data-copy={profile.email} aria-label="Copy email address"><Icon name="ph:copy" /><span data-copy-label>Copy email</span></button>
         {ASK_READY && <button type="button" class="btn btn-ghost" data-ask-open aria-haspopup="dialog"><Icon name="ph:chat-circle-dots" />Ask my AI assistant</button>}

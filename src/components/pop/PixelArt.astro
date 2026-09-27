@@ -1,6 +1,7 @@
 ---
 /** Small multi-color pixel items (12 x 12), drawn with theme tokens: i = ink, g = torch gold,
- *  h = gold highlight, d = gold shadow. Used as item icons in inventory-style slots. */
+ *  h = gold highlight, d = gold shadow, r / l / k = potion red, its highlight and its shade.
+ *  Used as item icons in inventory-style slots and for the potions. */
 import { pixels } from '../../lib/pixels';
 
 interface Props {
@@ -51,9 +52,45 @@ const arts = {
     ..i..hgg.i..
     ..ihgggggi..
     .iiiiiiiiii.`,
+  // The small red potion from the game: corked, full, a glint on the glass.
+  potion: `
+    ....dddd....
+    ....iddi....
+    ....i..i....
+    ...ii..ii...
+    ..i......i..
+    .illrrrrrri.
+    .irlrrrrrri.
+    .irlrrrrrki.
+    .irrrrrrrki.
+    .irrrrrrkki.
+    ..irkkkkki..
+    ...iiiiii...`,
+  // The same flask once drunk: open, with one drop left.
+  flask: `
+    ............
+    ....i..i....
+    ....i..i....
+    ...ii..ii...
+    ..i......i..
+    .i........i.
+    .i........i.
+    .i........i.
+    .i........i.
+    .i........i.
+    ..ikk....i..
+    ...iiiiii...`,
 };
 const { name, class: className } = Astro.props;
-const rects = pixels(arts[name], { i: 'var(--fg)', g: 'var(--hi)', h: 'var(--flame-1)', d: 'var(--accent-deep)' });
+const rects = pixels(arts[name], {
+  i: 'var(--fg)',
+  g: 'var(--hi)',
+  h: 'var(--flame-1)',
+  d: 'var(--accent-deep)',
+  r: 'var(--potion)',
+  l: 'oklch(0.8 0.12 25)',
+  k: 'oklch(0.42 0.16 27)',
+});
 ---
 
 <svg class:list={['pixel-art', className]} viewBox="0 0 12 12" shape-rendering="crispEdges" aria-hidden="true">

@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import { postHref } from '../../lib/blog';
+import Potion from '../../components/pop/Potion.astro';
 
 const posts = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.data.date);
 ---
@@ -30,5 +31,6 @@ const posts = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.dat
         ))
       }
     </ul>
+    <Potion id="blog" />
   </section>
 </Base>

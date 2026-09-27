@@ -1,22 +1,31 @@
 ---
-/** The game HUD along the bottom of the screen. Left: eight potion triangles that fill as the
- *  page scrolls. Middle: the current level on the homepage, the reading time left on long pages,
- *  the page name elsewhere (set by scrollPosition in scripts/site.ts). Right: the ask chat. */
+/** The game HUD along the bottom of the screen. Left: one life triangle per potion on the site,
+ *  filled as the visitor drinks them (--potions, set by potions() in scripts/site.ts and before paint
+ *  in Base.astro), and the game sound switch. Middle: the current level on the homepage, the reading
+ *  time left on long pages, the page name elsewhere, or a short potion message (set by scrollPosition).
+ *  Right: the ask chat. */
 import { Icon } from 'astro-icon/components';
 import { ASK_READY } from '../lib/ask';
+import { POTIONS } from '../lib/potions';
 
 interface Props {
   title: string;
 }
 const { title } = Astro.props;
-const lives = Array.from({ length: 8 });
 ---
 
 <div class="hud">
-  <div class="hud-life" aria-hidden="true">
-    {lives.map((_, i) => <span class="hud-tri" style={`--n:${i}`} />)}
+  <div class="hud-left">
+    <div class="hud-life" aria-hidden="true">
+      {POTIONS.map((_, i) => <span class="hud-tri" style={`--n:${i}`} />)}
+    </div>
+    <button type="button" class="hud-sound" data-sound-toggle aria-pressed="false" aria-label="Game sound">
+      <Icon name="px-sound-off" class="hud-sound-off" />
+      <Icon name="px-sound-on" class="hud-sound-on" />
+    </button>
   </div>
   <p class="hud-text" aria-hidden="true" data-hud-text data-hud-title={title}>{title}</p>
+  <p class="sr-only" data-potion-status role="status"></p>
   {ASK_READY && (
     <button type="button" class="hud-ask" data-ask-open aria-haspopup="dialog">
       <Icon name="ph:chat-circle-dots" />

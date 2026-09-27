@@ -32,6 +32,7 @@ import checkout from '../../assets/work/storagepal-checkout.png';
 import transport from '../../assets/work/storagepal-transport.png';
 import aiCart from '../../assets/work/storagepal-ai-cart.png';
 import { evidence } from '../../data/evidence';
+import Potion from '../../components/pop/Potion.astro';
 
 <div class="post-tldr not-prose">
   <p class="eyebrow">The short version</p>
@@ -98,6 +99,8 @@ Staff use the inventory and reservation screens every day. I fixed those first.
 ## Cache what customers share
 
 The catalog repeated the same database work on every visit. I cut queries and added indexes. Then I built the page on the server from cached data.
+
+<Potion id="storagepal" />
 
 <div class="post-split not-prose">
   <div class="card fx">

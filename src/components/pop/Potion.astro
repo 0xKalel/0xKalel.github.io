@@ -1,0 +1,21 @@
+---
+/** A red potion from the game, standing on a stone ledge. Drinking it (a click) fills one of the
+ *  HUD's life triangles and leaves an empty flask in its place; see potions() in scripts/site.ts.
+ *  Each page has at most one, listed in lib/potions.ts. Hidden without JavaScript. */
+import type { PotionId } from '../../lib/potions';
+import PixelArt from './PixelArt.astro';
+
+interface Props {
+  id: PotionId;
+  class?: string;
+}
+const { id, class: className } = Astro.props;
+---
+
+<div class:list={['potion-spot', className]}>
+  <button type="button" class="potion" data-potion={id} aria-label="Drink the potion">
+    <span class="potion-label" aria-hidden="true">Drink me</span>
+    <PixelArt name="potion" class="potion-full" />
+    <PixelArt name="flask" class="potion-empty" />
+  </button>
+</div>

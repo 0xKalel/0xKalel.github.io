@@ -1,3 +1,6 @@
+import { POTIONS } from '../lib/potions';
+import { play, setSound, soundOn } from './sound';
+
 // Bind once per Astro page visit, and release listeners and animation frames on exit.
 const cleanups: Array<() => void> = [];
 const motions = new Set<Animation>();
@@ -9,11 +12,16 @@ function listen(target: EventTarget, event: string, fn: EventListener, options?:
   target.addEventListener(event, fn, options);
   cleanups.push(() => target.removeEventListener(event, fn, options));
 }
-function animate(element: HTMLElement, frames: Keyframe[], duration = 380, delay = 0) {
+function animate(element: Element, frames: Keyframe[], duration = 380, delay = 0, easing = 'cubic-bezier(.22,1,.36,1)') {
   if (reduced()) return;
-  const motion = element.animate(frames, { duration, delay, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' });
+  const motion = element.animate(frames, { duration, delay, easing, fill: 'backwards' });
   motions.add(motion);
   motion.onfinish = motion.oncancel = () => motions.delete(motion);
+  return motion;
+}
+function track(name: string, params?: Record<string, string | number>) {
+  const gtag = (window as { gtag?: (...args: unknown[]) => void }).gtag;
+  if (typeof gtag === 'function') gtag('event', name, params);
 }
 function cleanup() {
   cleanups.splice(0).forEach((fn) => fn());
@@ -103,8 +111,18 @@ function hudLine(sections: HTMLElement[], current: HTMLElement | undefined, pros
   return title;
 }
 
+// A short message that takes over the HUD line for a moment, and carries across page changes.
+let hudFlash: { html: string; until: number } | null = null;
+let refreshHud = () => {};
+let flashTimer: ReturnType<typeof setTimeout>;
+function flash(html: string, ms = 3200) {
+  hudFlash = { html, until: performance.now() + ms };
+  refreshHud();
+  clearTimeout(flashTimer);
+  flashTimer = setTimeout(() => refreshHud(), ms + 20);
+}
+
 function scrollPosition() {
-  const hud = document.querySelector<HTMLElement>('.hud');
   const hudText = document.querySelector<HTMLElement>('[data-hud-text]');
   const title = hudText?.dataset.hudTitle ?? '';
   const sections = $$<HTMLElement>('main section[id]');
@@ -115,8 +133,6 @@ function scrollPosition() {
   let line = '';
   let frame = 0;
   const update = () => {
-    const distance = document.documentElement.scrollHeight - innerHeight;
-    hud?.style.setProperty('--fill', String(8 * (distance > 0 ? Math.min(1, Math.max(0, scrollY / distance)) : 0)));
     const current = location.pathname === '/' ? [...sections].reverse().find((section) => section.getBoundingClientRect().top <= 150) : undefined;
     if (location.pathname === '/') {
       links.forEach((link) => {
@@ -124,8 +140,12 @@ function scrollPosition() {
         else link.removeAttribute('aria-current');
       });
     }
-    const next = hudLine(sections, current, prose, title);
-    if (hudText && next !== line) hudText.innerHTML = line = next;
+    const flashing = !!hudFlash && performance.now() < hudFlash.until;
+    const next = flashing ? hudFlash!.html : hudLine(sections, current, prose, title);
+    if (hudText && next !== line) {
+      hudText.innerHTML = line = next;
+      hudText.classList.toggle('is-flash', flashing);
+    }
     frame = 0;
   };
   const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
@@ -133,8 +153,147 @@ function scrollPosition() {
   listen(window, 'resize', schedule);
   const observer = new ResizeObserver(schedule);
   observer.observe(document.body);
-  cleanups.push(() => { cancelAnimationFrame(frame); observer.disconnect(); });
+  refreshHud = schedule;
+  cleanups.push(() => { cancelAnimationFrame(frame); observer.disconnect(); refreshHud = () => {}; });
   update();
+}
+
+// The potion trail (lib/potions.ts): one potion per page. Drinking fills a HUD life triangle; all of
+// them open the exit door in Contact. Progress lives in localStorage, and in memory when that is blocked.
+const total = POTIONS.length;
+let drunk = new Set<string>();
+let exitOpen = false;
+function loadPotions() {
+  try {
+    const saved: unknown = JSON.parse(localStorage.getItem('potions') ?? '[]');
+    drunk = new Set(Array.isArray(saved) ? POTIONS.filter((id) => saved.includes(id)) : []);
+    exitOpen = localStorage.getItem('potions:exit') === 'open';
+  } catch {}
+}
+function savePotions() {
+  try {
+    localStorage.setItem('potions', JSON.stringify([...drunk]));
+    if (exitOpen) localStorage.setItem('potions:exit', 'open');
+    else localStorage.removeItem('potions:exit');
+  } catch {}
+}
+// Mirrors the head script in Base.astro, which applies the same state before paint.
+function applyPotions() {
+  const html = document.documentElement;
+  html.style.setProperty('--potions', String(drunk.size));
+  if (drunk.size >= total) html.dataset.potions = 'full';
+  else delete html.dataset.potions;
+  if (exitOpen) html.dataset.exit = 'open';
+  else delete html.dataset.exit;
+}
+// True once per visitor: the first page they open announces the game.
+let introShown = false;
+function firstVisit() {
+  if (introShown) return false;
+  introShown = true;
+  try {
+    if (localStorage.getItem('potions:intro')) return false;
+    localStorage.setItem('potions:intro', '1');
+  } catch {}
+  return true;
+}
+function emptyFlask(button: HTMLButtonElement) {
+  button.dataset.drunk = '';
+  button.setAttribute('aria-label', 'Empty potion');
+}
+
+// Once every potion is drunk, the exit door opens the first time it comes into view, then stays open.
+function watchExit() {
+  const door = document.querySelector('.contact-exit');
+  if (!door || exitOpen || drunk.size < total) return;
+  const observer = new IntersectionObserver((entries) => {
+    if (!entries.some((entry) => entry.isIntersecting)) return;
+    observer.disconnect();
+    exitOpen = true;
+    savePotions();
+    applyPotions();
+    play('door');
+  }, { threshold: 0.6 });
+  observer.observe(door);
+  cleanups.push(() => observer.disconnect());
+}
+
+function potions() {
+  loadPotions();
+  applyPotions();
+  const status = document.querySelector<HTMLElement>('[data-potion-status]');
+  // Say what the empty triangles are for before anyone has to guess.
+  if (!drunk.size && firstVisit()) {
+    flash(`<b>${total} potions</b> hide in the castle`, 5000);
+    if (status) status.textContent = `${total} potions hide in the castle.`;
+  }
+  $$<HTMLButtonElement>('[data-potion]').forEach((button) => {
+    const id = button.dataset.potion!;
+    // Set both ways, so "Play again" can refill a flask on the page it is clicked from.
+    button.disabled = drunk.has(id);
+    button.removeAttribute('aria-disabled');
+    if (drunk.has(id)) { emptyFlask(button); return; }
+    delete button.dataset.drunk;
+    button.setAttribute('aria-label', 'Drink the potion');
+    listen(button, 'click', () => {
+      if (drunk.has(id)) return;
+      drunk.add(id);
+      savePotions();
+      const count = drunk.size;
+      // Stays focusable until the next page, so keyboard focus is not lost.
+      button.setAttribute('aria-disabled', 'true');
+      const done = () => { emptyFlask(button); applyPotions(); };
+      const motion = animate(button.querySelector('.potion-full')!, [{ transform: 'none' }, { transform: 'translate(-3px, -9px) rotate(-40deg)' }], 420, 0, 'steps(3, end)');
+      if (motion) motion.finished.then(done, done);
+      else done();
+      const tri = document.querySelectorAll<HTMLElement>('.hud-tri')[count - 1];
+      if (tri) {
+        tri.classList.add('is-new');
+        setTimeout(() => tri.classList.remove('is-new'), 1000);
+      }
+      if (count >= total) {
+        flash(`<b>All ${total} potions</b> · The exit is open`, 5000);
+        if (status) status.textContent = `All ${total} potions found. The exit door in Contact is open.`;
+        play('fanfare');
+        track('potion_found', { potion_id: id, count });
+        track('potions_complete');
+        watchExit();
+        return;
+      }
+      flash(count === 1 ? `<b>Potion found</b> · ${total - 1} more in the castle` : `<b>Potion found</b> · ${count} of ${total}`);
+      if (status) status.textContent = `Potion found. ${count} of ${total}.`;
+      play('potion');
+      track('potion_found', { potion_id: id, count });
+      // Sound starts off; the first potion points out the switch once.
+      if (count === 1 && !soundOn()) {
+        const toggle = document.querySelector<HTMLElement>('[data-sound-toggle]');
+        toggle?.classList.add('is-hint');
+        setTimeout(() => toggle?.classList.remove('is-hint'), 1600);
+      }
+    });
+  });
+  $$('[data-potion-reset]').forEach((button) => listen(button, 'click', () => {
+    drunk = new Set();
+    exitOpen = false;
+    savePotions();
+    document.querySelector<HTMLElement>('.contact-mail')?.focus();
+    flash(`<b>The potions are back</b> · Find all ${total}`);
+    if (status) status.textContent = `The potions are back. Find all ${total}.`;
+    init();
+  }));
+  watchExit();
+}
+
+function soundToggle() {
+  $$('[data-sound-toggle]').forEach((button) => {
+    button.setAttribute('aria-pressed', String(soundOn()));
+    listen(button, 'click', () => {
+      const on = !soundOn();
+      setSound(on);
+      button.setAttribute('aria-pressed', String(on));
+      play('toggle');
+    });
+  });
 }
 
 // On pages with a section nav, mark the room being read and the rooms already passed.
@@ -287,6 +446,8 @@ function init() {
   theme();
   copyEmail();
   galleries();
+  potions();
+  soundToggle();
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
   listen(preference, 'change', init);
 }
