@@ -9,6 +9,8 @@ import mdx from '@astrojs/mdx';
 export default defineConfig({
   site: 'https://0xkalel.github.io',
   integrations: [icon(), mdx()],
+  // github-dark's gray comments fail WCAG AA (3:1); the default variant's pass at about 6:1.
+  markdown: { shikiConfig: { theme: 'github-dark-default' } },
   vite: {
     plugins: [tailwindcss()],
   },

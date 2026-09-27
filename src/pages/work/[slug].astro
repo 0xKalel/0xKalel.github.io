@@ -18,7 +18,7 @@ const facts = evidence[entry.id as ProjectId];
 const galleryVideos = [...(d.video ? [{ ...d.video, caption: `${d.title} product walkthrough` }] : []), ...d.videos];
 const related = (await getCollection('work')).filter((w) => w.id !== entry.id).sort((a, b) => a.data.order - b.data.order);
 ---
-<Base title={`${d.title}: ${d.headline.replace(/\.$/, '')}`} description={d.tagline}>
+<Base title={`${d.title}: ${d.headline.replace(/\.$/, '')}`} description={d.tagline} breadcrumbs={[{ name: d.title, path: `/work/${entry.id}/` }]}>
   <article class="shell case-study">
     <a href="/#work" class="text-link"><Icon name="px-arrow-left" /> Selected work</a>
     <header class="case-header">

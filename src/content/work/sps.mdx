@@ -11,7 +11,7 @@ decision: Remove offline support when its maintenance cost outweighs the need.
 decisionAnchor: remove-complexity-the-warehouse-does-not-need
 video:
   src: /media/sps-launch.mp4
-  poster: /media/sps-launch.jpg
+  poster: ../../assets/media/sps-launch.jpg
 shots:
   - src: ../../assets/work/sps-01-movein-scan.png
     alt: Receive and verify arriving items
@@ -50,10 +50,10 @@ import Potion from '../../components/pop/Potion.astro';
 Before SPS, staff sorted out booking differences over email, and item locations were not always recorded. SPS puts the whole flow on a phone.
 
 <div class="post-screens not-prose">
-  <figure class="fx"><div class="post-screen-img"><Image src={scan} alt="SPS receiving screen: scan arriving items and check them against the booking" widths={[240, 480]} sizes="(min-width: 768px) 200px, 45vw" /></div><figcaption><strong>Receive</strong><span>Scan arriving items and compare them with the booking.</span></figcaption></figure>
-  <figure class="fx" style="--d:70ms"><div class="post-screen-img"><Image src={order} alt="SPS screen listing the differences between a booking and the received items" widths={[240, 480]} sizes="(min-width: 768px) 200px, 45vw" /></div><figcaption><strong>Check</strong><span>Review differences between the booking and what arrived.</span></figcaption></figure>
-  <figure class="fx" style="--d:140ms"><div class="post-screen-img"><Image src={bay} alt="SPS screen recording the warehouse bay of an item" widths={[240, 480]} sizes="(min-width: 768px) 200px, 45vw" /></div><figcaption><strong>Locate</strong><span>Record the bay, with a history of every placement and move.</span></figcaption></figure>
-  <figure class="fx" style="--d:210ms"><div class="post-screen-img"><Image src={photo} alt="SPS return screen with photos of the items before they leave" widths={[240, 480]} sizes="(min-width: 768px) 200px, 45vw" /></div><figcaption><strong>Return</strong><span>Scan and photograph items, then approve the return or restore their locations.</span></figcaption></figure>
+  <figure class="fx"><div class="post-screen-img"><Image src={scan} alt="SPS receiving screen: scan arriving items and check them against the booking" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Receive</strong><span>Scan arriving items and compare them with the booking.</span></figcaption></figure>
+  <figure class="fx" style="--d:70ms"><div class="post-screen-img"><Image src={order} alt="SPS screen listing the differences between a booking and the received items" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Check</strong><span>Review differences between the booking and what arrived.</span></figcaption></figure>
+  <figure class="fx" style="--d:140ms"><div class="post-screen-img"><Image src={bay} alt="SPS screen recording the warehouse bay of an item" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Locate</strong><span>Record the bay, with a history of every placement and move.</span></figcaption></figure>
+  <figure class="fx" style="--d:210ms"><div class="post-screen-img"><Image src={photo} alt="SPS return screen with photos of the items before they leave" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Return</strong><span>Scan and photograph items, then approve the return or restore their locations.</span></figcaption></figure>
 </div>
 
 I built SPS end to end, from first commit to production. I also maintain the StoragePal platform it connects to, so both sides of the integration are mine to keep working.

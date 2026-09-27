@@ -3,12 +3,12 @@
  *  Scroll-snap track, arrow buttons and dots (wired in site.ts), no autoplay.
  *  Consecutive portrait shots share a slide so phone screens never sit alone
  *  in a mostly-empty landscape frame. */
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 
 interface VideoSlide {
   src: string;
-  poster: string;
+  poster: ImageMetadata;
   caption: string;
 }
 interface ImageSlide {
@@ -29,6 +29,14 @@ for (const s of shots) {
   else chunks.push([s]);
 }
 const count = videos.length + chunks.length;
+// A poster has no srcset, so each gets one WebP as wide as the frame shows it.
+const posters = await Promise.all(videos.map((v) => getImage({ src: v.poster, width: 1120, format: 'webp' })));
+// Portrait shots fill the frame's height (600px at most), so they need far fewer pixels than its width.
+const sizing = (s: ImageSlide) => {
+  if (!isPortrait(s)) return { widths: [720, 1200, 1800], sizes: '(min-width: 1152px) 1088px, 100vw' };
+  const w = Math.round((600 * s.src.width) / s.src.height);
+  return { widths: [w, w * 2, w * 3], sizes: `${w}px` };
+};
 ---
 
 <section class="gallery rise" data-gallery aria-roledescription="carousel" aria-label={`Media gallery, ${count} items`} style="--i:2">
@@ -38,7 +46,7 @@ const count = videos.length + chunks.length;
         videos.map((v, i) => (
           <figure id={`gallery-slide-${i}`} class="gallery-slide" data-gallery-slide aria-roledescription="slide" aria-label={`${i + 1} of ${count}`}>
             <div class="gallery-media">
-              <video controls playsinline preload="none" poster={v.poster}>
+              <video controls playsinline preload="none" poster={posters[i].src}>
                 <source src={v.src} type="video/mp4" />
               </video>
             </div>
@@ -52,7 +60,7 @@ const count = videos.length + chunks.length;
             <div class="gallery-media">
               <div class:list={['gallery-fit', c.length > 1 && 'gallery-pair']}>
                 {c.map((s) => (
-                  <Image src={s.src} alt={s.alt} widths={[720, 1200, 1800]} sizes="(min-width: 1152px) 1088px, 100vw" />
+                  <Image src={s.src} alt={s.alt} {...sizing(s)} />
                 ))}
               </div>
             </div>

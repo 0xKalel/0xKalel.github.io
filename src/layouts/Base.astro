@@ -4,6 +4,8 @@ import '@fontsource-variable/geist-mono';
 import '@fontsource/jersey-10';
 // Preloaded so the pixel font is ready at first paint; its wider stand-in could otherwise push the layout.
 import jerseyLatin from '@fontsource/jersey-10/files/jersey-10-latin-400-normal.woff2?url';
+// Body text too: found only through the stylesheet, it arrived after first paint and shifted text as it swapped in.
+import geistLatin from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Nav from '../components/Nav.astro';
@@ -11,7 +13,7 @@ import Footer from '../components/Footer.astro';
 import Palette from '../components/Palette.astro';
 import Ask from '../components/Ask.astro';
 import Hud from '../components/Hud.astro';
-import { profile } from '../data/cv';
+import { experience, profile } from '../data/cv';
 import { POTIONS, SOUND_ON_BY_DEFAULT } from '../lib/potions';
 
 interface Props {
@@ -22,6 +24,8 @@ interface Props {
   noindex?: boolean;
   published?: Date;
   updated?: Date;
+  /** Trail after Home for BreadcrumbList structured data, ending with this page. */
+  breadcrumbs?: Array<{ name: string; path: string }>;
 }
 
 const {
@@ -31,10 +35,15 @@ const {
   noindex = false,
   published,
   updated,
+  breadcrumbs,
 } = Astro.props;
-const fullTitle = title ? `${title} | ${profile.name}` : `${profile.name}, lead full-stack engineer`;
+// Search results cut titles at about 60 characters, so long ones drop the name (og:site_name still carries it).
+const suffixed = `${title} | ${profile.name}`;
+const fullTitle = !title ? `${profile.name}, lead full-stack engineer` : suffixed.length <= 60 ? suffixed : title;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const socialImage = new URL('/social-preview.png', Astro.site);
+const personId = new URL('/#person', Astro.site).href;
+const current = experience.find((e) => e.id === 'storagepal');
 const GA_ID = 'G-SLJ8G6MSCP';
 ---
 
@@ -48,6 +57,7 @@ const GA_ID = 'G-SLJ8G6MSCP';
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preload" href={jerseyLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin />
     <meta property="og:type" content={published ? 'article' : 'website'} />
     {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="alternate" type="application/rss+xml" title="Writing by Khalil Hebachi" href="/rss.xml" />
@@ -55,6 +65,7 @@ const GA_ID = 'G-SLJ8G6MSCP';
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content={profile.name} />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:image" content={socialImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -69,12 +80,16 @@ const GA_ID = 'G-SLJ8G6MSCP';
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Person',
+      '@id': personId,
       name: profile.name,
       jobTitle: 'Lead Full-Stack Engineer',
       email: `mailto:${profile.email}`,
       url: profile.site,
       sameAs: [profile.github, profile.linkedin],
       knowsLanguage: ['en', 'fr', 'ar'],
+      address: { '@type': 'PostalAddress', addressLocality: 'Annaba', addressCountry: 'DZ' },
+      ...(current && { worksFor: { '@type': 'Organization', name: current.org, url: current.url } }),
+      knowsAbout: ['Laravel', 'PHP', 'React', 'TypeScript', 'LLM workflows', 'Claude Code'],
     })} />
     {published && <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
@@ -83,8 +98,19 @@ const GA_ID = 'G-SLJ8G6MSCP';
       description,
       datePublished: published.toISOString(),
       ...(updated && { dateModified: updated.toISOString() }),
-      author: { '@type': 'Person', name: profile.name, url: profile.site },
+      image: socialImage.href,
+      author: { '@type': 'Person', '@id': personId, name: profile.name, url: profile.site },
       mainEntityOfPage: canonical.href,
+    })} />}
+    {breadcrumbs && <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [{ name: 'Home', path: '/' }, ...breadcrumbs].map((b, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: b.name,
+        item: new URL(b.path, Astro.site).href,
+      })),
     })} />}
     {Astro.url.pathname === '/' && <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
@@ -131,7 +157,6 @@ const GA_ID = 'G-SLJ8G6MSCP';
     {
       import.meta.env.PROD && !bare && (
         <>
-          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
           <script is:inline define:vars={{ GA_ID }}>
             window.dataLayer = window.dataLayer || [];
             // define:vars wraps this script in a function, so put gtag on window for the site's events.
@@ -140,6 +165,17 @@ const GA_ID = 'G-SLJ8G6MSCP';
             };
             gtag('js', new Date());
             gtag('config', GA_ID);
+            // gtag.js is about 180 KB of script, so it loads once the page is idle; calls made
+            // before then wait in dataLayer and are sent when it arrives.
+            const load = () => {
+              const s = document.createElement('script');
+              s.async = true;
+              s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+              document.head.append(s);
+            };
+            const idle = () => (window.requestIdleCallback ? requestIdleCallback(load, { timeout: 3000 }) : setTimeout(load, 1));
+            if (document.readyState === 'complete') idle();
+            else addEventListener('load', idle, { once: true });
           </script>
         </>
       )

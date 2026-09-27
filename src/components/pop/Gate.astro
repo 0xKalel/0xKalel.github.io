@@ -15,7 +15,8 @@ interface Props {
   href?: string;
   sizes?: string;
 }
-const { id, i = 0, href, sizes = '160px' } = Astro.props;
+// Default: the hero row, where a gate is 70 to 170px wide depending on the breakpoint.
+const { id, i = 0, href, sizes = '(min-width: 1024px) 135px, (min-width: 768px) 170px, 24vw' } = Astro.props;
 const plaques: Record<GateId, [string, string]> = { storagepal: ['01', 'StoragePal'], sps: ['02', 'SPS'], ravenclip: ['03', 'RavenClip'] };
 const [n, label] = plaques[id];
 const Tag = href ? 'a' : 'span';

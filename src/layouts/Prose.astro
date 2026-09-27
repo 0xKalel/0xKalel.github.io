@@ -19,9 +19,10 @@ const { title, description, date, updated } = Astro.props.frontmatter ?? Astro.p
 const sections = (Astro.props.headings ?? []).filter((h) => h.depth === 2);
 const navLabel = date ? 'In this article' : 'On this page';
 const long = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const breadcrumbs = [...(date ? [{ name: 'Writing', path: '/blog/' }] : []), { name: title, path: Astro.url.pathname }];
 ---
 
-<Base title={title} description={description} published={date} updated={updated}>
+<Base title={title} description={description} published={date} updated={updated} breadcrumbs={breadcrumbs}>
   {
     sections.length > 1 ? (
       <article class="shell case-study post">

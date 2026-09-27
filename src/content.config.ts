@@ -18,8 +18,8 @@ const work = defineCollection({
       order: z.number(),
       url: z.string().url().optional(),
       shots: z.array(z.object({ src: image(), alt: z.string() })).default([]),
-      video: z.object({ src: z.string(), poster: z.string() }).optional(),
-      videos: z.array(z.object({ src: z.string(), poster: z.string(), caption: z.string() })).default([]),
+      video: z.object({ src: z.string(), poster: image() }).optional(),
+      videos: z.array(z.object({ src: z.string(), poster: image(), caption: z.string() })).default([]),
     }),
 });
 

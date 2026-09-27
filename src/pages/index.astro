@@ -106,7 +106,7 @@ const stackWhere: Record<(typeof skills)[number]['id'], string> = {
                   <figure class="work-visual frame-box">
                     <a class="frame-bar frame-link" href={p.url} rel="noopener"><span>Visit storagepal.fr</span><Icon name="px-arrow-up-right" /></a>
                     <div class="phones">
-                      {phones.map((s) => <span class="niche"><span class="niche-in"><Image src={s.src} alt={s.alt} widths={[240, 480]} sizes="(min-width: 1024px) 200px, (min-width: 561px) 28vw, 44vw" /></span></span>)}
+                      {phones.map((s) => <span class="niche"><span class="niche-in"><Image src={s.src} alt={s.alt} widths={[160, 240, 360, 480]} sizes="(min-width: 1024px) 120px, (min-width: 768px) 150px, 29vw" /></span></span>)}
                     </div>
                   </figure>
                 </>
@@ -117,7 +117,7 @@ const stackWhere: Record<(typeof skills)[number]['id'], string> = {
                   <div class="work-copy">{copy}{proof}</div>
                   <figure class="work-visual frame-box browser">
                     <a class="frame-bar frame-link" href={p.url} rel="noopener"><span>Visit ravenclip.com</span><Icon name="px-arrow-up-right" /></a>
-                    <Image src={ravenMakes} alt="RavenClip: review the script, narration, and visuals scene by scene" widths={[640, 960, 1400]} sizes="(min-width: 1024px) 640px, 92vw" />
+                    <Image src={ravenMakes} alt="RavenClip: review the script, narration, and visuals scene by scene" widths={[640, 960, 1400]} sizes="(min-width: 1024px) 580px, 88vw" />
                   </figure>
                 </>
               )}
