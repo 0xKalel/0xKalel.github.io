@@ -134,9 +134,10 @@ const GA_ID = 'G-SLJ8G6MSCP';
           <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
           <script is:inline define:vars={{ GA_ID }}>
             window.dataLayer = window.dataLayer || [];
-            function gtag() {
+            // define:vars wraps this script in a function, so put gtag on window for the site's events.
+            window.gtag = function gtag() {
               dataLayer.push(arguments);
-            }
+            };
             gtag('js', new Date());
             gtag('config', GA_ID);
           </script>
