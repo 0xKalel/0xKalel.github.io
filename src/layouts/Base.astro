@@ -89,18 +89,25 @@ const GA_ID = 'G-SLJ8G6MSCP';
     })} />}
     {!bare && <ClientRouter />}
     <script is:inline>
-      try {
-        const t = localStorage.getItem('theme');
-        if (t === 'light' || t === 'dark') {
-          document.documentElement.dataset.theme = t;
+      // The router copies each new page's <html> attributes over the current ones, and this
+      // head script runs only once, so re-apply the saved theme and the js flag after every swap.
+      (() => {
+        const apply = () => {
+          const html = document.documentElement;
+          html.classList.add('js');
+          let t;
+          try { t = localStorage.getItem('theme'); } catch {}
+          if (t !== 'light' && t !== 'dark') return;
+          html.dataset.theme = t;
           const color = t === 'light' ? '#f4f4f1' : '#0f1012';
           document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
             m.setAttribute('content', color);
             m.removeAttribute('media');
           });
-        }
-      } catch {}
-      document.documentElement.classList.add('js');
+        };
+        apply();
+        document.addEventListener('astro:after-swap', apply);
+      })();
     </script>
     {
       import.meta.env.PROD && !bare && (
