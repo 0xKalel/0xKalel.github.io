@@ -88,6 +88,26 @@ import { ASK_READY, ASK_SUGGESTIONS, MAX_QUESTION_CHARS } from '../lib/ask';
     const status = dlg.querySelector<HTMLElement>('[data-ask-status]')!;
     const statusText = dlg.querySelector<HTMLElement>('[data-ask-status-text]')!;
 
+    // The launcher steps aside on the hero, which has its own calls to action, and on the
+    // contact band, which already offers the assistant, so it never covers either.
+    const launcher = document.querySelector<HTMLElement>('.ask-launcher');
+    const hero = document.querySelector('.hero');
+    const contact = document.querySelector('#contact');
+    if (launcher && (hero || contact)) {
+      const visible = new Set<Element>();
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => (entry.isIntersecting ? visible.add(entry.target) : visible.delete(entry.target)));
+        launcher.classList.toggle('is-away', visible.size > 0);
+      });
+      if (hero) {
+        visible.add(hero);
+        launcher.classList.add('is-away');
+        observer.observe(hero);
+      }
+      if (contact) observer.observe(contact);
+      controller.signal.addEventListener('abort', () => observer.disconnect());
+    }
+
     let messages = loadConversation();
     let streaming = false;
 

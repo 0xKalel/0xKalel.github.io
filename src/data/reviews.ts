@@ -13,6 +13,8 @@ export interface LinkedInReview {
   href: string;
   avatar: AvatarKey | null;
   lang?: string;
+  /** English rendering shown on the page when the quote is in another language. */
+  translation?: string;
 }
 
 export const linkedinReviews: LinkedInReview[] = [
@@ -61,6 +63,8 @@ export const linkedinReviews: LinkedInReview[] = [
     href: 'https://www.linkedin.com/in/fateh-h/',
     avatar: 'fateh',
     lang: 'fr',
+    translation:
+      'What defines Khalil is his remarkable clarity as a software architect. I recommend Khalil without the slightest hesitation.',
   },
   {
     quote:

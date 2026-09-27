@@ -40,38 +40,26 @@ function reveals() {
   cleanups.push(() => observer.disconnect());
 }
 
-function projectPreview() {
-  const root = document.querySelector<HTMLElement>('[data-project-preview]');
-  if (!root) return;
-  const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-preview-select]')];
-  const panels = [...root.querySelectorAll<HTMLElement>('[data-preview-panel]')];
-  const controls = root.querySelector<HTMLElement>('.preview-controls');
-  if (controls) controls.hidden = false;
-  let active = Math.max(0, buttons.findIndex((button) => button.getAttribute('aria-pressed') === 'true'));
-  const select = (index: number) => {
-    if (index === active) return;
-    active = index;
-    panels.forEach((panel, i) => { panel.hidden = i !== index; });
-    buttons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
-    animate(panels[index], [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], 260);
-  };
-  buttons.forEach((button, index) => {
-    listen(button, 'click', () => select(index));
-    listen(button, 'keydown', ((event: KeyboardEvent) => {
-      let next = index;
-      if (event.key === 'ArrowRight') next = (index + 1) % buttons.length;
-      else if (event.key === 'ArrowLeft') next = (index - 1 + buttons.length) % buttons.length;
-      else if (event.key === 'Home') next = 0;
-      else if (event.key === 'End') next = buttons.length - 1;
-      else return;
-      event.preventDefault();
-      select(next);
-      buttons[next].focus();
-    }) as EventListener);
-    // Warm the chosen images when the visitor approaches the control.
-    const warm = () => panels[index].querySelectorAll('img').forEach((img) => { img.loading = 'eager'; });
-    listen(button, 'pointerenter', warm);
-    listen(button, 'focus', warm);
+// "Show more" lists: extras stay visible without JavaScript; with it they start collapsed.
+function moreToggles() {
+  $$('[data-more]').forEach((root) => {
+    const button = root.querySelector<HTMLButtonElement>('[data-more-toggle]');
+    const label = root.querySelector<HTMLElement>('[data-more-label]');
+    if (!button || !label) return;
+    const closedLabel = label.textContent;
+    listen(button, 'click', () => {
+      const open = !root.classList.contains('is-open');
+      root.classList.toggle('is-open', open);
+      button.setAttribute('aria-expanded', String(open));
+      label.textContent = open ? label.dataset.openLabel ?? closedLabel : closedLabel;
+      if (open) {
+        root.querySelectorAll<HTMLElement>('[data-more-extra]').forEach((el, i) => {
+          animate(el, [{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], 360, Math.min(i * 45, 240));
+        });
+      } else if (button.getBoundingClientRect().top < 0) {
+        button.scrollIntoView({ block: 'center', behavior: reduced() ? 'instant' : 'smooth' });
+      }
+    });
   });
 }
 
@@ -237,7 +225,7 @@ function galleries() {
 function init() {
   cleanup();
   reveals();
-  projectPreview();
+  moreToggles();
   spotlight();
   scrollPosition();
   menu();

@@ -1,0 +1,97 @@
+---
+/** Hero exhibit, "exploded layers": the three projects stacked as isometric layers, like an
+ *  engineering diagram. SPS is its real weekday grid. Each layer carries a label that always
+ *  faces the viewer. Still at rest; the layers spread on hover, and a caption lifts its layer. */
+import { Image } from 'astro:assets';
+import { evidence } from '../data/evidence';
+import raven from '../assets/work/ravenclip-shot-makes.png';
+import spCatalog from '../assets/work/storagepal-catalogue-grid.png';
+import spCart from '../assets/work/storagepal-ai-cart.png';
+import spCheckout from '../assets/work/storagepal-checkout.png';
+
+const items = [
+  { id: 'storagepal', n: '01', name: 'StoragePal', figure: 'Since Oct 2024,', text: 'leading the booking, warehouse and payment platform.' },
+  { id: 'sps', n: '02', name: 'SPS warehouse app', figure: `${evidence.sps.weekdays.replace(' / ', ' of ')} weekdays`, text: 'in use, 13 Apr - 25 Sep 2026.' },
+  { id: 'ravenclip', n: '03', name: 'RavenClip', figure: `${evidence.ravenclip.daysToCustomer} days`, text: 'from the first commit to the first external paying customer.' },
+];
+const cells = Array.from({ length: 120 });
+---
+
+<div class="layers">
+  <div class="layers-view" aria-hidden="true">
+    <div class="layers-stage">
+      {items.map((c, i) => (
+        <a class={`layer is-${c.id}`} href={`#${c.id}`} data-i={i} style={`--z:${i}`} tabindex="-1">
+          <span class="layer-face">
+            {c.id === 'storagepal' && <span class="layer-phones">{[spCatalog, spCart, spCheckout].map((src) => <Image src={src} alt="" widths={[120, 240]} sizes="80px" loading="eager" />)}</span>}
+            {c.id === 'sps' && <span class="layer-grid">{cells.map(() => <span />)}</span>}
+            {c.id === 'ravenclip' && <Image src={raven} alt="" widths={[480, 720]} sizes="(min-width: 1024px) 340px, 60vw" loading="eager" />}
+          </span>
+          <span class="layer-label"><b>{c.n}</b>{c.name}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+  <ol class="layers-captions" aria-label="Recent work">
+    {items.map((c, i) => (
+      <li>
+        <a class="layers-cap" href={`#${c.id}`} data-i={i}>
+          <span class="layers-num" aria-hidden="true">{c.n}</span>
+          <strong>{c.name}</strong>
+          <span class="layers-proof"><b>{c.figure}</b> {c.text}</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<style>
+  .layers { min-width: 0; }
+  .layers-view { position: relative; aspect-ratio: 1.4; }
+  /* Isometric: no perspective, so edges stay crisp and parallel. */
+  .layers-stage { --gap: 120px; position: absolute; left: 22%; top: 47%; width: 58%; aspect-ratio: 16 / 10; transform: rotateX(56deg) rotateZ(-42deg); transform-style: preserve-3d; pointer-events: none; }
+  .layers:has(.layers-view:hover) .layers-stage { --gap: 150px; }
+
+  .layer { position: absolute; inset: 0; pointer-events: auto; transform-style: preserve-3d; transform: translateZ(calc(var(--z) * var(--gap))); transition: transform 260ms var(--ease-out); animation: layer-in 700ms cubic-bezier(.16, 1, .3, 1) backwards; animation-delay: calc(var(--z) * 110ms + 60ms); }
+  @keyframes layer-in { from { opacity: 0; transform: translateZ(calc(var(--z) * var(--gap) + 220px)); } }
+  .layer-face { position: absolute; inset: 0; overflow: hidden; border: 2px solid var(--fg); background: var(--raised); box-shadow: -10px 10px 0 var(--hi); transition: box-shadow 200ms ease, border-color 200ms ease; }
+  .layer-face img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .layer-phones { display: flex; align-items: flex-end; justify-content: center; gap: 6%; height: 100%; padding: 8% 8% 0; background: #edf3dc; }
+  .layer-phones img { width: 24%; height: auto; border: 1.5px solid #0f1012; border-bottom: 0; }
+  .layer-grid { display: grid; grid-auto-flow: column; grid-template-rows: repeat(5, 1fr); grid-template-columns: repeat(24, 1fr); gap: 3px; height: 100%; padding: 9%; background: var(--raised); }
+  .layer-grid span { background: var(--hi); border: 1px solid color-mix(in oklab, var(--hi) 55%, var(--hi-fg)); }
+
+  /* Labels undo the stage rotation so they always face the viewer. */
+  .layer-label { position: absolute; right: -4%; bottom: 8%; display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px 5px 5px; background: var(--fg); color: var(--bg); font-size: 13px; font-weight: 650; white-space: nowrap; transform-origin: 0 100%; transform: rotateZ(42deg) rotateX(-56deg); }
+  .layer-label b { display: inline-grid; place-items: center; min-width: 2.1em; height: 1.7em; background: var(--hi); color: var(--hi-fg); font-family: var(--font-mono); font-size: 11px; }
+
+  .layers-captions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 18px; margin-top: 8px; border-top: var(--rule); animation: layers-fade 300ms ease-out 650ms backwards; }
+  @keyframes layers-fade { from { opacity: 0; } }
+  .layers-cap { display: grid; align-content: start; gap: 4px; height: 100%; padding-top: 14px; }
+  .layers-num { justify-self: start; display: inline-grid; place-items: center; min-width: 2.2em; height: 1.8em; margin-bottom: 4px; background: var(--fg); color: var(--bg); font-family: var(--font-mono); font-size: 11px; font-weight: 600; transition: background-color 160ms ease, color 160ms ease; }
+  .layers-cap strong { font-size: 15.5px; font-weight: 700; letter-spacing: -.01em; }
+  .layers-proof { font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+  .layers-proof b { font-weight: 650; color: var(--fg); }
+  .layers-cap:focus-visible { outline-offset: 4px; }
+
+  .layers:has([data-i='0']:is(:hover, :focus-visible)) .layers-cap[data-i='0'] .layers-num,
+  .layers:has([data-i='1']:is(:hover, :focus-visible)) .layers-cap[data-i='1'] .layers-num,
+  .layers:has([data-i='2']:is(:hover, :focus-visible)) .layers-cap[data-i='2'] .layers-num { background: var(--hi); color: var(--hi-fg); }
+  .layers:has([data-i='0']:is(:hover, :focus-visible)) .layer[data-i='0'] .layer-face,
+  .layers:has([data-i='1']:is(:hover, :focus-visible)) .layer[data-i='1'] .layer-face,
+  .layers:has([data-i='2']:is(:hover, :focus-visible)) .layer[data-i='2'] .layer-face { box-shadow: -16px 16px 0 var(--hi); }
+
+  @media (max-width: 767px) {
+    .layers-view { aspect-ratio: 1.14; }
+    .layers-stage { --gap: 74px; top: 47%; left: 20%; width: 60%; }
+    .layers:has(.layers-view:hover) .layers-stage { --gap: 80px; }
+    .layer-label { font-size: 11px; }
+    .layers-captions { grid-template-columns: 1fr; }
+    .layers-cap { grid-template-columns: auto minmax(0, 1fr); column-gap: 12px; padding-block: 12px; border-bottom: 1px solid var(--line); }
+    .layers-num { grid-row: 1 / span 2; margin: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .layer, .layers-captions { animation: none; }
+    .layers:has(.layers-view:hover) .layers-stage { --gap: 120px; }
+  }
+</style>

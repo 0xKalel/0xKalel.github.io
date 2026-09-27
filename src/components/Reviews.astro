@@ -1,8 +1,10 @@
 ---
 /** Third-party voices, rendered from src/data/reviews.ts (shared with the
  *  ask-chat knowledge document). Avatars are served locally because LinkedIn
- *  media URLs expire. */
+ *  media URLs expire. The first three show; the rest open with "Show more"
+ *  (all of them show without JavaScript). */
 import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
 import { linkedinReviews as linkedin, freelanceReviews as freelance, type AvatarKey } from '../data/reviews';
 import jesse from '../assets/reviews/jesse.jpg';
 import med from '../assets/reviews/med.jpg';
@@ -11,62 +13,85 @@ import richard from '../assets/reviews/richard.jpg';
 import zach from '../assets/reviews/zach.jpg';
 
 const avatars: Record<AvatarKey, ImageMetadata> = { jesse, med, fateh, richard, zach };
+const FEATURED = 3;
+const hidden = linkedin.length + freelance.length - FEATURED;
 
 const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).join('');
 ---
 
-<div class="review-strip">
-  {linkedin.map((r, i) => (
-    <figure class="review fx" style={`--d:${(i % 3) * 60}ms`}>
-      <div class="review-head">
-        {r.avatar ? (
-          <Image src={avatars[r.avatar]} alt="" widths={[80]} sizes="40px" class="review-avatar" />
-        ) : (
-          <span class="review-avatar review-monogram" aria-hidden="true">{initials(r.name)}</span>
-        )}
-        <div>
-          <a class="review-name" href={r.href} rel="noopener">{r.name}</a>
-          <p class="review-role">{r.role}</p>
+<div class="reviews" data-more>
+  <h3 class="reviews-title fx">Recommendations</h3>
+  <div class="review-grid" id="review-list">
+    {linkedin.map((r, i) => (
+      <figure class="review" data-more-extra={i >= FEATURED ? true : undefined}>
+        <div class="review-head">
+          {r.avatar ? (
+            <Image src={avatars[r.avatar]} alt="" widths={[88]} sizes="44px" class="review-avatar" />
+          ) : (
+            <span class="review-avatar review-monogram" aria-hidden="true">{initials(r.name)}</span>
+          )}
+          <div>
+            <a class="review-name" href={r.href} rel="noopener">{r.name}</a>
+            <p class="review-role">{r.role}</p>
+          </div>
         </div>
-      </div>
-      <blockquote lang={r.lang}>{r.quote}</blockquote>
-      <figcaption>{r.tag} · LinkedIn</figcaption>
-    </figure>
-  ))}
-  {freelance.map((r, i) => (
-    <figure class="review fx" style={`--d:${i * 60}ms`}>
-      <blockquote>{r.quote}</blockquote>
-      <figcaption>{r.name} · freelancer.com</figcaption>
-    </figure>
-  ))}
-  <p class="review-source fx">
-    Recommendations from LinkedIn, plus client reviews from the freelance years: 300 projects for
-    clients worldwide through Mawaki3’s freelancer.com profile (mondersky), 2012-2018.
-  </p>
+        {r.translation ? (
+          <blockquote>{r.translation}</blockquote>
+        ) : (
+          <blockquote lang={r.lang}>{r.quote}</blockquote>
+        )}
+        <figcaption>{r.tag} · LinkedIn{r.translation && ' · Translated from French'}</figcaption>
+      </figure>
+    ))}
+    {freelance.map((r) => (
+      <figure class="review" data-more-extra>
+        <div class="review-head">
+          <span class="review-avatar review-monogram" aria-hidden="true">{initials(r.name.replace('.', ''))}</span>
+          <div>
+            <p class="review-name">{r.name}</p>
+            <p class="review-role">Freelance client</p>
+          </div>
+        </div>
+        <blockquote>{r.quote}</blockquote>
+        <figcaption>Client review · freelancer.com, 2012-2018</figcaption>
+      </figure>
+    ))}
+    <p class="review-source" data-more-extra>
+      The freelance reviews come from 300 projects for clients worldwide through Mawaki3’s freelancer.com
+      profile (mondersky), 2012-2018.
+    </p>
+  </div>
+  <button type="button" class="btn btn-ghost review-toggle" data-more-toggle aria-expanded="false" aria-controls="review-list">
+    <span data-more-label data-open-label="Show fewer">Show {hidden} more</span>
+    <Icon name="ph:caret-down" />
+  </button>
 </div>
 
 <style>
-  .review-strip {
-    columns: 3 300px;
-    column-gap: 1.25rem;
-    margin-top: clamp(3.5rem, 6vw, 5.5rem);
+  .reviews { margin-top: clamp(3.5rem, 6vw, 5.5rem); }
+  .reviews-title {
+    padding-bottom: 14px;
+    border-bottom: var(--rule);
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2vw, 28px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  .review-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
   }
   .review {
-    break-inside: avoid;
-    margin: 0 0 1.25rem;
     display: flex;
     flex-direction: column;
     gap: 0.9rem;
+    margin: 0;
     padding: 1.4rem 1.5rem;
     border: 1px solid var(--line);
     border-top: 1.5px solid var(--fg);
     background: var(--surface);
-    transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out), border-color 200ms ease;
-  }
-  .review:hover {
-    border-color: var(--fg);
-    transform: translate(-3px, -3px);
-    box-shadow: 6px 6px 0 var(--hi);
   }
   .review-head {
     display: flex;
@@ -91,18 +116,21 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
     background: var(--fg);
   }
   .review-name {
-    display: inline-block;
-    padding-block: 6px;
-    margin-block: -6px;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-block: -10px;
     font-size: 0.95rem;
     font-weight: 700;
     color: var(--fg);
   }
-  .review-name:hover {
+  a.review-name {
     text-decoration: underline;
-    text-decoration-color: var(--accent);
+    text-decoration-color: transparent;
     text-underline-offset: 3px;
+    transition: text-decoration-color 150ms ease;
   }
+  a.review-name:hover { text-decoration-color: var(--accent); }
   .review-role {
     font-size: 0.8rem;
     color: var(--muted);
@@ -113,30 +141,23 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
     line-height: 1.65;
     color: var(--fg);
   }
-  .review > blockquote:first-child::before {
-    content: '“';
-    display: block;
-    height: 1.4rem;
-    font-family: var(--font-display);
-    font-size: 3rem;
-    font-weight: 900;
-    line-height: 1;
-    color: var(--accent);
-  }
   .review figcaption {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.8rem;
     line-height: 1.5;
+    color: var(--muted);
   }
   .review-source {
-    column-span: all;
+    grid-column: 1 / -1;
     max-width: 68ch;
-    padding-top: 0.5rem;
     font-size: 0.85rem;
     color: var(--muted);
     line-height: 1.6;
   }
+  .review-toggle { margin-top: 1.5rem; }
+  .review-toggle svg { transition: transform 220ms var(--ease-out); }
+  .review-toggle[aria-expanded='true'] svg { transform: rotate(180deg); }
+  @media (max-width: 767px) { .review-toggle { width: 100%; justify-content: center; } }
 </style>

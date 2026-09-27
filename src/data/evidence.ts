@@ -5,10 +5,10 @@ export const evidence = {
     pages: '12',
     responseBefore: '9.1 s',
     responseAfter: '0.884 s',
-    preview: 'Twelve backoffice pages, one shared list system.',
+    preview: 'Twelve admin pages, one shared list system.',
     period: 'Implementation reviewed in September 2026.',
     metrics: [
-      { value: '12', label: 'backoffice pages on one shared list system' },
+      { value: '12', label: 'admin pages on one shared list system' },
       { value: '3 → 1', label: 'pages in the payment flow' },
     ],
   },
@@ -23,7 +23,7 @@ export const evidence = {
     metrics: [
       { value: '120 / 120', label: 'weekdays with a completed scan session' },
       { value: '1,348', label: 'completed scanning sessions' },
-      { value: '3,602', label: 'recorded moves between bays' },
+      { value: '3,602', label: 'recorded moves between warehouse bays' },
     ],
   },
   ravenclip: {

@@ -21,7 +21,7 @@ interface Props {
 
 const {
   title,
-  description = 'Khalil Hebachi, lead full-stack engineer. I turn business priorities into working software: product decisions, architecture, and delivery. Building since 2012.',
+  description = `Khalil Hebachi, lead full-stack engineer. ${new Date().getFullYear() - 2012} years shipping web products. I build with Claude Code and review every change before it ships.`,
   bare = false,
   noindex = false,
   published,
@@ -52,10 +52,10 @@ const GA_ID = 'G-SLJ8G6MSCP';
     <meta property="og:image" content={socialImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Khalil Hebachi. I turn business priorities into working software." />
+    <meta property="og:image:alt" content="Khalil Hebachi, lead full-stack engineer. Shipping web products since 2012." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={socialImage} />
-    <meta name="twitter:image:alt" content="Khalil Hebachi. I turn business priorities into working software." />
+    <meta name="twitter:image:alt" content="Khalil Hebachi, lead full-stack engineer. Shipping web products since 2012." />
     {published && <meta property="article:published_time" content={published.toISOString()} />}
     {updated && <meta property="article:modified_time" content={updated.toISOString()} />}
     <meta name="theme-color" content="#0f1012" media="(prefers-color-scheme: dark)" />
@@ -68,7 +68,6 @@ const GA_ID = 'G-SLJ8G6MSCP';
       email: `mailto:${profile.email}`,
       url: profile.site,
       sameAs: [profile.github, profile.linkedin],
-      address: { '@type': 'PostalAddress', addressLocality: 'Annaba', addressCountry: 'DZ' },
       knowsLanguage: ['en', 'fr', 'ar'],
     })} />
     {published && <script type="application/ld+json" set:html={JSON.stringify({
