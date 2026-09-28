@@ -1,17 +1,19 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { profile } from '../data/cv';
-import { potionsUnder } from '../lib/potions';
-import PotionMark from './pop/PotionMark.astro';
 
+// `section` marks the pages a homepage link stands for, so Work is current on every case study.
 const links = [
-  { href: '/#work', label: 'Work', potions: potionsUnder('/work/') },
-  { href: '/how-i-work/', label: 'How I work', potions: potionsUnder('/how-i-work/') },
-  { href: '/blog/', label: 'Writing', potions: potionsUnder('/blog/') },
+  { href: '/#work', label: 'Work', section: '/work/' },
+  { href: '/how-i-work/', label: 'How I work' },
+  { href: '/blog/', label: 'Writing' },
   { href: '/cv/', label: 'CV' },
 ];
 const path = Astro.url.pathname;
-const current = (href: string) => !href.startsWith('/#') && path.startsWith(href);
+const current = (l: (typeof links)[number]) => {
+  const base = l.section ?? (l.href.startsWith('/#') ? undefined : l.href);
+  return base !== undefined && path.startsWith(base);
+};
 ---
 
 <header class="site-header">
@@ -29,11 +31,9 @@ const current = (href: string) => !href.startsWith('/#') && path.startsWith(href
                 href={l.href}
                 class="nav-link"
                 data-section-link={l.href.startsWith('/#') ? true : undefined}
-                data-potion-link={l.potions}
-                aria-current={current(l.href) ? 'page' : undefined}
+                aria-current={current(l) ? 'page' : undefined}
               >
                 {l.label}
-                {l.potions && <PotionMark />}
               </a>
             </li>
           ))
@@ -41,14 +41,17 @@ const current = (href: string) => !href.startsWith('/#') && path.startsWith(href
       </ul>
 
       <div class="nav-tools">
-        <button type="button" data-palette-open class="nav-icon nav-search" aria-label="Find a page or action">
-          <Icon name="ph:magnifying-glass" />
-          <span aria-hidden="true">⌘K</span>
+        <!-- The name includes the visible shortcut, so voice control can use what is on screen.
+             Base.astro sets data-os before paint, so only the visitor's shortcut shows. -->
+        <button type="button" data-palette-open class="nav-icon nav-search">
+          <Icon name="ph:magnifying-glass" aria-hidden="true" />
+          <span class="sr-only">Find a page or action, shortcut</span>
+          <span class="kbd-mac">⌘K</span><span class="kbd-other">Ctrl K</span>
         </button>
 
         <button type="button" data-theme-toggle class="nav-icon" aria-label="Switch between the palace (light) and dungeon (dark) theme">
-          <Icon name="px-sun" class="theme-sun" />
-          <Icon name="px-torch" class="theme-moon" />
+          <Icon name="px-sun" class="theme-sun" aria-hidden="true" />
+          <Icon name="px-moon" class="theme-moon" aria-hidden="true" />
         </button>
 
         <a href={`mailto:${profile.email}`} class="btn btn-primary nav-cta">Email me</a>
@@ -61,7 +64,7 @@ const current = (href: string) => !href.startsWith('/#') && path.startsWith(href
           aria-expanded="false"
           aria-controls="mnav"
         >
-          <Icon name="ph:list" />
+          <Icon name="ph:list" aria-hidden="true" />
         </button>
       </div>
     </div>
@@ -73,15 +76,15 @@ const current = (href: string) => !href.startsWith('/#') && path.startsWith(href
 <dialog id="mnav" aria-label="Navigation">
   <div class="mb-8 flex h-12 items-center justify-between">
     <span class="brand"><span class="brand-mark" aria-hidden="true">KH</span>Khalil Hebachi</span>
-    <button type="button" class="nav-icon size-11!" data-menu-close aria-label="Close menu" autofocus><Icon name="ph:x" /></button>
+    <button type="button" class="nav-icon size-11!" data-menu-close aria-label="Close menu" autofocus><Icon name="ph:x" aria-hidden="true" /></button>
   </div>
   <ul class="mnav-list">
     {
       links.map((l) => (
         <li>
-          <a href={l.href} data-potion-link={l.potions}>
-            <span>{l.label}{l.potions && <PotionMark />}</span>
-            <Icon name="px-arrow-right" />
+          <a href={l.href} aria-current={current(l) ? 'page' : undefined}>
+            <span>{l.label}</span>
+            <Icon name="px-arrow-right" aria-hidden="true" />
           </a>
         </li>
       ))

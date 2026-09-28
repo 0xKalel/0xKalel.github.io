@@ -1,6 +1,7 @@
 ---
 /** A wall torch in pixel art: an iron bracket and a three-frame flame that flickers at about six
- *  frames a second, with a soft glow on the wall behind it. Under reduced motion the first frame stays lit. */
+ *  frames a second (on load, then while the scene is hovered), with a soft glow on the wall behind it.
+ *  Under reduced motion the first frame stays lit. */
 import { pixels } from '../../lib/pixels';
 
 interface Props {
@@ -90,7 +91,11 @@ const body = pixels(
     pointer-events: none;
   }
   .torch svg { position: relative; display: block; width: 100%; height: 100%; }
-  .torch-frame { opacity: 0; animation: torch-flicker 540ms step-end infinite; animation-delay: calc(var(--f) * 180ms); }
+  /* The flame flickers for a few seconds as the scene lights, then holds still; stepping on a gate
+     (hover or focus in the scene) wakes it again. Motion after load is always the visitor's doing. */
+  .torch-frame { opacity: 0; animation: torch-flicker 540ms step-end 6; animation-delay: calc(var(--f) * 180ms); }
   .torch-frame:first-child { opacity: 1; }
+  :global(:is(.scene:hover, .gates:has(.gates-cap:is(:hover, :focus-visible)))) .torch-frame { animation-name: torch-wake; animation-iteration-count: infinite; }
   @keyframes torch-flicker { 0% { opacity: 1; } 33.333%, 100% { opacity: 0; } }
+  @keyframes torch-wake { 0% { opacity: 1; } 33.333%, 100% { opacity: 0; } }
 </style>

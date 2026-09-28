@@ -13,7 +13,7 @@ const { id, class: className } = Astro.props;
 ---
 
 <div class:list={['potion-spot', className]}>
-  <button type="button" class="potion" data-potion={id} aria-label="Drink the potion">
+  <button type="button" class="potion" data-potion={id} aria-label="Drink me: one of the potions hidden around the site">
     <span class="potion-label" aria-hidden="true">Drink me</span>
     <PixelArt name="potion" class="potion-full" />
     <PixelArt name="flask" class="potion-empty" />
