@@ -1,7 +1,8 @@
 ---
 import '@fontsource-variable/geist';
 import '@fontsource-variable/geist-mono';
-import '@fontsource/jersey-10';
+// Latin only: every character on the site is in it, and the other subsets would never load.
+import '@fontsource/jersey-10/latin.css';
 // Preloaded so the pixel font is ready at first paint; its wider stand-in could otherwise push the layout.
 import jerseyLatin from '@fontsource/jersey-10/files/jersey-10-latin-400-normal.woff2?url';
 // Body text too: found only through the stylesheet, it arrived after first paint and shifted text as it swapped in.
@@ -15,6 +16,7 @@ import Ask from '../components/Ask.astro';
 import Hud from '../components/Hud.astro';
 import { experience, profile } from '../data/cv';
 import { POTIONS, SOUND_ON_BY_DEFAULT } from '../lib/potions';
+import { THEME_COLOR } from '../lib/theme';
 
 interface Props {
   title?: string;
@@ -56,8 +58,8 @@ const GA_ID = 'G-SLJ8G6MSCP';
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preload" href={jerseyLatin} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin />
+    {!bare && <link rel="preload" href={jerseyLatin} as="font" type="font/woff2" crossorigin />}
+    {!bare && <link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin />}
     <meta property="og:type" content={published ? 'article' : 'website'} />
     {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="alternate" type="application/rss+xml" title="Writing by Khalil Hebachi" href="/rss.xml" />
@@ -75,8 +77,8 @@ const GA_ID = 'G-SLJ8G6MSCP';
     <meta name="twitter:image:alt" content="Khalil Hebachi, lead full-stack engineer. Shipping web products since 2012." />
     {published && <meta property="article:published_time" content={published.toISOString()} />}
     {updated && <meta property="article:modified_time" content={updated.toISOString()} />}
-    <meta name="theme-color" content="#090f1c" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#f6efe3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content={THEME_COLOR.dark} media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content={THEME_COLOR.light} media="(prefers-color-scheme: light)" />
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Person',
@@ -119,7 +121,7 @@ const GA_ID = 'G-SLJ8G6MSCP';
       url: profile.site,
     })} />}
     {!bare && <ClientRouter />}
-    <script is:inline define:vars={{ potionIds: POTIONS, soundDefault: SOUND_ON_BY_DEFAULT }}>
+    <script is:inline define:vars={{ potionIds: POTIONS, soundDefault: SOUND_ON_BY_DEFAULT, themeColor: THEME_COLOR }}>
       // The router copies each new page's <html> attributes over the current ones, and this
       // head script runs only once, so re-apply the saved theme, the potion game (lib/potions.ts)
       // and the js flag after every swap. Applying them here, before paint, keeps the HUD from flickering.
@@ -127,6 +129,9 @@ const GA_ID = 'G-SLJ8G6MSCP';
         const apply = () => {
           const html = document.documentElement;
           html.classList.add('js');
+          // Shortcut hints show ⌘K on Apple devices and Ctrl K elsewhere (see Nav.astro).
+          const platform = navigator.userAgentData?.platform || navigator.platform || '';
+          if (/mac|iphone|ipad|ipod/i.test(platform)) html.dataset.os = 'mac';
           let drunk = [];
           let exit;
           let sound;
@@ -144,7 +149,7 @@ const GA_ID = 'G-SLJ8G6MSCP';
           try { t = localStorage.getItem('theme'); } catch {}
           if (t !== 'light' && t !== 'dark') return;
           html.dataset.theme = t;
-          const color = t === 'light' ? '#f6efe3' : '#090f1c';
+          const color = themeColor[t];
           document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
             m.setAttribute('content', color);
             m.removeAttribute('media');

@@ -1,4 +1,5 @@
 import { POTIONS } from '../lib/potions';
+import { THEME_COLOR } from '../lib/theme';
 import { play, setSound, soundOn } from './sound';
 
 // Bind once per Astro page visit, and release listeners and animation frames on exit.
@@ -38,7 +39,8 @@ function reveals() {
       const el = entry.target as HTMLElement;
       el.classList.add('in');
       observer.unobserve(el);
-      if (entry.isIntersecting) {
+      // Only section headings rise in; everything else is simply there (charts still draw in via .in).
+      if (entry.isIntersecting && el.matches('.sec-head')) {
         const delay = Math.min(parseFloat(el.style.getPropertyValue('--d')) || 0, 140);
         animate(el, [{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }], 480, delay);
       }
@@ -250,10 +252,13 @@ function potions() {
   loadPotions();
   applyPotions();
   const status = document.querySelector<HTMLElement>('[data-potion-status]');
-  // Say what the empty triangles are for before anyone has to guess.
-  if (!drunk.size && firstVisit()) {
-    flash(`<b>${total} potions</b> hide in the castle`, 5000);
-    if (status) status.textContent = `${total} potions hide in the castle.`;
+  // Say what the triangles are for, once, after the first scroll: the opening seconds belong to the page.
+  if (!drunk.size && !introShown) {
+    listen(window, 'scroll', () => {
+      if (drunk.size || !firstVisit()) return;
+      flash(`<b>${total} potions</b> hide in the castle`, 5000);
+      if (status) status.textContent = `${total} potions hide in the castle. Find one and select it to drink it.`;
+    }, { passive: true, once: true });
   }
   $$<HTMLButtonElement>('[data-potion]').forEach((button) => {
     const id = button.dataset.potion!;
@@ -262,7 +267,7 @@ function potions() {
     button.removeAttribute('aria-disabled');
     if (drunk.has(id)) { emptyFlask(button); return; }
     delete button.dataset.drunk;
-    button.setAttribute('aria-label', 'Drink the potion');
+    button.setAttribute('aria-label', 'Drink me: one of the potions hidden around the site');
     listen(button, 'click', () => {
       if (drunk.has(id)) return;
       if (!drunk.size) startedAt = Date.now();
@@ -385,7 +390,7 @@ function theme() {
     const next = light ? 'dark' : 'light';
     html.dataset.theme = next;
     // Keep the browser chrome color in sync with the chosen theme.
-    const color = next === 'light' ? '#f6efe3' : '#090f1c';
+    const color = THEME_COLOR[next];
     document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
       meta.content = color;
       meta.removeAttribute('media');

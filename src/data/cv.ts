@@ -76,7 +76,7 @@ export const experience: Entry[] = [
         tags: ['lead', 'founder', 'freelance'], weight: 6,
       },
       {
-        text: `Cached shared catalog data separately from personal carts. Median server response **${evidence.storagepal.responseBefore} → ${evidence.storagepal.responseAfter}** on a local benchmark (15 runs per version, same database).`,
+        text: `Cached shared catalog data separately from personal carts. Median server response down from **${evidence.storagepal.responseBefore} to ${evidence.storagepal.responseAfter}** on a local benchmark (15 runs per version, same database).`,
         tags: ['perf', 'frontend', 'freelance'], weight: 7,
       },
       {

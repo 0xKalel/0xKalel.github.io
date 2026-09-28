@@ -87,7 +87,7 @@ The app does not queue offline writes. The result is a clear limit, and a much s
 
 <aside class="post-incident card not-prose fx">
   <div class="post-incident-head">
-    <span class="post-icon"><Icon name="ph:wifi-slash" /></span>
+    <span class="post-icon"><Icon name="ph:wifi-slash" aria-hidden="true" /></span>
     <div>
       <p class="eyebrow">Production incident</p>
       <p class="post-incident-title">The scan worked, but the phone never heard back</p>
@@ -104,7 +104,7 @@ The app does not queue offline writes. The result is a clear limit, and a much s
       <li>A repeated completion from the same user returns the saved result instead of running again.</li>
       <li>A test covers this case.</li>
     </ol>
-    <p class="post-outcome"><Icon name="ph:check-circle" /> One change fixed two problems: the double processing, and the confusing errors.</p>
+    <p class="post-outcome"><Icon name="ph:check-circle" aria-hidden="true" /> One change fixed two problems: the double processing, and the confusing errors.</p>
   </div>
 </aside>
 
@@ -114,24 +114,24 @@ Each system owns its own data. Staff sometimes need to print a label before Stor
 
 <div class="post-split not-prose">
   <div class="card fx">
-    <p class="post-split-label"><Icon name="ph:storefront" /> StoragePal owns</p>
+    <p class="post-split-label"><Icon name="ph:storefront" aria-hidden="true" /> StoragePal owns</p>
     <p class="post-chips"><span class="stack-chip">Orders</span><span class="stack-chip">Article IDs</span></p>
   </div>
   <div class="card fx" style="--d:70ms">
-    <p class="post-split-label"><Icon name="ph:barcode" /> SPS owns</p>
+    <p class="post-split-label"><Icon name="ph:barcode" aria-hidden="true" /> SPS owns</p>
     <p class="post-chips"><span class="stack-chip">Scan sessions</span><span class="stack-chip">Photos</span><span class="stack-chip">Bay history</span></p>
   </div>
 </div>
 
 <figure class="post-flow card not-prose fx">
   <ol>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:magic-wand" /></span><strong>Predict</strong><span>SPS predicts the article ID.</span></li>
-    <li class="post-flow-link"><Icon name="px-arrow-right" /></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:tag" /></span><strong>Label</strong><span>Staff label and place the item right away.</span></li>
-    <li class="post-flow-link"><Icon name="px-arrow-right" /></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:check-square" /></span><strong>Confirm</strong><span>After approval, SPS checks its guess against StoragePal.</span></li>
-    <li class="post-flow-link"><Icon name="px-arrow-right" /></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:flag" /></span><strong>Fix</strong><span>A wrong guess flags the item for a new label.</span></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:magic-wand" aria-hidden="true" /></span><strong>Predict</strong><span>SPS predicts the article ID.</span></li>
+    <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:tag" aria-hidden="true" /></span><strong>Label</strong><span>Staff label and place the item right away.</span></li>
+    <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:check-square" aria-hidden="true" /></span><strong>Confirm</strong><span>After approval, SPS checks its guess against StoragePal.</span></li>
+    <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:flag" aria-hidden="true" /></span><strong>Fix</strong><span>A wrong guess flags the item for a new label.</span></li>
   </ol>
 </figure>
 
@@ -142,18 +142,18 @@ Staff keep moving, and the rare wrong guess becomes a small correction later.
 Tests cover the cases that would hurt most on the warehouse floor.
 
 <ul class="post-pills not-prose">
-  <li><Icon name="ph:check-circle" />Repeated completion</li>
-  <li><Icon name="ph:check-circle" />Duplicate approval</li>
-  <li><Icon name="ph:check-circle" />Rejected returns restore locations</li>
-  <li><Icon name="ph:check-circle" />Cancelled bay sessions roll back</li>
+  <li><Icon name="ph:check-circle" aria-hidden="true" />Repeated completion</li>
+  <li><Icon name="ph:check-circle" aria-hidden="true" />Duplicate approval</li>
+  <li><Icon name="ph:check-circle" aria-hidden="true" />Rejected returns restore locations</li>
+  <li><Icon name="ph:check-circle" aria-hidden="true" />Cancelled bay sessions roll back</li>
 </ul>
 
 Daily use shaped the small details.
 
 <div class="post-cards not-prose">
-  <div class="card fx"><span class="post-icon"><Icon name="ph:hand-tap" /></span><h3>One-tap verification</h3><p>Checking an item takes a single tap.</p></div>
-  <div class="card fx" style="--d:70ms"><span class="post-icon"><Icon name="ph:x-circle" /></span><h3>A quieter Cancel</h3><p>The Cancel button is less prominent.</p></div>
-  <div class="card fx" style="--d:140ms"><span class="post-icon"><Icon name="ph:magnifying-glass" /></span><h3>Flexible name search</h3><p>First name or last name first: both work.</p></div>
+  <div class="card fx"><span class="post-icon"><Icon name="ph:hand-tap" aria-hidden="true" /></span><h3>One-tap verification</h3><p>Checking an item takes a single tap.</p></div>
+  <div class="card fx" style="--d:70ms"><span class="post-icon"><Icon name="ph:x-circle" aria-hidden="true" /></span><h3>A quieter Cancel</h3><p>The Cancel button is less prominent.</p></div>
+  <div class="card fx" style="--d:140ms"><span class="post-icon"><Icon name="ph:magnifying-glass" aria-hidden="true" /></span><h3>Flexible name search</h3><p>First name or last name first: both work.</p></div>
 </div>
 
 Staff used SPS on all 120 weekdays from 13 April to 25 September 2026.

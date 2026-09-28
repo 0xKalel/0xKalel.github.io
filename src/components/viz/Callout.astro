@@ -13,7 +13,7 @@ const { title, items, footer } = Astro.props;
 <aside class="not-prose card fx my-10 p-6 md:p-8">
   <p class="flex items-start gap-3">
     <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-ui bg-[color-mix(in_oklab,var(--accent)_13%,transparent)] text-accent">
-      <Icon name="ph:detective" size={20} />
+      <Icon name="ph:detective" size={20} aria-hidden="true" />
     </span>
     <span class="display pt-1.5 text-lg leading-snug font-semibold">{title}</span>
   </p>

@@ -63,7 +63,7 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
   </div>
   <button type="button" class="btn btn-ghost review-toggle" data-more-toggle aria-expanded="false" aria-controls="review-list">
     <span data-more-label data-open-label="Show fewer">Show {hidden} more</span>
-    <Icon name="px-caret-down" />
+    <Icon name="px-caret-down" aria-hidden="true" />
   </button>
 </div>
 
@@ -73,9 +73,9 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
     padding-bottom: 14px;
     border-bottom: var(--rule);
     font-family: var(--font-pixel);
-    font-size: clamp(30px, 2.6vw, 38px);
+    font-size: calc(var(--grid) * 2);
     font-weight: 400;
-    letter-spacing: .01em;
+    line-height: calc(var(--fp) * 20);
   }
   .review-grid {
     display: grid;
@@ -83,7 +83,7 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
     gap: 1.25rem;
     margin-top: 1.5rem;
   }
-  /* Each voice is a game dialog box: a double frame, a pixel nameplate, and a "more" marker. */
+  /* Each voice is a game dialog box: a double frame and a pixel nameplate. */
   .review {
     position: relative;
     display: flex;
@@ -94,16 +94,6 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
     border: 2px solid var(--fg);
     background: var(--raised);
     box-shadow: inset 0 0 0 4px var(--raised), inset 0 0 0 6px color-mix(in oklab, var(--fg) 35%, var(--raised));
-  }
-  .review::after {
-    content: '';
-    position: absolute;
-    right: 16px;
-    bottom: 14px;
-    width: 10px;
-    height: 6px;
-    background: var(--accent);
-    clip-path: polygon(0 0, 100% 0, 100% 34%, 80% 34%, 80% 67%, 60% 67%, 60% 100%, 40% 100%, 40% 67%, 20% 67%, 20% 34%, 0 34%);
   }
   .review-head {
     display: flex;
@@ -122,7 +112,7 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
     align-items: center;
     justify-content: center;
     font-family: var(--font-pixel);
-    font-size: 1.15rem;
+    font-size: var(--pixel-label);
     color: var(--inv-accent);
     background: var(--fg);
   }
@@ -132,8 +122,7 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
     min-height: 44px;
     margin-block: -10px;
     font-family: var(--font-pixel);
-    font-size: 1.3rem;
-    letter-spacing: .02em;
+    font-size: var(--pixel-label);
     color: var(--fg);
   }
   a.review-name {
@@ -144,12 +133,12 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
   }
   a.review-name:hover { text-decoration-color: var(--accent); }
   .review-role {
-    font-size: 0.8rem;
+    font-size: var(--text-meta);
     color: var(--muted);
     margin-top: 0.1rem;
   }
   .review blockquote {
-    font-size: 0.95rem;
+    font-size: var(--text-body);
     line-height: 1.65;
     color: var(--fg);
   }
@@ -157,14 +146,14 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
     margin-top: auto;
     padding-top: 0.75rem;
     border-top: 1px solid var(--line);
-    font-size: 0.8rem;
+    font-size: var(--text-meta);
     line-height: 1.5;
     color: var(--muted);
   }
   .review-source {
     grid-column: 1 / -1;
     max-width: 68ch;
-    font-size: 0.85rem;
+    font-size: var(--text-meta);
     color: var(--muted);
     line-height: 1.6;
   }

@@ -13,13 +13,13 @@ This setup lets Claude inspect pages, check console errors and test browser inte
 <figure class="post-flow card not-prose fx">
   <figcaption class="eyebrow">How the pieces connect</figcaption>
   <ol>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:terminal-window" /></span><strong>Claude Code</strong><span>VS Code extension</span></li>
-    <li class="post-flow-link"><span>stdio</span><Icon name="px-arrow-right" /></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:plugs-connected" /></span><strong>chrome-devtools-mcp</strong><span>MCP server, started with npx</span></li>
-    <li class="post-flow-link"><span>DevTools protocol</span><Icon name="px-arrow-right" /></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:browser" /></span><strong>Chrome for Testing</strong><span>Linux build, temporary profile</span></li>
-    <li class="post-flow-link"><span>opens</span><Icon name="px-arrow-right" /></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:app-window" /></span><strong>Your local app</strong><span>Pages, console, interactions</span></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:terminal-window" aria-hidden="true" /></span><strong>Claude Code</strong><span>VS Code extension</span></li>
+    <li class="post-flow-link"><span>stdio</span><Icon name="px-arrow-right" aria-hidden="true" /></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:plugs-connected" aria-hidden="true" /></span><strong>chrome-devtools-mcp</strong><span>MCP server, started with npx</span></li>
+    <li class="post-flow-link"><span>DevTools protocol</span><Icon name="px-arrow-right" aria-hidden="true" /></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:browser" aria-hidden="true" /></span><strong>Chrome for Testing</strong><span>Linux build, temporary profile</span></li>
+    <li class="post-flow-link"><span>opens</span><Icon name="px-arrow-right" aria-hidden="true" /></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:app-window" aria-hidden="true" /></span><strong>Your local app</strong><span>Pages, console, interactions</span></li>
   </ol>
   <p class="post-flow-caps">Claude can then <span class="stack-chip">Inspect pages</span><span class="stack-chip">Check console errors</span><span class="stack-chip">Test interactions</span></p>
 </figure>
@@ -32,11 +32,11 @@ This setup lets Claude inspect pages, check console errors and test browser inte
 ## What you need
 
 <ul class="post-pills not-prose">
-  <li><Icon name="ph:linux-logo" />WSL 2</li>
-  <li><Icon name="ph:cube" />Node.js</li>
-  <li><Icon name="ph:package" />npm</li>
-  <li><Icon name="ph:code" />VS Code</li>
-  <li><Icon name="ph:sparkle" />Claude Code extension</li>
+  <li><Icon name="ph:linux-logo" aria-hidden="true" />WSL 2</li>
+  <li><Icon name="ph:cube" aria-hidden="true" />Node.js</li>
+  <li><Icon name="ph:package" aria-hidden="true" />npm</li>
+  <li><Icon name="ph:code" aria-hidden="true" />VS Code</li>
+  <li><Icon name="ph:sparkle" aria-hidden="true" />Claude Code extension</li>
 </ul>
 
 ## Setup
@@ -51,7 +51,7 @@ This setup lets Claude inspect pages, check console errors and test browser inte
 
 ### 1. Install Chrome for Testing
 
-<p class="post-file"><Icon name="ph:terminal-window" /> WSL terminal</p>
+<p class="post-file"><Icon name="ph:terminal-window" aria-hidden="true" /> WSL terminal</p>
 
 ```bash
 npx -y @puppeteer/browsers install chrome@stable --path ~/.local/share/chrome-for-testing
@@ -63,7 +63,7 @@ Save the executable path printed by the installer. Step 2 needs it.
 
 Add this server entry under your project:
 
-<p class="post-file"><Icon name="ph:file-code" /> ~/.claude.json</p>
+<p class="post-file"><Icon name="ph:file-code" aria-hidden="true" /> ~/.claude.json</p>
 
 ```json
 {
@@ -91,10 +91,10 @@ Add this server entry under your project:
 <div class="card post-rules post-solo not-prose fx">
   <p class="eyebrow">What to change, and what the flags do</p>
   <ul>
-    <li><span class="post-trigger">/path/to/your/project</span><Icon name="px-arrow-right" /><span>Replace with your project path</span></li>
-    <li><span class="post-trigger">/home/username/…/chrome</span><Icon name="px-arrow-right" /><span>Replace with the Chrome path from step 1</span></li>
-    <li><span class="post-trigger">`-e`</span><Icon name="px-arrow-right" /><span>Selects the executable</span></li>
-    <li><span class="post-trigger">`--isolated`</span><Icon name="px-arrow-right" /><span>Uses a temporary browser profile</span></li>
+    <li><span class="post-trigger">/path/to/your/project</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Replace with your project path</span></li>
+    <li><span class="post-trigger">/home/username/…/chrome</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Replace with the Chrome path from step 1</span></li>
+    <li><span class="post-trigger">`-e`</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Selects the executable</span></li>
+    <li><span class="post-trigger">`--isolated`</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Uses a temporary browser profile</span></li>
   </ul>
 </div>
 
@@ -102,7 +102,7 @@ Add this server entry under your project:
 
 To allow these tools without individual prompts, add the wildcard. It covers all Chrome DevTools tools.
 
-<p class="post-file"><Icon name="ph:file-code" /> ~/.claude/settings.json</p>
+<p class="post-file"><Icon name="ph:file-code" aria-hidden="true" /> ~/.claude/settings.json</p>
 
 ```json
 {
@@ -120,23 +120,23 @@ Press <kbd class="key">Ctrl</kbd> <kbd class="key">Shift</kbd> <kbd class="key">
 
 ### 5. Check the connection
 
-<p class="post-file"><Icon name="ph:terminal-window" /> WSL terminal</p>
+<p class="post-file"><Icon name="ph:terminal-window" aria-hidden="true" /> WSL terminal</p>
 
 ```bash
 claude mcp list
 ```
 
-<p class="post-status not-prose"><Icon name="ph:check-circle" />`chrome-devtools: ... - ✓ Connected`<span>What you should see</span></p>
+<p class="post-status not-prose"><Icon name="ph:check-circle" aria-hidden="true" />`chrome-devtools: ... - ✓ Connected`<span>What you should see</span></p>
 
 ## If it does not connect
 
 <div class="card post-rules post-solo not-prose fx">
   <p class="eyebrow">Symptom, then what to check</p>
   <ul>
-    <li><span class="post-trigger">Chrome not found</span><Icon name="px-arrow-right" /><span>Check the installed version folder and update the `-e` path.</span></li>
-    <li><span class="post-trigger">Target closed</span><Icon name="px-arrow-right" /><span>Check whether Chrome starts. If you are launching Windows Chrome, try the Linux installation above.</span></li>
-    <li><span class="post-trigger">Server missing</span><Icon name="px-arrow-right" /><span>Check the JSON syntax, reload VS Code and inspect the extension logs.</span></li>
-    <li><span class="post-trigger">Permission denied</span><Icon name="px-arrow-right" /><span>Check the allow list in your global or project settings.</span></li>
+    <li><span class="post-trigger">Chrome not found</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Check the installed version folder and update the `-e` path.</span></li>
+    <li><span class="post-trigger">Target closed</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Check whether Chrome starts. If you are launching Windows Chrome, try the Linux installation above.</span></li>
+    <li><span class="post-trigger">Server missing</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Check the JSON syntax, reload VS Code and inspect the extension logs.</span></li>
+    <li><span class="post-trigger">Permission denied</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Check the allow list in your global or project settings.</span></li>
   </ul>
 </div>
 
@@ -145,7 +145,7 @@ claude mcp list
 ## Try it
 
 <div class="post-prompt card not-prose fx">
-  <p class="eyebrow"><Icon name="ph:chat-circle-text" /> Ask Claude</p>
+  <p class="eyebrow"><Icon name="ph:chat-circle-text" aria-hidden="true" /> Ask Claude</p>
   <p class="post-prompt-text">Open my local app, report console errors and take a screenshot.</p>
   <p class="post-prompt-next">Once that works, try a complete workflow such as signing in or submitting a test form.</p>
 </div>
@@ -153,7 +153,7 @@ claude mcp list
 ## Documentation
 
 <div class="post-links not-prose">
-  <a href="https://github.com/ChromeDevTools/chrome-devtools-mcp"><Icon name="ph:github-logo" /><strong>Chrome DevTools MCP</strong><small>github.com/ChromeDevTools/chrome-devtools-mcp</small><Icon name="px-arrow-up-right" /></a>
-  <a href="https://docs.claude.com/en/docs/claude-code"><Icon name="ph:book-open" /><strong>Claude Code</strong><small>docs.claude.com/en/docs/claude-code</small><Icon name="px-arrow-up-right" /></a>
-  <a href="https://developer.chrome.com/blog/chrome-for-testing/"><Icon name="ph:browser" /><strong>Chrome for Testing</strong><small>developer.chrome.com/blog/chrome-for-testing</small><Icon name="px-arrow-up-right" /></a>
+  <a href="https://github.com/ChromeDevTools/chrome-devtools-mcp"><Icon name="ph:github-logo" aria-hidden="true" /><strong>Chrome DevTools MCP</strong><small>github.com/ChromeDevTools/chrome-devtools-mcp</small><Icon name="px-arrow-up-right" aria-hidden="true" /></a>
+  <a href="https://docs.claude.com/en/docs/claude-code"><Icon name="ph:book-open" aria-hidden="true" /><strong>Claude Code</strong><small>docs.claude.com/en/docs/claude-code</small><Icon name="px-arrow-up-right" aria-hidden="true" /></a>
+  <a href="https://developer.chrome.com/blog/chrome-for-testing/"><Icon name="ph:browser" aria-hidden="true" /><strong>Chrome for Testing</strong><small>developer.chrome.com/blog/chrome-for-testing</small><Icon name="px-arrow-up-right" aria-hidden="true" /></a>
 </div>

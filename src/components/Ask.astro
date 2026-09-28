@@ -14,7 +14,7 @@ import { ASK_READY, ASK_SUGGESTIONS, MAX_QUESTION_CHARS } from '../lib/ask';
       <p class="ask-note">AI answers from my CV and case studies. It can make mistakes.</p>
     </div>
     <button type="button" class="btn btn-ghost size-11! justify-center p-0!" data-ask-close aria-label="Close">
-      <Icon name="ph:x" />
+      <Icon name="ph:x" aria-hidden="true" />
     </button>
   </header>
   <div class="ask-log" role="log" aria-label="Conversation">
@@ -43,7 +43,7 @@ import { ASK_READY, ASK_SUGGESTIONS, MAX_QUESTION_CHARS } from '../lib/ask';
       aria-label="Your question"
     />
     <button type="submit" class="btn btn-primary h-11! px-3.5!" data-ask-send aria-label="Send question">
-      <Icon name="ph:paper-plane-right" />
+      <Icon name="ph:paper-plane-right" aria-hidden="true" />
     </button>
   </form>
 </dialog>

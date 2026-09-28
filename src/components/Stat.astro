@@ -1,9 +1,11 @@
 ---
-/** A stat value as a game score: the number at full size, a trailing unit ("105 days") as a small label. */
+/** A stat value as a game score: the number at full size, a trailing unit ("105 days") as a small label.
+ *  An arrow ("3 → 1") is drawn on the pixel grid, since the pixel font has no arrow glyph. */
 interface Props {
   value: string;
 }
 const [, num, unit] = Astro.props.value.match(/^(.*?\d)\s+([a-z].*)$/i) ?? [null, Astro.props.value, ''];
+const pieces = num.split('→');
 ---
 
-{num}{unit && <span class="stat-unit">{unit}</span>}
+{pieces.map((piece, i) => <>{i > 0 && <span class="to">→</span>}{piece}</>)}{unit && <span class="stat-unit">{unit}</span>}

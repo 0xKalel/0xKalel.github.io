@@ -68,13 +68,13 @@ I first pictured creators running news channels. The people who paid first were 
 
 <div class="post-split not-prose">
   <div class="card post-no fx">
-    <p class="post-split-label"><Icon name="ph:user-sound" /> Who I pictured</p>
+    <p class="post-split-label"><Icon name="ph:user-sound" aria-hidden="true" /> Who I pictured</p>
     <ul>
       <li>Creators running news channels</li>
     </ul>
   </div>
   <div class="card fx" style="--d:70ms">
-    <p class="post-split-label"><Icon name="ph:credit-card" /> Who paid first</p>
+    <p class="post-split-label"><Icon name="ph:credit-card" aria-hidden="true" /> Who paid first</p>
     <ul>
       <li>An agency</li>
       <li>An AI consultancy</li>
@@ -88,8 +88,8 @@ So I moved the product toward businesses that build an audience around their exp
 <div class="post-group not-prose">
   <p class="eyebrow">What I added for them</p>
   <ul class="post-pills">
-    <li><Icon name="ph:palette" />Brand controls</li>
-    <li><Icon name="ph:stack" />More channels per account</li>
+    <li><Icon name="ph:palette" aria-hidden="true" />Brand controls</li>
+    <li><Icon name="ph:stack" aria-hidden="true" />More channels per account</li>
   </ul>
 </div>
 
@@ -108,10 +108,10 @@ A video passes through several paid services. Restarting after one failed step w
 <PipelineRaven />
 
 <div class="post-cards is-2 not-prose">
-  <div class="card fx"><span class="post-icon"><Icon name="ph:floppy-disk" /></span><h3>Saved stages</h3><p>Each stage saves its status. A runner moves forward whatever is ready.</p></div>
-  <div class="card fx" style="--d:70ms"><span class="post-icon"><Icon name="ph:lock-simple" /></span><h3>One worker per stage</h3><p>Database locks stop two workers from taking the same stage.</p></div>
-  <div class="card fx"><span class="post-icon"><Icon name="ph:recycle" /></span><h3>Reuse on retry</h3><p>A failed render reuses the assets it already has.</p></div>
-  <div class="card fx" style="--d:70ms"><span class="post-icon"><Icon name="ph:seal-check" /></span><h3>Publish once</h3><p>Publishing has its own guard against duplicate posts.</p></div>
+  <div class="card fx"><span class="post-icon"><Icon name="ph:floppy-disk" aria-hidden="true" /></span><h3>Saved stages</h3><p>Each stage saves its status. A runner moves forward whatever is ready.</p></div>
+  <div class="card fx" style="--d:70ms"><span class="post-icon"><Icon name="ph:lock-simple" aria-hidden="true" /></span><h3>One worker per stage</h3><p>Database locks stop two workers from taking the same stage.</p></div>
+  <div class="card fx"><span class="post-icon"><Icon name="ph:recycle" aria-hidden="true" /></span><h3>Reuse on retry</h3><p>A failed render reuses the assets it already has.</p></div>
+  <div class="card fx" style="--d:70ms"><span class="post-icon"><Icon name="ph:seal-check" aria-hidden="true" /></span><h3>Publish once</h3><p>Publishing has its own guard against duplicate posts.</p></div>
 </div>
 
 <div class="decision-note not-prose">
@@ -127,7 +127,7 @@ Fallback kept videos coming, so nothing looked wrong.
 
 <aside class="post-incident card not-prose fx">
   <div class="post-incident-head">
-    <span class="post-icon"><Icon name="ph:detective" /></span>
+    <span class="post-icon"><Icon name="ph:detective" aria-hidden="true" /></span>
     <div>
       <p class="eyebrow">Production incident</p>
       <p class="post-incident-title">A provider ran out of credit, and fallback hid it for 25 days</p>
@@ -136,7 +136,7 @@ Fallback kept videos coming, so nothing looked wrong.
   <dl class="post-figures">
     <div><dt>25 days</dt><dd>provider out of credit</dd></div>
     <div><dt>8,162</dt><dd>calls quietly moved to a more expensive service</dd></div>
-    <div><dt>≈3.16×</dt><dd>the price per call</dd></div>
+    <div><dt>~3.16×</dt><dd>the price per call</dd></div>
   </dl>
   <div class="post-incident-foot">
     <p class="eyebrow">The fix</p>
@@ -145,7 +145,7 @@ Fallback kept videos coming, so nothing looked wrong.
       <li>A cooldown when a balance is empty.</li>
       <li>A daily check outside the job queue, so it still reports when the workers are down.</li>
     </ol>
-    <p class="post-outcome"><Icon name="ph:check-circle" /> The monitors have since caught two prepaid-credit incidents within hours.</p>
+    <p class="post-outcome"><Icon name="ph:check-circle" aria-hidden="true" /> The monitors have since caught two prepaid-credit incidents within hours.</p>
   </div>
 </aside>
 
@@ -155,7 +155,7 @@ Automatic checks catch a lot, but not everything. So customers keep the final sa
 
 <div class="post-split not-prose">
   <div class="card fx">
-    <p class="post-split-label"><Icon name="ph:check-circle" /> Checked</p>
+    <p class="post-split-label"><Icon name="ph:check-circle" aria-hidden="true" /> Checked</p>
     <ul>
       <li>Script structure and length</li>
       <li>The story stays about its subject</li>
@@ -165,7 +165,7 @@ Automatic checks catch a lot, but not everything. So customers keep the final sa
     </ul>
   </div>
   <div class="card post-no fx" style="--d:70ms">
-    <p class="post-split-label"><Icon name="ph:warning-circle" /> Not proven</p>
+    <p class="post-split-label"><Icon name="ph:warning-circle" aria-hidden="true" /> Not proven</p>
     <ul>
       <li><strong>Every factual claim.</strong> So customers keep review controls, and flagged videos wait for approval.</li>
     </ul>
@@ -186,13 +186,13 @@ Automatic checks catch a lot, but not everything. So customers keep the final sa
 <div class="card post-rules post-solo not-prose fx">
   <p class="eyebrow">Publishing</p>
   <ul>
-    <li><span class="post-trigger">TikTok</span><Icon name="px-arrow-right" /><span>Live</span></li>
-    <li><span class="post-trigger">YouTube Shorts</span><Icon name="px-arrow-right" /><span>Live</span></li>
-    <li><span class="post-trigger">Instagram</span><Icon name="px-arrow-right" /><span>Built, waiting on app review</span></li>
+    <li><span class="post-trigger">TikTok</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Live</span></li>
+    <li><span class="post-trigger">YouTube Shorts</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Live</span></li>
+    <li><span class="post-trigger">Instagram</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Built, waiting on app review</span></li>
   </ul>
 </div>
 
 <div class="post-cta card not-prose fx">
   <p>The engineering decisions and operating lessons, in more detail.</p>
-  <a class="btn btn-primary" href="/blog/2026/09/25/ravenclip-engineering/">Read the post <Icon name="px-arrow-right" /></a>
+  <a class="btn btn-primary" href="/blog/2026/09/25/ravenclip-engineering/">Read the post <Icon name="px-arrow-right" aria-hidden="true" /></a>
 </div>

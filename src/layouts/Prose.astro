@@ -26,7 +26,7 @@ const breadcrumbs = [...(date ? [{ name: 'Writing', path: '/blog/' }] : []), { n
   {
     sections.length > 1 ? (
       <article class="shell case-study post">
-        {date && <a href="/blog/" class="text-link"><Icon name="px-arrow-left" /> Writing</a>}
+        {date && <a href="/blog/" class="text-link"><Icon name="px-arrow-left" aria-hidden="true" /> Writing</a>}
         <header class="case-header">
           {date && <p class="eyebrow rise"><time datetime={date.toISOString()}>{long(date)}</time>{updated && <> · Updated <time datetime={updated.toISOString()}>{long(updated)}</time></>}</p>}
           <h1 class="rise">{title}</h1>

@@ -119,7 +119,7 @@ const chain = (labels: [string, ('node'|'end')?][]) => labels;
   }
   .flow-node { border-color: var(--accent); border-width: 1.5px; }
   .flow-end { background: color-mix(in oklab, var(--accent) 16%, var(--surface)); border-color: var(--accent); }
-  .flow-arrow { text-align: center; color: var(--muted); font-size: 0.8rem; line-height: 1.4; }
+  .flow-arrow { text-align: center; color: var(--muted); font-size: var(--text-meta); line-height: 1.4; }
 
   /* The autopilot, visualised: stages light up in run order, forever.
      One slow, motivated loop; removed entirely under reduced motion. */

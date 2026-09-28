@@ -18,7 +18,7 @@ RavenClip turns news into short videos and publishes them on a schedule. I built
 <div class="post-tldr not-prose">
   <p class="eyebrow">The short version</p>
   <ol>
-    <li class="fx"><a href="#persist-progress-where-recovery-matters"><span class="post-tldr-topic"><span>01</span><span>Recovery</span></span><strong>9 s → 2 s</strong><span class="post-tldr-text">Median wait before rendering, once each stage starts the moment the last one finishes.</span></a></li>
+    <li class="fx"><a href="#persist-progress-where-recovery-matters"><span class="post-tldr-topic"><span>01</span><span>Recovery</span></span><strong>9 s <span class="to">→</span> 2 s</strong><span class="post-tldr-text">Median wait before rendering, once each stage starts the moment the last one finishes.</span></a></li>
     <li class="fx" style="--d:70ms"><a href="#give-models-a-structure-then-check-the-result"><span class="post-tldr-topic"><span>02</span><span>Prompts</span></span><strong>15-18% fewer</strong><span class="post-tldr-text">Input tokens per call after replacing a banned-phrase list with three principles.</span></a></li>
     <li class="fx" style="--d:140ms"><a href="#be-precise-about-what-a-check-proves"><span class="post-tldr-topic"><span>03</span><span>Checks</span></span><strong>Shape, not truth</strong><span class="post-tldr-text">Gates catch drift, bad hooks and length. They cannot confirm that a claim is true.</span></a></li>
     <li class="fx"><a href="#monitor-the-fallback-path"><span class="post-tldr-topic"><span>04</span><span>Fallback</span></span><strong>25 days</strong><span class="post-tldr-text">A provider sat out of credit while fallback hid it. Monitors now catch this within hours.</span></a></li>
@@ -35,17 +35,17 @@ Every stage saves its status in the database, so a failure resumes where it stop
 
 <div class="post-cards not-prose">
   <div class="card fx">
-    <span class="post-icon"><Icon name="ph:lock-simple" /></span>
+    <span class="post-icon"><Icon name="ph:lock-simple" aria-hidden="true" /></span>
     <h3>One worker per stage</h3>
     <p>A runner moves forward whatever is ready. A row lock stops two workers from claiming the same stage.</p>
   </div>
   <div class="card fx" style="--d:70ms">
-    <span class="post-icon"><Icon name="ph:timer" /></span>
+    <span class="post-icon"><Icon name="ph:timer" aria-hidden="true" /></span>
     <h3>Ordered timeouts</h3>
     <p>Job timeout, then supervisor timeout, then queue redelivery. Recovery retries a stuck render with the assets it already has.</p>
   </div>
   <div class="card fx" style="--d:140ms">
-    <span class="post-icon"><Icon name="ph:seal-check" /></span>
+    <span class="post-icon"><Icon name="ph:seal-check" aria-hidden="true" /></span>
     <h3>Publish once</h3>
     <p>State checks plus a unique database constraint: the same video cannot post twice.</p>
   </div>
@@ -54,7 +54,7 @@ Every stage saves its status in the database, so a failure resumes where it stop
 One measurement corrected me. Starting each stage the moment the previous one finished fixed the median, not the whole delay.
 
 <dl class="post-figures not-prose">
-  <div class="fx"><dt><span class="post-was">9 s →</span> 2 s</dt><dd>Median wait before rendering</dd></div>
+  <div class="fx"><dt><span class="post-was">9 s <span class="to">→</span></span> 2 s</dt><dd>Median wait before rendering</dd></div>
   <div class="fx" style="--d:70ms"><dt>~1 min</dt><dd>Slowest waits, unchanged</dd></div>
 </dl>
 
@@ -107,7 +107,7 @@ The system ranks drafts by their defects and tells a failed attempt exactly what
 
 <div class="post-split not-prose">
   <div class="card post-yes fx">
-    <p class="post-split-label"><Icon name="ph:check-circle" /> Checked or enforced</p>
+    <p class="post-split-label"><Icon name="ph:check-circle" aria-hidden="true" /> Checked or enforced</p>
     <ul>
       <li>The script stays on its subject</li>
       <li>The hook has the right shape</li>
@@ -117,7 +117,7 @@ The system ranks drafts by their defects and tells a failed attempt exactly what
     </ul>
   </div>
   <div class="card post-no fx" style="--d:70ms">
-    <p class="post-split-label"><Icon name="ph:warning-circle" /> Not proven</p>
+    <p class="post-split-label"><Icon name="ph:warning-circle" aria-hidden="true" /> Not proven</p>
     <ul>
       <li><strong>That a claim is true.</strong> A false sentence built from words in the source can still pass.</li>
       <li><strong>Spoken figures.</strong> They are not checked.</li>
@@ -139,17 +139,17 @@ External calls share one mechanism for retries, key rotation and switching provi
   <div class="card post-rules fx">
     <p class="eyebrow">When a call fails</p>
     <ul>
-      <li><span class="post-trigger">Temporary error</span><Icon name="px-arrow-right" /><span>A few retries with growing delays</span></li>
-      <li><span class="post-trigger">2 timeouts in a row</span><Icon name="px-arrow-right" /><span>Switch provider</span></li>
-      <li><span class="post-trigger">Empty balance</span><Icon name="px-arrow-right" /><span>Shared 30-minute cooldown</span></li>
+      <li><span class="post-trigger">Temporary error</span><Icon name="px-arrow-right" aria-hidden="true" /><span>A few retries with growing delays</span></li>
+      <li><span class="post-trigger">2 timeouts in a row</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Switch provider</span></li>
+      <li><span class="post-trigger">Empty balance</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Shared 30-minute cooldown</span></li>
     </ul>
   </div>
   <div class="card post-rules fx" style="--d:70ms">
     <p class="eyebrow">What a fallback must keep</p>
     <ul>
-      <li><span class="post-trigger">Voice</span><Icon name="px-arrow-right" /><span>The same speaker</span></li>
-      <li><span class="post-trigger">Images</span><Icon name="px-arrow-right" /><span>The same quality level</span></li>
-      <li><span class="post-trigger">Embeddings</span><Icon name="px-arrow-right" /><span>Never mixed: their outputs do not compare</span></li>
+      <li><span class="post-trigger">Voice</span><Icon name="px-arrow-right" aria-hidden="true" /><span>The same speaker</span></li>
+      <li><span class="post-trigger">Images</span><Icon name="px-arrow-right" aria-hidden="true" /><span>The same quality level</span></li>
+      <li><span class="post-trigger">Embeddings</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Never mixed: their outputs do not compare</span></li>
     </ul>
   </div>
 </div>
@@ -158,7 +158,7 @@ Checking only whether videos finished hid one failure for weeks.
 
 <aside class="post-incident card not-prose fx">
   <div class="post-incident-head">
-    <span class="post-icon"><Icon name="ph:detective" /></span>
+    <span class="post-icon"><Icon name="ph:detective" aria-hidden="true" /></span>
     <div>
       <p class="eyebrow">Production incident</p>
       <p class="post-incident-title">A provider ran out of credit, and fallback hid it for 25 days</p>
@@ -167,13 +167,13 @@ Checking only whether videos finished hid one failure for weeks.
   <dl class="post-figures">
     <div><dt>25 days</dt><dd>provider out of credit</dd></div>
     <div><dt>8,162</dt><dd>calls quietly moved to another service</dd></div>
-    <div><dt>≈3.16×</dt><dd>the price per call</dd></div>
+    <div><dt>~3.16×</dt><dd>the price per call</dd></div>
     <div><dt>$11-15</dt><dd>extra spend</dd></div>
   </dl>
   <div class="post-meter">
     <p class="post-meter-title">Price per call</p>
     <div class="post-meter-row"><span>Primary</span><span><span class="post-meter-bar grow-bar" style="--w:27.8%"></span><b>1×</b></span></div>
-    <div class="post-meter-row"><span>Fallback</span><span><span class="post-meter-bar is-accent grow-bar" style="--w:88%"></span><b>≈3.16×</b></span></div>
+    <div class="post-meter-row"><span>Fallback</span><span><span class="post-meter-bar is-accent grow-bar" style="--w:88%"></span><b>~3.16×</b></span></div>
   </div>
   <p class="post-incident-lesson">The extra spend was small. The lesson was the missing visibility, not the money.</p>
   <div class="post-incident-foot">
@@ -183,7 +183,7 @@ Checking only whether videos finished hid one failure for weeks.
       <li>Read balances where an API exists; estimate remaining credit from recorded spend where it does not.</li>
       <li>Run a daily check outside the queue, so it reports even when a worker is down.</li>
     </ol>
-    <p class="post-outcome"><Icon name="ph:check-circle" /> The monitors have since caught two prepaid-credit incidents within hours.</p>
+    <p class="post-outcome"><Icon name="ph:check-circle" aria-hidden="true" /> The monitors have since caught two prepaid-credit incidents within hours.</p>
   </div>
 </aside>
 
@@ -193,13 +193,13 @@ Billable calls are recorded before the output is validated, because an unusable 
 
 <figure class="post-cost card not-prose fx">
   <figcaption>
-    <span class="post-cost-total">≈ $0.45</span>
+    <span class="post-cost-total">~$0.45</span>
     <span class="post-cost-caption">per rendered video, with a share of infrastructure added</span>
   </figcaption>
   <div class="post-stack" aria-hidden="true"><span class="grow-bar" style="--f:36"></span><span class="grow-bar" style="--f:9"></span></div>
   <div class="post-legend">
     <p><strong>$0.36</strong> recorded API spend</p>
-    <p><strong>≈ $0.09</strong> infrastructure share</p>
+    <p><strong>~$0.09</strong> infrastructure share</p>
   </div>
   <dl class="post-cost-basis">
     <div><dt>Period</dt><dd>1-25 September 2026</dd></div>
@@ -211,12 +211,12 @@ Billable calls are recorded before the output is validated, because an unusable 
 
 <div class="post-cards is-2 not-prose">
   <div class="card fx">
-    <span class="post-icon"><Icon name="ph:magnifying-glass" /></span>
+    <span class="post-icon"><Icon name="ph:magnifying-glass" aria-hidden="true" /></span>
     <h3>Code-scanning test</h3>
     <p>Finds paid integrations with no cost recording. It proves the recording exists, not that the price is right.</p>
   </div>
   <div class="card fx" style="--d:70ms">
-    <span class="post-icon"><Icon name="ph:calendar-check" /></span>
+    <span class="post-icon"><Icon name="ph:calendar-check" aria-hidden="true" /></span>
     <h3>Daily audit</h3>
     <p>Checks for missing prices and for differences from what providers report.</p>
   </div>
@@ -227,8 +227,8 @@ Caching also needs enough traffic to pay off.
 <div class="card post-rules post-solo not-prose fx">
   <p class="eyebrow">Caching, by call type</p>
   <ul>
-    <li><span class="post-trigger">Enrichment</span><Icon name="px-arrow-right" /><span>Frequent: provider cache hits</span></li>
-    <li><span class="post-trigger">Scene direction</span><Icon name="px-arrow-right" /><span>Too rare to keep a cache warm, so I cut prompt size instead and left caching until volume justifies it</span></li>
+    <li><span class="post-trigger">Enrichment</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Frequent: provider cache hits</span></li>
+    <li><span class="post-trigger">Scene direction</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Too rare to keep a cache warm, so I cut prompt size instead and left caching until volume justifies it</span></li>
   </ul>
 </div>
 
@@ -236,11 +236,11 @@ Caching also needs enough traffic to pay off.
 
 <div class="post-split not-prose">
   <div class="card fx">
-    <p class="post-split-label"><Icon name="ph:robot" /> Coding agents</p>
+    <p class="post-split-label"><Icon name="ph:robot" aria-hidden="true" /> Coding agents</p>
     <p class="post-chips"><span class="stack-chip">Build</span><span class="stack-chip">Investigate</span><span class="stack-chip">Test</span></p>
   </div>
   <div class="card fx" style="--d:70ms">
-    <p class="post-split-label"><Icon name="ph:compass" /> Under my direction</p>
+    <p class="post-split-label"><Icon name="ph:compass" aria-hidden="true" /> Under my direction</p>
     <p class="post-chips"><span class="stack-chip">Product scope</span><span class="stack-chip">Pricing</span><span class="stack-chip">Architecture</span></p>
   </div>
 </div>
@@ -249,7 +249,7 @@ My session records include corrections to both code and business proposals, down
 
 <aside class="post-incident card not-prose fx">
   <div class="post-incident-head">
-    <span class="post-icon"><Icon name="ph:bug" /></span>
+    <span class="post-icon"><Icon name="ph:bug" aria-hidden="true" /></span>
     <div>
       <p class="eyebrow">Production incident · 2 September 2026</p>
       <p class="post-incident-title">One bulk edit, eighteen hours of failed jobs</p>
