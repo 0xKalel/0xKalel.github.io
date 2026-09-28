@@ -93,6 +93,75 @@ function spotlight() {
   });
 }
 
+// Screenshots re-render from coarse pixels to sharp when pointed at, in six steps, like the gate
+// that lifts over them (420ms, steps(6) in global.css). A tiny canvas holds each frame and the
+// browser scales it up without smoothing; the image itself never changes.
+const PIXEL_BLOCKS = [28, 18, 12, 8, 5, 3];
+const PIXEL_FRAME = 70;
+function pixelReveal() {
+  if (!fine() || reduced()) return;
+  const veils = new Set<HTMLCanvasElement>();
+  const timers = new Set<ReturnType<typeof setTimeout>>();
+  const run = (img: HTMLImageElement | null | undefined) => {
+    if (!img || img.dataset.pixel || !img.complete || !img.naturalWidth) return;
+    const w = img.clientWidth;
+    const h = img.clientHeight;
+    if (w < 48 || h < 48) return;
+    const style = getComputedStyle(img);
+    const fit = style.objectFit;
+    const scale = fit === 'cover' ? Math.max(w / img.naturalWidth, h / img.naturalHeight)
+      : fit === 'contain' || fit === 'scale-down' ? Math.min(w / img.naturalWidth, h / img.naturalHeight) : 0;
+    // The picture as drawn: the fitted image, or the whole box when it is stretched to fill it.
+    const drawnW = scale ? img.naturalWidth * scale : w;
+    const drawnH = scale ? img.naturalHeight * scale : h;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    canvas.className = 'pixel-veil';
+    canvas.setAttribute('aria-hidden', 'true');
+    Object.assign(canvas.style, {
+      left: `${img.offsetLeft + img.clientLeft}px`,
+      top: `${img.offsetTop + img.clientTop}px`,
+      width: `${w}px`,
+      height: `${h}px`,
+      objectFit: fit,
+      objectPosition: style.objectPosition,
+    });
+    img.dataset.pixel = 'on';
+    img.after(canvas);
+    veils.add(canvas);
+    let frame = 0;
+    const step = () => {
+      const block = PIXEL_BLOCKS[frame++];
+      if (block === undefined) {
+        canvas.remove();
+        veils.delete(canvas);
+        delete img.dataset.pixel;
+        return;
+      }
+      canvas.width = Math.max(1, Math.round(drawnW / block));
+      canvas.height = Math.max(1, Math.round(drawnH / block));
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const timer = setTimeout(() => { timers.delete(timer); step(); }, PIXEL_FRAME);
+      timers.add(timer);
+    };
+    step();
+  };
+  $$<HTMLImageElement>('.work-visual img, .comparison-image img, .post-screen-img img, .post-shot img, .gallery-fit img')
+    .forEach((img) => listen(img, 'pointerenter', () => run(img)));
+  // Behind a gate the room wakes as the bars lift: stepping on the gate, its caption or its scene.
+  $$('.gate, .gates-cap, .level-scene').forEach((host) => listen(host, 'pointerenter', () => {
+    const gate = host.matches('.gates-cap') ? document.querySelector(`.gates .gate[data-i="${host.dataset.i}"]`) : host;
+    run(gate?.querySelector<HTMLImageElement>('.gate-view img'));
+  }));
+  cleanups.push(() => {
+    timers.forEach(clearTimeout);
+    veils.forEach((canvas) => canvas.remove());
+    $$('[data-pixel]').forEach((img) => { delete img.dataset.pixel; });
+  });
+}
+
 // The HUD line: "Level N · Section" on the homepage, reading time left on long text, else the page name.
 const escape = (text: string) => text.replace(/[&<>]/g, (c) => `&#${c.charCodeAt(0)};`);
 function hudLine(sections: HTMLElement[], current: HTMLElement | undefined, prose: { el: HTMLElement; words: number } | null, title: string) {
@@ -479,6 +548,7 @@ function init() {
   reveals();
   moreToggles();
   spotlight();
+  pixelReveal();
   scrollPosition();
   caseNav();
   menu();

@@ -261,6 +261,12 @@ svg[data-icon^='px-'] { shape-rendering: crispEdges; }
 
 .card { position: relative; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--bevel); }
 
+/* Screenshots sharpen from coarse pixels when pointed at (pixelReveal in scripts/site.ts). Each
+   frame is a tiny canvas laid over the image and scaled up without smoothing; the image is untouched.
+   Their frames are positioned so the canvas lines up with the picture, scrolled or not. */
+.niche-in, .comparison-image, .post-screen-img, .post-shot { position: relative; }
+.pixel-veil { position: absolute; pointer-events: none; image-rendering: pixelated; }
+
 /* A framed exhibit: a window cut in stone. A dark pixel outline, a stone lintel that carries the
    label, a recessed opening, and a gold offset shadow. */
 .frame-box {
