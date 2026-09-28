@@ -4,8 +4,8 @@ import { Icon } from 'astro-icon/components';
 import Base from '../../layouts/Base.astro';
 import Gallery from '../../components/Gallery.astro';
 import { evidence, type ProjectId } from '../../data/evidence';
-import { profile } from '../../data/cv';
 import Stat from '../../components/Stat.astro';
+import ContactBand from '../../components/ContactBand.astro';
 import LevelGate from '../../components/pop/LevelGate.astro';
 import type { GateId } from '../../components/pop/Gate.astro';
 import PotionMark from '../../components/pop/PotionMark.astro';
@@ -22,7 +22,7 @@ const related = (await getCollection('work')).filter((w) => w.id !== entry.id).s
 ---
 <Base title={`${d.title}: ${d.headline.replace(/\.$/, '')}`} description={d.tagline} breadcrumbs={[{ name: d.title, path: `/work/${entry.id}/` }]}>
   <article class="shell case-study">
-    <a href="/#work" class="text-link"><Icon name="px-arrow-left" /> Selected work</a>
+    <a href="/#work" class="text-link"><Icon name="px-arrow-left" aria-hidden="true" /> Selected work</a>
     <header class="case-header">
       <p class="eyebrow rise">{d.category}</p>
       <h1 class="rise">{d.title}<span class="sr-only">: </span><span>{d.headline}</span></h1>
@@ -40,8 +40,8 @@ const related = (await getCollection('work')).filter((w) => w.id !== entry.id).s
       <nav class="case-nav" aria-label="In this case study"><p class="eyebrow">In this case study</p><ul>{headings.filter((h) => h.depth === 2).map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}<li><a href="#product-walkthrough">Product walkthrough</a></li></ul></nav>
       <div class="prose prose-case prose-headings:tracking-tight prose-a:decoration-line prose-a:underline-offset-4 prose-strong:font-semibold"><Content /></div>
     </div>
-    <section id="product-walkthrough" class="case-gallery"><div class="section-heading"><div><p class="eyebrow">Inside the product</p><h2>Product walkthrough</h2></div>{d.url && <a href={d.url} class="text-link">Visit {d.title} <Icon name="px-arrow-up-right" /></a>}</div><Gallery videos={galleryVideos} shots={d.shots} /></section>
-    <section class="case-related" aria-labelledby="related-heading"><h2 id="related-heading">More work</h2><div>{related.map((w) => <a href={`/work/${w.id}/`} data-potion-link={potionsUnder(`/work/${w.id}/`)}><span class="door-icon" aria-hidden="true"></span><span><span class="case-related-title">{w.data.title}<PotionMark /><Icon name="px-arrow-right" /></span><p>{w.data.headline}</p></span></a>)}</div></section>
-    <p class="case-contact">Working through a similar problem? <a class="link" href={`mailto:${profile.email}`}>Tell me about it.</a></p>
+    <section id="product-walkthrough" class="case-gallery"><div class="section-heading"><h2>Product walkthrough</h2>{d.url && <a href={d.url} class="text-link">Visit {d.title} <Icon name="px-arrow-up-right" aria-hidden="true" /></a>}</div><Gallery videos={galleryVideos} shots={d.shots} /></section>
+    <section class="case-related" aria-labelledby="related-heading"><h2 id="related-heading">More work</h2><div>{related.map((w) => <a href={`/work/${w.id}/`} data-potion-link={potionsUnder(`/work/${w.id}/`)}><span class="door-icon" aria-hidden="true"></span><span><span class="case-related-title">{w.data.title}<PotionMark /><Icon name="px-arrow-right" aria-hidden="true" /></span><p>{w.data.headline}</p></span></a>)}</div></section>
   </article>
+  <ContactBand heading="Building something similar?" description="Tell me what you are building. A few lines are enough to start." />
 </Base>

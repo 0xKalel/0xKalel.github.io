@@ -5,10 +5,13 @@ export const evidence = {
     pages: '12',
     responseBefore: '9.1 s',
     responseAfter: '0.884 s',
+    transport: '+34%',
     preview: 'Twelve admin pages, one shared list system.',
-    period: 'Implementation reviewed in September 2026.',
+    period: 'Transport: 12 months after launch vs the 12 months before. Catalog: median of 15 runs per version on a local benchmark. Reviewed September 2026.',
+    // Strongest first: business result, then speed, then a simpler checkout.
     metrics: [
-      { value: '12', label: 'admin pages on one shared list system' },
+      { value: '+34%', label: 'transport revenue in the year after launch vs the year before' },
+      { value: '0.884 s', label: 'median catalog server response, down from 9.1 s' },
       { value: '3 → 1', label: 'pages in the payment flow' },
     ],
   },
@@ -23,7 +26,7 @@ export const evidence = {
     metrics: [
       { value: '120 / 120', label: 'weekdays with a completed scan session' },
       { value: '1,348', label: 'completed scanning sessions' },
-      { value: '3,602', label: 'recorded moves between warehouse bays' },
+      { value: '3,602', label: 'recorded moves from one storage spot to another' },
     ],
   },
   ravenclip: {

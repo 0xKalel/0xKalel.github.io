@@ -6,11 +6,12 @@ interface Props {
 }
 const { class: className } = Astro.props;
 
-const stone = '#2f3d58';
-const stoneHi = '#485974';
-const stoneLo = '#19233a';
-const mortar = '#0e1626';
-const cave = '#070b14';
+// The stone follows the theme (Dungeon or Palace); the door, its iron and the lit stairs are the art's own colors.
+const stone = 'fill: var(--stone)';
+const stoneHi = 'fill: var(--stone-hi)';
+const stoneLo = 'fill: var(--stone-lo)';
+const mortar = 'fill: var(--mortar)';
+const cave = 'fill: var(--cave)';
 // Archway: a stepped arch over the frame and over the opening.
 const frame = [[13, 0, 10, 2], [9, 2, 18, 2], [5, 4, 26, 2], [2, 6, 32, 2], [0, 8, 36, 34]];
 const opening = [[15, 10, 6, 2], [12, 12, 12, 2], [9, 14, 18, 2], [7, 16, 22, 26]];
@@ -27,13 +28,13 @@ const bricks = [[0, 14, 7, 1], [29, 14, 7, 1], [0, 22, 7, 1], [29, 22, 7, 1], [0
       <stop offset="1" stop-color="#ffb846" stop-opacity="0" />
     </radialGradient>
   </defs>
-  {frame.map(([x, y, w, h]) => <rect x={x} y={y} width={w} height={h} fill={stone} />)}
-  {frame.map(([x, y, w]) => <rect x={x} y={y} width={w} height="1" fill={stoneHi} />)}
-  <rect x="0" y="8" width="1" height="34" fill={stoneHi} />
-  <rect x="35" y="8" width="1" height="34" fill={stoneLo} />
-  {bricks.map(([x, y, w, h]) => <rect x={x} y={y} width={w} height={h} fill={mortar} />)}
+  {frame.map(([x, y, w, h]) => <rect x={x} y={y} width={w} height={h} style={stone} />)}
+  {frame.map(([x, y, w]) => <rect x={x} y={y} width={w} height="1" style={stoneHi} />)}
+  <rect x="0" y="8" width="1" height="34" style={stoneHi} />
+  <rect x="35" y="8" width="1" height="34" style={stoneLo} />
+  {bricks.map(([x, y, w, h]) => <rect x={x} y={y} width={w} height={h} style={mortar} />)}
   <g clip-path="url(#exit-opening)">
-    <rect x="7" y="10" width="22" height="32" fill={cave} />
+    <rect x="7" y="10" width="22" height="32" style={cave} />
     <rect x="7" y="10" width="22" height="32" fill="url(#exit-light)" />
     {stairs.map(([x, y, w, h]) => <rect x={x} y={y} width={w} height={h} fill="#b8894d" />)}
     {stairs.map(([x, y, w]) => <rect x={x} y={y} width={w} height="1" fill="#f3d193" />)}
@@ -47,11 +48,11 @@ const bricks = [[0, 14, 7, 1], [29, 14, 7, 1], [0, 22, 7, 1], [29, 22, 7, 1], [0
       <rect x="7" y="41" width="22" height="1" fill="#1a120a" />
     </g>
   </g>
-  <rect x="7" y="16" width="1" height="26" fill={stoneLo} />
-  <rect x="0" y="42" width="36" height="4" fill={stone} />
-  <rect x="0" y="42" width="36" height="1" fill={stoneHi} />
-  <rect x="0" y="45" width="36" height="1" fill={stoneLo} />
-  <rect x="11" y="41" width="14" height="1" fill={stoneHi} />
+  <rect x="7" y="16" width="1" height="26" style={stoneLo} />
+  <rect x="0" y="42" width="36" height="4" style={stone} />
+  <rect x="0" y="42" width="36" height="1" style={stoneHi} />
+  <rect x="0" y="45" width="36" height="1" style={stoneLo} />
+  <rect x="11" y="41" width="14" height="1" style={stoneHi} />
 </svg>
 
 <style>

@@ -1,0 +1,43 @@
+---
+/** The level exit: the gold contact band with the exit door (pop/ExitDoor.astro), which opens when
+ *  the email is hovered or focused. The homepage shows the whole band, with the potion reward and
+ *  the ask chat; case studies end on the short one, so every long read closes on the same exit. */
+import { Icon } from 'astro-icon/components';
+import ExitDoor from './pop/ExitDoor.astro';
+import PixelArt from './pop/PixelArt.astro';
+import { profile } from '../data/cv';
+import { ASK_READY } from '../lib/ask';
+import { POTIONS } from '../lib/potions';
+
+interface Props {
+  heading: string;
+  description: string;
+  /** The homepage version: the potion reward and the ask chat button. */
+  full?: boolean;
+}
+const { heading, description, full = false } = Astro.props;
+---
+
+<section id="contact" class="band contact-band" data-hud="<b>Exit</b> · Contact">
+  <div class="shell section-space contact-inner">
+    <ExitDoor class="contact-exit" />
+    <h2 class="fx">{heading}</h2>
+    <p class="contact-description fx">{description}</p>
+    <a class="contact-mail fx" href={`mailto:${profile.email}`}><span>{profile.email}</span><Icon name="px-arrow-up-right" aria-hidden="true" /></a>
+    {full && (
+      <p class="potion-reward">
+        <PixelArt name="potion" />
+        <span>You found all {POTIONS.length} potions<span data-potion-time></span>.</span>
+        <a class="text-link" href={`mailto:${profile.email}?subject=${encodeURIComponent(`I found all ${POTIONS.length} potions`)}`} data-potion-mail>Send me your time <Icon name="px-arrow-up-right" aria-hidden="true" /></a>
+        <button type="button" class="text-link" data-potion-reset>Play again</button>
+      </p>
+    )}
+    <div class="contact-actions fx">
+      <button type="button" class="btn btn-ghost" data-copy={profile.email} aria-label="Copy email address"><Icon name="ph:copy" aria-hidden="true" /><span data-copy-label>Copy email</span></button>
+      {full && ASK_READY && <button type="button" class="btn btn-ghost" data-ask-open aria-haspopup="dialog"><Icon name="ph:chat-circle-dots" aria-hidden="true" />Ask my AI assistant</button>}
+      <a class="text-link" href={profile.linkedin}>LinkedIn <Icon name="px-arrow-up-right" aria-hidden="true" /></a>
+      <a class="text-link" href={profile.github}>GitHub <Icon name="px-arrow-up-right" aria-hidden="true" /></a>
+      <span class="sr-only" data-copy-status role="status"></span>
+    </div>
+  </div>
+</section>
