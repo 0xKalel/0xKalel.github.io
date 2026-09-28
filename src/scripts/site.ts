@@ -163,21 +163,31 @@ function scrollPosition() {
 const total = POTIONS.length;
 let drunk = new Set<string>();
 let exitOpen = false;
+// When the first potion was drunk, and how long all of them took (ms), for the reward line.
+let startedAt = 0;
+let finishedIn = 0;
 function loadPotions() {
   try {
     const saved: unknown = JSON.parse(localStorage.getItem('potions') ?? '[]');
     drunk = new Set(Array.isArray(saved) ? POTIONS.filter((id) => saved.includes(id)) : []);
     exitOpen = localStorage.getItem('potions:exit') === 'open';
+    startedAt = Number(localStorage.getItem('potions:start')) || 0;
+    finishedIn = Number(localStorage.getItem('potions:time')) || 0;
   } catch {}
 }
 function savePotions() {
   try {
     localStorage.setItem('potions', JSON.stringify([...drunk]));
-    if (exitOpen) localStorage.setItem('potions:exit', 'open');
-    else localStorage.removeItem('potions:exit');
+    const extras: Record<string, string> = {
+      'potions:exit': exitOpen ? 'open' : '',
+      'potions:start': startedAt ? String(startedAt) : '',
+      'potions:time': finishedIn ? String(finishedIn) : '',
+    };
+    Object.entries(extras).forEach(([key, value]) => (value ? localStorage.setItem(key, value) : localStorage.removeItem(key)));
   } catch {}
 }
-// Mirrors the head script in Base.astro, which applies the same state before paint.
+// Mirrors the head script in Base.astro, which applies the same state before paint. Links to pages
+// that still hold a full potion (data-potion-link, see lib/potions.ts) show a small potion mark.
 function applyPotions() {
   const html = document.documentElement;
   html.style.setProperty('--potions', String(drunk.size));
@@ -185,6 +195,24 @@ function applyPotions() {
   else delete html.dataset.potions;
   if (exitOpen) html.dataset.exit = 'open';
   else delete html.dataset.exit;
+  $$('[data-potion-link]').forEach((link) => {
+    link.toggleAttribute('data-potion-left', link.dataset.potionLink!.split(' ').some((id) => !drunk.has(id)));
+  });
+}
+function duration(ms: number) {
+  const minutes = Math.round(ms / 60000);
+  if (minutes < 1) return 'under a minute';
+  if (minutes < 90) return `${minutes} minute${minutes === 1 ? '' : 's'}`;
+  const hours = Math.round(minutes / 60);
+  return hours < 36 ? `${hours} hours` : `${Math.round(hours / 24)} days`;
+}
+// The reward in Contact: how long the hunt took, and an email with that in the subject.
+function rewardLine() {
+  const time = finishedIn ? ` in ${duration(finishedIn)}` : '';
+  $$('[data-potion-time]').forEach((el) => { el.textContent = time; });
+  $$<HTMLAnchorElement>('[data-potion-mail]').forEach((link) => {
+    link.href = `${link.href.split('?')[0]}?subject=${encodeURIComponent(`I found all ${total} potions${time}`)}`;
+  });
 }
 // True once per visitor: the first page they open announces the game.
 let introShown = false;
@@ -237,7 +265,9 @@ function potions() {
     button.setAttribute('aria-label', 'Drink the potion');
     listen(button, 'click', () => {
       if (drunk.has(id)) return;
+      if (!drunk.size) startedAt = Date.now();
       drunk.add(id);
+      if (drunk.size >= total && startedAt) finishedIn = Date.now() - startedAt;
       savePotions();
       const count = drunk.size;
       // Stays focusable until the next page, so keyboard focus is not lost.
@@ -256,7 +286,8 @@ function potions() {
         if (status) status.textContent = `All ${total} potions found. The exit door in Contact is open.`;
         play('fanfare');
         track('potion_found', { potion_id: id, count });
-        track('potions_complete');
+        track('potions_complete', { minutes: Math.round(finishedIn / 60000) });
+        rewardLine();
         watchExit();
         return;
       }
@@ -272,9 +303,12 @@ function potions() {
       }
     });
   });
+  rewardLine();
+  $$('[data-potion-mail]').forEach((link) => listen(link, 'click', () => track('potion_mail')));
   $$('[data-potion-reset]').forEach((button) => listen(button, 'click', () => {
     drunk = new Set();
     exitOpen = false;
+    startedAt = finishedIn = 0;
     savePotions();
     document.querySelector<HTMLElement>('.contact-mail')?.focus();
     flash(`<b>The potions are back</b> · Find all ${total}`);

@@ -1,11 +1,13 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { profile } from '../data/cv';
+import { potionsUnder } from '../lib/potions';
+import PotionMark from './pop/PotionMark.astro';
 
 const links = [
-  { href: '/#work', label: 'Work' },
-  { href: '/how-i-work/', label: 'How I work' },
-  { href: '/blog/', label: 'Writing' },
+  { href: '/#work', label: 'Work', potions: potionsUnder('/work/') },
+  { href: '/how-i-work/', label: 'How I work', potions: potionsUnder('/how-i-work/') },
+  { href: '/blog/', label: 'Writing', potions: potionsUnder('/blog/') },
   { href: '/cv/', label: 'CV' },
 ];
 const path = Astro.url.pathname;
@@ -27,9 +29,11 @@ const current = (href: string) => !href.startsWith('/#') && path.startsWith(href
                 href={l.href}
                 class="nav-link"
                 data-section-link={l.href.startsWith('/#') ? true : undefined}
+                data-potion-link={l.potions}
                 aria-current={current(l.href) ? 'page' : undefined}
               >
                 {l.label}
+                {l.potions && <PotionMark />}
               </a>
             </li>
           ))
@@ -75,8 +79,8 @@ const current = (href: string) => !href.startsWith('/#') && path.startsWith(href
     {
       links.map((l) => (
         <li>
-          <a href={l.href}>
-            {l.label}
+          <a href={l.href} data-potion-link={l.potions}>
+            <span>{l.label}{l.potions && <PotionMark />}</span>
             <Icon name="px-arrow-right" />
           </a>
         </li>

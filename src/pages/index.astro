@@ -14,7 +14,8 @@ import { evidence, type ProjectId } from '../data/evidence';
 import { defaultRole } from '../data/roles';
 import { ASK_READY } from '../lib/ask';
 import { postHref } from '../lib/blog';
-import { POTIONS } from '../lib/potions';
+import { POTIONS, potionsUnder } from '../lib/potions';
+import PotionMark from '../components/pop/PotionMark.astro';
 import Stat from '../components/Stat.astro';
 import catalogue from '../assets/work/storagepal-catalogue.png';
 import checkout from '../assets/work/storagepal-checkout.png';
@@ -92,7 +93,7 @@ const stackWhere: Record<(typeof skills)[number]['id'], string> = {
               <dl class="work-metrics">{metrics.map((m) => <div><dt><Stat value={m.value} /></dt><dd>{m.label}</dd></div>)}</dl>
               <p class="evidence-period">{fact.period}</p>
               <a class="work-decision" href={`/work/${id}/#${p.decisionAnchor}`}><span class="door-icon" aria-hidden="true"></span><span><span class="mono-label">A decision inside</span>{p.decision}</span><Icon name="px-arrow-right" /></a>
-              <a class="work-cta mono-label" href={`/work/${id}/`}>Read the {p.title} case study <Icon name="px-arrow-right" /></a>
+              <a class="work-cta mono-label" href={`/work/${id}/`} data-potion-link={potionsUnder(`/work/${id}/`)}><span>Read the {p.title} case study<PotionMark /></span><Icon name="px-arrow-right" /></a>
             </>
           );
           return (
@@ -154,9 +155,9 @@ const stackWhere: Record<(typeof skills)[number]['id'], string> = {
       </ol>
       <div class="ai-note fx"><h3>How I use AI</h3><p>I work with Claude Code, and sometimes Codex. I write the spec first. Then I review each change for correctness and simplicity, and I stay responsible for what ships.</p></div>
       {latest && (
-        <a href={postHref(latest.id)} class="writing-row fx">
+        <a href={postHref(latest.id)} class="writing-row fx" data-potion-link={potionsUnder(postHref(latest.id))}>
           <span class="writing-kind">Latest article · <time datetime={latest.data.date.toISOString()}>{latest.data.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</time></span>
-          <strong>{latest.data.title}</strong>
+          <strong>{latest.data.title}<PotionMark /></strong>
           <Icon name="px-arrow-right" />
         </a>
       )}
@@ -202,7 +203,12 @@ const stackWhere: Record<(typeof skills)[number]['id'], string> = {
       <h2 class="fx">Hiring, or need something built?</h2>
       <p class="contact-description fx">Tell me about the role or the product. A few lines are enough to start.</p>
       <a class="contact-mail fx" href={`mailto:${profile.email}`}><span>{profile.email}</span><Icon name="px-arrow-up-right" /></a>
-      <p class="potion-reward"><PixelArt name="potion" /><span>You found all {POTIONS.length} potions. Mention it when you write.</span><button type="button" class="text-link" data-potion-reset>Play again</button></p>
+      <p class="potion-reward">
+        <PixelArt name="potion" />
+        <span>You found all {POTIONS.length} potions<span data-potion-time></span>.</span>
+        <a class="text-link" href={`mailto:${profile.email}?subject=${encodeURIComponent(`I found all ${POTIONS.length} potions`)}`} data-potion-mail>Send me your time <Icon name="px-arrow-up-right" /></a>
+        <button type="button" class="text-link" data-potion-reset>Play again</button>
+      </p>
       <div class="contact-actions fx">
         <button type="button" class="btn btn-ghost" data-copy={profile.email} aria-label="Copy email address"><Icon name="ph:copy" /><span data-copy-label>Copy email</span></button>
         {ASK_READY && <button type="button" class="btn btn-ghost" data-ask-open aria-haspopup="dialog"><Icon name="ph:chat-circle-dots" />Ask my AI assistant</button>}

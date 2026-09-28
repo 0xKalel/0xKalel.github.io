@@ -480,6 +480,8 @@ main { counter-reset: sec; overflow-x: clip; }
 .gates-potion { position: absolute; left: 33%; bottom: 20px; z-index: 3; margin: 0; translate: -50% 0; }
 .gates-potion .potion { --px: 2.4px; padding-bottom: 0; }
 .gates-potion .potion::after { display: none; }
+/* The first potion says what it is, even where there is no hover. */
+.gates-potion .potion:not([data-drunk]) .potion-label { opacity: 1; }
 
 /* ---------- Potions: one per page (lib/potions.ts), on a stone ledge ---------- */
 .potion-spot { display: flex; justify-content: flex-end; margin-block: 10px; }
@@ -497,6 +499,18 @@ main { counter-reset: sec; overflow-x: clip; }
 .potion[data-drunk] .potion-empty { display: block; opacity: .55; }
 .potion[data-drunk] { cursor: default; }
 @media print { .potion-spot { display: none; } }
+/* A tiny potion beside links to pages that still hold one (PotionMark.astro). */
+.potion-mark {
+  display: none;
+  flex: none;
+  width: max(.5em, 10px);
+  height: max(.7em, 14px);
+  margin: 0 auto 0 .4em;
+  vertical-align: -.05em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 7' shape-rendering='crispEdges'%3E%3Cpath fill='%23c9a15a' d='M2 0h1v1H2z'/%3E%3Cpath fill='%23e23532' d='M2 1h1v1H2zM1 2h3v1H1zM0 3h1v1H0zM2 3h3v1H2zM0 4h5v2H0zM1 6h3v1H1z'/%3E%3Cpath fill='%23ff8a7a' d='M1 3h1v1H1z'/%3E%3C/svg%3E") 0 0 / 100% 100%;
+}
+[data-potion-left] .potion-mark { display: inline-block; }
+.case-related-title .potion-mark { margin-left: -8px; }
 
 /* Case study entrance: the project's gate, alone between two torches. */
 .level-scene { display: flex; flex-direction: column; justify-content: flex-end; }
@@ -656,7 +670,8 @@ a:is(:hover, :focus-visible) > .door-icon::after { transform: translateY(-100%);
 .potion-reward { display: none; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 28px; font-family: var(--font-pixel); font-size: clamp(19px, 1.7vw, 23px); line-height: 1.1; letter-spacing: .04em; text-transform: uppercase; }
 [data-potions='full'] .potion-reward { display: flex; }
 .potion-reward .pixel-art { width: 30px; height: 30px; }
-.potion-reward button { font-size: .8em; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
+.potion-reward .text-link { font-size: .8em; font-weight: 400; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
+.potion-reward [data-potion-mail] { text-decoration-color: currentColor; }
 .contact-band h2 { max-width: 16ch; font-family: var(--font-pixel); font-size: clamp(46px, 7vw, 112px); font-weight: 400; line-height: .92; letter-spacing: 0; text-transform: uppercase; text-wrap: balance; }
 .contact-description { max-width: 52ch; margin-top: clamp(24px, 3vw, 36px); font-size: clamp(17px, 1.5vw, 20px); line-height: 1.55; font-weight: 500; }
 .contact-mail { position: relative; isolation: isolate; display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: clamp(36px, 4.5vw, 64px); padding-block: clamp(18px, 2.2vw, 28px); border-block: var(--rule); font-family: var(--font-mono); font-size: clamp(18px, 3vw, 44px); font-weight: 600; letter-spacing: -.02em; overflow-wrap: anywhere; transition: color 200ms ease; }

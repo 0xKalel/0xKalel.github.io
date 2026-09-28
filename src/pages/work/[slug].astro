@@ -8,6 +8,8 @@ import { profile } from '../../data/cv';
 import Stat from '../../components/Stat.astro';
 import LevelGate from '../../components/pop/LevelGate.astro';
 import type { GateId } from '../../components/pop/Gate.astro';
+import PotionMark from '../../components/pop/PotionMark.astro';
+import { potionsUnder } from '../../lib/potions';
 export async function getStaticPaths() {
   return (await getCollection('work')).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
@@ -39,7 +41,7 @@ const related = (await getCollection('work')).filter((w) => w.id !== entry.id).s
       <div class="prose prose-case prose-headings:tracking-tight prose-a:decoration-line prose-a:underline-offset-4 prose-strong:font-semibold"><Content /></div>
     </div>
     <section id="product-walkthrough" class="case-gallery"><div class="section-heading"><div><p class="eyebrow">Inside the product</p><h2>Product walkthrough</h2></div>{d.url && <a href={d.url} class="text-link">Visit {d.title} <Icon name="px-arrow-up-right" /></a>}</div><Gallery videos={galleryVideos} shots={d.shots} /></section>
-    <section class="case-related" aria-labelledby="related-heading"><h2 id="related-heading">More work</h2><div>{related.map((w) => <a href={`/work/${w.id}/`}><span class="door-icon" aria-hidden="true"></span><span><span class="case-related-title">{w.data.title}<Icon name="px-arrow-right" /></span><p>{w.data.headline}</p></span></a>)}</div></section>
+    <section class="case-related" aria-labelledby="related-heading"><h2 id="related-heading">More work</h2><div>{related.map((w) => <a href={`/work/${w.id}/`} data-potion-link={potionsUnder(`/work/${w.id}/`)}><span class="door-icon" aria-hidden="true"></span><span><span class="case-related-title">{w.data.title}<PotionMark /><Icon name="px-arrow-right" /></span><p>{w.data.headline}</p></span></a>)}</div></section>
     <p class="case-contact">Working through a similar problem? <a class="link" href={`mailto:${profile.email}`}>Tell me about it.</a></p>
   </article>
 </Base>

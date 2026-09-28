@@ -3,6 +3,8 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import { postHref } from '../../lib/blog';
 import Potion from '../../components/pop/Potion.astro';
+import PotionMark from '../../components/pop/PotionMark.astro';
+import { potionsUnder } from '../../lib/potions';
 
 const posts = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.data.date);
 ---
@@ -17,12 +19,12 @@ const posts = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.dat
       {
         posts.map((p, i) => (
           <li class="rise" style={`--i:${i + 2}`}>
-            <a href={postHref(p.id)}>
+            <a href={postHref(p.id)} data-potion-link={potionsUnder(postHref(p.id))}>
               <time class="mono-label text-muted" datetime={p.data.date.toISOString()}>
                 {p.data.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
               </time>
               <div>
-                <strong><span>{p.data.title}</span></strong>
+                <strong><span>{p.data.title}</span><PotionMark /></strong>
                 <p>{p.data.description}</p>
               </div>
               <span class="door-icon" aria-hidden="true"></span>
