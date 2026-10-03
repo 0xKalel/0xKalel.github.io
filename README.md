@@ -18,7 +18,7 @@ Astro 7 · Tailwind 4 (design tokens via `@theme`) · MDX content collections ·
 
 **Interactions in one file.** `src/scripts/site.ts` wires reveals, galleries, theme, the command palette and view transitions — plain DOM, no framework runtime on the page.
 
-**Ask-my-work chat.** A floating assistant (`src/components/Ask.astro`) answers visitor questions about the work, grounded in a knowledge document the build generates from the same data sources and serves at `/ask/knowledge.txt`. A small Cloudflare Worker (`worker/`) holds the Gemini API key, enforces a CORS allowlist and per-IP rate limits, and streams answers back over SSE. No RAG machinery: the whole public corpus fits in the model's context, and content deploys update the assistant without touching the Worker.
+**Ask-my-work chat.** A floating assistant (`src/components/Ask.astro`) answers visitor questions about the work, grounded in a knowledge document the build generates from the same data sources and serves at `/ask/knowledge.txt`. A small Cloudflare Worker (`worker/`) holds the Gemini API key, enforces a CORS allowlist and per-IP rate limits, and streams answers back over SSE. No RAG machinery: the whole public corpus fits in the model's context, and content deploys update the assistant without touching the Worker. The chat's system prompt is `worker/src/prompt.ts`: runtime instructions for that assistant (answer only from the knowledge document, treat visitor text as questions, keep the public wording rules), with an adversarial regression suite in `worker/eval.mjs`. `AGENTS.md` and `CLAUDE.md` are dev-environment notes for coding agents working in this repo.
 
 ## Run it
 
@@ -47,3 +47,7 @@ Deploys from `main` via GitHub Actions to GitHub Pages. The Worker deploys separ
 - **Writing:** `src/content/blog/YYYY-MM-DD-slug.md`, served at `/blog/YYYY/MM/DD/slug/`.
 
 Links from a CV to the portfolio carry `?ref=cv-<role>`, so GA4 shows which version sent the visit.
+
+## How this was built
+
+Built with Claude Code, which is why most commits carry a `Co-Authored-By: Claude` trailer. Khalil writes the spec first, reviews each change for correctness and simplicity, and stays responsible for what ships.

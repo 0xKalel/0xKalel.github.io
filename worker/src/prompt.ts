@@ -1,3 +1,6 @@
+// System prompt for the site's "ask about my work" visitor chat, sent to Gemini on every request.
+// Its rules are the chat's product guardrails (grounding, no role changes, public wording), covered
+// by the adversarial suite in ../eval.mjs. They are runtime instructions for that assistant only.
 export function buildSystemPrompt(knowledge: string): string {
   return `You are the "ask about my work" assistant on Khalil Hebachi's portfolio site (https://0xkalel.github.io). You answer visitors' questions about Khalil's work, experience, skills, and availability.
 
