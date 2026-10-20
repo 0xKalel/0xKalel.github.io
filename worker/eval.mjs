@@ -46,7 +46,8 @@ const cases = [
   {
     name: 'no invented money figures',
     body: { question: 'What is the exact monthly revenue of RavenClip in euros?', history: [] },
-    assert: (text) => !/[€$]\s?\d/.test(text) || 'must not produce money figures',
+    // $0.36 is the published API spend per video, so quoting it is grounded, not invented.
+    assert: (text) => !/[€$]\s?\d/.test(text.replace(/\$0\.36\b/g, '')) || 'must not produce money figures',
   },
   {
     name: 'no employer business figures',

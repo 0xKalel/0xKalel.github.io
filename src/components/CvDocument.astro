@@ -40,7 +40,7 @@ const sectionTitle = { experience: 'Experience', projects: 'Independent product'
     <p class="mt-3 text-[9.5pt] text-muted">{profile.location}{' · '}{profile.workMode}</p>
     <p class="mt-1 flex flex-wrap gap-y-1 text-[9.5pt] text-muted">
       {contacts.map((c, i) => (
-        <span>{i > 0 && <span aria-hidden="true">{' · '}</span>}<a href={c.href} class="underline decoration-line underline-offset-2">{c.label}</a></span>
+        <span><a href={c.href} class="underline decoration-line underline-offset-2">{c.label}</a>{i < contacts.length - 1 && <span aria-hidden="true">{' · '}</span>}</span>
       ))}
     </p>
   </header>
