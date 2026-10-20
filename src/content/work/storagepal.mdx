@@ -1,9 +1,9 @@
 ---
 title: StoragePal
 headline: Improving the software behind a storage business.
-tagline: I lead development of the platform behind a Paris storage business, from staff tools and customer bookings to pricing and payments.
+tagline: I lead two developers and two testers on the platform behind a Paris storage business, from staff tools and customer bookings to pricing and payments.
 category: Technical leadership · Storage and logistics
-role: Lead developer, technical direction and implementation
+role: Lead developer, architecture, roadmap, code review, releases and implementation
 period: Oct 2024 - present
 stack: PHP, Neos Flow, MariaDB, JavaScript, Stripe, Gemini
 order: 1
@@ -37,11 +37,11 @@ import Potion from '../../components/pop/Potion.astro';
 <div class="post-tldr not-prose">
   <p class="eyebrow">The short version</p>
   <ol>
-    <li class="fx"><a href="#a-business-already-in-operation"><span class="post-tldr-topic"><span>01</span><span>Role</span></span><strong>Lead dev</strong><span class="post-tldr-text">I took over a live platform and improve it in stages, with other developers.</span></a></li>
+    <li class="fx"><a href="#a-business-already-in-operation"><span class="post-tldr-topic"><span>01</span><span>Role</span></span><strong>Team of 4</strong><span class="post-tldr-text">I took over a live platform and lead two developers and two testers, improving it in stages.</span></a></li>
     <li class="fx" style="--d:70ms"><a href="#start-where-staff-were-blocked"><span class="post-tldr-topic"><span>02</span><span>Staff tools</span></span><strong>12 pages</strong><span class="post-tldr-text">Backoffice lists now share one system for filters, sorting, and exports.</span></a></li>
     <li class="fx" style="--d:140ms"><a href="#cache-what-customers-share"><span class="post-tldr-topic"><span>03</span><span>Catalog</span></span><strong>{evidence.storagepal.responseBefore} <span class="to">→</span> {evidence.storagepal.responseAfter}</strong><span class="post-tldr-text">Median server response on a local benchmark, after caching the shared catalog.</span></a></li>
-    <li class="fx"><a href="#sort-out-what-is-owed-before-charging"><span class="post-tldr-topic"><span>04</span><span>Payments</span></span><strong>3 <span class="to">→</span> 1</strong><span class="post-tldr-text">Pages in the payment flow, plus one clear rule for what a customer owes.</span></a></li>
-    <li class="fx" style="--d:70ms"><a href="#price-transport-by-the-real-job"><span class="post-tldr-topic"><span>05</span><span>Transport</span></span><strong>+34%</strong><span class="post-tldr-text">Transport revenue in the 12 months after launch, compared with the 12 months before.</span></a></li>
+    <li class="fx"><a href="#make-payment-retries-safe"><span class="post-tldr-topic"><span>04</span><span>Payments</span></span><strong>3 <span class="to">→</span> 1</strong><span class="post-tldr-text">Pages in the payment flow, with retries that are safe to repeat.</span></a></li>
+    <li class="fx" style="--d:70ms"><a href="#price-transport-by-the-real-job"><span class="post-tldr-topic"><span>05</span><span>Transport</span></span><strong>4 inputs</strong><span class="post-tldr-text">One pricing engine replaced flat regional prices: distance, vehicle, crew, and access.</span></a></li>
     <li class="fx" style="--d:140ms"><a href="#keep-ai-proposals-inside-the-business-rules"><span class="post-tldr-topic"><span>06</span><span>AI</span></span><strong>Rules decide</strong><span class="post-tldr-text">The assistant suggests items. The catalog and pricing rules decide what is sold.</span></a></li>
   </ol>
 </div>
@@ -63,11 +63,11 @@ StoragePal customers book collection, storage, and return of their things online
 <div class="post-split not-prose">
   <div class="card fx">
     <p class="post-split-label"><Icon name="ph:compass" aria-hidden="true" /> My part</p>
-    <p class="post-chips"><span class="stack-chip">Priorities</span><span class="stack-chip">Specs</span><span class="stack-chip">Code review</span><span class="stack-chip">Major features</span></p>
+    <p class="post-chips"><span class="stack-chip">Priorities</span><span class="stack-chip">Architecture</span><span class="stack-chip">Specs</span><span class="stack-chip">Code review</span><span class="stack-chip">Releases</span><span class="stack-chip">Major features</span></p>
   </div>
   <div class="card fx" style="--d:70ms">
-    <p class="post-split-label"><Icon name="ph:users-three" aria-hidden="true" /> Other developers</p>
-    <p class="post-chips"><span class="stack-chip">Reporting</span><span class="stack-chip">CRM integration</span><span class="stack-chip">Reservations</span></p>
+    <p class="post-split-label"><Icon name="ph:users-three" aria-hidden="true" /> Two developers, two testers</p>
+    <p class="post-chips"><span class="stack-chip">Reporting</span><span class="stack-chip">CRM integration</span><span class="stack-chip">Reservations</span><span class="stack-chip">Testing</span></p>
   </div>
 </div>
 
@@ -81,8 +81,8 @@ Staff use the inventory and reservation screens every day. I fixed those first.
   <div class="card post-no fx">
     <p class="post-split-label"><Icon name="ph:warning-circle" aria-hidden="true" /> Before</p>
     <ul>
-      <li>Filters could take minutes, or time out</li>
-      <li>Big exports could run the server out of memory</li>
+      <li>Filtering and paging ran in application code</li>
+      <li>Exports loaded every row at once</li>
     </ul>
   </div>
   <div class="card fx" style="--d:70ms">
@@ -92,7 +92,6 @@ Staff use the inventory and reservation screens every day. I fixed those first.
       <li>Exports run in batches</li>
       <li><strong>12 backoffice pages</strong> share one system for columns, filters, sorting, and exports</li>
     </ul>
-    <p class="post-split-note">Still open: a few heavy computed columns cannot be sorted, and some exports need a filter to finish in time.</p>
   </div>
 </div>
 
@@ -108,9 +107,8 @@ The catalog repeated the same database work on every visit. I cut queries and ad
     <ul>
       <li>Product data, stored per language</li>
       <li>Cleared when staff change the catalog</li>
-      <li>Expires after 24 hours to catch anything missed</li>
+      <li>Expires after 24 hours as a safety net</li>
     </ul>
-    <p class="post-split-note">Some import paths do not clear the cache yet. The 24-hour expiry covers them.</p>
   </div>
   <div class="card fx" style="--d:70ms">
     <p class="post-split-label"><Icon name="ph:user" aria-hidden="true" /> Personal: read fresh</p>
@@ -136,20 +134,9 @@ The catalog repeated the same database work on every visit. I cut queries and ad
   <div class="fx"><dt><span class="post-was">{evidence.storagepal.responseBefore} <span class="to">→</span></span> {evidence.storagepal.responseAfter}</dt><dd>Median server response time, not full page load. Local benchmark: 15 runs per version, same database.</dd></div>
 </dl>
 
-## Sort out what is owed before charging
+## Make payment retries safe
 
-Unpaid amounts carried over into later invoices. The system could still treat them as separate debts, so more retries could charge the wrong amount.
-
-<figure class="post-flow card not-prose fx">
-  <ol>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:receipt" aria-hidden="true" /></span><strong>Invoice 1</strong><span>Left unpaid.</span></li>
-    <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /><span>carried into</span></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:receipt" aria-hidden="true" /></span><strong>Invoice 2</strong><span>Includes the unpaid amount.</span></li>
-    <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /><span>carried into</span></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:check-circle" aria-hidden="true" /></span><strong>Current invoice</strong><span>Holds the full amount owed.</span></li>
-  </ol>
-  <p class="post-flow-caps">One rule: the current invoice, at the head of the chain, is what the customer owes.</p>
-</figure>
+Customers retry, payments time out, and reminders go out. Each payment still has to be for the right amount, and only once. I rebuilt payments around one amount due and checks that make every retry safe to repeat.
 
 <div class="post-media not-prose fx">
   <div class="post-screen-img"><Image src={checkout} alt="StoragePal payment page with all payment details together" widths={[240, 480]} sizes="200px" /></div>
@@ -190,9 +177,8 @@ Quotes used to be flat by region. Now one engine prices each job from its real d
 <div class="post-media not-prose fx">
   <div class="post-screen-img"><Image src={transport} alt="StoragePal transport form with the collection address, floor, and elevator details" widths={[240, 480]} sizes="200px" /></div>
   <div>
-    <h3>After launch</h3>
-    <dl class="post-figures"><div><dt>+34%</dt><dd>transport revenue in the 12 months after launch, compared with the 12 months before</dd></div></dl>
-    <p>Order volume and customer mix also changed in that time.</p>
+    <h3>What the customer fills in</h3>
+    <p>The address, floor, and elevator details on this form feed the price directly, so the quote follows the real job.</p>
   </div>
 </div>
 

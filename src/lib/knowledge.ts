@@ -116,6 +116,7 @@ source of truth for the "ask about my work" assistant on that site.
 Name: ${profile.name}
 Title: Lead full-stack engineer, building since 2012
 Location: ${profile.location}
+Work mode: ${profile.workMode}
 Languages: ${profile.languages}
 Email: ${profile.email}
 Site: ${profile.site} · GitHub: ${profile.github} · LinkedIn: ${profile.linkedin}

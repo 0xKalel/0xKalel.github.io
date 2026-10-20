@@ -9,14 +9,16 @@ function score(bullet: Bullet, focus: Role['focus']): number {
   }, 0);
 }
 
-/** Keep the most relevant bullets for this role, most relevant first. Never returns an empty list. */
+const byWeight = (x: Bullet, y: Bullet) => (y.weight ?? 0) - (x.weight ?? 0);
+
+/** Keep the most relevant bullets for this role, then show them strongest first. Never returns an empty list. */
 function pick(entry: Entry, role: Role, limit: number): Entry {
   const ranked = entry.bullets
     .map((b) => ({ b, s: score(b, role.focus) }))
-    .sort((x, y) => y.s - x.s || (y.b.weight ?? 0) - (x.b.weight ?? 0));
+    .sort((x, y) => y.s - x.s || byWeight(x.b, y.b));
   const relevant = ranked.filter((r) => r.s > 0);
   const kept = (relevant.length ? relevant : ranked).slice(0, Math.max(1, limit));
-  return { ...entry, bullets: kept.map((r) => r.b) };
+  return { ...entry, bullets: kept.map((r) => r.b).sort(byWeight) };
 }
 
 /** Internal portfolio links carry the role, so analytics show which CV sent the visit. */

@@ -5,14 +5,13 @@ export const evidence = {
     pages: '12',
     responseBefore: '9.1 s',
     responseAfter: '0.884 s',
-    transport: '+34%',
     preview: 'Twelve admin pages, one shared list system.',
-    period: 'Transport: 12 months after launch vs the 12 months before. Catalog: median of 15 runs per version on a local benchmark. Reviewed September 2026.',
-    // Strongest first: business result, then speed, then a simpler checkout.
+    period: 'Catalog: median of 15 runs per version on a local benchmark. Reviewed September 2026.',
+    // Engineering results only: StoragePal's business figures stay off the public site.
     metrics: [
-      { value: '+34%', label: 'transport revenue in the year after launch vs the year before' },
       { value: '0.884 s', label: 'median catalog server response, down from 9.1 s' },
       { value: '3 → 1', label: 'pages in the payment flow' },
+      { value: '12', label: 'backoffice pages on one shared list system' },
     ],
   },
   sps: {

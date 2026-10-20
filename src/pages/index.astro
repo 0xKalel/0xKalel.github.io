@@ -53,13 +53,13 @@ const stackWhere: Record<(typeof skills)[number]['id'], string> = {
       </h1>
       <div class="hero-grid">
         <div>
-          <p class="hero-statement rise" style="--i:2">Lead full-stack engineer. <mark>{years} years</mark> shipping web products.</p>
-          <p class="hero-sub rise" style="--i:3">I build with Claude Code and review every change before it ships. Mostly Laravel, React and LLM products.</p>
+          <p class="hero-statement rise" style="--i:2">Lead full-stack engineer. <mark>{years} years</mark> building and leading production software.</p>
+          <p class="hero-sub rise" style="--i:3">I specialize in Laravel, React and TypeScript: complex business workflows and AI-powered SaaS products.</p>
           <div class="hero-actions rise" style="--i:4">
             <a href="#work" class="btn btn-primary">See selected work <Icon name="px-arrow-down" aria-hidden="true" /></a>
             <a href={`/cv/${defaultRole.slug}.pdf`} class="btn btn-ghost">Download CV <Icon name="px-download" aria-hidden="true" /></a>
           </div>
-          <p class="hero-meta rise" style="--i:5"><span class="hero-open">Open to lead, AI and founding engineer roles, and freelance work</span><span>Remote, GMT+1</span><span>Teams in France, the UK, Denmark and Estonia</span></p>
+          <p class="hero-meta rise" style="--i:5"><span class="hero-open">Open to senior, lead and founding engineer roles, and freelance work</span><span>Remote (GMT+1), or relocation to Europe, Canada or the US</span><span>Teams in France, the UK, Denmark and Estonia</span></p>
         </div>
         <HeroGates />
       </div>
@@ -155,7 +155,7 @@ const stackWhere: Record<(typeof skills)[number]['id'], string> = {
           </li>
         ))}
       </ol>
-      <div class="ai-note fx"><h3>How I use AI</h3><p>I work with Claude Code, and sometimes Codex. I write the spec first. Then I review each change for correctness and simplicity, and I stay responsible for what ships.</p></div>
+      <div class="ai-note fx"><h3>How I use AI</h3><p>I own the architecture, the specs and the review. Coding agents (Claude Code, sometimes Codex) speed up the implementation. Tests, static analysis and my review decide what ships.</p></div>
       {latest && (
         <a href={postHref(latest.id)} class="writing-row fx">
           <span class="writing-kind">Latest article · <time datetime={latest.data.date.toISOString()}>{latest.data.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</time></span>

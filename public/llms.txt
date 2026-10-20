@@ -1,20 +1,22 @@
 # Khalil Hebachi
 
 > Lead full-stack engineer (Laravel, React, PHP) building for clients worldwide since 2012.
-> Leads the StoragePal platform, built the SPS warehouse app end to end, and founded RavenClip,
-> an AI news-to-video SaaS with paying customers.
+> Leads a team of two developers and two testers on the StoragePal platform, built the SPS warehouse
+> app end to end, and founded RavenClip, an AI news-to-video SaaS with paying customers.
+> Open to senior, lead and founding engineer roles and freelance work: remote (GMT+1), or relocation
+> to Europe, Canada or the US.
 
 ## CV
 - [CV (HTML)](https://0xkalel.github.io/cv/): the canonical, parseable version
 - [CV (PDF)](https://0xkalel.github.io/cv/lead-fullstack.pdf)
 
 ## Case studies
-- [StoragePal platform](https://0xkalel.github.io/work/storagepal/): lead role, measured results
+- [StoragePal platform](https://0xkalel.github.io/work/storagepal/): leads two developers and two testers; catalog server response 9.1 s to 0.884 s on a local benchmark
 - [SPS warehouse app](https://0xkalel.github.io/work/sps/): built end to end; completed scan sessions on all 120 weekdays from 13 April to 25 September 2026
 - [RavenClip](https://0xkalel.github.io/work/ravenclip/): own SaaS, first external paying customer in 105 days; three paying customers as of 26 September 2026
 
 ## How I work
-- [How I work](https://0xkalel.github.io/how-i-work/): business priorities first, clear tradeoffs, human-led AI-assisted development
+- [How I work](https://0xkalel.github.io/how-i-work/): business priorities first, clear tradeoffs, owned architecture and review, with AI to speed up implementation
 
 ## Writing
 - [Building RavenClip: recovery, AI checks, and costs](https://0xkalel.github.io/blog/2026/09/25/ravenclip-engineering/): engineering deep dive

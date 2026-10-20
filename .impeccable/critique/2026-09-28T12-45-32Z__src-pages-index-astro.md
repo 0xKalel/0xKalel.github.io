@@ -29,7 +29,7 @@ Strongly authored (gates with real work, Level chips, HUD, exit door, 404 spike 
 - [P1] Pixel font misuse: Jersey 10 grid is 3/56em (upm 1400, 75-unit grid), crisp only at 18.667px multiples; 60px h2 15.9% fuzz vs 0% at 56px; sentence-case Jersey titles with -.05em tracking fuse (global.css:787); 20+ labels at 12-17px illegible; missing glyphs (→ ≈ ⌘) fall back in pixel stats. /impeccable typeset
 - [P1] No type system: 80 font sizes, 39 clamps, 138 px vs 27 rem; work-title h3 130px > h2 60px; related title 42 > its h2 36; stats > h2; card h3 < body; four h1 treatments. /impeccable typeset
 - [P1] Game competes with hiring: 10 red potion marks on nav, mobile menu, case CTAs; Drink me always on (global.css:484); first-visit flash; unlabeled triangles; infinite torch/potion motion. /impeccable quieter
-- [P1] Proof order and availability: StoragePal leads with admin page counts (evidence.ts:11-12); +34% transport revenue and 9.1s to 0.884s buried; no open-to line. /impeccable clarify
+- [P1] Proof order and availability: StoragePal leads with admin page counts (evidence.ts:11-12); 9.1s to 0.884s buried; no open-to line. /impeccable clarify
 - [P1] A11y: focus obscured by HUD and sticky header (WCAG 2.4.11), fix scroll-padding; px sizes ignore user font size (body 16px global.css:121); label-in-name mismatch (Potion.astro:16, Nav.astro:44). /impeccable harden
 - [P2] CV PDF: 9 Type 3 fonts, no embedded TrueType (variable Geist via Chromium). Use static Geist. /impeccable harden
 - [P2] Length and endings: selected work 3,356px, SPS dead column, 4 links per case study, 7 mailto, case studies end on a text link, prose 82-95 chars. /impeccable layout

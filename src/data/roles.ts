@@ -31,10 +31,10 @@ export const roles: Role[] = [
     label: 'Lead full-stack',
     headline: 'Lead Full-Stack Engineer, Laravel and React',
     summary:
-      'Lead full-stack engineer building since 2012. I turn business priorities into planned releases, lead the technical decisions, and build software for commerce, operations, and AI products.',
+      'Lead full-stack engineer building since 2012. I lead a team of two developers and two testers, turn business priorities into planned releases, and own the technical decisions from architecture to production for commerce, operations, and AI products.',
     focus: ['lead', 'laravel', 'perf', 'frontend'],
-    bullets: [4, 2, 1, 2, 1, 1],
-    projectBullets: 3,
+    bullets: [6, 3, 2, 3, 3, 2],
+    projectBullets: 4,
     sections: ['experience', 'projects', 'skills', 'education'],
     skills: ['backend', 'frontend', 'infra', 'ai', 'practice'],
     links: [
@@ -49,8 +49,8 @@ export const roles: Role[] = [
     summary:
       'I build AI products with Laravel and React, from customer workflows to provider recovery and output checks. Founder of RavenClip. I own the product decisions, architecture, and review of AI-assisted work.',
     focus: ['ai', 'lead', 'founder', 'laravel'],
-    bullets: [4, 2, 1, 2, 1, 1],
-    projectBullets: 3,
+    bullets: [6, 3, 2, 3, 3, 2],
+    projectBullets: 4,
     sections: ['projects', 'experience', 'skills', 'education'],
     skills: ['ai', 'backend', 'frontend', 'infra', 'practice'],
     links: [
@@ -66,8 +66,8 @@ export const roles: Role[] = [
     summary:
       'I turn business problems into products people can use and pay for. Co-founded a development agency, launched RavenClip, and lead development at StoragePal. I ship small releases and learn from production use.',
     focus: ['founder', 'ai', 'lead', 'freelance'],
-    bullets: [4, 2, 1, 2, 1, 1],
-    projectBullets: 3,
+    bullets: [6, 3, 2, 3, 3, 2],
+    projectBullets: 4,
     sections: ['projects', 'experience', 'skills', 'education'],
     skills: ['backend', 'frontend', 'ai', 'infra', 'practice'],
     links: [
@@ -83,8 +83,8 @@ export const roles: Role[] = [
     summary:
       'I build Laravel and React apps, modernize older systems and fix performance problems. Fourteen years of experience working with clients worldwide.',
     focus: ['freelance', 'perf', 'laravel', 'frontend'],
-    bullets: [4, 2, 1, 2, 1, 1],
-    projectBullets: 3,
+    bullets: [6, 3, 2, 3, 3, 2],
+    projectBullets: 4,
     sections: ['experience', 'projects', 'skills', 'education'],
     skills: ['backend', 'frontend', 'infra', 'ai', 'practice'],
     links: [

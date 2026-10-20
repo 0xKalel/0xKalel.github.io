@@ -9,7 +9,7 @@ export type Tag = 'lead' | 'ai' | 'founder' | 'freelance' | 'laravel' | 'fronten
 export interface Bullet {
   text: string;
   tags: Tag[];
-  /** Tie-breaker between bullets with the same tag score. Higher = earlier. */
+  /** How strong the bullet is. Breaks ties when picking, and orders the picked bullets. Higher = earlier. */
   weight?: number;
 }
 
@@ -27,12 +27,13 @@ export interface Entry {
 
 export const profile = {
   name: 'Khalil Hebachi',
-  location: 'Annaba, Algeria (GMT+1), remote',
+  location: 'Annaba, Algeria (GMT+1)',
+  workMode: 'Remote, or relocation to Europe, Canada or the US',
   email: 'hebachikhalil@gmail.com',
   site: 'https://0xkalel.github.io',
   linkedin: 'https://www.linkedin.com/in/hebachi-khalil/',
   github: 'https://github.com/0xKalel',
-  languages: 'English, French, Arabic',
+  languages: 'Arabic (native), French (C2), English (C1)',
 };
 
 export const experience: Entry[] = [
@@ -48,44 +49,40 @@ export const experience: Entry[] = [
     stack: 'PHP (Neos Flow, Laravel), React, MariaDB, Redis, Stripe, Google Maps, GA4, Gemini, Docker, CI/CD',
     bullets: [
       {
-        text: 'Lead development for a working storage business: set priorities, plan releases, review work, and build pricing, payments, and customer workflows.',
-        tags: ['lead', 'founder', 'freelance'], weight: 10,
+        text: 'Lead technical delivery across **two developers and two testers**, owning architecture decisions, roadmap planning, code reviews, and production releases.',
+        tags: ['lead', 'founder', 'freelance', 'laravel'], weight: 10,
       },
       {
         text: `Built the **SPS warehouse app** (Laravel/React) end to end: **${evidence.sps.sessions} completed sessions**, with use on **all 120 weekdays** from 13 April to 25 September 2026.`,
         tags: ['lead', 'laravel', 'founder', 'frontend'], weight: 9,
       },
       {
-        text: `Moved filtering and pagination into the database, batched exports, and consolidated **${evidence.storagepal.pages} backoffice pages** around shared list definitions.`,
-        tags: ['lead', 'perf', 'freelance', 'laravel'], weight: 8,
+        text: `Cut median catalog server response from **${evidence.storagepal.responseBefore} to ${evidence.storagepal.responseAfter}** by caching shared catalog data apart from personal carts (local benchmark, 15 runs per version, same database).`,
+        tags: ['perf', 'lead', 'frontend', 'freelance'], weight: 8,
       },
       {
-        text: 'Built distance-based transport pricing with logistics input. Transport revenue was **34% higher** in the following twelve months; volume and customer mix also changed.',
-        tags: ['founder', 'freelance'], weight: 7,
+        text: `Moved filtering and pagination into the database, batched exports, and consolidated **${evidence.storagepal.pages} backoffice pages** around shared list definitions.`,
+        tags: ['lead', 'perf', 'freelance', 'laravel'], weight: 7,
+      },
+      {
+        text: 'Cut the payment flow from **three pages to one** and made payment retries safe to repeat: one amount due, no duplicate attempts, and a review queue for blocked payments.',
+        tags: ['frontend', 'lead', 'founder', 'freelance'], weight: 6,
       },
       {
         text: 'Built a **Gemini shopping assistant** with catalog validation, quantity limits, server-owned pricing, and an editable customer proposal.',
-        tags: ['ai', 'founder', 'frontend'], weight: 8,
+        tags: ['ai', 'founder', 'frontend'], weight: 5,
       },
       {
-        text: 'Made repeated warehouse completion requests return the original result after a lost response; added regression coverage for the incident.',
-        tags: ['laravel', 'lead'], weight: 7,
+        text: 'Replaced flat regional transport prices with one pricing engine based on distance, vehicle, crew, and building access, designed with customer care and logistics.',
+        tags: ['founder', 'freelance'], weight: 4,
       },
       {
-        text: 'Rebuilt payment attempts around the current invoice, existing payment-intent checks, bounded reminders, and a review queue for blocked payments.',
-        tags: ['lead', 'founder', 'freelance'], weight: 6,
+        text: 'Backed agent-assisted implementation with backend regression tests, static analysis, and documented browser and API verification scenarios.',
+        tags: ['ai', 'lead'], weight: 3,
       },
       {
-        text: `Cached shared catalog data separately from personal carts. Median server response down from **${evidence.storagepal.responseBefore} to ${evidence.storagepal.responseAfter}** on a local benchmark (15 runs per version, same database).`,
-        tags: ['perf', 'frontend', 'freelance'], weight: 7,
-      },
-      {
-        text: 'Simplified payment from **three pages to one** and added validation around customer-facing AI proposals.',
-        tags: ['frontend', 'ai'], weight: 5,
-      },
-      {
-        text: 'Combined agent-assisted implementation with backend regression tests, static analysis, and documented browser/API verification scenarios.',
-        tags: ['ai', 'lead'], weight: 6,
+        text: 'Made repeated warehouse completion requests return the original result after a lost response, with regression coverage.',
+        tags: ['laravel'], weight: 2,
       },
     ],
   },
@@ -215,7 +212,7 @@ export const projects: Entry[] = [
     location: 'Own product',
     period: 'May 2026 - present',
     intro:
-      'Turns news into narrated videos and publishes to TikTok and YouTube.',
+      'Turns news into narrated videos and publishes to TikTok and YouTube. An independent product that runs alongside full-time work.',
     stack: 'Laravel, React, TypeScript, Redis, MariaDB, FFmpeg, Node/Skia, Gemini, speech and media APIs',
     bullets: [
       {

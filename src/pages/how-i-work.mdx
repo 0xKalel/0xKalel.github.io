@@ -63,18 +63,18 @@ A pattern has to solve a problem we actually have.
   </div>
 </div>
 
-## Use AI with clear responsibility
+## Own the decisions, use AI for speed
 
 <Potion id="how-i-work" />
 
 <div class="post-split not-prose">
   <div class="card fx">
-    <p class="post-split-label"><Icon name="ph:robot" aria-hidden="true" /> AI helps me</p>
+    <p class="post-split-label"><Icon name="ph:robot" aria-hidden="true" /> AI speeds up</p>
     <p class="post-chips"><span class="stack-chip">Build</span><span class="stack-chip">Investigate</span><span class="stack-chip">Test scoped changes</span></p>
   </div>
   <div class="card fx" style="--d:70ms">
     <p class="post-split-label"><Icon name="ph:compass" aria-hidden="true" /> Stays my responsibility</p>
-    <p class="post-chips"><span class="stack-chip">Priorities</span><span class="stack-chip">Pricing</span><span class="stack-chip">Architecture</span><span class="stack-chip">Acceptance</span></p>
+    <p class="post-chips"><span class="stack-chip">Priorities</span><span class="stack-chip">Pricing</span><span class="stack-chip">Architecture</span><span class="stack-chip">Code review</span><span class="stack-chip">Acceptance</span></p>
   </div>
 </div>
 
@@ -87,23 +87,17 @@ A pattern has to solve a problem we actually have.
   </ol>
 </div>
 
-<aside class="post-incident card not-prose fx">
-  <div class="post-incident-head">
-    <span class="post-icon"><Icon name="ph:bug" aria-hidden="true" /></span>
-    <div>
-      <p class="eyebrow">Learning from failures</p>
-      <p class="post-incident-title">An AI-assisted bulk edit once reached RavenClip production with a syntax error</p>
-    </div>
-  </div>
-  <div class="post-incident-foot">
-    <p class="eyebrow">What I added</p>
-    <ol class="post-fix">
-      <li>A check that PHP files parse.</li>
-      <li>A deploy step that stops before database changes if syntax is broken.</li>
-    </ol>
-    <p class="post-more">[Read the incident and what changed](/blog/2026/09/25/ravenclip-engineering/#building-with-ai-and-owning-the-mistakes)</p>
-  </div>
-</aside>
+<div class="post-group not-prose">
+  <p class="eyebrow">The proof I ask for</p>
+  <ul class="post-pills">
+    <li><Icon name="ph:test-tube" aria-hidden="true" />Regression tests</li>
+    <li><Icon name="ph:magnifying-glass" aria-hidden="true" />Static analysis</li>
+    <li><Icon name="ph:browser" aria-hidden="true" />Browser and API scenarios</li>
+    <li><Icon name="ph:git-pull-request" aria-hidden="true" />Review before merge</li>
+  </ul>
+</div>
+
+When a check misses something, I add a gate, not a reminder to be careful. [One postmortem shows how](/blog/2026/09/25/ravenclip-engineering/#postmortem-a-syntax-error-in-production).
 
 ## Keep the team informed and follow the result
 

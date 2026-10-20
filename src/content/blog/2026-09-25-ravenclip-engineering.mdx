@@ -23,7 +23,7 @@ RavenClip turns news into short videos and publishes them on a schedule. I built
     <li class="fx" style="--d:140ms"><a href="#be-precise-about-what-a-check-proves"><span class="post-tldr-topic"><span>03</span><span>Checks</span></span><strong>Shape, not truth</strong><span class="post-tldr-text">Gates catch drift, bad hooks and length. They cannot confirm that a claim is true.</span></a></li>
     <li class="fx"><a href="#monitor-the-fallback-path"><span class="post-tldr-topic"><span>04</span><span>Fallback</span></span><strong>25 days</strong><span class="post-tldr-text">A provider sat out of credit while fallback hid it. Monitors now catch this within hours.</span></a></li>
     <li class="fx" style="--d:70ms"><a href="#record-costs-and-understand-the-omissions"><span class="post-tldr-topic"><span>05</span><span>Costs</span></span><strong>$0.36</strong><span class="post-tldr-text">Recorded API spend per rendered video, 1-25 September 2026.</span></a></li>
-    <li class="fx" style="--d:140ms"><a href="#building-with-ai-and-owning-the-mistakes"><span class="post-tldr-topic"><span>06</span><span>AI agents</span></span><strong>18 hours</strong><span class="post-tldr-text">Scene-asset jobs failed after an agent's bulk edit. Three safeguards followed.</span></a></li>
+    <li class="fx" style="--d:140ms"><a href="#postmortem-a-syntax-error-in-production"><span class="post-tldr-topic"><span>06</span><span>Postmortem</span></span><strong>3 gates</strong><span class="post-tldr-text">A bad bulk edit stalled one job type for 18 hours. Three gates now block that class of error.</span></a></li>
   </ol>
 </div>
 
@@ -232,20 +232,9 @@ Caching also needs enough traffic to pay off.
   </ul>
 </div>
 
-## Building with AI and owning the mistakes
+## Postmortem: a syntax error in production
 
-<div class="post-split not-prose">
-  <div class="card fx">
-    <p class="post-split-label"><Icon name="ph:robot" aria-hidden="true" /> Coding agents</p>
-    <p class="post-chips"><span class="stack-chip">Build</span><span class="stack-chip">Investigate</span><span class="stack-chip">Test</span></p>
-  </div>
-  <div class="card fx" style="--d:70ms">
-    <p class="post-split-label"><Icon name="ph:compass" aria-hidden="true" /> Under my direction</p>
-    <p class="post-chips"><span class="stack-chip">Product scope</span><span class="stack-chip">Pricing</span><span class="stack-chip">Architecture</span></p>
-  </div>
-</div>
-
-My session records include corrections to both code and business proposals, down to which features belong in paid plans. Agents still make mistakes that reach production.
+I set the scope, the architecture, and the pricing. Coding agents implement under my review. On 2 September, a broken change got through.
 
 <aside class="post-incident card not-prose fx">
   <div class="post-incident-head">
@@ -256,14 +245,12 @@ My session records include corrections to both code and business proposals, down
     </div>
   </div>
   <ol class="post-timeline">
-    <li>An agent's bulk edit put code above the PHP opening tag.</li>
-    <li>The tests it chose never loaded that file. The change merged and deployed.</li>
-    <li class="is-hit"><b>Scene-asset jobs failed for about eighteen hours.</b> Three videos stalled.</li>
-    <li>A reviewer's email surfaced the problem before my monitoring did.</li>
-    <li>After the fix, the three videos recovered.</li>
+    <li><b>Cause:</b> an agent's bulk edit put code above the PHP opening tag. The tests that ran never loaded that file.</li>
+    <li class="is-hit"><b>Impact:</b> scene-asset jobs failed for about eighteen hours. Three videos stalled, and all three recovered after the fix.</li>
+    <li><b>Detection:</b> a reviewer's email, before monitoring.</li>
   </ol>
   <div class="post-incident-foot">
-    <p class="eyebrow">Safeguards added</p>
+    <p class="eyebrow">Gates added</p>
     <ol class="post-fix">
       <li>A test that every PHP file parses.</li>
       <li>A deploy step that stops before database changes if syntax is broken.</li>
@@ -274,8 +261,7 @@ My session records include corrections to both code and business proposals, down
 </aside>
 
 <dl class="post-figures not-prose">
-  <div class="fx"><dt>23</dt><dd>stale or leaking tests, collected after I removed CI to speed up releases, cleaned on 25 September</dd></div>
-  <div class="fx" style="--d:70ms"><dt>~1,300</dt><dd>test definitions: a measure of coverage, not the absence of bugs</dd></div>
+  <div class="fx"><dt>~1,300</dt><dd>test definitions: a measure of coverage, not the absence of bugs</dd></div>
 </dl>
 
 Next time I would keep a small syntax-and-smoke check from day one. The useful question is which failure paths are checked, and what happens when a check misses.
