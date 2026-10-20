@@ -5,17 +5,16 @@
  *  or its caption) sinks its pressure plate, lifts the gate the rest of the way and lights the doorway.
  *  The first potion of the potion trail stands on the floor, outside the hidden scene so it can be used.
  *  Gate and scene styles live with the castle materials in global.css. */
-import { evidence } from '../data/evidence';
 import { archPolygon } from '../lib/arch';
 import Wall from './pop/Wall.astro';
 import Torch from './pop/Torch.astro';
 import Gate, { type GateId } from './pop/Gate.astro';
 import Potion from './pop/Potion.astro';
 
-const items: { id: GateId; n: string; name: string; figure: string; text: string }[] = [
-  { id: 'storagepal', n: '01', name: 'StoragePal', figure: 'Since Oct 2024,', text: 'leading the booking, warehouse and payment platform.' },
-  { id: 'sps', n: '02', name: 'SPS warehouse app', figure: `${evidence.sps.weekdays.replace(' / ', ' of ')} weekdays`, text: 'in use, 13 Apr - 25 Sep 2026.' },
-  { id: 'ravenclip', n: '03', name: 'RavenClip', figure: `${evidence.ravenclip.daysToCustomer} days`, text: 'from the first commit to the first external paying customer.' },
+const items: { id: GateId; n: string; name: string; text: string }[] = [
+  { id: 'storagepal', n: '01', name: 'StoragePal', text: 'Lead developer' },
+  { id: 'sps', n: '02', name: 'SPS warehouse app', text: 'Built end to end' },
+  { id: 'ravenclip', n: '03', name: 'RavenClip', text: 'Founder & engineer' },
 ];
 const aspect = 0.7;
 ---
@@ -42,7 +41,7 @@ const aspect = 0.7;
         <a class="gates-cap" href={`#${c.id}`} data-i={i}>
           <span class="gates-num" aria-hidden="true">{c.n}</span>
           <strong>{c.name}</strong>
-          <span class="gates-proof"><b>{c.figure}</b> {c.text}</span>
+          <span class="gates-proof">{c.text}</span>
         </a>
       </li>
     ))}

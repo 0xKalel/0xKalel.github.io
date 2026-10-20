@@ -6,8 +6,6 @@ import Gallery from '../../components/Gallery.astro';
 import { evidence, type ProjectId } from '../../data/evidence';
 import Stat from '../../components/Stat.astro';
 import ContactBand from '../../components/ContactBand.astro';
-import LevelGate from '../../components/pop/LevelGate.astro';
-import type { GateId } from '../../components/pop/Gate.astro';
 import PotionMark from '../../components/pop/PotionMark.astro';
 import { potionsUnder } from '../../lib/potions';
 export async function getStaticPaths() {
@@ -29,12 +27,9 @@ const related = (await getCollection('work')).filter((w) => w.id !== entry.id).s
       <p class="case-intro rise">{d.tagline}</p>
       <dl class="case-meta"><div><dt>My role</dt><dd>{d.role}</dd></div><div><dt>Period</dt><dd>{d.period}</dd></div><div><dt>Core stack</dt><dd>{d.stack}</dd></div></dl>
     </header>
-    <div class="case-level">
-      <div class="case-evidence">
-        <dl class="case-metrics">{facts.metrics.map((m) => <div><dt><Stat value={m.value} /></dt><dd>{m.label}</dd></div>)}</dl>
-        <p class="evidence-period">{facts.period}</p>
-      </div>
-      <LevelGate id={entry.id as GateId} />
+    <div class="case-evidence">
+      <dl class="case-metrics">{facts.metrics.map((m) => <div><dt><Stat value={m.value} /></dt><dd>{m.label}</dd></div>)}</dl>
+      <p class="evidence-period">{facts.period}</p>
     </div>
     <div class="case-body">
       <nav class="case-nav" aria-label="In this case study"><p class="eyebrow">In this case study</p><ul>{headings.filter((h) => h.depth === 2).map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}<li><a href="#product-walkthrough">Product walkthrough</a></li></ul></nav>

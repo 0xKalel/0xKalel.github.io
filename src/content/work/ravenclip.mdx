@@ -1,13 +1,13 @@
 ---
 title: RavenClip
 headline: From a personal tool to paying customers.
-tagline: I founded, built, and operate this independent product alongside full-time work. It turns news into short videos and publishes them to YouTube Shorts and TikTok.
+tagline: I built and run RavenClip alongside full-time work. It turns news into videos for YouTube Shorts and TikTok.
 category: Founder · AI product and operations
-role: Founder-engineer, product, engineering, operations
+role: Founder, product development, engineering, and operations
 period: May 2026 - present
 stack: Laravel, React, TypeScript, MariaDB, Redis, Skia, FFmpeg
 order: 3
-decision: Prioritize unattended publishing, then build around the people who pay.
+decision: Make automatic publishing work first, then learn from paying customers.
 decisionAnchor: learn-from-the-people-who-pay
 url: https://ravenclip.com
 video:
@@ -23,7 +23,7 @@ shots:
   - src: ../../assets/work/ravenclip-shot-review.png
     alt: Choose automatic publishing, a review window, or a schedule
   - src: ../../assets/work/ravenclip-shot-finds.png
-    alt: Configure a channel's topic and news sources
+    alt: Set a channel's topic and news sources
   - src: ../../assets/work/ravenclip-shot-visuals.png
     alt: Combine story images, data graphics, and captions
 ---
@@ -35,40 +35,28 @@ import reviewShot from '../../assets/work/ravenclip-shot-review.png';
 import { evidence } from '../../data/evidence';
 import Potion from '../../components/pop/Potion.astro';
 
-<div class="post-tldr not-prose">
-  <p class="eyebrow">The short version</p>
-  <ol>
-    <li class="fx"><a href="#start-with-a-complete-workflow"><span class="post-tldr-topic"><span>01</span><span>Workflow</span></span><strong>Week 3</strong><span class="post-tldr-text">It ran on a schedule and published on its own.</span></a></li>
-    <li class="fx" style="--d:70ms"><a href="#learn-from-the-people-who-pay"><span class="post-tldr-topic"><span>02</span><span>Customers</span></span><strong>{evidence.ravenclip.daysToCustomer} days</strong><span class="post-tldr-text">From first commit to the first external paying customer.</span></a></li>
-    <li class="fx" style="--d:140ms"><a href="#choose-architecture-around-recovery-needs"><span class="post-tldr-topic"><span>03</span><span>Recovery</span></span><strong>Resume</strong><span class="post-tldr-text">Each stage saves its status, so a failure picks up where it stopped.</span></a></li>
-    <li class="fx"><a href="#notice-when-fallback-hides-a-problem"><span class="post-tldr-topic"><span>04</span><span>Fallback</span></span><strong>25 days</strong><span class="post-tldr-text">A provider ran out of credit and fallback hid it. Monitors now catch this.</span></a></li>
-    <li class="fx" style="--d:70ms"><a href="#define-what-ai-checks-can-prove"><span class="post-tldr-topic"><span>05</span><span>AI checks</span></span><strong>Review stays</strong><span class="post-tldr-text">Checks catch structure and length. Customers keep review for the facts.</span></a></li>
-    <li class="fx" style="--d:140ms"><a href="#define-what-ai-checks-can-prove"><span class="post-tldr-topic"><span>06</span><span>Cost</span></span><strong>$0.36</strong><span class="post-tldr-text">Recorded API spend per rendered video, 1-25 September 2026.</span></a></li>
-  </ol>
-</div>
-
 ## Start with a complete workflow
 
-I wanted a simpler way to follow the news myself, so I built the whole flow first.
+I wanted an easier way to follow the news, so I built the full process from story selection to publishing.
 
 <div class="card post-solo not-prose fx">
   <p class="eyebrow">The first weeks</p>
   <ol class="post-timeline">
     <li><b>First version:</b> a complete video, with each stage started by hand.</li>
     <li class="is-hit"><b>Week three:</b> it ran on a schedule and published on its own.</li>
-    <li><b>Around then:</b> I built a manual story picker, and removed it the same day.</li>
+    <li><b>Around then:</b> I added manual story selection and removed it the same day.</li>
   </ol>
 </div>
 
-The priority was a channel that keeps publishing while its owner is busy. More controls could come once that worked.
+The priority was to publish on a schedule without manual steps. Extra controls could wait.
 
 ## Learn from the people who pay
 
-I first pictured creators running news channels. The people who paid first were different.
+I expected creators running news channels to use it. The first paying customers were an agency, an AI consulting firm, and a coach.
 
 <div class="post-split not-prose">
   <div class="card post-no fx">
-    <p class="post-split-label"><Icon name="ph:user-sound" aria-hidden="true" /> Who I pictured</p>
+    <p class="post-split-label"><Icon name="ph:user-sound" aria-hidden="true" /> Expected customers</p>
     <ul>
       <li>Creators running news channels</li>
     </ul>
@@ -77,13 +65,13 @@ I first pictured creators running news channels. The people who paid first were 
     <p class="post-split-label"><Icon name="ph:credit-card" aria-hidden="true" /> Who paid first</p>
     <ul>
       <li>An agency</li>
-      <li>An AI consultancy</li>
+      <li>An AI consulting firm</li>
       <li>A coach</li>
     </ul>
   </div>
 </div>
 
-So I moved the product toward businesses that build an audience around their expertise.
+I focused the product on businesses that share their expertise to build an audience.
 
 <div class="post-group not-prose">
   <p class="eyebrow">What I added for them</p>
@@ -99,29 +87,29 @@ So I moved the product toward businesses that build an audience around their exp
   <div class="fx" style="--d:140ms"><dt>30 / 30</dt><dd>posts from those customers published automatically, as of 26 September 2026</dd></div>
 </dl>
 
-Three customers is an early signal, and I treat it that way.
+Three customers offer useful feedback, but it is still early.
 
 ## Choose architecture around recovery needs
 
-A video passes through several paid services. Restarting after one failed step would throw away finished work and pay for it twice.
+Each video uses several paid services. Restarting the whole process after one failure would repeat completed work and its cost.
 
 <PipelineRaven />
 
 <div class="post-cards is-2 not-prose">
-  <div class="card fx"><span class="post-icon"><Icon name="ph:floppy-disk" aria-hidden="true" /></span><h3>Saved stages</h3><p>Each stage saves its status. A runner moves forward whatever is ready.</p></div>
+  <div class="card fx"><span class="post-icon"><Icon name="ph:floppy-disk" aria-hidden="true" /></span><h3>Saved stages</h3><p>Each stage saves its status. A background process starts the next stage when it is ready.</p></div>
   <div class="card fx" style="--d:70ms"><span class="post-icon"><Icon name="ph:lock-simple" aria-hidden="true" /></span><h3>One worker per stage</h3><p>Database locks stop two workers from taking the same stage.</p></div>
   <div class="card fx"><span class="post-icon"><Icon name="ph:recycle" aria-hidden="true" /></span><h3>Reuse on retry</h3><p>A failed render reuses the assets it already has.</p></div>
-  <div class="card fx" style="--d:70ms"><span class="post-icon"><Icon name="ph:seal-check" aria-hidden="true" /></span><h3>Publish once</h3><p>Publishing has its own guard against duplicate posts.</p></div>
+  <div class="card fx" style="--d:70ms"><span class="post-icon"><Icon name="ph:seal-check" aria-hidden="true" /></span><h3>Publish once</h3><p>Publishing checks prevent duplicate posts.</p></div>
 </div>
 
 <div class="decision-note not-prose">
-  <p class="eyebrow">When I skip it</p>
-  <p>All this means more state and recovery code to maintain. For a short rebuild that a user starts, a simple job chain is enough.</p>
+  <p class="eyebrow">When a simpler approach works</p>
+  <p>Saving each stage adds code to maintain. When a user starts a short rebuild, a simple sequence of jobs is enough.</p>
 </div>
 
 ## Notice when fallback hides a problem
 
-Fallback kept videos coming, so nothing looked wrong.
+When one provider failed, a backup provider kept videos running. That hid the problem.
 
 <Potion id="ravenclip" />
 
@@ -130,44 +118,44 @@ Fallback kept videos coming, so nothing looked wrong.
     <span class="post-icon"><Icon name="ph:detective" aria-hidden="true" /></span>
     <div>
       <p class="eyebrow">Production incident</p>
-      <p class="post-incident-title">A provider ran out of credit, and fallback hid it for 25 days</p>
+      <p class="post-incident-title">A backup provider hid an empty credit balance for 25 days</p>
     </div>
   </div>
   <dl class="post-figures">
     <div><dt>25 days</dt><dd>provider out of credit</dd></div>
-    <div><dt>8,162</dt><dd>calls quietly moved to a more expensive service</dd></div>
+    <div><dt>8,162</dt><dd>calls sent to a more expensive backup service</dd></div>
     <div><dt>~3.16×</dt><dd>the price per call</dd></div>
   </dl>
   <div class="post-incident-foot">
     <p class="eyebrow">The fix</p>
     <ol class="post-fix">
       <li>Provider health checks and clear failure alerts.</li>
-      <li>A cooldown when a balance is empty.</li>
+      <li>Pause calls when a provider runs out of credit.</li>
       <li>A daily check outside the job queue, so it still reports when the workers are down.</li>
     </ol>
-    <p class="post-outcome"><Icon name="ph:check-circle" aria-hidden="true" /> The monitors have since caught two prepaid-credit incidents within hours.</p>
+    <p class="post-outcome"><Icon name="ph:check-circle" aria-hidden="true" /> Monitoring has since detected two low-credit incidents within hours.</p>
   </div>
 </aside>
 
 ## Define what AI checks can prove
 
-Automatic checks catch a lot, but not everything. So customers keep the final say.
+Automated checks catch structural problems. Customers still need to review factual claims.
 
 <div class="post-split not-prose">
   <div class="card fx">
     <p class="post-split-label"><Icon name="ph:check-circle" aria-hidden="true" /> Checked</p>
     <ul>
       <li>Script structure and length</li>
-      <li>The story stays about its subject</li>
+      <li>The script stays on topic</li>
       <li>The approved narration is not changed later</li>
       <li>On-screen figures come from data sources, not the model</li>
-      <li>Retries are told exactly what to fix</li>
+      <li>Failed drafts get specific instructions for the next attempt</li>
     </ul>
   </div>
   <div class="card post-no fx" style="--d:70ms">
-    <p class="post-split-label"><Icon name="ph:warning-circle" aria-hidden="true" /> Not proven</p>
+    <p class="post-split-label"><Icon name="ph:warning-circle" aria-hidden="true" /> Requires review</p>
     <ul>
-      <li><strong>Every factual claim.</strong> So customers keep review controls, and flagged videos wait for approval.</li>
+      <li><strong>Factual accuracy.</strong> Customers can review every video. Flagged videos wait for approval.</li>
     </ul>
   </div>
 </div>
@@ -188,11 +176,11 @@ Automatic checks catch a lot, but not everything. So customers keep the final sa
   <ul>
     <li><span class="post-trigger">TikTok</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Live</span></li>
     <li><span class="post-trigger">YouTube Shorts</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Live</span></li>
-    <li><span class="post-trigger">Instagram</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Built, waiting on app review</span></li>
+    <li><span class="post-trigger">Instagram</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Built; awaiting app review</span></li>
   </ul>
 </div>
 
 <div class="post-cta card not-prose fx">
-  <p>The engineering decisions and operating lessons, in more detail.</p>
+  <p>Read more about recovery, AI checks, and costs.</p>
   <a class="btn btn-primary" href="/blog/2026/09/25/ravenclip-engineering/">Read the post <Icon name="px-arrow-right" aria-hidden="true" /></a>
 </div>

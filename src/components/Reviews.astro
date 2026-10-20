@@ -83,7 +83,7 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
     gap: 1.25rem;
     margin-top: 1.5rem;
   }
-  /* Each voice is a game dialog box: a double frame and a pixel nameplate. */
+  /* Simple frames keep the recommendation itself in focus. */
   .review {
     position: relative;
     display: flex;
@@ -91,9 +91,8 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
     gap: 0.9rem;
     margin: 0;
     padding: 1.5rem 1.6rem 1.7rem;
-    border: 2px solid var(--fg);
+    border: 1px solid var(--line);
     background: var(--raised);
-    box-shadow: inset 0 0 0 4px var(--raised), inset 0 0 0 6px color-mix(in oklab, var(--fg) 35%, var(--raised));
   }
   .review-head {
     display: flex;
@@ -105,7 +104,7 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
     height: 2.75rem;
     object-fit: cover;
     flex: none;
-    border: 2px solid var(--fg);
+    border: 1px solid var(--line);
   }
   .review-monogram {
     display: inline-flex;
@@ -121,8 +120,8 @@ const initials = (name: string) => name.split(' ').map((w) => w[0]).slice(0, 2).
     align-items: center;
     min-height: 44px;
     margin-block: -10px;
-    font-family: var(--font-pixel);
-    font-size: var(--pixel-label);
+    font-size: var(--text-body);
+    font-weight: 600;
     color: var(--fg);
   }
   a.review-name {
