@@ -14,7 +14,7 @@ export const ASK_READY = import.meta.env.DEV || !ASK_ENDPOINT.includes('.example
 
 export const ASK_SUGGESTIONS = [
   'What did Khalil build for StoragePal?',
-  'What measured results can he show?',
+  'What results has he achieved?',
   'How does he use AI day to day?',
   'Is he available for new work?',
 ];

@@ -18,7 +18,7 @@ interface Props {
 const { title, description, date, updated } = Astro.props.frontmatter ?? Astro.props;
 const sections = (Astro.props.headings ?? []).filter((h) => h.depth === 2);
 const navLabel = date ? 'In this article' : 'On this page';
-const long = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const long = (d: Date) => d.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
 const breadcrumbs = [...(date ? [{ name: 'Writing', path: '/blog/' }] : []), { name: title, path: Astro.url.pathname }];
 ---
 

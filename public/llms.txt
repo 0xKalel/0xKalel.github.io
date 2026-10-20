@@ -12,8 +12,8 @@
 
 ## Case studies
 - [StoragePal platform](https://0xkalel.github.io/work/storagepal/): leads two developers and two testers; catalog server response 9.1 s to 0.884 s on a local benchmark
-- [SPS warehouse app](https://0xkalel.github.io/work/sps/): built end to end; completed scan sessions on all 120 weekdays from 13 April to 25 September 2026
-- [RavenClip](https://0xkalel.github.io/work/ravenclip/): own SaaS, first external paying customer in 105 days; three paying customers as of 26 September 2026
+- [SPS warehouse app](https://0xkalel.github.io/work/sps/): built end to end; completed scan sessions on all 120 weekdays from April 13 to September 25, 2026
+- [RavenClip](https://0xkalel.github.io/work/ravenclip/): own SaaS, first external paying customer in 105 days; three paying customers as of September 26, 2026
 
 ## How I work
 - [How I work](https://0xkalel.github.io/how-i-work/): business priorities first, clear tradeoffs, owned architecture and review, with AI to speed up implementation

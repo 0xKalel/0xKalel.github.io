@@ -28,7 +28,7 @@ export interface Entry {
 export const profile = {
   name: 'Khalil Hebachi',
   location: 'Annaba, Algeria (GMT+1)',
-  workMode: 'Remote, or relocation to Europe, Canada or the US',
+  workMode: 'Remote, or open to relocation to Europe, Canada, or the US',
   email: 'hebachikhalil@gmail.com',
   site: 'https://0xkalel.github.io',
   linkedin: 'https://www.linkedin.com/in/hebachi-khalil/',
@@ -45,43 +45,43 @@ export const experience: Entry[] = [
     location: 'Paris, remote',
     period: 'Oct 2024 - present',
     intro:
-      'Booking, warehouse and payment software for a Paris storage company.',
+      'Booking, warehouse, and payment software for a Paris storage company.',
     stack: 'PHP (Neos Flow, Laravel), React, MariaDB, Redis, Stripe, Google Maps, GA4, Gemini, Docker, CI/CD',
     bullets: [
       {
-        text: 'Lead technical delivery across **two developers and two testers**, owning architecture decisions, roadmap planning, code reviews, and production releases.',
+        text: 'Lead **two developers and two testers**. Plan releases, make architecture decisions, review code, and manage production releases.',
         tags: ['lead', 'founder', 'freelance', 'laravel'], weight: 10,
       },
       {
-        text: `Built the **SPS warehouse app** (Laravel/React) end to end: **${evidence.sps.sessions} completed sessions**, with use on **all 120 weekdays** from 13 April to 25 September 2026.`,
+        text: `Built the **SPS warehouse app** (Laravel/React) end to end: **${evidence.sps.sessions} completed sessions**, with use on **all 120 weekdays** from April 13 to September 25, 2026.`,
         tags: ['lead', 'laravel', 'founder', 'frontend'], weight: 9,
       },
       {
-        text: `Cut median catalog server response from **${evidence.storagepal.responseBefore} to ${evidence.storagepal.responseAfter}** by caching shared catalog data apart from personal carts (local benchmark, 15 runs per version, same database).`,
+        text: `Cut median catalog server response from **${evidence.storagepal.responseBefore} to ${evidence.storagepal.responseAfter}** by caching shared catalog data separately from customer carts (local benchmark, 15 runs per version, same database).`,
         tags: ['perf', 'lead', 'frontend', 'freelance'], weight: 8,
       },
       {
-        text: `Moved filtering and pagination into the database, batched exports, and consolidated **${evidence.storagepal.pages} backoffice pages** around shared list definitions.`,
+        text: `Moved filtering and pagination to the database, exported data in batches, and combined **${evidence.storagepal.pages} admin pages** into one shared list system.`,
         tags: ['lead', 'perf', 'freelance', 'laravel'], weight: 7,
       },
       {
-        text: 'Cut the payment flow from **three pages to one** and made payment retries safe to repeat: one amount due, no duplicate attempts, and a review queue for blocked payments.',
+        text: 'Reduced checkout from **three pages to one**. Made retries safe, prevented duplicate payment attempts, and added a review queue for blocked payments.',
         tags: ['frontend', 'lead', 'founder', 'freelance'], weight: 6,
       },
       {
-        text: 'Built a **Gemini shopping assistant** with catalog validation, quantity limits, server-owned pricing, and an editable customer proposal.',
+        text: 'Built a **Gemini shopping assistant** that suggests an editable cart. The server checks items, limits quantities, and sets prices.',
         tags: ['ai', 'founder', 'frontend'], weight: 5,
       },
       {
-        text: 'Replaced flat regional transport prices with one pricing engine based on distance, vehicle, crew, and building access, designed with customer care and logistics.',
+        text: 'Replaced flat regional transport prices with rules for distance, vehicle, crew, and building access. Designed the rules with customer support and logistics.',
         tags: ['founder', 'freelance'], weight: 4,
       },
       {
-        text: 'Backed agent-assisted implementation with backend regression tests, static analysis, and documented browser and API verification scenarios.',
+        text: 'Checked AI-assisted code with backend regression tests, static analysis, and documented browser and API tests.',
         tags: ['ai', 'lead'], weight: 3,
       },
       {
-        text: 'Made repeated warehouse completion requests return the original result after a lost response, with regression coverage.',
+        text: 'Made warehouse retries return the saved result after a lost response. Added regression tests for this behavior.',
         tags: ['laravel'], weight: 2,
       },
     ],
@@ -109,7 +109,7 @@ export const experience: Entry[] = [
         weight: 7,
       },
       {
-        text: 'Integrated Stripe, Lemon Squeezy and PayPal subscriptions with credit and quota systems.',
+        text: 'Integrated Stripe, Lemon Squeezy, and PayPal subscriptions with credit and quota systems.',
         tags: ['founder', 'freelance'],
         weight: 4,
       },
@@ -123,7 +123,7 @@ export const experience: Entry[] = [
     period: 'Dec 2022 - May 2023',
     bullets: [
       {
-        text: 'Improved application performance **60%** through MySQL query optimization and indexing.',
+        text: 'Improved application performance by **60%** with faster MySQL queries and indexes.',
         tags: ['perf', 'lead', 'freelance', 'laravel'],
         weight: 8,
       },
@@ -152,7 +152,7 @@ export const experience: Entry[] = [
         weight: 6,
       },
       {
-        text: 'Built document expiry controls and a learning content management system.',
+        text: 'Built document expiration controls and a learning content management system.',
         tags: ['freelance'],
         weight: 3,
       },
@@ -190,7 +190,7 @@ export const experience: Entry[] = [
     period: 'Jun 2012 - Jan 2018',
     bullets: [
       {
-        text: 'Grew the agency from **2 to 7 developers** and delivered **300 projects** for clients around the world via freelancer.com, plus direct client work.',
+        text: 'Grew the agency from **2 to 7 developers** and delivered **300 projects** for clients around the world through freelancer.com, plus direct client work.',
         tags: ['founder', 'lead', 'freelance'],
         weight: 10,
       },
@@ -212,31 +212,31 @@ export const projects: Entry[] = [
     location: 'Own product',
     period: 'May 2026 - present',
     intro:
-      'Turns news into narrated videos and publishes to TikTok and YouTube. An independent product that runs alongside full-time work.',
+      'Turns news into narrated videos for TikTok and YouTube. I build and run it alongside full-time work.',
     stack: 'Laravel, React, TypeScript, Redis, MariaDB, FFmpeg, Node/Skia, Gemini, speech and media APIs',
     bullets: [
       {
-        text: `Built and launched the product. First external paying customer in **${evidence.ravenclip.daysToCustomer} days**; **${evidence.ravenclip.customers} paying customers** as of 26 September 2026.`,
+        text: `Built and launched the product. First external paying customer in **${evidence.ravenclip.daysToCustomer} days**; **${evidence.ravenclip.customers} paying customers** as of September 26, 2026.`,
         tags: ['founder', 'freelance', 'ai', 'lead'],
         weight: 10,
       },
       {
-        text: 'Built a **resumable video pipeline** with persisted stages, claim locks, parallel voice and visual work, and provider fallbacks.',
+        text: 'Built a **video pipeline that resumes after failures**, with saved stages, locks to prevent duplicate work, parallel voice and visuals, and backup providers.',
         tags: ['ai', 'lead', 'founder'],
         weight: 9,
       },
       {
-        text: 'Added structural output checks, source-backed numerical overlays, and per-video API cost records to investigate quality failures and provider costs.',
+        text: 'Added checks for AI output structure, on-screen numbers from data sources, and API cost tracking for each video.',
         tags: ['ai', 'founder'],
         weight: 8,
       },
       {
-        text: 'Built a Node/Skia and FFmpeg renderer, with regression coverage for rendering, generation, and publishing workflows.',
+        text: 'Built a Node/Skia and FFmpeg renderer, with regression tests for rendering, generation, and publishing.',
         tags: ['ai', 'perf'],
         weight: 5,
       },
       {
-        text: 'Built subscriptions, passkeys, social publishing and analytics.',
+        text: 'Built subscriptions, passkeys, social publishing, and analytics.',
         tags: ['founder', 'freelance', 'frontend'],
         weight: 6,
       },
@@ -255,7 +255,7 @@ export const skills: SkillGroup[] = [
     id: 'ai',
     label: 'AI engineering',
     items:
-      'LLM workflows, output validation, resumable pipelines, provider fallbacks, cost tracking, TTS and STT, Claude Code and Codex',
+      'LLM workflows, output checks, failure recovery, backup providers, cost tracking, text-to-speech, speech-to-text, Claude Code, Codex',
   },
   {
     id: 'backend',

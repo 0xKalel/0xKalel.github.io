@@ -82,14 +82,16 @@ I focused the product on businesses that share their expertise to build an audie
 </div>
 
 <dl class="post-figures not-prose">
-  <div class="fx"><dt>{evidence.ravenclip.daysToCustomer} days</dt><dd>from first commit (24 May 2026) to the first external payment (6 September)</dd></div>
-  <div class="fx" style="--d:70ms"><dt>{evidence.ravenclip.customers}</dt><dd>paying customers as of 26 September 2026</dd></div>
-  <div class="fx" style="--d:140ms"><dt>30 / 30</dt><dd>posts from those customers published automatically, as of 26 September 2026</dd></div>
+  <div class="fx"><dt>{evidence.ravenclip.daysToCustomer} days</dt><dd>from first commit (May 24, 2026) to the first external payment (September 6)</dd></div>
+  <div class="fx" style="--d:70ms"><dt>{evidence.ravenclip.customers}</dt><dd>paying customers as of September 26, 2026</dd></div>
+  <div class="fx" style="--d:140ms"><dt>30 / 30</dt><dd>posts from those customers published automatically, as of September 26, 2026</dd></div>
 </dl>
 
 Three customers offer useful feedback, but it is still early.
 
-## Choose architecture around recovery needs
+<span id="choose-architecture-around-recovery-needs" aria-hidden="true"></span>
+
+## Recover without repeating work
 
 Each video uses several paid services. Restarting the whole process after one failure would repeat completed work and its cost.
 
@@ -107,7 +109,9 @@ Each video uses several paid services. Restarting the whole process after one fa
   <p>Saving each stage adds code to maintain. When a user starts a short rebuild, a simple sequence of jobs is enough.</p>
 </div>
 
-## Notice when fallback hides a problem
+<span id="notice-when-fallback-hides-a-problem" aria-hidden="true"></span>
+
+## Monitor backup providers
 
 When one provider failed, a backup provider kept videos running. That hid the problem.
 
@@ -133,11 +137,13 @@ When one provider failed, a backup provider kept videos running. That hid the pr
       <li>Pause calls when a provider runs out of credit.</li>
       <li>A daily check outside the job queue, so it still reports when the workers are down.</li>
     </ol>
-    <p class="post-outcome"><Icon name="ph:check-circle" aria-hidden="true" /> Monitoring has since detected two low-credit incidents within hours.</p>
+    <p class="post-outcome"><Icon name="ph:check-circle" aria-hidden="true" /> Monitoring has since detected two empty credit balances within hours.</p>
   </div>
 </aside>
 
-## Define what AI checks can prove
+<span id="define-what-ai-checks-can-prove" aria-hidden="true"></span>
+
+## Know the limits of AI checks
 
 Automated checks catch structural problems. Customers still need to review factual claims.
 
@@ -166,7 +172,7 @@ Automated checks catch structural problems. Customers still need to review factu
 </figure>
 
 <dl class="post-figures not-prose">
-  <div class="fx"><dt>$0.36</dt><dd>recorded API spend per rendered video: 183 videos, 1-25 September 2026, without payment fees or my time</dd></div>
+  <div class="fx"><dt>$0.36</dt><dd>recorded API spend per rendered video: 183 videos, September 1–25, 2026, without payment fees or my time</dd></div>
   <div class="fx" style="--d:70ms"><dt>19</dt><dd>content categories</dd></div>
   <div class="fx" style="--d:140ms"><dt>5</dt><dd>interface languages. Paying customers so far publish in English and French.</dd></div>
 </dl>

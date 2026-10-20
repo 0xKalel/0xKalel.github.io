@@ -1,5 +1,5 @@
 ---
-/** RavenClip's pipeline as a diagram: the fork into voice and visual branches,
+/** RavenClip's pipeline as a diagram: the fork into voice and visual processing,
  *  rejoining at render. Pure SVG on theme tokens. */
 const H = 34;
 type Pill = { x: number; y: number; w: number; label: string; kind?: 'node' | 'end'; step: number };
@@ -44,7 +44,7 @@ const chain = (labels: [string, ('node'|'end')?][]) => labels;
     </div>
     <div class="mt-2 grid grid-cols-2 gap-3">
       <div>
-        <p class="mb-1.5 text-center text-xs text-muted">voice branch</p>
+        <p class="mb-1.5 text-center text-xs text-muted">voice processing</p>
         <div class="flow-col">
           <span class="flow-pill run-pill" style="--step:3">Voice</span>
           <span class="flow-arrow" aria-hidden="true">↓</span>
@@ -52,7 +52,7 @@ const chain = (labels: [string, ('node'|'end')?][]) => labels;
         </div>
       </div>
       <div>
-        <p class="mb-1.5 text-center text-xs text-muted">visual branch</p>
+        <p class="mb-1.5 text-center text-xs text-muted">visual processing</p>
         <div class="flow-col">
           <span class="flow-pill run-pill" style="--step:3">Scenes</span>
           <span class="flow-arrow" aria-hidden="true">↓</span>
@@ -71,14 +71,14 @@ const chain = (labels: [string, ('node'|'end')?][]) => labels;
   </div>
 
   <div class="mt-4 min-w-[760px] max-lg:hidden">
-    <svg viewBox="0 0 920 236" class="w-full" role="img" aria-label="Pipeline diagram: news feeds, context and script run in sequence, then the flow forks into a voice branch (voice, transcript) and a visual branch (scenes, assets) that rejoin at render, followed by review and publish.">
+    <svg viewBox="0 0 920 236" class="w-full" role="img" aria-label="Pipeline diagram: news feeds, context and script run in sequence, then the flow forks into voice processing (voice, transcript) and visual processing (scenes, assets), which rejoin at render, followed by review and publish.">
       <defs>
         <marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
           <path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"></path>
         </marker>
       </defs>
-      <text x="392" y="18" fill="var(--muted)" font-size="12">voice branch</text>
-      <text x="390" y="228" fill="var(--muted)" font-size="12">visual branch</text>
+      <text x="392" y="18" fill="var(--muted)" font-size="12">voice processing</text>
+      <text x="390" y="228" fill="var(--muted)" font-size="12">visual processing</text>
       {lines.map((d) => <path d={d} fill="none" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#arr)" />)}
       {
         pills.map((p) => (

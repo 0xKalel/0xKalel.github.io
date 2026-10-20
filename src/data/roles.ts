@@ -31,7 +31,7 @@ export const roles: Role[] = [
     label: 'Lead full-stack',
     headline: 'Lead Full-Stack Engineer, Laravel and React',
     summary:
-      'Lead full-stack engineer building since 2012. I lead a team of two developers and two testers, turn business priorities into planned releases, and own the technical decisions from architecture to production for commerce, operations, and AI products.',
+      'Full-stack engineer since 2012. I lead two developers and two testers at StoragePal, plan releases, and guide technical decisions. I build and maintain business software and AI products with Laravel and React.',
     focus: ['lead', 'laravel', 'perf', 'frontend'],
     bullets: [6, 3, 2, 3, 3, 2],
     projectBullets: 4,
@@ -47,7 +47,7 @@ export const roles: Role[] = [
     label: 'AI engineer',
     headline: 'AI Product Engineer, Laravel and LLM applications',
     summary:
-      'I build AI products with Laravel and React, from customer workflows to provider recovery and output checks. Founder of RavenClip. I own the product decisions, architecture, and review of AI-assisted work.',
+      'I build AI products with Laravel and React, including RavenClip. My work covers user workflows, failure recovery, and output checks. I make product and architecture decisions and review code written with AI.',
     focus: ['ai', 'lead', 'founder', 'laravel'],
     bullets: [6, 3, 2, 3, 3, 2],
     projectBullets: 4,
@@ -64,7 +64,7 @@ export const roles: Role[] = [
     label: 'Founding engineer',
     headline: 'Founding Engineer, product development and launch',
     summary:
-      'I turn business problems into products people can use and pay for. Co-founded a development agency, launched RavenClip, and lead development at StoragePal. I ship small releases and learn from production use.',
+      'I build products that solve business problems. I co-founded a development agency, launched RavenClip, and lead development at StoragePal. I release improvements in small steps and learn from how people use them.',
     focus: ['founder', 'ai', 'lead', 'freelance'],
     bullets: [6, 3, 2, 3, 3, 2],
     projectBullets: 4,
@@ -81,7 +81,7 @@ export const roles: Role[] = [
     label: 'Freelance',
     headline: 'Senior Full-Stack Developer, Laravel and React',
     summary:
-      'I build Laravel and React apps, modernize older systems and fix performance problems. Fourteen years of experience working with clients worldwide.',
+      'I build Laravel and React apps, update older systems, and fix performance problems. I have worked with clients worldwide since 2012.',
     focus: ['freelance', 'perf', 'laravel', 'frontend'],
     bullets: [6, 3, 2, 3, 3, 2],
     projectBullets: 4,

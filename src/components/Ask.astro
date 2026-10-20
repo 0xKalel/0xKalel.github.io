@@ -11,7 +11,7 @@ import { ASK_READY, ASK_SUGGESTIONS, MAX_QUESTION_CHARS } from '../lib/ask';
   <header class="ask-head">
     <div>
       <p class="ask-title display">Ask about my work</p>
-      <p class="ask-note">AI answers from my CV and case studies. It can make mistakes.</p>
+      <p class="ask-note">Answers use my CV and case studies. AI can make mistakes.</p>
     </div>
     <button type="button" class="btn btn-ghost size-11! justify-center p-0!" data-ask-close aria-label="Close">
       <Icon name="ph:x" aria-hidden="true" />
@@ -19,7 +19,7 @@ import { ASK_READY, ASK_SUGGESTIONS, MAX_QUESTION_CHARS } from '../lib/ask';
   </header>
   <div class="ask-log" role="log" aria-label="Conversation">
     <div class="ask-empty" data-ask-empty>
-      <p>Ask anything about my projects, results, or how I work.</p>
+      <p>Ask about my projects, experience, or approach.</p>
       <div class="ask-chips">
         {ASK_SUGGESTIONS.map((question) => (
           <button type="button" class="ask-chip" data-ask-chip={question}>{question}</button>
@@ -143,7 +143,7 @@ import { ASK_READY, ASK_SUGGESTIONS, MAX_QUESTION_CHARS } from '../lib/ask';
           element.textContent = answer;
           scroll();
         }
-        if (!answer) throw new AskError(502, 'No answer arrived.');
+        if (!answer) throw new AskError(502, 'No response received. Please try again.');
       } catch (error) {
         if (!answer) {
           element.remove();

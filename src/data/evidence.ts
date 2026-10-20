@@ -11,7 +11,7 @@ export const evidence = {
     metrics: [
       { value: '0.884 s', label: 'median catalog server response, down from 9.1 s' },
       { value: '3 → 1', label: 'pages in the payment flow' },
-      { value: '12', label: 'backoffice pages on one shared list system' },
+      { value: '12', label: 'admin pages on one shared list system' },
     ],
   },
   sps: {
@@ -21,21 +21,21 @@ export const evidence = {
     bayChanges: '8,847',
     bayMoves: '3,602',
     preview: 'Completed scan sessions on every weekday in the measured period.',
-    period: 'Production use, 13 April - 25 September 2026. Counts reviewed 26 September.',
+    period: 'Production use, April 13 - September 25, 2026. Counts reviewed September 26.',
     metrics: [
       { value: '120 / 120', label: 'weekdays with a completed scan session' },
       { value: '1,348', label: 'completed scanning sessions' },
-      { value: '3,602', label: 'recorded moves from one storage spot to another' },
+      { value: '3,602', label: 'recorded moves between storage bays' },
     ],
   },
   ravenclip: {
     daysToCustomer: '105',
     customers: '3',
     preview: 'First external paying customer 105 days after the first commit.',
-    period: 'First commit: 24 May 2026. First external payment: 6 September. Customer count: 26 September.',
+    period: 'First commit: May 24, 2026. First external payment: September 6. Customer count: September 26.',
     metrics: [
       { value: '105 days', label: 'from first commit to first external paying customer' },
-      { value: '3', label: 'paying customers as of 26 September 2026' },
+      { value: '3', label: 'paying customers as of September 26, 2026' },
       { value: '2', label: 'live publishing platforms: YouTube and TikTok' },
     ],
   },

@@ -25,7 +25,7 @@ const related = (await getCollection('work')).filter((w) => w.id !== entry.id).s
       <p class="eyebrow rise">{d.category}</p>
       <h1 class="rise">{d.title}<span class="sr-only">: </span><span>{d.headline}</span></h1>
       <p class="case-intro rise">{d.tagline}</p>
-      <dl class="case-meta"><div><dt>My role</dt><dd>{d.role}</dd></div><div><dt>Period</dt><dd>{d.period}</dd></div><div><dt>Core stack</dt><dd>{d.stack}</dd></div></dl>
+      <dl class="case-meta"><div><dt>My role</dt><dd>{d.role}</dd></div><div><dt>Period</dt><dd>{d.period}</dd></div><div><dt>Main technologies</dt><dd>{d.stack}</dd></div></dl>
     </header>
     <div class="case-evidence">
       <dl class="case-metrics">{facts.metrics.map((m) => <div><dt><Stat value={m.value} /></dt><dd>{m.label}</dd></div>)}</dl>
@@ -38,5 +38,5 @@ const related = (await getCollection('work')).filter((w) => w.id !== entry.id).s
     <section id="product-walkthrough" class="case-gallery"><div class="section-heading"><h2>Product walkthrough</h2>{d.url && <a href={d.url} class="text-link">Visit {d.title} <Icon name="px-arrow-up-right" aria-hidden="true" /></a>}</div><Gallery videos={galleryVideos} shots={d.shots} /></section>
     <section class="case-related" aria-labelledby="related-heading"><h2 id="related-heading">More work</h2><div>{related.map((w) => <a href={`/work/${w.id}/`} data-potion-link={potionsUnder(`/work/${w.id}/`)}><span class="door-icon" aria-hidden="true"></span><span><span class="case-related-title">{w.data.title}<PotionMark /><Icon name="px-arrow-right" aria-hidden="true" /></span><p>{w.data.headline}</p></span></a>)}</div></section>
   </article>
-  <ContactBand heading="Building something similar?" description="Tell me what you are building. A few lines are enough to start." />
+  <ContactBand heading="Building something similar?" description="Tell me about your project." />
 </Base>

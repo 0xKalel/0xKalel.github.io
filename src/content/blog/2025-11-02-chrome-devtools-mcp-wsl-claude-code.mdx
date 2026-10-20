@@ -1,6 +1,6 @@
 ---
 title: "Connect Claude Code to Chrome in WSL"
-description: "Let Claude Code inspect pages in WSL. Install Chrome for Testing, connect the Chrome DevTools MCP server, and check that it works."
+description: "Set up Chrome for Testing and the Chrome DevTools MCP server so Claude Code can inspect your local app in WSL."
 date: 2025-11-02
 tags: [claude-code, mcp, wsl, chrome-devtools]
 ---
@@ -8,7 +8,7 @@ tags: [claude-code, mcp, wsl, chrome-devtools]
 import { Icon } from 'astro-icon/components';
 import Potion from '../../components/pop/Potion.astro';
 
-This setup lets Claude inspect pages, check console errors and test browser interactions in WSL.
+This setup lets Claude inspect pages, check console errors, and test browser interactions in WSL.
 
 <figure class="post-flow card not-prose fx">
   <figcaption class="eyebrow">How the pieces connect</figcaption>
@@ -25,8 +25,8 @@ This setup lets Claude inspect pages, check console errors and test browser inte
 </figure>
 
 <div class="decision-note not-prose">
-  <p class="eyebrow">Dated examples</p>
-  <p>These examples date from November 2025. Check the [linked documentation](#documentation) for current options and requirements.</p>
+  <p class="eyebrow">Example date</p>
+  <p>These examples are from November 2025. Check the [linked documentation](#documentation) for current options and requirements.</p>
 </div>
 
 ## What you need
@@ -57,11 +57,11 @@ This setup lets Claude inspect pages, check console errors and test browser inte
 npx -y @puppeteer/browsers install chrome@stable --path ~/.local/share/chrome-for-testing
 ```
 
-Save the executable path printed by the installer. Step 2 needs it.
+Copy the Chrome executable path shown by the installer. You will use it in step 2.
 
 ### 2. Configure MCP Server
 
-Add this server entry under your project:
+Add this server configuration under your project:
 
 <p class="post-file"><Icon name="ph:file-code" aria-hidden="true" /> ~/.claude.json</p>
 
@@ -89,7 +89,7 @@ Add this server entry under your project:
 ```
 
 <div class="card post-rules post-solo not-prose fx">
-  <p class="eyebrow">What to change, and what the flags do</p>
+  <p class="eyebrow">Paths and options</p>
   <ul>
     <li><span class="post-trigger">/path/to/your/project</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Replace with your project path</span></li>
     <li><span class="post-trigger">/home/username/…/chrome</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Replace with the Chrome path from step 1</span></li>
@@ -100,7 +100,7 @@ Add this server entry under your project:
 
 ### 3. Set permissions
 
-To allow these tools without individual prompts, add the wildcard. It covers all Chrome DevTools tools.
+To allow all Chrome DevTools tools without a prompt for each one, add this wildcard permission.
 
 <p class="post-file"><Icon name="ph:file-code" aria-hidden="true" /> ~/.claude/settings.json</p>
 
@@ -126,16 +126,16 @@ Press <kbd class="key">Ctrl</kbd> <kbd class="key">Shift</kbd> <kbd class="key">
 claude mcp list
 ```
 
-<p class="post-status not-prose"><Icon name="ph:check-circle" aria-hidden="true" />`chrome-devtools: ... - ✓ Connected`<span>What you should see</span></p>
+<p class="post-status not-prose"><Icon name="ph:check-circle" aria-hidden="true" />`chrome-devtools: ... - ✓ Connected`<span>Expected result</span></p>
 
 ## If it does not connect
 
 <div class="card post-rules post-solo not-prose fx">
-  <p class="eyebrow">Symptom, then what to check</p>
+  <p class="eyebrow">What to check</p>
   <ul>
     <li><span class="post-trigger">Chrome not found</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Check the installed version folder and update the `-e` path.</span></li>
     <li><span class="post-trigger">Target closed</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Check whether Chrome starts. If you are launching Windows Chrome, try the Linux installation above.</span></li>
-    <li><span class="post-trigger">Server missing</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Check the JSON syntax, reload VS Code and inspect the extension logs.</span></li>
+    <li><span class="post-trigger">Server missing</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Check the JSON syntax, reload VS Code, and check the extension logs.</span></li>
     <li><span class="post-trigger">Permission denied</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Check the allow list in your global or project settings.</span></li>
   </ul>
 </div>
@@ -146,7 +146,7 @@ claude mcp list
 
 <div class="post-prompt card not-prose fx">
   <p class="eyebrow"><Icon name="ph:chat-circle-text" aria-hidden="true" /> Ask Claude</p>
-  <p class="post-prompt-text">Open my local app, report console errors and take a screenshot.</p>
+  <p class="post-prompt-text">Open my local app, report console errors, and take a screenshot.</p>
   <p class="post-prompt-next">Once that works, try a complete workflow such as signing in or submitting a test form.</p>
 </div>
 

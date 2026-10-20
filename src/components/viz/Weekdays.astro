@@ -1,6 +1,6 @@
 ---
-/** SPS use as a contribution grid: one cell per weekday from Monday 13 April to
- *  Friday 25 September 2026 (24 weeks), every one with a completed scan session.
+/** SPS use as a contribution grid: one cell per weekday from Monday April 13 to
+ *  Friday September 25, 2026 (24 weeks), every one with a completed scan session.
  *  Cells animate in when an ancestor with .fx reveals. */
 import { evidence } from '../../data/evidence';
 
@@ -22,11 +22,11 @@ const months = Array.from({ length: 24 }, (_, c) => day(c * 7))
 ---
 
 <figure class:list={['frame-box', className]}>
-  <figcaption class="frame-bar"><span>SPS scan sessions</span><span>13 Apr - 25 Sep 2026</span></figcaption>
+  <figcaption class="frame-bar"><span>SPS scan sessions</span><span>Apr 13 - Sep 25, 2026</span></figcaption>
   <div class="weekdays-body">
     <p class="weekdays-figure"><strong>{evidence.sps.weekdays}</strong><span>weekdays with a completed scan session</span></p>
     <div>
-      <div class="weekdays-grid" role="img" aria-label="120 of 120 weekdays from 13 April to 25 September 2026, each with a completed scan session.">
+      <div class="weekdays-grid" role="img" aria-label="120 of 120 weekdays from April 13 to September 25, 2026, each with a completed scan session.">
         {cells.map((d) => <span style={`--c:${d.c};--r:${d.r}`} title={d.label} />)}
       </div>
       <div class="weekdays-axis" aria-hidden="true">{months.map((m) => <span style={`--c:${m.c}`}>{m.name}</span>)}</div>
