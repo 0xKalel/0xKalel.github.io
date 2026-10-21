@@ -1,9 +1,9 @@
 # Khalil Hebachi
 
 > Lead full-stack engineer (Laravel, React, PHP) building for clients worldwide since 2012.
-> Handles the StoragePal platform day to day, from roadmap to production support, and brings in
-> developers or testers when the work needs it. Built the SPS warehouse app end to end for StoragePal's
-> staff, and founded RavenClip, an AI news-to-video SaaS with paying customers.
+> Handles the StoragePal platform day to day, from roadmap to production support. Built the SPS
+> warehouse app end to end for StoragePal's staff, and founded RavenClip, an AI news-to-video SaaS
+> with paying customers.
 > Open to senior and lead roles, plus freelance work: remote (GMT+1), or relocation to Europe, Canada,
 > or the US.
 

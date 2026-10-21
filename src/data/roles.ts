@@ -31,7 +31,7 @@ export const roles: Role[] = [
     label: 'Lead full-stack',
     headline: 'Lead Full-Stack Engineer, Laravel and React',
     summary:
-      'Lead full-stack engineer building software since 2012. At StoragePal, I handle the platform day to day, from deciding what to build to fixing production, and I built the SPS warehouse app for its staff. I get up to speed quickly on unfamiliar code, whether legacy, new, or written with AI, and I bring in and guide developers and testers when the work needs it.',
+      'Lead full-stack engineer building software since 2012. At StoragePal, I handle the platform day to day, from deciding what to build to fixing production, and I built the SPS warehouse app for its staff. I get up to speed quickly on unfamiliar code, whether legacy, new, or written with AI.',
     focus: ['lead', 'laravel', 'perf', 'frontend'],
     bullets: [6, 3, 2, 3, 3, 2],
     projectBullets: 4,
