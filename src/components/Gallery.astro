@@ -159,4 +159,18 @@ const sizing = (s: ImageSlide) => {
     .gallery-pair { gap: .75rem; padding: .75rem; }
     .gallery-controls { gap: 0; }
   }
+
+  /* Spec sheet and Classic (lib/design.ts): no stone window, the track alone in a frame. */
+  :global(:root:not([data-design='gaming'])) .gallery-frame { padding: 0; border: 0; background: none; box-shadow: none; }
+  :global(:root:not([data-design='gaming'])) .gallery-track:not(:focus-visible) { outline: 0; }
+  :global(:root:not([data-design='gaming'])) .gallery-btn { border: 1px solid var(--line); box-shadow: none; font-size: 16px; }
+  :global(:root:not([data-design='gaming'])) .gallery-dots button span { box-shadow: none; }
+  :global(:root[data-design='spec']) .gallery-track { border: 1.5px solid var(--fg); }
+  :global(:root[data-design='spec']) .gallery-btn:not([disabled]):hover { border-color: var(--muted); background: var(--surface); }
+  :global(:root[data-design='spec']) .gallery-dots button span { width: 8px; height: 8px; background: var(--muted); }
+  :global(:root[data-design='spec']) .gallery-dots button[aria-pressed='true'] span { width: 10px; height: 10px; background: var(--accent); }
+  :global(:root[data-design='classic']) .gallery-track { border: 1px solid var(--line); }
+  :global(:root[data-design='classic']) .gallery-btn:not([disabled]):hover { border-color: var(--accent); background: none; color: var(--accent); }
+  :global(:root[data-design='classic']) .gallery-dots button span { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+  :global(:root[data-design='classic']) .gallery-dots button[aria-pressed='true'] span { width: 7px; height: 7px; background: var(--accent); }
 </style>

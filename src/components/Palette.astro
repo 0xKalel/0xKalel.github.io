@@ -2,12 +2,14 @@
 import { profile } from '../data/cv';
 import { defaultRole } from '../data/roles';
 import { ASK_READY } from '../lib/ask';
+import { DESIGNS, type DesignId } from '../lib/design';
 
 interface Item {
   label: string;
   hint: string;
   href?: string;
-  action?: 'copy-email' | 'theme' | 'ask';
+  action?: 'copy-email' | 'theme' | 'ask' | 'design';
+  design?: DesignId;
 }
 
 const items: Item[] = [
@@ -25,6 +27,7 @@ const items: Item[] = [
   { label: 'Copy email address', hint: 'Action', action: 'copy-email' },
   ...(ASK_READY ? [{ label: 'Ask about my work', hint: 'Action', action: 'ask' } as Item] : []),
   { label: 'Switch between light and dark themes', hint: 'Action', action: 'theme' },
+  ...DESIGNS.map((d): Item => ({ label: `Show the ${d.label} design`, hint: 'Design', action: 'design', design: d.id })),
   { label: 'RavenClip, my live product', hint: 'Link', href: 'https://ravenclip.com' },
   { label: 'GitHub', hint: 'Link', href: profile.github },
   { label: 'LinkedIn', hint: 'Link', href: profile.linkedin },
@@ -43,6 +46,7 @@ const items: Item[] = [
           aria-selected="false"
           data-href={it.href}
           data-action={it.action}
+          data-design={it.design}
         >
           <span>{it.label}</span>
           <span class="pal-k">{it.hint}</span>
@@ -99,6 +103,9 @@ const items: Item[] = [
       dlg.close();
       if (li.dataset.action === 'theme') {
         document.querySelector<HTMLElement>('[data-theme-toggle]')?.click();
+      } else if (li.dataset.action === 'design') {
+        // setDesign in scripts/site.ts
+        document.dispatchEvent(new CustomEvent('site:design', { detail: { design: li.dataset.design, via: 'palette' } }));
       } else if (li.dataset.action === 'ask') {
         document.querySelector<HTMLElement>('[data-ask-open]')?.click();
       } else if (li.dataset.href) {

@@ -1,7 +1,8 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* Two levels of one old castle: the Dungeon (dark) and the Palace (light). Square corners everywhere.
+/* The Gaming design (lib/design.ts), and the base the others re-dress in styles/designs/.
+   Two levels of one old castle: the Dungeon (dark) and the Palace (light). Square corners everywhere.
    --accent is the readable accent for text, icons and strokes on the page background.
    --hi is the torch gold fill (highlights, hard shadows, the contact block); it always carries ink text.
    --stone* and --mortar draw walls and bevels; --flame-* draw torches; --potion is only for the HUD.
@@ -395,6 +396,10 @@ svg[data-icon^='px-'] { shape-rendering: crispEdges; }
 
 /* ---------- Page layout ---------- */
 [hidden] { display: none !important; }
+/* Parts that belong to some designs only (lib/design.ts) carry data-designs="…", and the others hide them. */
+:root[data-design='gaming'] [data-designs]:not([data-designs~='gaming']),
+:root[data-design='spec'] [data-designs]:not([data-designs~='spec']),
+:root[data-design='classic'] [data-designs]:not([data-designs~='classic']) { display: none !important; }
 .shell { width: min(100% - 2 * var(--gutter), var(--maxw)); margin-inline: auto; padding-inline: var(--pad); }
 /* Every section is a floor of the castle: a stone ledge runs along its top edge. */
 .band { position: relative; }
@@ -440,6 +445,18 @@ main { counter-reset: sec; overflow-x: clip; }
 @media (hover: hover) { .nav-cta:hover { box-shadow: 5px 5px 0 var(--hi) !important; } }
 @media (max-width: 1023px) { .nav-links, .nav-search { display: none; } }
 @media (min-width: 1024px) { .nav-menu { display: none; } }
+/* Room for the design switcher on smaller desktops: the search keeps its icon, without the shortcut. */
+@media (min-width: 1024px) and (max-width: 1199px) { .nav-search :is(.kbd-mac, .kbd-other) { display: none; } }
+/* The design switcher (DesignSelect.astro), drawn like the other header tools. On phones it is in the menu. */
+.design-select { display: inline-flex; align-items: center; gap: 12px; }
+.design-select-box { position: relative; display: inline-flex; }
+.design-select select { appearance: none; height: 40px; padding: 0 30px 0 12px; border: 1px solid var(--line); border-radius: 0; background: transparent; color: var(--muted); font: inherit; font-size: var(--text-small); font-weight: 500; cursor: pointer; transition: border-color 150ms ease, color 150ms ease; }
+@media (hover: hover) { .design-select select:hover { border-color: var(--fg); color: var(--fg); } }
+.design-select option { background: var(--raised); color: var(--fg); }
+.design-select-box svg { position: absolute; top: 50%; right: 11px; translate: 0 -50%; font-size: 7px; color: var(--muted); pointer-events: none; }
+.design-select-label { font-size: var(--text-small); font-weight: 500; color: var(--muted); }
+.mnav-design { margin-top: 32px; }
+@media (max-width: 479px) { .nav-design { display: none; } }
 .mnav-list a { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--line); font-family: var(--font-pixel); font-size: calc(var(--grid) * 3); font-weight: 400; line-height: calc(var(--fp) * 20); text-transform: uppercase; }
 @media (max-width: 360px) { .mnav-list a { font-size: calc(var(--grid) * 2); } }
 .mnav-list a svg { font-size: 28px; }
@@ -618,12 +635,21 @@ a:is(:hover, :focus-visible) > .door-icon::after { transform: translateY(-100%);
 .frame-link svg { transition: transform 180ms var(--ease-out); }
 @media (hover: hover) { .frame-link:hover svg { transform: translate(2px, -2px); } }
 
-/* StoragePal's phones stand in arched niches of a torchlit wall. */
-.phones { display: flex; align-items: flex-end; justify-content: center; gap: clamp(10px, 1.6vw, 22px); padding: clamp(28px, 4vw, 52px) clamp(18px, 3vw, 40px) 0; overflow: hidden; background: var(--torchwall); }
-.niche { flex: none; display: block; width: 30%; padding: 5px 5px 0; background: var(--stone-lo); clip-path: polygon(0% 100%, 0% 23.3%, 0% 18.66%, 1.19% 18.66%, 1.19% 14.2%, 4.73% 14.2%, 4.73% 10.09%, 10.47% 10.09%, 10.47% 6.49%, 18.2% 6.49%, 18.2% 3.54%, 27.61% 3.54%, 27.61% 1.35%, 38.35% 1.35%, 38.35% 0%, 50% 0%, 50% 0%, 61.65% 0%, 61.65% 1.35%, 72.39% 1.35%, 72.39% 3.54%, 81.8% 3.54%, 81.8% 6.49%, 89.53% 6.49%, 89.53% 10.09%, 95.27% 10.09%, 95.27% 14.2%, 98.81% 14.2%, 98.81% 18.66%, 100% 18.66%, 100% 23.3%, 100% 100%); }
-.niche-in { display: flex; align-items: flex-end; padding: 42% 9% 0; background: radial-gradient(90% 55% at 50% 100%, color-mix(in oklab, var(--flame-2) 55%, var(--cave)), var(--cave) 80%); clip-path: polygon(0% 100%, 0% 23.3%, 0% 18.66%, 1.19% 18.66%, 1.19% 14.2%, 4.73% 14.2%, 4.73% 10.09%, 10.47% 10.09%, 10.47% 6.49%, 18.2% 6.49%, 18.2% 3.54%, 27.61% 3.54%, 27.61% 1.35%, 38.35% 1.35%, 38.35% 0%, 50% 0%, 50% 0%, 61.65% 0%, 61.65% 1.35%, 72.39% 1.35%, 72.39% 3.54%, 81.8% 3.54%, 81.8% 6.49%, 89.53% 6.49%, 89.53% 10.09%, 95.27% 10.09%, 95.27% 14.2%, 98.81% 14.2%, 98.81% 18.66%, 100% 18.66%, 100% 23.3%, 100% 100%); }
-.niche img { display: block; width: 100%; height: auto; border: 2px solid oklch(0.15 0.02 265); border-bottom: 0; }
-.niche:nth-child(2) { margin-bottom: clamp(24px, 3vw, 44px); }
+/* StoragePal's booking, step by step: phones in arched niches of a torchlit wall, each with its step
+   on a plaque. Large enough to read; each shows the top of its screen, where the step's controls are.
+   On phones the steps scroll sideways. */
+.phones { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); padding: clamp(24px, 3vw, 40px); background: var(--torchwall); }
+.phone { display: grid; align-content: start; gap: 14px; min-width: 0; }
+.phone-step { justify-self: start; display: inline-flex; align-items: center; gap: 8px; padding: 3px 10px 3px 3px; background: var(--hud-bg); color: var(--hud-fg); font-family: var(--font-pixel); font-size: var(--pixel-label); line-height: 1.1; text-transform: uppercase; box-shadow: 0 2px 0 var(--stone-lo); }
+.phone-step b { flex: none; display: inline-grid; place-items: center; min-width: 1.6em; height: 1.6em; background: var(--hi); color: var(--hi-fg); font-weight: 400; }
+@media (max-width: 767px) {
+  .phones { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(72%, 280px); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .phones::-webkit-scrollbar { display: none; }
+  .phone { scroll-snap-align: center; }
+}
+.niche { display: block; padding: 5px 5px 0; background: var(--stone-lo); clip-path: polygon(0% 100%, 0% 23.3%, 0% 18.66%, 1.19% 18.66%, 1.19% 14.2%, 4.73% 14.2%, 4.73% 10.09%, 10.47% 10.09%, 10.47% 6.49%, 18.2% 6.49%, 18.2% 3.54%, 27.61% 3.54%, 27.61% 1.35%, 38.35% 1.35%, 38.35% 0%, 50% 0%, 50% 0%, 61.65% 0%, 61.65% 1.35%, 72.39% 1.35%, 72.39% 3.54%, 81.8% 3.54%, 81.8% 6.49%, 89.53% 6.49%, 89.53% 10.09%, 95.27% 10.09%, 95.27% 14.2%, 98.81% 14.2%, 98.81% 18.66%, 100% 18.66%, 100% 23.3%, 100% 100%); }
+.niche-in { display: flex; align-items: flex-end; padding: 22% 9% 0; background: radial-gradient(90% 55% at 50% 100%, color-mix(in oklab, var(--flame-2) 55%, var(--cave)), var(--cave) 80%); clip-path: polygon(0% 100%, 0% 23.3%, 0% 18.66%, 1.19% 18.66%, 1.19% 14.2%, 4.73% 14.2%, 4.73% 10.09%, 10.47% 10.09%, 10.47% 6.49%, 18.2% 6.49%, 18.2% 3.54%, 27.61% 3.54%, 27.61% 1.35%, 38.35% 1.35%, 38.35% 0%, 50% 0%, 50% 0%, 61.65% 0%, 61.65% 1.35%, 72.39% 1.35%, 72.39% 3.54%, 81.8% 3.54%, 81.8% 6.49%, 89.53% 6.49%, 89.53% 10.09%, 95.27% 10.09%, 95.27% 14.2%, 98.81% 14.2%, 98.81% 18.66%, 100% 18.66%, 100% 23.3%, 100% 100%); }
+.niche img { display: block; width: 100%; height: auto; aspect-ratio: 1170 / 1600; object-fit: cover; object-position: top; border: 2px solid oklch(0.15 0.02 265); border-bottom: 0; }
 .browser img { display: block; width: 100%; height: auto; }
 
 @media (min-width: 1024px) { .work-item:not(.is-wide) .work-visual { position: sticky; top: 96px; } }
@@ -1081,7 +1107,7 @@ a:is(:hover, :focus-visible) > .door-icon::after { transform: translateY(-100%);
   .method-link { grid-column: 1 / -1; justify-self: start; justify-content: flex-start; margin-top: -6px; text-align: left; }
   .stack-row { grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); }
   .stack-where { grid-column: 2; }
-  .nav-icon { height: 44px; min-width: 44px; }
+  .nav-icon, .design-select select { height: 44px; min-width: 44px; }
   .brand { min-height: 44px; }
   .site-footer ul a { display: inline-flex; align-items: center; min-height: 44px; padding-block: 0; }
   .experience-row > div { grid-template-columns: 1fr; }
@@ -1158,8 +1184,6 @@ a:is(:hover, :focus-visible) > .door-icon::after { transform: translateY(-100%);
   .post-status > span:last-child { margin-left: 0; }
   .comparison { grid-template-columns: 1fr; }
   .nav-cta { display: none !important; }
-  .niche { width: 44%; }
-  .niche:nth-child(3) { display: none; }
 }
 @media (max-width: 360px) {
   .brand-name { display: none; }
@@ -1176,7 +1200,8 @@ a:is(:hover, :focus-visible) > .door-icon::after { transform: translateY(-100%);
 :is(.work-cta, .work-decision, .writing-row, .gates-cap, .frame-link, .nav-link, .text-link, .method-link, .case-related a, .post-list a, .post-tldr a, .post-links a, .post-steps a, .ask-chip, .hud-sound, .nav-icon, .review-toggle):active { translate: 0 1px; }
 
 /* Controls that need JavaScript stay out of the way without it. */
-html:not(.js) :is([data-theme-toggle], [data-palette-open], [data-copy], [data-ask-open], [data-ask-chip], [data-more-toggle], [data-sound-toggle], .potion-spot, #mnav-btn) { display: none !important; }
+html:not(.js) :is([data-theme-toggle], [data-palette-open], [data-copy], [data-ask-open], [data-ask-chip], [data-more-toggle], [data-sound-toggle], .potion-spot, .design-select, #mnav-btn) { display: none !important; }
+@media print { .design-select, .reading-progress { display: none !important; } }
 .js [data-more]:not(.is-open) [data-more-extra] { display: none; }
 
 /* ---------- Ask chat ---------- */
@@ -1379,7 +1404,7 @@ html:not(.js) .hud { display: none; }
   :root { --hud-h: 50px; }
   .hud-ask { height: 42px; }
   .brand, .nav-link { min-height: 44px; }
-  .nav-icon { height: 44px; min-width: 44px; }
+  .nav-icon, .design-select select { height: 44px; min-width: 44px; }
   .nav-cta { height: 44px !important; }
   .site-footer ul a { display: inline-flex; align-items: center; min-height: 44px; padding-block: 0; }
   .text-link, .method-link { min-height: 44px; }

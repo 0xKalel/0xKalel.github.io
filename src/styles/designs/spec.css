@@ -1,0 +1,117 @@
+/* Spec sheet (lib/design.ts): the site's design before Gaming, on today's pages. Paper and ink with
+   one lime highlight: poster-size uppercase names and titles in Geist, numbered mono labels, heavy
+   ink rules, hard lime shadows and hairlines down the page. Values come from global.css as it was
+   then (commit b1d597d). Builds on flat.css.
+   --accent is the readable accent for text, icons and strokes on the page background.
+   --hi is the lime fill (highlights, hard shadows, the contact block); it always carries ink text.
+   Each token holds its light and dark value; the theme's color-scheme (global.css) picks one. */
+:root[data-design='spec'] {
+  --bg: light-dark(oklch(0.97 0.004 100), oklch(0.16 0.004 260));
+  --surface: light-dark(oklch(0.945 0.005 100), oklch(0.195 0.005 260));
+  --raised: light-dark(oklch(0.993 0.002 100), oklch(0.225 0.006 260));
+  --line: light-dark(oklch(0.86 0.006 100), oklch(0.32 0.006 260));
+  --fg: light-dark(oklch(0.17 0.006 260), oklch(0.955 0.004 100));
+  --muted: light-dark(oklch(0.44 0.01 260), oklch(0.72 0.008 260));
+  --accent: light-dark(oklch(0.5 0.14 134), oklch(0.9 0.19 124));
+  --accent-deep: light-dark(oklch(0.43 0.12 134), oklch(0.78 0.17 128));
+  --accent-fg: light-dark(oklch(0.985 0.003 100), oklch(0.18 0.02 124));
+  --hi: oklch(0.9 0.19 124);
+  --hi-fg: oklch(0.17 0.006 260);
+  --shadow: light-dark(var(--fg), var(--hi));
+  --inv-accent: light-dark(var(--hi), oklch(0.5 0.14 134));
+  --viz-before: light-dark(oklch(0.8 0.07 128), oklch(0.52 0.07 128));
+  --maxw: 1320px;
+  --rule: 1.5px solid var(--fg);
+
+  /* Mono labels: small, uppercase, tracked. */
+  & :is(.mono-label, .eyebrow) { font-family: var(--font-mono); font-size: 12px; font-weight: 500; line-height: 1.5; letter-spacing: .08em; text-transform: uppercase; }
+  & .nav-link { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; }
+  & .brand-mark { font-family: var(--font-mono); font-size: 12px; font-weight: 700; letter-spacing: .02em; }
+  & .pal-item .pal-k { font-family: var(--font-mono); font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; }
+  & .frame-bar { min-height: 42px; margin-inline: 0; border-bottom: var(--rule); background: var(--raised); font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; }
+  & .sec-num { min-width: 2.4em; height: 2em; padding-inline: .35em; font-family: var(--font-mono); font-size: 13px; font-weight: 600; text-transform: none; }
+  & :is(.experience-date, .current-tag, .case-meta dt, .weekdays-axis, .process-number, .post-steps a > span, .post-tldr-topic, .post-fix li::before, .post-screens figcaption strong::before, .case-body .prose > h2::before) { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: .06em; }
+  & .experience-date { padding-top: .35em; font-size: 12.5px; font-weight: 400; letter-spacing: .02em; text-transform: none; }
+  & .case-meta dt { font-size: 12px; font-weight: 400; letter-spacing: .08em; }
+  & .weekdays-axis { font-weight: 400; letter-spacing: .04em; }
+  & .process-number { font-size: 12px; }
+
+  /* Posters: Geist at its heaviest, uppercase and tight. */
+  & .hero-name { margin-left: -.045em; font-family: var(--font-display); font-size: min(8.6vw, 120px, 17svh); font-weight: 900; line-height: .84; letter-spacing: -.055em; }
+  & .hero-name .w { padding-bottom: .04em; }
+  & .hero-statement { font-size: clamp(30px, 3.1vw, 46px); line-height: 1.08; }
+  & .work-title { font-family: var(--font-display); font-size: clamp(46px, 8vw, 124px); font-weight: 900; line-height: .86; letter-spacing: -.055em; }
+  & .case-header h1 { font-family: var(--font-display); font-size: clamp(52px, 9.4vw, 148px); font-weight: 900; line-height: .86; letter-spacing: -.057em; }
+  & .post .case-header h1 { max-width: 22ch; font-size: clamp(38px, 5.4vw, 76px); font-weight: 900; line-height: .98; letter-spacing: -.05em; }
+  & .page-head h1 { font-family: var(--font-display); font-size: clamp(64px, 13vw, 200px); font-weight: 900; line-height: .84; letter-spacing: -.06em; }
+  & .contact-band h2 { font-family: var(--font-display); font-size: clamp(42px, 6.6vw, 104px); font-weight: 900; line-height: .9; letter-spacing: -.045em; }
+  & .site-footer .foot-name { font-family: var(--font-display); font-size: clamp(28px, 3vw, 40px); font-weight: 900; line-height: .95; letter-spacing: -.05em; }
+  & .mnav-list a { font-family: var(--font-display); font-size: clamp(34px, 10vw, 52px); font-weight: 850; line-height: 1; letter-spacing: -.05em; }
+  & .sec-head h2 { font-family: var(--font-display); font-size: clamp(32px, 3.6vw, 52px); font-weight: 800; line-height: 1.05; letter-spacing: -.04em; }
+  & .section-heading h2 { font-family: var(--font-display); font-size: clamp(30px, 3.6vw, 52px); font-weight: 800; line-height: 1; letter-spacing: -.045em; }
+  & .case-related h2 { font-family: var(--font-display); font-size: clamp(26px, 2.6vw, 36px); font-weight: 800; line-height: 1.1; letter-spacing: -.04em; }
+  & .case-related-title { font-family: var(--font-display); font-size: clamp(24px, 2.4vw, 34px); font-weight: 900; line-height: .95; letter-spacing: -.05em; }
+  & .ask-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 750; line-height: 1.4; letter-spacing: -.02em; }
+  @media (min-width: 768px) and (max-width: 1023px) { & .hero-name { font-size: min(8.6vw, 120px, 17svh); } }
+  @media (max-width: 767px) {
+    & .hero-name { font-size: min(17vw, 16svh); line-height: .86; }
+    & .hero-statement { font-size: clamp(26px, 7.4vw, 34px); }
+    & .work-title { font-size: clamp(40px, 13.4vw, 72px); }
+    & .case-header h1 { font-size: clamp(44px, 14vw, 80px); }
+  }
+
+  /* Scores read as figures in a spec table. */
+  & :is(.work-metrics dt, .case-metrics dt, .weekdays-figure strong, .post-tldr strong, .post-figures dt, .post-after dt, .post-cost-total) { font-family: var(--font-display); font-weight: 850; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+  & .work-metrics dt { font-size: clamp(26px, 2.2vw, 34px); font-weight: 800; line-height: 1; }
+  & .case-metrics dt { font-size: clamp(36px, 4.2vw, 60px); letter-spacing: -.05em; }
+  & .weekdays-figure strong { font-size: clamp(40px, 6.2cqi, 76px); font-weight: 900; letter-spacing: -.055em; }
+  & :is(.post-tldr strong, .post-figures dt) { font-size: 32px; }
+  & .post-incident .post-figures dt { font-size: 28px; }
+  & .post-after dt { font-size: 26px; font-weight: 800; letter-spacing: -.04em; }
+  & .post-cost-total { font-size: 40px; }
+  & .stat-unit { margin-left: .25em; font-size: inherit; color: inherit; }
+
+  /* Spacing as it was: roomier sections and work items. */
+  & .section-space { padding-block: clamp(64px, 7.5vw, 116px); }
+  & .sec-head { margin-bottom: clamp(40px, 5vw, 72px); }
+  & .work-list { gap: clamp(88px, 10vw, 152px); }
+  & :is(.work-copy, .work-visual, .work-item.is-wide .work-side) { margin-top: clamp(32px, 3.5vw, 52px); }
+  & .prose-case > :where(p, ul, ol, h2, h3, blockquote, pre, table, details) { max-width: 64ch; }
+  @media (max-width: 1023px) { & .layers { max-width: 640px; } }
+
+  /* Exhibits: an ink frame with a hard lime shadow. */
+  & .frame-box { padding: 0; border: var(--rule); background: var(--raised); box-shadow: var(--drop) var(--drop) 0 var(--hi); }
+  & .case-evidence { margin-top: clamp(36px, 4vw, 56px); padding: clamp(22px, 2.8vw, 36px); border: var(--rule); background: var(--raised); box-shadow: 12px 12px 0 var(--hi); }
+  @media (max-width: 767px) { & .case-evidence { box-shadow: 7px 7px 0 var(--hi); } }
+  & .phones { background: color-mix(in oklab, var(--hi) 18%, var(--raised)); }
+  & .niche img { border: var(--rule); }
+  & .phone-step b { min-width: 2.2em; height: 1.8em; font-family: var(--font-mono); font-size: 11px; font-weight: 600; }
+  & .weekdays-grid span { border: 1px solid color-mix(in oklab, var(--hi) 55%, var(--hi-fg)); }
+  & .comparison-image { padding: 14px; border: 1px solid var(--line); background: var(--surface); }
+  & .post-screen-img { padding: 14px 14px 0; border: var(--rule); background: color-mix(in oklab, var(--hi) 16%, var(--raised)) radial-gradient(color-mix(in oklab, var(--fg) 16%, transparent) 1px, transparent 1.2px) 0 0 / 18px 18px; }
+  & .post-screen-img img { border: 1px solid var(--fg); border-bottom: 0; }
+
+  /* Notes hang off a heavy left rule. */
+  & :is(.decision-note, .post-prompt-text, .post-outcome) { border: 0; border-left: 4px solid var(--fg); }
+  & .decision-note { background: var(--surface); }
+  & .post-incident .post-figures > div { padding: 2px 0 2px 14px; border: 0; border-left: 3px solid var(--fg); }
+  & .post-after dl > div { border-top: 0; border-left: 3px solid var(--fg); }
+  & .post-cta { border: var(--rule) !important; box-shadow: 10px 10px 0 var(--hi); }
+
+  /* Case studies. */
+  & .case-body .prose { font-size: 17.5px; line-height: 1.75; }
+  & .case-body .prose h2 { font-size: clamp(28px, 2.6vw, 36px); line-height: 1.1; margin-top: 2.1em; padding-top: .9em; border-top: var(--rule); }
+  & .case-body .prose > h2::before { min-width: 2.2em; height: 1.6em; vertical-align: .35em; }
+  @media (hover: hover) { & .case-nav a:hover { color: var(--fg); border-left-color: var(--hi); background: var(--surface); } }
+  & .case-nav a[aria-current] { color: var(--fg); font-weight: 600; border-left-color: var(--fg); }
+  & .case-gallery { padding-top: 40px; }
+  & .case-related { padding-top: 32px; }
+  & .case-related a { padding: 24px; border: var(--rule); background: var(--raised); }
+  @media (hover: hover) { & .case-related a:hover { box-shadow: 8px 8px 0 var(--hi); } }
+
+  /* The floating Ask button: an ink block with a lime shadow, like the buttons. */
+  & .ask-launcher { border: var(--rule); background: var(--fg); color: var(--bg); font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; box-shadow: 5px 5px 0 var(--hi); }
+  & .ask-launcher svg { color: var(--inv-accent); }
+  @media (hover: hover) { & .ask-launcher:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--hi); } }
+  & .ask-launcher:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--hi); }
+}

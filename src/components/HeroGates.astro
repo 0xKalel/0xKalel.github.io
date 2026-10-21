@@ -6,20 +6,16 @@
  *  The first potion of the potion trail stands on the floor, outside the hidden scene so it can be used.
  *  Gate and scene styles live with the castle materials in global.css. */
 import { archPolygon } from '../lib/arch';
+import { heroProjects as items } from '../data/hero';
 import Wall from './pop/Wall.astro';
 import Torch from './pop/Torch.astro';
-import Gate, { type GateId } from './pop/Gate.astro';
+import Gate from './pop/Gate.astro';
 import Potion from './pop/Potion.astro';
 
-const items: { id: GateId; n: string; name: string; text: string }[] = [
-  { id: 'storagepal', n: '01', name: 'StoragePal', text: 'Product & engineering' },
-  { id: 'sps', n: '02', name: 'SPS warehouse app', text: 'Built end to end' },
-  { id: 'ravenclip', n: '03', name: 'RavenClip', text: 'Founder & engineer' },
-];
 const aspect = 0.7;
 ---
 
-<div class="gates" style={`--arch: ${archPolygon(aspect)}; --aspect: ${aspect}`}>
+<div class="gates" data-designs="gaming" style={`--arch: ${archPolygon(aspect)}; --aspect: ${aspect}`}>
   <div class="gates-stage">
     <div class="scene" aria-hidden="true">
       <Wall id="hero-wall" />

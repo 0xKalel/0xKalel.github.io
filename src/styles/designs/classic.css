@@ -1,0 +1,176 @@
+/* Classic (lib/design.ts), the default: an editorial page for readers who want the work and nothing
+   else. Warm paper and ink with one navy accent, serif headings (Newsreader) over Geist text, thin
+   rules, sentence case, room to breathe, and no hard shadows. Builds on flat.css.
+   --accent is navy text and strokes on the page; --hi is the navy fill (the contact block, the
+   current marks), and always carries --hi-fg. In the dark the paper turns night blue and the navy
+   turns steel blue. Each token holds its light and dark value; the theme's color-scheme picks one. */
+
+/* A stand-in sized to Newsreader, so headings keep their width and height while it loads. Measured
+   against Times New Roman (Liberation Serif on Linux), which every system has: Newsreader runs 4.5%
+   wider at the weights used here, with a shorter ascent. */
+@font-face { font-family: "Newsreader Fallback"; src: local("Times New Roman"), local("Liberation Serif"), local("Times"); size-adjust: 104.5%; ascent-override: 70.8%; descent-override: 25.8%; line-gap-override: 0%; }
+
+:root[data-design='classic'] {
+  --bg: light-dark(oklch(0.985 0.006 85), oklch(0.19 0.024 258));
+  --surface: light-dark(oklch(0.965 0.009 85), oklch(0.22 0.026 258));
+  --raised: light-dark(oklch(0.995 0.003 85), oklch(0.245 0.028 258));
+  --line: light-dark(oklch(0.89 0.01 80), oklch(0.34 0.028 258));
+  --fg: light-dark(oklch(0.22 0.025 262), oklch(0.94 0.012 85));
+  --muted: light-dark(oklch(0.47 0.02 262), oklch(0.75 0.015 260));
+  --accent: light-dark(oklch(0.42 0.12 262), oklch(0.8 0.08 250));
+  --accent-deep: light-dark(oklch(0.35 0.11 262), oklch(0.86 0.06 250));
+  --accent-fg: light-dark(oklch(0.985 0.006 85), oklch(0.19 0.024 258));
+  --hi: light-dark(oklch(0.33 0.09 262), oklch(0.8 0.08 250));
+  --hi-fg: light-dark(oklch(0.985 0.006 85), oklch(0.19 0.024 258));
+  --shadow: transparent;
+  --inv-accent: var(--bg);
+  --viz-before: light-dark(oklch(0.86 0.02 262), oklch(0.42 0.03 260));
+  --font-display: "Newsreader Variable", "Newsreader Fallback", serif;
+  --maxw: 1160px;
+  --rule: 1px solid color-mix(in oklab, var(--fg) 38%, var(--bg));
+  /* Phosphor's light weight, to sit with the serif. */
+  --ph-arrow-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='m220.24 132.24l-72 72a6 6 0 0 1-8.48-8.48L201.51 134H40a6 6 0 0 1 0-12h161.51l-61.75-61.76a6 6 0 0 1 8.48-8.48l72 72a6 6 0 0 1 0 8.48'/%3E%3C/svg%3E");
+  --ph-arrow-left: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M222 128a6 6 0 0 1-6 6H54.49l61.75 61.76a6 6 0 1 1-8.48 8.48l-72-72a6 6 0 0 1 0-8.48l72-72a6 6 0 0 1 8.48 8.48L54.49 122H216a6 6 0 0 1 6 6'/%3E%3C/svg%3E");
+  --ph-arrow-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='m204.24 148.24l-72 72a6 6 0 0 1-8.48 0l-72-72a6 6 0 0 1 8.48-8.48L122 201.51V40a6 6 0 0 1 12 0v161.51l61.76-61.75a6 6 0 0 1 8.48 8.48'/%3E%3C/svg%3E");
+  --ph-arrow-up-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M198 64v104a6 6 0 0 1-12 0V78.48L68.24 196.24a6 6 0 0 1-8.48-8.48L177.52 70H88a6 6 0 0 1 0-12h104a6 6 0 0 1 6 6'/%3E%3C/svg%3E");
+  --ph-caret-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='m212.24 100.24l-80 80a6 6 0 0 1-8.48 0l-80-80a6 6 0 0 1 8.48-8.48L128 167.51l75.76-75.75a6 6 0 0 1 8.48 8.48'/%3E%3C/svg%3E");
+  --ph-caret-left: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M164.24 203.76a6 6 0 1 1-8.48 8.48l-80-80a6 6 0 0 1 0-8.48l80-80a6 6 0 0 1 8.48 8.48L88.49 128Z'/%3E%3C/svg%3E");
+  --ph-caret-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='m180.24 132.24l-80 80a6 6 0 0 1-8.48-8.48L167.51 128L91.76 52.24a6 6 0 0 1 8.48-8.48l80 80a6 6 0 0 1 0 8.48'/%3E%3C/svg%3E");
+  --ph-download: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M222 144v64a6 6 0 0 1-6 6H40a6 6 0 0 1-6-6v-64a6 6 0 0 1 12 0v58h164v-58a6 6 0 0 1 12 0m-98.24 4.24a6 6 0 0 0 8.48 0l40-40a6 6 0 0 0-8.48-8.48L134 129.51V32a6 6 0 0 0-12 0v97.51L92.24 99.76a6 6 0 0 0-8.48 8.48Z'/%3E%3C/svg%3E");
+  --ph-moon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M232.13 143.64a6 6 0 0 0-6-1.49a90.07 90.07 0 0 1-112.27-112.3a6 6 0 0 0-7.49-7.48a102.88 102.88 0 0 0-51.89 36.31a102 102 0 0 0 142.84 142.84a102.88 102.88 0 0 0 36.31-51.89a6 6 0 0 0-1.5-5.99m-42 48.29a90 90 0 0 1-126-126a90.9 90.9 0 0 1 35.52-28.27a102.06 102.06 0 0 0 118.69 118.69a90.9 90.9 0 0 1-28.24 35.58Z'/%3E%3C/svg%3E");
+  --ph-sun: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M122 40V16a6 6 0 0 1 12 0v24a6 6 0 0 1-12 0m68 88a62 62 0 1 1-62-62a62.07 62.07 0 0 1 62 62m-12 0a50 50 0 1 0-50 50a50.06 50.06 0 0 0 50-50M59.76 68.24a6 6 0 1 0 8.48-8.48l-16-16a6 6 0 0 0-8.48 8.48Zm0 119.52l-16 16a6 6 0 1 0 8.48 8.48l16-16a6 6 0 1 0-8.48-8.48M192 70a6 6 0 0 0 4.24-1.76l16-16a6 6 0 0 0-8.48-8.48l-16 16A6 6 0 0 0 192 70m4.24 117.76a6 6 0 0 0-8.48 8.48l16 16a6 6 0 0 0 8.48-8.48ZM46 128a6 6 0 0 0-6-6H16a6 6 0 0 0 0 12h24a6 6 0 0 0 6-6m82 82a6 6 0 0 0-6 6v24a6 6 0 0 0 12 0v-24a6 6 0 0 0-6-6m112-88h-24a6 6 0 0 0 0 12h24a6 6 0 0 0 0-12'/%3E%3C/svg%3E");
+}
+
+:root[data-design='classic'] {
+  & :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; box-shadow: none; }
+  & .page-frame { display: none; }
+
+  /* Sentence case and plain tracking: the castle's labels and posters were uppercase. */
+  & :is(.frame-bar, .pal-item .pal-k, .mnav-list a, .hero-name, .work-title, .weekdays-axis, .experience-date, .current-tag, .contact-band h2, .site-footer .foot-name, .case-header h1, .case-meta dt, .case-related-title, .page-head h1, .post-tldr-topic, .sec-num) { text-transform: none; }
+
+  /* Small text is Geist: labels, numbers in chips, the code-like lines. */
+  & :is(.frame-bar, .pal-item .pal-k, .weekdays-axis, .experience-date, .case-meta dt, .process-number, .post-steps a > span, .post-tldr-topic, .post-fix li::before, .post-screens figcaption strong::before, .hero-meta, .writing-kind, .evidence-period) { font-family: var(--font-sans); letter-spacing: 0; }
+  & .frame-bar { min-height: 44px; margin-inline: 0; border-bottom: 1px solid var(--line); background: var(--raised); font-size: var(--text-meta); font-weight: 500; }
+  & .pal-item .pal-k { font-size: var(--text-micro); font-weight: 500; }
+  & :is(.experience-date, .case-meta dt) { font-size: var(--text-small); font-weight: 500; color: var(--muted); font-variant-numeric: tabular-nums; }
+  & .experience-date { padding-top: .45em; }
+  & .weekdays-axis { font-size: var(--text-micro); }
+  & :is(.process-number, .post-steps a > span, .post-tldr-topic, .post-fix li::before, .post-screens figcaption strong::before) { font-size: var(--text-micro); font-weight: 600; }
+
+  /* Numbers that count sections are plain navy numerals, not filled chips. */
+  & .sec-num { min-width: 0; height: auto; padding: 0; background: none; color: var(--accent); font-family: var(--font-sans); font-size: var(--text-small); font-weight: 500; font-variant-numeric: tabular-nums; align-self: flex-start; margin-top: .5em; }
+  & .case-body .prose > h2::before { min-width: 0; height: auto; padding: 0; margin-right: .7em; background: none; color: var(--accent); font-family: var(--font-sans); font-size: .5em; font-weight: 500; vertical-align: .4em; }
+  & .current-tag { padding: 0 7px; border: 1px solid currentColor; background: none; color: var(--accent); font-family: var(--font-sans); font-size: var(--text-micro); font-weight: 500; }
+
+  /* Headings in the serif, at book weights. */
+  & :is(.hero-name, .work-title, .case-header h1, .page-head h1, .contact-band h2, .site-footer .foot-name, .mnav-list a, .sec-head h2, .section-heading h2, .case-related h2, .case-related-title, .ask-title) { font-family: var(--font-display); font-weight: 400; letter-spacing: -.02em; }
+  & .hero-name { margin-left: -.04em; font-size: clamp(56px, 8.2vw, 116px); line-height: 1; letter-spacing: -.03em; }
+  & .hero-name .w { padding-bottom: .08em; }
+  & .work-title { font-size: clamp(40px, 5.4vw, 72px); line-height: 1.04; }
+  & .case-header h1 { font-size: clamp(48px, 7vw, 96px); line-height: 1; letter-spacing: -.03em; }
+  & .page-head h1 { font-size: clamp(56px, 9vw, 128px); line-height: 1; letter-spacing: -.03em; }
+  & .contact-band h2 { font-size: clamp(40px, 5.6vw, 80px); line-height: 1.04; }
+  & .site-footer .foot-name { font-size: clamp(28px, 2.6vw, 36px); line-height: 1.1; }
+  & .mnav-list a { font-size: clamp(30px, 8vw, 44px); line-height: 1.15; }
+  & .sec-head h2 { font-size: clamp(32px, 3.6vw, 48px); line-height: 1.1; }
+  & .section-heading h2 { font-size: clamp(30px, 3.4vw, 44px); line-height: 1.1; }
+  & .case-related h2 { font-size: clamp(26px, 2.4vw, 34px); line-height: 1.15; }
+  & .case-related-title { font-size: clamp(22px, 2vw, 28px); font-weight: 500; line-height: 1.15; }
+  & .ask-title { font-size: 1.375rem; font-weight: 500; line-height: 1.3; }
+  & :is(.display, .prose :where(h2, h3, h4), .hero-statement, .work-headline, .method-row h3, .experience-row h3, .case-header h1 span, .post-list strong, .post .case-header h1, .post-cta > p, .post-incident-title, .post-media h3) { font-weight: 500; letter-spacing: -.01em; }
+  & .hero-statement { font-weight: 400; line-height: 1.2; }
+  & .case-header h1 span { font-weight: 400; line-height: 1.2; }
+  & .post .case-header h1 { max-width: 18em; font-size: var(--text-h1); line-height: 1.08; }
+  & .work-headline { line-height: 1.25; }
+  @media (min-width: 768px) and (max-width: 1023px) { & .hero-name { font-size: clamp(56px, 10vw, 96px); } }
+  @media (max-width: 767px) {
+    & .hero-name { font-size: clamp(48px, 14vw, 72px); }
+    & .work-title { font-size: clamp(36px, 10vw, 52px); }
+    & .case-header h1 { font-size: clamp(40px, 11vw, 60px); }
+  }
+
+  /* Figures are set in the serif with lining numerals, like a report's key figures. */
+  & :is(.work-metrics dt, .case-metrics dt, .weekdays-figure strong, .post-tldr strong, .post-figures dt, .post-after dt, .post-cost-total) { font-family: var(--font-display); font-weight: 400; letter-spacing: -.02em; font-variant-numeric: lining-nums tabular-nums; }
+  & .work-metrics { grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); column-gap: 20px; }
+  & .work-metrics dt { font-size: clamp(32px, 3vw, 42px); line-height: 1; }
+  & .case-metrics dt { font-size: clamp(40px, 4.4vw, 60px); line-height: 1; }
+  & .weekdays-figure strong { font-size: clamp(44px, 7cqi, 80px); line-height: .95; }
+  & :is(.post-tldr strong, .post-figures dt) { font-size: 32px; }
+  & .post-after dt { font-size: 28px; }
+  & .post-cost-total { font-size: 40px; }
+  & .stat-unit { margin-left: .3em; font-family: var(--font-sans); font-size: var(--text-small); font-weight: 500; letter-spacing: 0; color: var(--muted); }
+
+  /* Room to breathe. */
+  & .section-space { padding-block: clamp(64px, 8vw, 120px); }
+  & .sec-head { margin-bottom: clamp(32px, 4vw, 56px); }
+  & .hero { padding-block: clamp(32px, 4.4vw, 64px) clamp(64px, 7vw, 104px); }
+
+  /* Header: the current page is underlined, the monogram is set in the serif. */
+  & .nav-link[aria-current] { background: none; color: var(--fg); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 7px; }
+  & .brand-mark { border: 1px solid var(--fg); background: none; color: var(--fg); font-family: var(--font-display); font-size: 15px; font-weight: 500; }
+  @media (hover: hover) { & .brand:hover .brand-mark { transform: none; box-shadow: none; background: var(--fg); color: var(--bg); } }
+
+  /* Buttons: a navy fill and a quiet outline, no shadows. */
+  & .btn { border: 1px solid var(--accent); font-weight: 500; }
+  & .btn-primary { background: var(--accent); color: var(--accent-fg); box-shadow: none; }
+  & .btn-ghost { border-color: color-mix(in oklab, var(--fg) 35%, var(--bg)); box-shadow: none; }
+  @media (hover: hover) {
+    & .btn-primary:hover { transform: none; border-color: var(--accent-deep); background: var(--accent-deep); box-shadow: none; }
+    & .btn-ghost:hover { transform: none; border-color: var(--accent); color: var(--accent); box-shadow: none; }
+  }
+  & :is(.btn-primary, .btn-ghost):active { transform: translateY(1px); box-shadow: none; }
+  & .nav-cta, & .nav-cta:hover { box-shadow: none !important; }
+
+  /* Hero */
+  & .hero-open::before { border-radius: 50%; box-shadow: none; background: var(--accent); }
+
+  /* Exhibits sit in a thin frame on the page. */
+  & .frame-box { padding: 0; border: 1px solid var(--line); background: var(--raised); box-shadow: none; }
+  @media (hover: hover) { & a.frame-box:hover { transform: none; border-color: var(--accent); } }
+  & .phones { background: var(--surface); }
+  & .niche img { border: 1px solid var(--line); }
+  & .phone-step { font-weight: 500; }
+  & .phone-step b { min-width: 0; height: auto; background: none; color: var(--accent); font-family: var(--font-sans); font-weight: 500; font-variant-numeric: tabular-nums; }
+  & .comparison-image, & .post-screen-img { border: 1px solid var(--line); background: var(--surface); }
+  & .comparison-image { padding: 14px; }
+  & .post-screen-img { padding: 14px 14px 0; }
+  & .post-screen-img img { border: 1px solid var(--line); border-bottom: 0; }
+  & :is(.work-cta, .contact-mail)::before { background: var(--surface); }
+  @media (hover: hover) {
+    & .work-cta:hover { color: var(--accent); }
+    & .frame-link:hover { background: var(--surface); color: var(--accent); }
+  }
+
+  /* Key figures run on from the facts above, closed by a rule, rather than sitting in a box. */
+  & .case-evidence { margin-top: 0; padding: clamp(22px, 2.8vw, 32px) 0; border: 0; border-bottom: 1px solid var(--line); background: none; }
+
+  /* Notes and cards: a thin navy bar, or a line. */
+  & :is(.decision-note, .post-prompt-text, .post-outcome) { border: 0; border-left: 2px solid var(--accent); }
+  & .decision-note { background: var(--surface); }
+  & .post-incident .post-figures > div { border-top: 1px solid var(--fg); }
+  & .post-after dl > div { border-top: 1px solid var(--accent); }
+  & .post-cta { border: 1px solid var(--line) !important; box-shadow: none; }
+  @media (hover: hover) { & :is(.post-steps a, .post-links a, .post-tldr a):hover { transform: none; border-color: var(--accent); box-shadow: none; } }
+
+  /* Case studies */
+  & .case-body .prose h2 { padding-top: 1em; border-top: var(--rule); }
+  @media (hover: hover) { & .case-nav a:hover { color: var(--fg); border-left-color: var(--line); } }
+  & .case-nav a { border-left-width: 2px; }
+  & .case-nav a[aria-current] { color: var(--fg); font-weight: 500; border-left-color: var(--accent); }
+  & .case-gallery { padding-top: 40px; }
+  & .case-related { padding-top: 32px; }
+  & .case-related a { padding: 24px; border: 1px solid var(--line); background: var(--raised); }
+  @media (hover: hover) { & .case-related a:hover { transform: none; border-color: var(--accent); box-shadow: none; } }
+
+  /* The contact block: navy, with the address in the serif. */
+  & .contact-band { --rule: 1px solid color-mix(in oklab, var(--hi-fg) 40%, var(--hi)); }
+  & .contact-mail { font-family: var(--font-display); font-weight: 400; letter-spacing: -.01em; }
+
+  /* Floating panels, and the CV's sheet on screen, lift off the page on a soft shadow. */
+  & :is(#palette, #ask-panel) { border: 1px solid var(--line); box-shadow: 0 24px 60px -20px rgb(0 0 0 / .35); }
+  @media screen { & .paper { box-shadow: 0 30px 80px -30px rgb(0 0 0 / .4); } }
+  @media (max-width: 640px) { & #ask-panel { box-shadow: none; } }
+  & .ask-launcher { border: 1px solid var(--line); background: var(--raised); color: var(--fg); font-size: var(--text-small); font-weight: 500; box-shadow: 0 10px 30px -12px rgb(0 0 0 / .35); }
+  & .ask-launcher svg { color: var(--accent); }
+  @media (hover: hover) { & .ask-launcher:hover { border-color: var(--accent); } }
+}

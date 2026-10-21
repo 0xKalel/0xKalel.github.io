@@ -1,0 +1,116 @@
+/* What Spec sheet and Classic share (lib/design.ts). global.css draws Gaming's castle; here it is
+   put away, so both designs start from plain surfaces and lines over the same markup:
+   - the castle's materials become surfaces and lines, and the game's pieces are hidden;
+   - the pixel font gives way to the display font, so Jersey 10 never loads;
+   - the pixel icons (src/icons/px-*) are drawn as Phosphor icons through a mask, so no markup changes;
+   - the HUD gives way to a floating Ask button and a reading progress bar under the header. */
+:root:not([data-design='gaming']) {
+  --stone: var(--surface);
+  --stone-hi: var(--line);
+  --stone-lo: var(--line);
+  --mortar: var(--line);
+  --cave: var(--fg);
+  --shade: transparent;
+  --flame-1: var(--hi);
+  --flame-2: var(--hi);
+  --flame-3: var(--hi);
+  --bevel: 0 0 0 transparent;
+  --floor: none;
+  --torchwall: var(--surface);
+  --stat-shadow: transparent;
+  --font-pixel: var(--font-display);
+  --pixel-label: var(--text-micro);
+  --hud-h: 0px;
+  --px-arrow: var(--ph-arrow-right);
+  /* Phosphor icons (@iconify-json/ph, regular weight) as data URIs, one per pixel icon. */
+  --ph-arrow-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='m221.66 133.66l-72 72a8 8 0 0 1-11.32-11.32L196.69 136H40a8 8 0 0 1 0-16h156.69l-58.35-58.34a8 8 0 0 1 11.32-11.32l72 72a8 8 0 0 1 0 11.32'/%3E%3C/svg%3E");
+  --ph-arrow-left: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M224 128a8 8 0 0 1-8 8H59.31l58.35 58.34a8 8 0 0 1-11.32 11.32l-72-72a8 8 0 0 1 0-11.32l72-72a8 8 0 0 1 11.32 11.32L59.31 120H216a8 8 0 0 1 8 8'/%3E%3C/svg%3E");
+  --ph-arrow-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='m205.66 149.66l-72 72a8 8 0 0 1-11.32 0l-72-72a8 8 0 0 1 11.32-11.32L120 196.69V40a8 8 0 0 1 16 0v156.69l58.34-58.35a8 8 0 0 1 11.32 11.32'/%3E%3C/svg%3E");
+  --ph-arrow-up-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M200 64v104a8 8 0 0 1-16 0V83.31L69.66 197.66a8 8 0 0 1-11.32-11.32L172.69 72H88a8 8 0 0 1 0-16h104a8 8 0 0 1 8 8'/%3E%3C/svg%3E");
+  --ph-caret-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='m213.66 101.66l-80 80a8 8 0 0 1-11.32 0l-80-80a8 8 0 0 1 11.32-11.32L128 164.69l74.34-74.35a8 8 0 0 1 11.32 11.32'/%3E%3C/svg%3E");
+  --ph-caret-left: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M165.66 202.34a8 8 0 0 1-11.32 11.32l-80-80a8 8 0 0 1 0-11.32l80-80a8 8 0 0 1 11.32 11.32L91.31 128Z'/%3E%3C/svg%3E");
+  --ph-caret-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='m181.66 133.66l-80 80a8 8 0 0 1-11.32-11.32L164.69 128L90.34 53.66a8 8 0 0 1 11.32-11.32l80 80a8 8 0 0 1 0 11.32'/%3E%3C/svg%3E");
+  --ph-download: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M224 144v64a8 8 0 0 1-8 8H40a8 8 0 0 1-8-8v-64a8 8 0 0 1 16 0v56h160v-56a8 8 0 0 1 16 0m-101.66 5.66a8 8 0 0 0 11.32 0l40-40a8 8 0 0 0-11.32-11.32L136 124.69V32a8 8 0 0 0-16 0v92.69L93.66 98.34a8 8 0 0 0-11.32 11.32Z'/%3E%3C/svg%3E");
+  --ph-moon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M233.54 142.23a8 8 0 0 0-8-2a88.08 88.08 0 0 1-109.8-109.8a8 8 0 0 0-10-10a104.84 104.84 0 0 0-52.91 37A104 104 0 0 0 136 224a103.1 103.1 0 0 0 62.52-20.88a104.84 104.84 0 0 0 37-52.91a8 8 0 0 0-1.98-7.98m-44.64 48.11A88 88 0 0 1 65.66 67.11a89 89 0 0 1 31.4-26A106 106 0 0 0 96 56a104.11 104.11 0 0 0 104 104a106 106 0 0 0 14.92-1.06a89 89 0 0 1-26.02 31.4'/%3E%3C/svg%3E");
+  --ph-sun: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M120 40V16a8 8 0 0 1 16 0v24a8 8 0 0 1-16 0m72 88a64 64 0 1 1-64-64a64.07 64.07 0 0 1 64 64m-16 0a48 48 0 1 0-48 48a48.05 48.05 0 0 0 48-48M58.34 69.66a8 8 0 0 0 11.32-11.32l-16-16a8 8 0 0 0-11.32 11.32Zm0 116.68l-16 16a8 8 0 0 0 11.32 11.32l16-16a8 8 0 0 0-11.32-11.32M192 72a8 8 0 0 0 5.66-2.34l16-16a8 8 0 0 0-11.32-11.32l-16 16A8 8 0 0 0 192 72m5.66 114.34a8 8 0 0 0-11.32 11.32l16 16a8 8 0 0 0 11.32-11.32ZM48 128a8 8 0 0 0-8-8H16a8 8 0 0 0 0 16h24a8 8 0 0 0 8-8m80 80a8 8 0 0 0-8 8v24a8 8 0 0 0 16 0v-24a8 8 0 0 0-8-8m112-88h-24a8 8 0 0 0 0 16h24a8 8 0 0 0 0-16'/%3E%3C/svg%3E");
+}
+
+:root:not([data-design='gaming']) {
+  /* Each pixel icon shows its Phosphor counterpart: the SVG paints a mask, not its pixel path. */
+  & svg[data-icon^='px-'] { background: currentColor; mask: var(--ico) center / contain no-repeat; shape-rendering: auto; }
+  & svg[data-icon^='px-'] > use { visibility: hidden; }
+  & svg[data-icon='px-arrow-right'] { --ico: var(--ph-arrow-right); }
+  & svg[data-icon='px-arrow-left'] { --ico: var(--ph-arrow-left); }
+  & svg[data-icon='px-arrow-down'] { --ico: var(--ph-arrow-down); }
+  & svg[data-icon='px-arrow-up-right'] { --ico: var(--ph-arrow-up-right); }
+  & svg[data-icon='px-caret-down'] { --ico: var(--ph-caret-down); }
+  & svg[data-icon='px-caret-left'] { --ico: var(--ph-caret-left); }
+  & svg[data-icon='px-caret-right'] { --ico: var(--ph-caret-right); }
+  & svg[data-icon='px-download'] { --ico: var(--ph-download); }
+  & svg[data-icon='px-moon'] { --ico: var(--ph-moon); }
+  & svg[data-icon='px-sun'] { --ico: var(--ph-sun); }
+  /* Pixel icons were sized to whole pixels of their grid; these are drawn at text size. */
+  & .btn svg[data-icon^='px-'] { font-size: 1.1em; }
+  & .frame-bar svg { font-size: 16px; }
+  & .design-select-box svg { font-size: 12px; }
+
+  /* The game's pieces. The HUD, the heroes and the 404 pit say which designs they belong to (data-designs). */
+  & :is(.potion-spot, .potion-mark, .potion-reward, .item-slot, .contact-exit, .case-related .door-icon) { display: none !important; }
+
+  /* Castle decoration: pillars, floor tiles, trails, extruded text, outlines in the stone. */
+  & .page-frame::before, & .page-frame::after { content: none; }
+  @media (min-width: 1024px) { & .page-frame { border-inline: 1px solid var(--line); } }
+  & .frame-box > :not(.frame-bar, :focus-visible) { outline: 0; }
+  & :is(.hero-name, .work-title, .case-header h1, .page-head h1, .work-metrics dt, .case-metrics dt, .weekdays-figure strong, .post-tldr strong, .post-figures dt, .post-after dt, .post-cost-total) { text-shadow: none; }
+  & .site-footer { border-top: 1px solid var(--line); }
+  & .site-footer::before { content: none; }
+  & :is(.case-gallery, .case-related) { border-top: var(--rule); background-image: none; }
+  & .experience-row { padding-left: 0; }
+  & .experience-row::before, & .experience-row::after { content: none; }
+  & .sec-num { box-shadow: none; }
+  & .weekdays-grid span { box-shadow: none; }
+  & :is(.niche, .niche-in) { padding: 0; background: none; clip-path: none; }
+  & .niche-in { display: block; }
+  & .phone-step { padding: 0; background: none; color: var(--fg); font-family: var(--font-sans); font-size: var(--text-small); font-weight: 600; line-height: 1.4; text-transform: none; box-shadow: none; }
+
+  /* The section nav is a plain list with a bar beside the section being read. */
+  & .case-nav li::before, & .case-nav a::before { content: none; }
+  & .case-nav a { display: block; padding: 11px 0 11px 14px; border-left: 3px solid transparent; transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease; }
+
+  /* The contact band no longer keeps room for the exit door beside its heading. */
+  @media (min-width: 768px) { & .contact-band :is(h2, .contact-description) { max-width: var(--measure); } }
+
+  /* Related work cards lose their door, and keep clear of the contact band below them. On the
+     writing list the door becomes an arrow. */
+  & .case-related { padding-bottom: clamp(64px, 7vw, 104px); }
+  & .case-related a { display: block; }
+  & .post-list .door-icon { width: 22px; height: 22px; margin-top: .3em; clip-path: none; background: currentColor; mask: var(--ph-arrow-up-right) center / contain no-repeat; transition: transform 200ms var(--ease-out); }
+  & .post-list .door-icon::before, & .post-list .door-icon::after { content: none; }
+  @media (hover: hover) { & .post-list a:hover .door-icon { transform: translate(3px, -3px); } }
+
+  /* How far down the page the reader is (scrollPosition in scripts/site.ts). */
+  & .reading-progress { position: absolute; left: 0; bottom: -1px; width: 100%; height: 2px; background: var(--hi); transform: scaleX(0); transform-origin: left; pointer-events: none; }
+
+  /* The floating Ask button (Ask.astro); it steps aside over the hero and the contact band. */
+  & .ask-launcher {
+    position: fixed;
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    z-index: 30;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 52px;
+    padding: 0 18px 0 14px;
+    cursor: pointer;
+    transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out), background-color 180ms ease, opacity 240ms ease, translate 300ms var(--ease-out), visibility 0s linear 0s;
+  }
+  & .ask-launcher svg { flex-shrink: 0; font-size: 22px; }
+  & .ask-launcher.is-away { opacity: 0; translate: 0 16px; visibility: hidden; pointer-events: none; transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out), opacity 200ms ease, translate 260ms var(--ease-out), visibility 0s linear 260ms; }
+  @media (max-width: 640px) {
+    & .ask-launcher { justify-content: center; width: 54px; height: 54px; padding: 0; }
+    & .ask-launcher svg { font-size: 25px; }
+    & .ask-launcher-label { display: none; }
+  }
+  @media print { & .ask-launcher { display: none !important; } }
+}

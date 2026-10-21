@@ -8,6 +8,13 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+## Designs
+
+The site has three designs over the same markup (`src/lib/design.ts`): Classic (the default), Spec sheet (the design before Gaming) and Gaming. A visitor gets the one in `?design=classic|spec|gaming` on any URL, else their saved choice, else Classic; the header select switches it. `src/styles/global.css` is Gaming and the base; `src/styles/designs/` re-dress it (`flat.css` is shared by the other two). Parts that exist in some designs only carry `data-designs="…"`.
+
+- Check every visual change in all three designs, light and dark: a new rule in `global.css` also shows in the others unless they override it.
+- A new pixel icon (`src/icons/px-*`) needs a Phosphor counterpart in `flat.css` (the `--ph-*` list), or it shows as a filled square outside Gaming.
+
 ## Ask chat (worker/)
 
 The "ask about my work" chat is a Cloudflare Worker in `worker/` (deployed separately from the site) plus `src/components/Ask.astro`. Its knowledge comes from the build-time endpoint `src/pages/ask/knowledge.txt.ts`, assembled by `src/lib/knowledge.ts` from the public data sources only — never from the gitignored evidence audits, which contain revenue.

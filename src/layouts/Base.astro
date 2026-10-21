@@ -3,11 +3,19 @@ import '@fontsource-variable/geist';
 import '@fontsource-variable/geist-mono';
 // Latin only: every character on the site is in it, and the other subsets would never load.
 import '@fontsource/jersey-10/latin.css';
-// Preloaded so the pixel font is ready at first paint; its wider stand-in could otherwise push the layout.
+// Classic's headings. The weight axis only: optical sizes would more than double the file.
+import '@fontsource-variable/newsreader/wght.css';
+// The design's display font is preloaded by the head script, so it is ready at first paint; a stand-in
+// of another width could otherwise push the layout. Fonts of the other designs never load.
 import jerseyLatin from '@fontsource/jersey-10/files/jersey-10-latin-400-normal.woff2?url';
+import newsreaderLatin from '@fontsource-variable/newsreader/files/newsreader-latin-wght-normal.woff2?url';
 // Body text too: found only through the stylesheet, it arrived after first paint and shifted text as it swapped in.
 import geistLatin from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
 import '../styles/global.css';
+// After global.css (Gaming), so each design's rules win over the ones they replace.
+import '../styles/designs/flat.css';
+import '../styles/designs/spec.css';
+import '../styles/designs/classic.css';
 import { ClientRouter } from 'astro:transitions';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -16,7 +24,7 @@ import Ask from '../components/Ask.astro';
 import Hud from '../components/Hud.astro';
 import { experience, profile } from '../data/cv';
 import { POTIONS, SOUND_ON_BY_DEFAULT } from '../lib/potions';
-import { THEME_COLOR } from '../lib/theme';
+import { DEFAULT_DESIGN, DESIGN_IDS, THEME_COLOR } from '../lib/design';
 
 interface Props {
   title?: string;
@@ -47,10 +55,11 @@ const socialImage = new URL('/social-preview.png', Astro.site);
 const personId = new URL('/#person', Astro.site).href;
 const current = experience.find((e) => e.id === 'storagepal');
 const GA_ID = 'G-SLJ8G6MSCP';
+const designFonts = bare ? {} : { gaming: jerseyLatin, classic: newsreaderLatin };
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-design={DEFAULT_DESIGN}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -58,7 +67,6 @@ const GA_ID = 'G-SLJ8G6MSCP';
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    {!bare && <link rel="preload" href={jerseyLatin} as="font" type="font/woff2" crossorigin />}
     {!bare && <link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin />}
     <meta property="og:type" content={published ? 'article' : 'website'} />
     {noindex && <meta name="robots" content="noindex, follow" />}
@@ -77,8 +85,8 @@ const GA_ID = 'G-SLJ8G6MSCP';
     <meta name="twitter:image:alt" content="Khalil Hebachi, lead full-stack engineer. Building web products since 2012." />
     {published && <meta property="article:published_time" content={published.toISOString()} />}
     {updated && <meta property="article:modified_time" content={updated.toISOString()} />}
-    <meta name="theme-color" content={THEME_COLOR.dark} media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content={THEME_COLOR.light} media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content={THEME_COLOR[DEFAULT_DESIGN].dark} media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content={THEME_COLOR[DEFAULT_DESIGN].light} media="(prefers-color-scheme: light)" />
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Person',
@@ -121,13 +129,39 @@ const GA_ID = 'G-SLJ8G6MSCP';
       url: profile.site,
     })} />}
     {!bare && <ClientRouter />}
-    <script is:inline define:vars={{ potionIds: POTIONS, soundDefault: SOUND_ON_BY_DEFAULT, themeColor: THEME_COLOR }}>
+    <script is:inline define:vars={{ potionIds: POTIONS, soundDefault: SOUND_ON_BY_DEFAULT, themeColor: THEME_COLOR, designIds: DESIGN_IDS, defaultDesign: DEFAULT_DESIGN, designFonts }}>
       // The router copies each new page's <html> attributes over the current ones, and this
-      // head script runs only once, so re-apply the saved theme, the potion game (lib/potions.ts)
-      // and the js flag after every swap. Applying them here, before paint, keeps the HUD from flickering.
+      // head script runs only once, so re-apply the design (lib/design.ts), the saved theme, the potion
+      // game (lib/potions.ts) and the js flag after every swap. Applying them here, before paint, keeps
+      // the page from flashing another design and the HUD from flickering.
       (() => {
-        const apply = () => {
+        // The design on show before a swap, which the next page keeps. The URL is read on arrival
+        // only, so going back to a link with ?design= does not undo a choice made since.
+        let shown;
+        const apply = (arriving) => {
           const html = document.documentElement;
+          let design = shown;
+          if (arriving) {
+            const asked = new URLSearchParams(location.search).get('design');
+            let saved;
+            try { saved = localStorage.getItem('design'); } catch {}
+            if (designIds.includes(asked)) {
+              design = asked;
+              html.dataset.designSource = 'link';
+              try { localStorage.setItem('design', asked); } catch {}
+            } else if (designIds.includes(saved)) {
+              design = saved;
+              html.dataset.designSource = 'saved';
+            }
+          }
+          if (!designIds.includes(design)) design = defaultDesign;
+          html.dataset.design = design;
+          // After a swap the new header's selects are already in place; on arrival Nav.astro sets them.
+          document.querySelectorAll('[data-design-select]').forEach((select) => { select.value = design; });
+          if (arriving && designFonts[design]) {
+            const font = Object.assign(document.createElement('link'), { rel: 'preload', as: 'font', type: 'font/woff2', crossOrigin: '', href: designFonts[design] });
+            document.head.append(font);
+          }
           html.classList.add('js');
           // Shortcut hints show ⌘K on Apple devices and Ctrl K elsewhere (see Nav.astro).
           const platform = navigator.userAgentData?.platform || navigator.platform || '';
@@ -147,16 +181,18 @@ const GA_ID = 'G-SLJ8G6MSCP';
           if (sound ? sound === 'on' : soundDefault) html.dataset.sound = 'on';
           let t;
           try { t = localStorage.getItem('theme'); } catch {}
-          if (t !== 'light' && t !== 'dark') return;
-          html.dataset.theme = t;
-          const color = themeColor[t];
+          const picked = t === 'light' || t === 'dark';
+          if (picked) html.dataset.theme = t;
+          const colors = themeColor[design];
           document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
-            m.setAttribute('content', color);
+            if (!picked) return m.setAttribute('content', colors[m.getAttribute('media')?.includes('light') ? 'light' : 'dark']);
+            m.setAttribute('content', colors[t]);
             m.removeAttribute('media');
           });
         };
-        apply();
-        document.addEventListener('astro:after-swap', apply);
+        apply(true);
+        document.addEventListener('astro:before-swap', () => { shown = document.documentElement.dataset.design; });
+        document.addEventListener('astro:after-swap', () => apply(false));
       })();
     </script>
     {
@@ -169,6 +205,10 @@ const GA_ID = 'G-SLJ8G6MSCP';
               dataLayer.push(arguments);
             };
             gtag('js', new Date());
+            // Which design the visit saw, and whether a link chose it (needs a "design" custom dimension in GA4).
+            const { design, designSource } = document.documentElement.dataset;
+            gtag('set', { design, design_source: designSource || 'default' });
+            gtag('set', 'user_properties', { design });
             gtag('config', GA_ID);
             // gtag.js is about 180 KB of script, so it loads once the page is idle; calls made
             // before then wait in dataLayer and are sent when it arrives.

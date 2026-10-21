@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import DesignSelect from './DesignSelect.astro';
 import { profile } from '../data/cv';
 
 // `section` marks the pages a homepage link stands for, so Work is current on every case study.
@@ -49,6 +50,8 @@ const current = (l: (typeof links)[number]) => {
           <span class="kbd-mac">⌘K</span><span class="kbd-other">Ctrl K</span>
         </button>
 
+        <DesignSelect id="design-nav" class="nav-design" />
+
         <button type="button" data-theme-toggle class="nav-icon" aria-label="Switch between light and dark themes">
           <Icon name="px-sun" class="theme-sun" aria-hidden="true" />
           <Icon name="px-moon" class="theme-moon" aria-hidden="true" />
@@ -71,6 +74,8 @@ const current = (l: (typeof links)[number]) => {
   </nav>
 
   <noscript><nav aria-label="Pages without JavaScript" class="flex flex-wrap justify-center gap-x-5 gap-y-2 px-4 pb-3 text-sm">{links.map((l) => <a class="link py-2" href={l.href}>{l.label}</a>)}</nav></noscript>
+  <!-- How far down the page the reader is (scrollPosition in scripts/site.ts); Gaming has the HUD for that. -->
+  <div class="reading-progress" data-reading-progress data-designs="spec classic" aria-hidden="true"></div>
 </header>
 
 <dialog id="mnav" aria-label="Navigation">
@@ -95,7 +100,13 @@ const current = (l: (typeof links)[number]) => {
     <a href={profile.github} class="btn btn-ghost">GitHub</a>
     <a href={profile.linkedin} class="btn btn-ghost">LinkedIn</a>
   </div>
+  <DesignSelect id="design-menu" labelled class="mnav-design" />
 </dialog>
+
+<script is:inline>
+  // Show the visitor's design (set in the head by Base.astro) before the header paints.
+  document.querySelectorAll('[data-design-select]').forEach((select) => { select.value = document.documentElement.dataset.design; });
+</script>
 
 <style>
   /* Sun in dark mode (click to go light), moon in light mode. */

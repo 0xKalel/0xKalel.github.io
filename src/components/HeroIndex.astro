@@ -1,0 +1,64 @@
+---
+/** Classic's hero exhibit: the three projects as a numbered index, like the contents page of a
+ *  printed report. No pictures; each line leads down to its project. */
+import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import { heroProjects } from '../data/hero';
+
+const work = await getCollection('work');
+const period = (id: string) => work.find((w) => w.id === id)?.data.period;
+---
+
+<div class="index" data-designs="classic">
+  <p class="index-label">Selected work</p>
+  <ol aria-label="Recent work">
+    {heroProjects.map((p) => (
+      <li>
+        <a href={`#${p.id}`}>
+          <span class="index-num" aria-hidden="true">{p.n}</span>
+          <span class="index-name">{p.name}</span>
+          <span class="index-text">{p.text}<span class="index-period">{period(p.id)}</span></span>
+          <Icon name="px-arrow-down" aria-hidden="true" />
+        </a>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<style>
+  .index { min-width: 0; padding-top: 4px; }
+  .index-label { padding-bottom: 14px; border-bottom: 1px solid var(--fg); font-size: var(--text-small); font-weight: 500; color: var(--muted); }
+  .index a {
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+    align-items: baseline;
+    column-gap: 4px;
+    row-gap: 6px;
+    padding-block: 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .index-num { grid-row: 1 / span 2; font-size: var(--text-small); font-weight: 500; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .index-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -.012em;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+    transition: text-decoration-color 180ms ease;
+  }
+  .index-text { grid-column: 2 / -1; font-size: var(--text-small); line-height: 1.5; color: var(--muted); }
+  .index-period::before { content: '·'; margin-inline: 8px; }
+  .index a :global(svg) { grid-row: 1; grid-column: 3; align-self: center; font-size: 18px; color: var(--muted); transition: transform 200ms var(--ease-out), color 200ms ease; }
+  @media (hover: hover) {
+    .index a:hover .index-name { text-decoration-color: var(--accent); }
+    .index a:hover :global(svg) { transform: translateY(3px); color: var(--accent); }
+  }
+  .index { animation: index-in 600ms var(--ease-out) 300ms backwards; }
+  @keyframes index-in { from { opacity: 0; transform: translateY(10px); } }
+  @media (max-width: 1023px) { .index { max-width: 640px; } }
+  @media (prefers-reduced-motion: reduce) { .index { animation: none; } }
+</style>

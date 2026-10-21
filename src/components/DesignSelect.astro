@@ -1,0 +1,26 @@
+---
+/** The design switcher (lib/design.ts). A native select, so phones show their own picker and
+ *  keyboards and screen readers get the platform's behavior. setDesign in scripts/site.ts applies a
+ *  change; the value shown is set before paint (Nav.astro, and Base.astro after a page swap).
+ *  Hidden without JavaScript, which could not apply it. */
+import { Icon } from 'astro-icon/components';
+import { DEFAULT_DESIGN, DESIGNS } from '../lib/design';
+
+interface Props {
+  id: string;
+  /** Shows the "Design" label; otherwise it is for screen readers only. */
+  labelled?: boolean;
+  class?: string;
+}
+const { id, labelled = false, class: className } = Astro.props;
+---
+
+<span class:list={['design-select', className]}>
+  <label for={id} class={labelled ? 'design-select-label' : 'sr-only'}>Design</label>
+  <span class="design-select-box">
+    <select id={id} data-design-select autocomplete="off">
+      {DESIGNS.map((d) => <option value={d.id} selected={d.id === DEFAULT_DESIGN}>{d.label}</option>)}
+    </select>
+    <Icon name="px-caret-down" aria-hidden="true" />
+  </span>
+</span>

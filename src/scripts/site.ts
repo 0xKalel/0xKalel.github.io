@@ -1,5 +1,5 @@
 import { POTIONS } from '../lib/potions';
-import { THEME_COLOR } from '../lib/theme';
+import { THEME_COLOR, isDesign, type DesignId } from '../lib/design';
 import { play, setSound, soundOn } from './sound';
 
 // Bind once per Astro page visit, and release listeners and animation frames on exit.
@@ -20,10 +20,17 @@ function animate(element: Element, frames: Keyframe[], duration = 380, delay = 0
   motion.onfinish = motion.oncancel = () => motions.delete(motion);
   return motion;
 }
-function track(name: string, params?: Record<string, string | number>) {
-  const gtag = (window as { gtag?: (...args: unknown[]) => void }).gtag;
-  if (typeof gtag === 'function') gtag('event', name, params);
+function gtag(...args: unknown[]) {
+  const send = (window as { gtag?: (...args: unknown[]) => void }).gtag;
+  if (typeof send === 'function') send(...args);
 }
+function track(name: string, params?: Record<string, string | number>) {
+  gtag('event', name, params);
+}
+// The design on show (lib/design.ts). The game's effects belong to Gaming; its pieces are hidden by CSS
+// in the other designs, so they stay bound and come back with it without a reload.
+const design = () => document.documentElement.dataset.design as DesignId;
+const gaming = () => design() === 'gaming';
 function cleanup() {
   cleanups.splice(0).forEach((fn) => fn());
   motions.forEach((motion) => motion.cancel());
@@ -103,7 +110,7 @@ function pixelReveal() {
   const veils = new Set<HTMLCanvasElement>();
   const timers = new Set<ReturnType<typeof setTimeout>>();
   const run = (img: HTMLImageElement | null | undefined) => {
-    if (!img || img.dataset.pixel || !img.complete || !img.naturalWidth) return;
+    if (!gaming() || !img || img.dataset.pixel || !img.complete || !img.naturalWidth) return;
     const w = img.clientWidth;
     const h = img.clientHeight;
     if (w < 48 || h < 48) return;
@@ -193,7 +200,9 @@ function flash(html: string, ms = 3200) {
   flashTimer = setTimeout(() => refreshHud(), ms + 20);
 }
 
+// Also the reading progress bar under the header, which stands in for the HUD in the other designs.
 function scrollPosition() {
+  const bar = document.querySelector<HTMLElement>('[data-reading-progress]');
   const hudText = document.querySelector<HTMLElement>('[data-hud-text]');
   const title = hudText?.dataset.hudTitle ?? '';
   const sections = $$<HTMLElement>('main section[id]');
@@ -204,6 +213,8 @@ function scrollPosition() {
   let line = '';
   let frame = 0;
   const update = () => {
+    const distance = document.documentElement.scrollHeight - innerHeight;
+    if (bar) bar.style.transform = `scaleX(${distance > 0 ? Math.min(1, Math.max(0, scrollY / distance)) : 0})`;
     const current = location.pathname === '/' ? [...sections].reverse().find((section) => section.getBoundingClientRect().top <= 150) : undefined;
     if (location.pathname === '/') {
       links.forEach((link) => {
@@ -324,7 +335,7 @@ function potions() {
   // Say what the triangles are for, once, after the first scroll: the opening seconds belong to the page.
   if (!drunk.size && !introShown) {
     listen(window, 'scroll', () => {
-      if (drunk.size || !firstVisit()) return;
+      if (drunk.size || !gaming() || !firstVisit()) return;
       flash(`<b>${total} potions</b> hide in the castle`, 5000);
       if (status) status.textContent = `${total} potions hide in the castle. Find one and select it to drink it.`;
     }, { passive: true, once: true });
@@ -452,21 +463,60 @@ function menu() {
   cleanups.push(() => { if (dialog.open) close(); document.documentElement.style.overflow = previousOverflow; });
 }
 
+// Keep the browser chrome color in step with the design and the theme. Mirrors the head script in Base.astro.
+function paintChrome() {
+  const colors = THEME_COLOR[design()];
+  const picked = document.documentElement.dataset.theme as 'light' | 'dark' | undefined;
+  document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
+    if (!picked) { meta.content = colors[meta.media.includes('light') ? 'light' : 'dark']; return; }
+    meta.content = colors[picked];
+    meta.removeAttribute('media');
+  });
+}
+
 function theme() {
   $$('[data-theme-toggle]').forEach((button) => listen(button, 'click', () => {
     const html = document.documentElement;
     const light = html.dataset.theme === 'light' || (!html.dataset.theme && matchMedia('(prefers-color-scheme: light)').matches);
     const next = light ? 'dark' : 'light';
     html.dataset.theme = next;
-    // Keep the browser chrome color in sync with the chosen theme.
-    const color = THEME_COLOR[next];
-    document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
-      meta.content = color;
-      meta.removeAttribute('media');
-    });
+    paintChrome();
     try { localStorage.setItem('theme', next); } catch {}
   }));
 }
+
+// Switch the design in place: saved for the rest of the visit, and dropped from the URL so a reload
+// keeps the choice rather than the link's. Nothing rebinds; see gaming() above.
+function setDesign(next: DesignId, via: string) {
+  const html = document.documentElement;
+  const from = design();
+  if (next === from) return;
+  try { localStorage.setItem('design', next); } catch {}
+  const url = new URL(location.href);
+  if (url.searchParams.has('design')) {
+    url.searchParams.delete('design');
+    history.replaceState(history.state, '', url);
+  }
+  const apply = () => {
+    html.dataset.design = next;
+    delete html.dataset.designSource;
+    $$<HTMLSelectElement>('[data-design-select]').forEach((select) => { select.value = next; });
+    paintChrome();
+  };
+  if (reduced() || !document.startViewTransition) apply();
+  else document.startViewTransition(apply);
+  gtag('set', { design: next, design_source: via });
+  gtag('set', 'user_properties', { design: next });
+  track('design_switch', { from, to: next, via });
+}
+// Bound once for the whole visit: the header's selects are replaced on every page, the palette asks by event.
+document.addEventListener('change', (event) => {
+  const select = event.target as HTMLSelectElement;
+  if (select.matches('[data-design-select]') && isDesign(select.value)) setDesign(select.value, 'select');
+});
+document.addEventListener('site:design', ((event: CustomEvent<{ design: string; via: string }>) => {
+  if (isDesign(event.detail.design)) setDesign(event.detail.design, event.detail.via);
+}) as EventListener);
 
 function copyEmail() {
   $$('[data-copy]').forEach((button) => {

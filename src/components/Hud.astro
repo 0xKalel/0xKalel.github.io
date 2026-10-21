@@ -14,7 +14,7 @@ interface Props {
 const { title } = Astro.props;
 ---
 
-<div class="hud">
+<div class="hud" data-designs="gaming">
   <div class="hud-left">
     <div class="hud-life" aria-hidden="true">
       {POTIONS.map((_, i) => <span class="hud-tri" style={`--n:${i}`} />)}
