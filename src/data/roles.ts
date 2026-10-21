@@ -31,7 +31,7 @@ export const roles: Role[] = [
     label: 'Lead full-stack',
     headline: 'Lead Full-Stack Engineer, Laravel and React',
     summary:
-      'Full-stack engineer since 2012. I lead two developers and two testers at StoragePal, plan releases, and guide technical decisions. I build and maintain business software and AI products with Laravel and React.',
+      'Lead full-stack engineer building software since 2012. At StoragePal, I handle the platform day to day, from deciding what to build to fixing production, and I built the SPS warehouse app for its staff. I get up to speed quickly on unfamiliar code, whether legacy, new, or written with AI, and I bring in and guide developers and testers when the work needs it.',
     focus: ['lead', 'laravel', 'perf', 'frontend'],
     bullets: [6, 3, 2, 3, 3, 2],
     projectBullets: 4,
@@ -47,7 +47,7 @@ export const roles: Role[] = [
     label: 'AI engineer',
     headline: 'AI Product Engineer, Laravel and LLM applications',
     summary:
-      'I build AI products with Laravel and React, including RavenClip. My work covers user workflows, failure recovery, and output checks. I make product and architecture decisions and review code written with AI.',
+      'I build AI products with Laravel and React, including RavenClip, which I started because I wanted an easier way to follow the news. My work covers user workflows, failure recovery, and output checks. I make product and architecture decisions and review code written with AI.',
     focus: ['ai', 'lead', 'founder', 'laravel'],
     bullets: [6, 3, 2, 3, 3, 2],
     projectBullets: 4,
@@ -64,7 +64,7 @@ export const roles: Role[] = [
     label: 'Founding engineer',
     headline: 'Founding Engineer, product development and launch',
     summary:
-      'I build products that solve business problems. I co-founded a development agency, launched RavenClip, and lead development at StoragePal. I release improvements in small steps and learn from how people use them.',
+      'I build products that solve business problems. I co-founded a development agency, launched RavenClip, and own product development at StoragePal. I release improvements in small steps and learn from how people use them.',
     focus: ['founder', 'ai', 'lead', 'freelance'],
     bullets: [6, 3, 2, 3, 3, 2],
     projectBullets: 4,

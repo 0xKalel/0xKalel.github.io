@@ -1,7 +1,7 @@
 ---
 title: RavenClip
-headline: From a personal tool to paying customers.
-tagline: I built and run RavenClip alongside full-time work. It turns news into videos for YouTube Shorts and TikTok.
+headline: I wanted a better way to follow the news.
+tagline: That became RavenClip, a product that turns news into videos and publishes them to YouTube Shorts and TikTok. I build and run it alongside my full-time work.
 category: Founder · AI product and operations
 role: Founder, product development, engineering, and operations
 period: May 2026 - present
@@ -37,7 +37,7 @@ import Potion from '../../components/pop/Potion.astro';
 
 ## Start with a complete workflow
 
-I wanted an easier way to follow the news, so I built the full process from story selection to publishing.
+RavenClip started with something I wanted to use myself. I built a version that could take a story all the way to a finished video, then worked on getting it to run without me starting each step.
 
 <div class="card post-solo not-prose fx">
   <p class="eyebrow">The first weeks</p>
@@ -48,11 +48,11 @@ I wanted an easier way to follow the news, so I built the full process from stor
   </ol>
 </div>
 
-The priority was to publish on a schedule without manual steps. Extra controls could wait.
+I wanted it to keep publishing while I was busy with other work. A story picker wasn’t helping with that, so I took it back out.
 
 ## Learn from the people who pay
 
-I expected creators running news channels to use it. The first paying customers were an agency, an AI consulting firm, and a coach.
+I thought I was building for people running news channels. The first paying customers had something else in mind.
 
 <div class="post-split not-prose">
   <div class="card post-no fx">
@@ -71,7 +71,7 @@ I expected creators running news channels to use it. The first paying customers 
   </div>
 </div>
 
-I focused the product on businesses that share their expertise to build an audience.
+They wanted to share their expertise and reach an audience. That gave me a clearer reason to add brand controls and more channels per account.
 
 <div class="post-group not-prose">
   <p class="eyebrow">What I added for them</p>
@@ -87,13 +87,13 @@ I focused the product on businesses that share their expertise to build an audie
   <div class="fx" style="--d:140ms"><dt>30 / 30</dt><dd>posts from those customers published automatically, as of September 26, 2026</dd></div>
 </dl>
 
-Three customers offer useful feedback, but it is still early.
+It’s still early. Three customers gave me a direction to follow, not a reason to assume I’d figured the market out.
 
 <span id="choose-architecture-around-recovery-needs" aria-hidden="true"></span>
 
 ## Recover without repeating work
 
-Each video uses several paid services. Restarting the whole process after one failure would repeat completed work and its cost.
+If a render fails, I don’t want to pay for the narration and images again. Each video saves its progress so it can pick up where it stopped.
 
 <PipelineRaven />
 
@@ -106,14 +106,14 @@ Each video uses several paid services. Restarting the whole process after one fa
 
 <div class="decision-note not-prose">
   <p class="eyebrow">When a simpler approach works</p>
-  <p>Saving each stage adds code to maintain. When a user starts a short rebuild, a simple sequence of jobs is enough.</p>
+  <p>I don’t use this for every job. Rebuilding a scene after an edit is a short sequence; a simple job chain does the job.</p>
 </div>
 
 <span id="notice-when-fallback-hides-a-problem" aria-hidden="true"></span>
 
 ## Monitor backup providers
 
-When one provider failed, a backup provider kept videos running. That hid the problem.
+The videos kept coming, so I thought the providers were fine. One had actually been out of credit for 25 days. The backup was doing the work at a higher price.
 
 <Potion id="ravenclip" />
 
@@ -145,7 +145,7 @@ When one provider failed, a backup provider kept videos running. That hid the pr
 
 ## Know the limits of AI checks
 
-Automated checks catch structural problems. Customers still need to review factual claims.
+I can check whether a script stays on topic or fits the required length. I can’t treat a passing check as proof that every claim is true. That’s why customers can review videos and flagged ones wait for approval.
 
 <div class="post-split not-prose">
   <div class="card fx">
@@ -187,6 +187,6 @@ Automated checks catch structural problems. Customers still need to review factu
 </div>
 
 <div class="post-cta card not-prose fx">
-  <p>Read more about recovery, AI checks, and costs.</p>
+  <p>I wrote a closer look at the engineering, including what went wrong.</p>
   <a class="btn btn-primary" href="/blog/2026/09/25/ravenclip-engineering/">Read the post <Icon name="px-arrow-right" aria-hidden="true" /></a>
 </div>

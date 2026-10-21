@@ -30,9 +30,9 @@ const phones = [
 ];
 
 const principles = [
-  { icon: 'stairs', title: 'Start with what matters.', text: 'Solve the most costly problem first.', href: '/work/storagepal/#start-where-staff-were-blocked', link: 'Start with daily operations' },
-  { icon: 'scales', title: 'Keep the design practical.', text: 'Choose a simple design that meets the requirements.', href: '/work/sps/#remove-complexity-the-warehouse-does-not-need', link: 'Why I removed offline mode' },
-  { icon: 'hourglass', title: 'Support what you build.', text: 'Use feedback, errors, and costs to decide what to improve.', href: '/work/ravenclip/#learn-from-the-people-who-pay', link: 'What paying customers taught me' },
+  { icon: 'stairs', title: 'Find what’s getting in the way.', text: 'At StoragePal, staff needed better tools for their daily work. That’s where I started.', href: '/work/storagepal/#start-where-staff-were-blocked', link: 'Start with daily operations' },
+  { icon: 'scales', title: 'Leave out what we don’t need.', text: 'Every warehouse had internet, so I removed offline mode from SPS. Less code to look after.', href: '/work/sps/#remove-complexity-the-warehouse-does-not-need', link: 'Why I removed offline mode' },
+  { icon: 'hourglass', title: 'Pay attention after launch.', text: 'RavenClip’s first customers weren’t who I expected. Their needs changed what I built next.', href: '/work/ravenclip/#learn-from-the-people-who-pay', link: 'What paying customers taught me' },
 ] as const;
 ---
 
@@ -45,8 +45,8 @@ const principles = [
       </h1>
       <div class="hero-grid">
         <div>
-          <p class="hero-statement rise" style="--i:2">Lead full-stack engineer.<br />Building useful software for <mark>{years} years.</mark></p>
-          <p class="hero-sub rise" style="--i:3">I build business software and AI products with Laravel, React, and TypeScript.</p>
+          <p class="hero-statement rise" style="--i:2">A full-stack engineer<br />you can hand a project to.</p>
+          <p class="hero-sub rise" style="--i:3">I’ve spent {years} years building products and working on existing systems. I get up to speed quickly, write the code, and stay involved after launch.</p>
           <div class="hero-actions rise" style="--i:4">
             <a href="#work" class="btn btn-primary">Explore my work <Icon name="px-arrow-down" aria-hidden="true" /></a>
             <a href={`/cv/${defaultRole.slug}.pdf`} class="btn btn-ghost">Download CV <Icon name="px-download" aria-hidden="true" /></a>
@@ -62,7 +62,7 @@ const principles = [
     <div class="shell section-space">
       <header class="sec-head fx">
         <h2><span class="sec-num" aria-hidden="true"></span>Selected work</h2>
-        <p class="sec-note">Three products I build and maintain.</p>
+        <p class="sec-note">Here’s what I’ve been working on, and the decisions behind it.</p>
       </header>
 
       <div class="work-list">
@@ -134,8 +134,8 @@ const principles = [
     <div class="shell section-space">
       <header class="sec-head fx">
         <h2><span class="sec-num" aria-hidden="true"></span>How I work</h2>
-        <p class="sec-note">Clear priorities, practical decisions, and support after launch.</p>
-        <div class="sec-links"><a href="/how-i-work/" class="text-link">Read my approach <Icon name="px-arrow-right" aria-hidden="true" /></a></div>
+        <p class="sec-note">A few choices that say more than a list of principles.</p>
+        <div class="sec-links"><a href="/how-i-work/" class="text-link">More about how I work <Icon name="px-arrow-right" aria-hidden="true" /></a></div>
       </header>
       <ol class="method">
         {principles.map((p) => (
@@ -161,7 +161,7 @@ const principles = [
     <div class="shell section-space">
       <header class="sec-head fx">
         <h2><span class="sec-num" aria-hidden="true"></span>Experience</h2>
-        <p class="sec-note">Recent roles. I’ve been building software and teams since 2012.</p>
+        <p class="sec-note">I co-founded a development agency in 2012. These days, I look after StoragePal and build RavenClip.</p>
         <div class="sec-links">
           <a class="text-link" href="/cv/">Full CV <Icon name="px-arrow-right" aria-hidden="true" /></a>
           <a class="text-link" href={`/cv/${defaultRole.slug}.pdf`}>Download PDF <Icon name="px-download" aria-hidden="true" /></a>
@@ -172,5 +172,5 @@ const principles = [
     </div>
   </section>
 
-  <ContactBand full heading="Let’s build something useful." description="Hiring or planning a product? Let’s talk." />
+  <ContactBand full heading="What are you working on?" description="Tell me about the product, the role, or the problem you need help with." />
 </Base>

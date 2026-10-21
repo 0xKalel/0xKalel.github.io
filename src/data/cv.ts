@@ -49,7 +49,7 @@ export const experience: Entry[] = [
     stack: 'PHP (Neos Flow, Laravel), React, MariaDB, Redis, Stripe, Google Maps, GA4, Gemini, Docker, CI/CD',
     bullets: [
       {
-        text: 'Lead **two developers and two testers**. Plan releases, make architecture decisions, review code, and manage production releases.',
+        text: 'Own **end-to-end product development**: shape ideas and the roadmap, design the architecture, write and test code, deploy releases, and support production.',
         tags: ['lead', 'founder', 'freelance', 'laravel'], weight: 10,
       },
       {
