@@ -5,13 +5,17 @@ export const evidence = {
     pages: '12',
     responseBefore: '9.1 s',
     responseAfter: '0.884 s',
+    // Orders: a count from the production database (created, not cancelled), October 2025 to September 2026
+    // vs October 2023 to September 2024, the year before Khalil joined. Never revenue, which stays off the site.
+    // Recent orders can still be cancelled: re-check these before changing the review date.
+    ordersUp: '98%',
+    ordersUpNonLuggage: '30%',
     preview: 'Twelve admin pages, one shared list system.',
-    period: 'Catalog: median of 15 runs per version on a local benchmark. Reviewed September 2026.',
-    // Engineering results only: StoragePal's business figures stay off the public site.
+    period: 'Orders: Oct 2025 - Sep 2026 compared with Oct 2023 - Sep 2024. This counts bookings, not money, and leaves out cancelled ones. Catalog: median of 15 test runs per version, September 2026.',
     metrics: [
+      { value: '98%', label: 'more orders than the year before I joined (Oct 2025 - Sep 2026)' },
       { value: '0.884 s', label: 'median catalog server response, down from 9.1 s' },
       { value: '3 → 1', label: 'pages in the payment flow' },
-      { value: '12', label: 'admin pages on one shared list system' },
     ],
   },
   sps: {

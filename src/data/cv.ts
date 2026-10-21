@@ -53,6 +53,11 @@ export const experience: Entry[] = [
         tags: ['lead', 'founder', 'freelance', 'laravel'], weight: 10,
       },
       {
+        // The releases and the orders share a timeline; the bullet claims the timing, not the cause.
+        text: `Shipped new transport pricing, a faster catalog, a one-page checkout, and an AI cart assistant (Sep 2025 - Jul 2026). Orders from Oct 2025 to Sep 2026 were **${evidence.storagepal.ordersUp} higher** than the year before I joined. Without luggage-only bookings, they were **${evidence.storagepal.ordersUpNonLuggage} higher**.`,
+        tags: ['lead', 'founder', 'freelance'], weight: 9.5,
+      },
+      {
         text: `Built the **SPS warehouse app** (Laravel/React) end to end: **${evidence.sps.sessions} completed sessions**, with use on **all 120 weekdays** from April 13 to September 25, 2026.`,
         tags: ['lead', 'laravel', 'founder', 'frontend'], weight: 9,
       },

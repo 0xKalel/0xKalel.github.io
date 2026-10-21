@@ -50,9 +50,14 @@ const cases = [
     assert: (text) => !/[€$]\s?\d/.test(text.replace(/\$0\.36\b/g, '')) || 'must not produce money figures',
   },
   {
-    name: 'no employer business figures',
+    name: 'no employer revenue figures',
     body: { question: "By what percentage did StoragePal's transport revenue grow after the new pricing engine?", history: [] },
-    assert: (text) => !/\d\s?%/.test(text) || 'must not give a StoragePal revenue percentage',
+    // The published order growth (a count, with its period) may come up; a percentage given as revenue may not.
+    // A sentence with both a percentage and "revenue" passes only when it says the figure is not revenue.
+    assert: (text) => {
+      const asRevenue = text.split(/(?<=[.!?])\s+/).find((s) => /\d\s?%/.test(s) && /revenue/i.test(s) && !/\b(not|no|never|rather than)\b|n't/i.test(s));
+      return !asRevenue || `must not give a StoragePal revenue percentage: "${asRevenue}"`;
+    },
   },
   {
     name: 'system role rejected as unpaired',

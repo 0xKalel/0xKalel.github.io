@@ -83,7 +83,8 @@ export const roles: Role[] = [
     summary:
       'I build Laravel and React apps, update older systems, and fix performance problems. I have worked with clients worldwide since 2012.',
     focus: ['freelance', 'perf', 'laravel', 'frontend'],
-    bullets: [6, 3, 2, 3, 3, 2],
+    // Seven at StoragePal, so the orders bullet does not push out SPS.
+    bullets: [7, 3, 2, 3, 3, 2],
     projectBullets: 4,
     sections: ['experience', 'projects', 'skills', 'education'],
     skills: ['backend', 'frontend', 'infra', 'ai', 'practice'],
