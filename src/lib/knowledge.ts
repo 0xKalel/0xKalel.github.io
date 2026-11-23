@@ -13,10 +13,13 @@ const SITE = profile.site;
 /** Drops the **bold** markers that CV bullets and MDX prose may carry. */
 const plain = (text: string) => text.replace(/\*\*/g, '');
 
-/** Resolves `{evidence.sps.sessions}`-style MDX expressions against the data. */
+/** Resolves `{evidence.sps.sessions}`-style MDX expressions, at any depth, against the data. */
 const resolveExpressions = (text: string) =>
-  text.replace(/\{evidence\.(\w+)\.(\w+)\}/g, (match, project, key) => {
-    const value = (evidence as Record<string, Record<string, unknown>>)[project]?.[key];
+  text.replace(/\{evidence((?:\.\w+)+)\}/g, (match, path: string) => {
+    const value = path
+      .slice(1)
+      .split('.')
+      .reduce<unknown>((node, key) => (node as Record<string, unknown> | undefined)?.[key], evidence);
     if (typeof value !== 'string') throw new Error(`knowledge: cannot resolve ${match}`);
     return value;
   });

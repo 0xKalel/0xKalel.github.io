@@ -4,7 +4,8 @@ import { evidence } from './evidence';
 // Write a fact once, tag it, and let each role profile (roles.ts) pick and order it.
 // Inline **bold** is supported in bullet text.
 
-export type Tag = 'lead' | 'ai' | 'founder' | 'freelance' | 'laravel' | 'frontend' | 'perf';
+// 'customer': work done with the people who use the software (customers, customer care, ops).
+export type Tag = 'lead' | 'ai' | 'founder' | 'freelance' | 'laravel' | 'frontend' | 'perf' | 'customer';
 
 export interface Bullet {
   text: string;
@@ -46,48 +47,40 @@ export const experience: Entry[] = [
     period: 'Oct 2024 - present',
     intro:
       'Booking, warehouse, and payment software for a Paris storage company.',
-    stack: 'PHP (Neos Flow, Laravel), React, MariaDB, Redis, Stripe, Google Maps, GA4, Gemini, Docker, CI/CD',
+    stack: 'PHP (Neos Flow, Laravel), React, MariaDB, Redis, Stripe, AWS, Cloudflare, Google Maps, GA4, Gemini, Docker, CI/CD',
+    // Seven broad bullets of similar weight, each joining related work, so none repeats another; roles.ts picks five.
     bullets: [
       {
-        text: 'Own **end-to-end product development**: shape ideas and the roadmap, design the architecture, write and test code, deploy releases, and support production.',
+        text: "Own all of StoragePal's software (booking website, staff admin tool, warehouse app), from planning to production support.",
         tags: ['lead', 'founder', 'freelance', 'laravel'], weight: 10,
       },
       {
+        // Forward-deployed CV only. Timing, not cause: see evidence.storagepal.arrivalCallsDown.
+        text: `Work with customers, customer care, ops, and the CEO every day, and change the software based on what they report. After I rewrote our emails, calls asking how to find the warehouse fell **${evidence.storagepal.arrivalCallsDown}** the next month (August 2026).`,
+        tags: ['customer'], weight: 9.8,
+      },
+      {
         // The releases and the orders share a timeline; the bullet claims the timing, not the cause.
-        text: `Shipped new transport pricing, a faster catalog, a one-page checkout, and an AI cart assistant (Sep 2025 - Jul 2026). Orders from Oct 2025 to Sep 2026 were **${evidence.storagepal.ordersUp} higher** than the year before I joined. Without luggage-only bookings, they were **${evidence.storagepal.ordersUpNonLuggage} higher**.`,
+        text: `Launched new collection pricing, a one-page checkout, and an AI shopping assistant (Sep 2025 - Jul 2026). Orders were **${evidence.storagepal.ordersUp} higher** from Oct 2025 to Sep 2026 than the year before I joined (${evidence.storagepal.ordersUpNonLuggage} without luggage storage).`,
         tags: ['lead', 'founder', 'freelance'], weight: 9.5,
       },
       {
-        text: `Built the **SPS warehouse app** (Laravel/React) end to end: **${evidence.sps.sessions} completed sessions**, with use on **all 120 weekdays** from April 13 to September 25, 2026.`,
-        tags: ['lead', 'laravel', 'founder', 'frontend'], weight: 9,
+        // November 2026. Wording rules: section 7 of the platform upgrade brief (kept outside this repo)
+        // ("no maintenance window", never "zero downtime"; no order counts, no euros).
+        text: 'Upgraded the platform from **PHP 7.2 to 8.5** and moved it to new AWS servers in November 2026, with **no maintenance window** and no lost orders. I used AI coding agents and reviewed every change.',
+        tags: ['lead', 'laravel', 'perf', 'ai', 'founder', 'freelance'], weight: 9.3,
       },
       {
-        text: `Cut median catalog server response from **${evidence.storagepal.responseBefore} to ${evidence.storagepal.responseAfter}** by caching shared catalog data separately from customer carts (local benchmark, 15 runs per version, same database).`,
-        tags: ['perf', 'lead', 'frontend', 'freelance'], weight: 8,
+        text: 'Built the **warehouse app** end to end (Laravel, React). Staff use it to check in, find, and return boxes and furniture, and used it on **all 120 weekdays** from April 13 to September 25, 2026.',
+        tags: ['lead', 'laravel', 'founder', 'frontend', 'freelance'], weight: 9,
       },
       {
-        text: `Moved filtering and pagination to the database, exported data in batches, and combined **${evidence.storagepal.pages} admin pages** into one shared list system.`,
-        tags: ['lead', 'perf', 'freelance', 'laravel'], weight: 7,
+        text: `Cut the catalog's median server response from **${evidence.storagepal.responseBefore} to ${evidence.storagepal.responseAfter}** (local benchmark). An invoice export that never finished now runs in **${evidence.storagepal.upgrade.invoiceExport}**.`,
+        tags: ['perf', 'lead', 'freelance', 'laravel'], weight: 8,
       },
       {
-        text: 'Reduced checkout from **three pages to one**. Made retries safe, prevented duplicate payment attempts, and added a review queue for blocked payments.',
-        tags: ['frontend', 'lead', 'founder', 'freelance'], weight: 6,
-      },
-      {
-        text: 'Built a **Gemini shopping assistant** that suggests an editable cart. The server checks items, limits quantities, and sets prices.',
+        text: 'Kept the **AI shopping assistant** inside business rules: the server checks its suggested cart and sets the prices. Code I write with AI agents goes through regression tests and static analysis.',
         tags: ['ai', 'founder', 'frontend'], weight: 5,
-      },
-      {
-        text: 'Replaced flat regional transport prices with rules for distance, vehicle, crew, and building access. Designed the rules with customer support and logistics.',
-        tags: ['founder', 'freelance'], weight: 4,
-      },
-      {
-        text: 'Checked AI-assisted code with backend regression tests, static analysis, and documented browser and API tests.',
-        tags: ['ai', 'lead'], weight: 3,
-      },
-      {
-        text: 'Made warehouse retries return the saved result after a lost response. Added regression tests for this behavior.',
-        tags: ['laravel'], weight: 2,
       },
     ],
   },
@@ -275,7 +268,7 @@ export const skills: SkillGroup[] = [
   {
     id: 'infra',
     label: 'Infrastructure',
-    items: 'MySQL and MariaDB, Redis, PostgreSQL, Docker, CI/CD, AWS, Linux, Nginx, FFmpeg, GA4 and GTM',
+    items: 'MySQL and MariaDB, Redis, PostgreSQL, Docker, CI/CD (Bitbucket Pipelines), AWS (EC2, RDS, S3, CloudFront), Cloudflare, Linux, Nginx, FFmpeg, GA4 and GTM',
   },
   {
     id: 'practice',

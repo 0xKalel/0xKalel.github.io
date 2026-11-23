@@ -1,7 +1,7 @@
 ---
-title: SPS warehouse app
+title: Warehouse app
 headline: A day’s warehouse work, on a phone.
-tagline: "I built SPS end to end for StoragePal’s warehouse staff. They use it to scan arrivals, find stored items, and prepare returns. I keep it working as their needs change."
+tagline: "I built this app end to end for StoragePal’s warehouse staff. They use it to scan arrivals, find stored items, and prepare returns. I keep it working as their needs change."
 category: Built end to end · Warehouse operations
 role: Developer, from design to production support
 period: Feb 2025 - present
@@ -35,16 +35,16 @@ import Potion from '../../components/pop/Potion.astro';
 
 ## Connect the booking to the warehouse floor
 
-When the items that arrived didn’t match a booking, staff sorted it out by email. Item locations weren’t always recorded either. I built SPS so staff could handle both while doing the work, on a phone.
+When the items that arrived didn’t match a booking, staff sorted it out by email. Item locations weren’t always recorded either. I built the warehouse app so staff could handle both while doing the work, on a phone.
 
 <div class="post-screens not-prose">
-  <figure class="fx"><div class="post-screen-img"><Image src={scan} alt="SPS receiving screen: scan arriving items and check them against the booking" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Receive</strong><span>Scan arriving items and compare them with the booking.</span></figcaption></figure>
-  <figure class="fx" style="--d:70ms"><div class="post-screen-img"><Image src={order} alt="SPS screen listing the differences between a booking and the received items" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Check</strong><span>Review differences between the booking and what arrived.</span></figcaption></figure>
-  <figure class="fx" style="--d:140ms"><div class="post-screen-img"><Image src={bay} alt="SPS screen recording the warehouse bay of an item" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Locate</strong><span>Record each storage bay and keep a history of item moves.</span></figcaption></figure>
-  <figure class="fx" style="--d:210ms"><div class="post-screen-img"><Image src={photo} alt="SPS return screen with photos of the items before they leave" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Return</strong><span>Scan and photograph items, then approve the return or restore their locations.</span></figcaption></figure>
+  <figure class="fx"><div class="post-screen-img"><Image src={scan} alt="Receiving screen: scan arriving items and check them against the booking" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Receive</strong><span>Scan arriving items and compare them with the booking.</span></figcaption></figure>
+  <figure class="fx" style="--d:70ms"><div class="post-screen-img"><Image src={order} alt="Screen listing the differences between a booking and the received items" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Check</strong><span>Review differences between the booking and what arrived.</span></figcaption></figure>
+  <figure class="fx" style="--d:140ms"><div class="post-screen-img"><Image src={bay} alt="Screen recording an item's storage location" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Locate</strong><span>Record each storage bay and keep a history of item moves.</span></figcaption></figure>
+  <figure class="fx" style="--d:210ms"><div class="post-screen-img"><Image src={photo} alt="Return screen with photos of the items before they leave" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Return</strong><span>Scan and photograph items, then approve the return or restore their locations.</span></figcaption></figure>
 </div>
 
-I built SPS end to end and maintain the StoragePal platform it connects to. When a problem crosses between the two, I can work on both sides.
+I built the app end to end and maintain the StoragePal platform it connects to. When a problem crosses between the two, I can work on both sides.
 
 ## Remove complexity the warehouse does not need
 
@@ -98,7 +98,7 @@ Staff need a connection to save changes. In return, there’s much less sync cod
 
 ## Keep work moving across system boundaries
 
-Staff sometimes need to label an item before StoragePal approves a booking change. Making them wait would hold up the warehouse, so SPS lets them print the label first.
+Staff sometimes need to label an item before StoragePal approves a booking change. Making them wait would hold up the warehouse, so the app lets them print the label first.
 
 <div class="post-split not-prose">
   <div class="card fx">
@@ -106,18 +106,18 @@ Staff sometimes need to label an item before StoragePal approves a booking chang
     <p class="post-chips"><span class="stack-chip">Orders</span><span class="stack-chip">Item IDs</span></p>
   </div>
   <div class="card fx" style="--d:70ms">
-    <p class="post-split-label"><Icon name="ph:barcode" aria-hidden="true" /> SPS manages</p>
-    <p class="post-chips"><span class="stack-chip">Scan sessions</span><span class="stack-chip">Photos</span><span class="stack-chip">Bay history</span></p>
+    <p class="post-split-label"><Icon name="ph:barcode" aria-hidden="true" /> The warehouse app manages</p>
+    <p class="post-chips"><span class="stack-chip">Scan sessions</span><span class="stack-chip">Photos</span><span class="stack-chip">Location history</span></p>
   </div>
 </div>
 
 <figure class="post-flow card not-prose fx">
   <ol>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:magic-wand" aria-hidden="true" /></span><strong>Predict</strong><span>SPS predicts the item ID.</span></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:magic-wand" aria-hidden="true" /></span><strong>Predict</strong><span>The app predicts the item ID.</span></li>
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
     <li class="post-flow-node"><span class="post-icon"><Icon name="ph:tag" aria-hidden="true" /></span><strong>Label</strong><span>Staff label and place the item right away.</span></li>
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:check-square" aria-hidden="true" /></span><strong>Confirm</strong><span>After approval, SPS checks the predicted ID against StoragePal.</span></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:check-square" aria-hidden="true" /></span><strong>Confirm</strong><span>After approval, the app checks the predicted ID against StoragePal.</span></li>
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
     <li class="post-flow-node"><span class="post-icon"><Icon name="ph:flag" aria-hidden="true" /></span><strong>Fix</strong><span>An incorrect ID flags the item for a new label.</span></li>
   </ol>
@@ -133,7 +133,7 @@ I test the things that could leave staff with the wrong result: a request sent t
   <li><Icon name="ph:check-circle" aria-hidden="true" />Repeated completion</li>
   <li><Icon name="ph:check-circle" aria-hidden="true" />Duplicate approval</li>
   <li><Icon name="ph:check-circle" aria-hidden="true" />Rejected returns restore locations</li>
-  <li><Icon name="ph:check-circle" aria-hidden="true" />Canceled bay sessions undo their changes</li>
+  <li><Icon name="ph:check-circle" aria-hidden="true" />Canceled location changes are undone</li>
 </ul>
 
 Daily use also changed the smaller things.
@@ -144,26 +144,26 @@ Daily use also changed the smaller things.
   <div class="card fx" style="--d:140ms"><span class="post-icon"><Icon name="ph:magnifying-glass" aria-hidden="true" /></span><h3>Flexible name search</h3><p>Search by first name or last name, in either order.</p></div>
 </div>
 
-Staff used SPS on all 120 weekdays from April 13 to September 25, 2026.
+Staff used the app on all 120 weekdays from April 13 to September 25, 2026.
 
 <Weekdays class="not-prose fx my-10" />
 
 <dl class="post-figures not-prose">
   <div class="fx"><dt>{evidence.sps.sessions}</dt><dd>completed scanning sessions</dd></div>
   <div class="fx" style="--d:70ms"><dt>{evidence.sps.verifications}</dt><dd>item verifications</dd></div>
-  <div class="fx" style="--d:140ms"><dt>{evidence.sps.bayChanges}</dt><dd>bay changes, {evidence.sps.bayMoves} of them moves between bays</dd></div>
+  <div class="fx" style="--d:140ms"><dt>{evidence.sps.bayChanges}</dt><dd>storage location changes, {evidence.sps.bayMoves} of them moves between locations</dd></div>
 </dl>
 
 These counts cover actions recorded during the same period, not unique items. They show consistent daily use.
 
 <dl class="post-figures not-prose">
-  <div class="fx"><dt>1,175 / 1,187</dt><dd>push jobs succeeded on the first try, June 28 - September 26. The other 12 succeeded on a retry, 3 seconds to 10 minutes later.</dd></div>
-  <div class="fx" style="--d:70ms"><dt>2,047 / 2,200</dt><dd>hourly data pulls finished without a recorded failure. These are counted separately from push jobs.</dd></div>
+  <div class="fx"><dt>1,175 / 1,187</dt><dd>updates sent to the StoragePal platform succeeded on the first try, June 28 - September 26. The other 12 succeeded on a retry, 3 seconds to 10 minutes later.</dd></div>
+  <div class="fx" style="--d:70ms"><dt>2,047 / 2,200</dt><dd>hourly data syncs from the platform finished without a recorded failure. These are counted separately from the updates.</dd></div>
 </dl>
 
 <details class="evidence-detail not-prose">
   <summary>Test coverage</summary>
   <div>
-    <p>As of September 15, the code had 659 test methods, run manually. There were also 65 scripted agent scenarios: 57 browser and 8 API scenarios, with 28 documented runs in April and May.</p>
+    <p>As of September 15, the code had 659 test methods, run manually. There were also 65 scripted test scenarios run by AI agents: 57 in the browser and 8 on the API, with 28 documented runs in April and May.</p>
   </div>
 </details>

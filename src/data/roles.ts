@@ -31,14 +31,14 @@ export const roles: Role[] = [
     label: 'Lead full-stack',
     headline: 'Lead Full-Stack Engineer, Laravel and React',
     summary:
-      'Lead full-stack engineer building software since 2012. At StoragePal, I handle the platform day to day, from deciding what to build to fixing production, and I built the SPS warehouse app for its staff. I get up to speed quickly on unfamiliar code, whether legacy, new, or written with AI.',
+      "I've built software since 2012. At StoragePal I took over a live platform and built the warehouse app its staff use every day. I get up to speed on unfamiliar code fast.",
     focus: ['lead', 'laravel', 'perf', 'frontend'],
-    bullets: [6, 3, 2, 3, 3, 2],
+    bullets: [5, 3, 2, 3, 3, 2],
     projectBullets: 4,
     sections: ['experience', 'projects', 'skills', 'education'],
     skills: ['backend', 'frontend', 'infra', 'ai', 'practice'],
     links: [
-      { label: 'Case study: SPS warehouse app', href: '/work/sps/' },
+      { label: 'Case study: warehouse app', href: '/work/sps/' },
       { label: 'Case study: StoragePal platform', href: '/work/storagepal/' },
     ],
   },
@@ -47,9 +47,9 @@ export const roles: Role[] = [
     label: 'AI engineer',
     headline: 'AI Product Engineer, Laravel and LLM applications',
     summary:
-      'I build AI products with Laravel and React, including RavenClip, which I started because I wanted an easier way to follow the news. My work covers user workflows, failure recovery, and output checks. I make product and architecture decisions and review code written with AI.',
+      'I build AI products with Laravel and React, including RavenClip, which turns news into videos. Most of the work sits around the model: recovering from failures and checking what it produces.',
     focus: ['ai', 'lead', 'founder', 'laravel'],
-    bullets: [6, 3, 2, 3, 3, 2],
+    bullets: [5, 3, 2, 3, 3, 2],
     projectBullets: 4,
     sections: ['projects', 'experience', 'skills', 'education'],
     skills: ['ai', 'backend', 'frontend', 'infra', 'practice'],
@@ -64,9 +64,9 @@ export const roles: Role[] = [
     label: 'Founding engineer',
     headline: 'Founding Engineer, product development and launch',
     summary:
-      'I build products that solve business problems. I co-founded a development agency, launched RavenClip, and own product development at StoragePal. I release improvements in small steps and learn from how people use them.',
+      'I co-founded a development agency in 2012, launched RavenClip in 2026, and run product development at StoragePal. I ship small and let real use decide what comes next.',
     focus: ['founder', 'ai', 'lead', 'freelance'],
-    bullets: [6, 3, 2, 3, 3, 2],
+    bullets: [5, 3, 2, 3, 3, 2],
     projectBullets: 4,
     sections: ['projects', 'experience', 'skills', 'education'],
     skills: ['backend', 'frontend', 'ai', 'infra', 'practice'],
@@ -81,15 +81,32 @@ export const roles: Role[] = [
     label: 'Freelance',
     headline: 'Senior Full-Stack Developer, Laravel and React',
     summary:
-      'I build Laravel and React apps, update older systems, and fix performance problems. I have worked with clients worldwide since 2012.',
+      "I build Laravel and React apps, modernize old systems, and fix slow ones. I've worked with clients worldwide since 2012.",
     focus: ['freelance', 'perf', 'laravel', 'frontend'],
-    // Seven at StoragePal, so the orders bullet does not push out SPS.
-    bullets: [7, 3, 2, 3, 3, 2],
+    bullets: [5, 3, 2, 3, 3, 2],
     projectBullets: 4,
     sections: ['experience', 'projects', 'skills', 'education'],
     skills: ['backend', 'frontend', 'infra', 'ai', 'practice'],
     links: [
       { label: 'Selected work', href: '/#work' },
+      { label: 'How I work', href: '/how-i-work/' },
+    ],
+  },
+  {
+    slug: 'forward-deployed',
+    label: 'Forward deployed',
+    headline: 'Forward Deployed Engineer, Laravel and React',
+    summary:
+      'Full-stack engineer who works next to the people using the software. At StoragePal, most of what I build starts with a conversation with one of them.',
+    // Three focus tags: the customer bullet ties with ownership, orders, the upgrade and the warehouse app, and the weights order them.
+    focus: ['customer', 'founder', 'lead'],
+    bullets: [5, 3, 2, 3, 3, 2],
+    projectBullets: 4,
+    sections: ['experience', 'projects', 'skills', 'education'],
+    skills: ['practice', 'backend', 'frontend', 'ai', 'infra'],
+    links: [
+      { label: 'Case study: StoragePal platform', href: '/work/storagepal/#work-from-what-people-ask-for' },
+      { label: 'Case study: warehouse app', href: '/work/sps/' },
       { label: 'How I work', href: '/how-i-work/' },
     ],
   },

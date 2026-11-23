@@ -10,7 +10,22 @@ export const evidence = {
     // Recent orders can still be cancelled: re-check these before changing the review date.
     ordersUp: '98%',
     ordersUpNonLuggage: '30%',
-    preview: 'Twelve admin pages, one shared list system.',
+    // Calls asking how to find the warehouse, counted by Khalil in Aircall: the month after the new
+    // customer emails (August 2026, with map, entrance photos and arrival steps) vs the month before.
+    // Not reproducible from the repo or the growth engine. Claim the timing, not the cause.
+    arrivalCallsDown: '30%',
+    // November 2026 platform upgrade (5 to 19 Nov), from the upgrade brief (kept outside this repo).
+    // Catalog: median page server time on each production server, not a full page load in a browser.
+    // Smoke tool: ~1,480 requests per run, compared with the previous run. Orders: say only "no orders were lost".
+    upgrade: {
+      catalogBefore: '299 ms',
+      catalogAfter: '98 ms',
+      invoiceExport: '22.5 s',
+      testsBefore: '647',
+      testsAfter: '884',
+      smokeRequests: '1,480',
+    },
+    preview: 'Twelve staff screens, one shared list system.',
     period: 'Orders: Oct 2025 - Sep 2026 compared with Oct 2023 - Sep 2024. This counts bookings, not money, and leaves out cancelled ones. Catalog: median of 15 test runs per version, September 2026.',
     metrics: [
       { value: '98%', label: 'more orders than the year before I joined (Oct 2025 - Sep 2026)' },
@@ -29,7 +44,7 @@ export const evidence = {
     metrics: [
       { value: '120 / 120', label: 'weekdays with a completed scan session' },
       { value: '1,348', label: 'completed scanning sessions' },
-      { value: '3,602', label: 'recorded moves between storage bays' },
+      { value: '3,602', label: 'recorded moves between storage locations' },
     ],
   },
   ravenclip: {
