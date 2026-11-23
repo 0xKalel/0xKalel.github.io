@@ -95,7 +95,7 @@ export const roles: Role[] = [
   {
     slug: 'forward-deployed',
     label: 'Forward deployed',
-    headline: 'Forward Deployed Engineer, Laravel and React',
+    headline: 'Forward Deployed Engineer, PHP, TypeScript, SQL',
     summary:
       'Full-stack engineer who works next to the people using the software. At StoragePal, I start most changes by talking with one of them.',
     // Three focus tags: the customer bullet ties with ownership, orders, the upgrade and the warehouse app, and the weights order them.
