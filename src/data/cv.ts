@@ -46,7 +46,7 @@ export const experience: Entry[] = [
     location: 'Paris, remote',
     period: 'Oct 2024 - present',
     intro:
-      'Booking, warehouse, and payment software for a Paris storage company.',
+      'Storage company with collection and delivery by partner vans.',
     stack: 'PHP (Neos Flow, Laravel), React, MariaDB, Redis, Stripe, AWS, Cloudflare, Google Maps, GA4, Gemini, Docker, CI/CD',
     // Seven broad bullets of similar weight, each joining related work, so none repeats another; roles.ts picks five.
     bullets: [
@@ -56,12 +56,12 @@ export const experience: Entry[] = [
       },
       {
         // Forward-deployed CV only. Timing, not cause: see evidence.storagepal.arrivalCallsDown.
-        text: `Work with customers, customer care, ops, and the CEO every day, and change the software based on what they report. After I rewrote our emails, calls asking how to find the warehouse fell **${evidence.storagepal.arrivalCallsDown}** the next month (August 2026).`,
+        text: `Work with customers, customer care, the operations team, and the CEO every day. After I rewrote our emails in August 2026, calls asking how to find the warehouse fell **${evidence.storagepal.arrivalCallsDown}** the next month.`,
         tags: ['customer'], weight: 9.8,
       },
       {
         // The releases and the orders share a timeline; the bullet claims the timing, not the cause.
-        text: `Launched new collection pricing, a one-page checkout, and an AI shopping assistant (Sep 2025 - Jul 2026). Orders were **${evidence.storagepal.ordersUp} higher** from Oct 2025 to Sep 2026 than the year before I joined (${evidence.storagepal.ordersUpNonLuggage} without luggage storage).`,
+        text: `Launched new collection pricing, a one-page checkout, and an AI shopping assistant (Sep 2025 - Jul 2026). Orders were **${evidence.storagepal.ordersUp} higher** from Oct 2025 to Sep 2026 than the year before I joined (${evidence.storagepal.ordersUpNonLuggage} excluding luggage storage).`,
         tags: ['lead', 'founder', 'freelance'], weight: 9.5,
       },
       {
@@ -71,7 +71,7 @@ export const experience: Entry[] = [
         tags: ['lead', 'laravel', 'perf', 'ai', 'founder', 'freelance'], weight: 9.3,
       },
       {
-        text: 'Built the **warehouse app** end to end (Laravel, React). Staff use it to check in, find, and return boxes and furniture, and used it on **all 120 weekdays** from April 13 to September 25, 2026.',
+        text: 'Built the **warehouse app** end to end (Laravel, React) for checking in, finding, and returning boxes and furniture. Staff used it on **all 120 weekdays** from April 13 to September 25, 2026.',
         tags: ['lead', 'laravel', 'founder', 'frontend', 'freelance'], weight: 9,
       },
       {
@@ -79,7 +79,7 @@ export const experience: Entry[] = [
         tags: ['perf', 'lead', 'freelance', 'laravel'], weight: 8,
       },
       {
-        text: 'Kept the **AI shopping assistant** inside business rules: the server checks its suggested cart and sets the prices. I run code written with AI agents through regression tests and static analysis.',
+        text: 'Kept the **AI shopping assistant** inside business rules: the server checks its suggested cart and sets the prices.',
         tags: ['ai', 'founder', 'frontend'], weight: 5,
       },
     ],
@@ -102,7 +102,7 @@ export const experience: Entry[] = [
         weight: 8,
       },
       {
-        text: 'Integrated **8+ AI and media APIs** with Laravel queues and social publishing.',
+        text: 'Integrated **8+ AI and media APIs** through Laravel queues, plus social publishing.',
         tags: ['ai', 'laravel'],
         weight: 7,
       },
@@ -121,7 +121,7 @@ export const experience: Entry[] = [
     period: 'Dec 2022 - May 2023',
     bullets: [
       {
-        text: 'Improved application performance by **60%** with faster MySQL queries and indexes.',
+        text: 'Improved application performance by **60%** through MySQL query and index tuning.',
         tags: ['perf', 'lead', 'freelance', 'laravel'],
         weight: 8,
       },
@@ -182,7 +182,7 @@ export const experience: Entry[] = [
   },
   {
     id: 'mawaki3',
-    title: 'Founder and Technical Director',
+    title: 'Co-founder and Technical Director',
     org: 'Mawaki3 Development Agency',
     location: 'Algeria',
     period: 'Jun 2012 - Jan 2018',
@@ -214,7 +214,7 @@ export const projects: Entry[] = [
     stack: 'Laravel, React, TypeScript, Redis, MariaDB, FFmpeg, Node/Skia, Gemini, speech and media APIs',
     bullets: [
       {
-        text: `Built and launched the product. First external paying customer in **${evidence.ravenclip.daysToCustomer} days**; **${evidence.ravenclip.customers} paying customers** as of September 26, 2026.`,
+        text: `Reached the first external paying customer **${evidence.ravenclip.daysToCustomer} days** after the first commit; **${evidence.ravenclip.customers} paying customers** as of September 26, 2026.`,
         tags: ['founder', 'freelance', 'ai', 'lead'],
         weight: 10,
       },
@@ -224,7 +224,7 @@ export const projects: Entry[] = [
         weight: 9,
       },
       {
-        text: 'Added checks for AI output structure, on-screen numbers from data sources, and API cost tracking for each video.',
+        text: 'Added checks on AI output structure, pulled on-screen numbers from data sources, and tracked API cost per video.',
         tags: ['ai', 'founder'],
         weight: 8,
       },
@@ -234,7 +234,7 @@ export const projects: Entry[] = [
         weight: 5,
       },
       {
-        text: 'Built subscriptions, passkeys, social publishing, and analytics.',
+        text: 'Added subscriptions, passkeys, social publishing, and analytics.',
         tags: ['founder', 'freelance', 'frontend'],
         weight: 6,
       },

@@ -26,11 +26,11 @@ export const evidence = {
       smokeRequests: '1,480',
     },
     preview: 'Twelve staff screens, one shared list system.',
-    period: 'Orders: Oct 2025 - Sep 2026 compared with Oct 2023 - Sep 2024. This counts bookings, not money, and leaves out cancelled ones. Catalog: median of 15 test runs per version, September 2026.',
+    period: 'Orders: Oct 2025 - Sep 2026 compared with Oct 2023 - Sep 2024. This counts orders, not money, and leaves out canceled ones. Catalog: median server response, not full page load, in a local benchmark of 15 runs per version on the same database, September 2026.',
     metrics: [
-      { value: '98%', label: 'more orders than the year before I joined (Oct 2025 - Sep 2026)' },
+      { value: '98%', label: 'more orders in Oct 2025 - Sep 2026 than in the year before I joined' },
       { value: '0.884 s', label: 'median catalog server response, down from 9.1 s' },
-      { value: '3 → 1', label: 'pages in the payment flow' },
+      { value: '3 → 1', label: 'pages in checkout' },
     ],
   },
   sps: {
@@ -43,7 +43,7 @@ export const evidence = {
     period: 'Production use, April 13 - September 25, 2026. Counts reviewed September 26.',
     metrics: [
       { value: '120 / 120', label: 'weekdays with a completed scan session' },
-      { value: '1,348', label: 'completed scanning sessions' },
+      { value: '1,348', label: 'completed scan sessions' },
       { value: '3,602', label: 'recorded moves between storage locations' },
     ],
   },
@@ -51,11 +51,11 @@ export const evidence = {
     daysToCustomer: '105',
     customers: '3',
     preview: 'First external paying customer 105 days after the first commit.',
-    period: 'First commit: May 24, 2026. First external payment: September 6. Customer count: September 26.',
+    period: 'First commit: May 24, 2026. First external payment: September 6. Customers and posts: September 26.',
     metrics: [
       { value: '105 days', label: 'from first commit to first external paying customer' },
       { value: '3', label: 'paying customers as of September 26, 2026' },
-      { value: '2', label: 'live publishing platforms: YouTube and TikTok' },
+      { value: '30 / 30', label: 'posts from paying customers published automatically' },
     ],
   },
 } as const;

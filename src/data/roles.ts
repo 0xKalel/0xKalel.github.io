@@ -31,7 +31,7 @@ export const roles: Role[] = [
     label: 'Lead full-stack',
     headline: 'Lead Full-Stack Engineer, Laravel and React',
     summary:
-      "I've built software since 2012. At StoragePal I took over a live platform and built the warehouse app its staff use every day.",
+      "I've built software since 2012, and at StoragePal I took over a live platform.",
     focus: ['lead', 'laravel', 'perf', 'frontend'],
     bullets: [5, 3, 2, 3, 3, 2],
     projectBullets: 4,
@@ -47,7 +47,7 @@ export const roles: Role[] = [
     label: 'AI engineer',
     headline: 'AI Product Engineer, Laravel and LLM applications',
     summary:
-      'I build AI products with Laravel and React, including RavenClip, which turns news into videos. I spend most of my time on the parts around the model: recovering from failures and checking its output.',
+      'I build AI products with Laravel and React and spend most of my time on the parts around the model: recovering from failures and checking its output.',
     focus: ['ai', 'lead', 'founder', 'laravel'],
     bullets: [5, 3, 2, 3, 3, 2],
     projectBullets: 4,
@@ -64,7 +64,7 @@ export const roles: Role[] = [
     label: 'Founding engineer',
     headline: 'Founding Engineer, product development and launch',
     summary:
-      'I co-founded a development agency in 2012 and launched RavenClip in 2026. I ship small and decide what comes next from how people use it.',
+      'I co-founded a development agency in 2012 and started RavenClip in 2026. I ship small, then decide what comes next based on how people use it.',
     focus: ['founder', 'ai', 'lead', 'freelance'],
     bullets: [5, 3, 2, 3, 3, 2],
     projectBullets: 4,
@@ -81,7 +81,7 @@ export const roles: Role[] = [
     label: 'Freelance',
     headline: 'Senior Full-Stack Developer, Laravel and React',
     summary:
-      "I build Laravel and React apps and modernize slow, old systems. I've worked with clients worldwide since 2012.",
+      "I build new web apps and modernize slow, old ones. I've worked with clients worldwide since 2012.",
     focus: ['freelance', 'perf', 'laravel', 'frontend'],
     bullets: [5, 3, 2, 3, 3, 2],
     projectBullets: 4,
@@ -95,7 +95,7 @@ export const roles: Role[] = [
   {
     slug: 'forward-deployed',
     label: 'Forward deployed',
-    headline: 'Forward Deployed Engineer, PHP, TypeScript, SQL',
+    headline: 'Forward Deployed Engineer, PHP, TypeScript, and SQL',
     summary:
       'Full-stack engineer who works next to the people using the software. At StoragePal, I start most changes by talking with one of them.',
     // Three focus tags: the customer bullet ties with ownership, orders, the upgrade and the warehouse app, and the weights order them.

@@ -1,7 +1,7 @@
 ---
 title: Warehouse app
 headline: A day’s warehouse work, on a phone.
-tagline: "I built this app end to end for StoragePal’s warehouse staff. They use it to scan arrivals, find stored items, and prepare returns. I keep it working as their needs change."
+tagline: "StoragePal’s warehouse staff use the app to scan arrivals, find stored items, and prepare returns. I keep it working as their needs change."
 category: Built end to end · Warehouse operations
 role: Developer, from design to production support
 period: Feb 2025 - present
@@ -18,7 +18,7 @@ shots:
   - src: ../../assets/work/sps-02-change-order.png
     alt: Review differences between a booking and the received items
   - src: ../../assets/work/sps-03-bay-move.png
-    alt: Record an item's warehouse location
+    alt: Record an item's storage location
   - src: ../../assets/work/sps-04-moveout-photo.png
     alt: Photograph items before return
 ---
@@ -35,7 +35,7 @@ import Potion from '../../components/pop/Potion.astro';
 
 ## Connect the booking to the warehouse floor
 
-Staff sorted out mismatched bookings by email, and they didn’t always record where items went. I built the warehouse app so they could do both on a phone while they work.
+Staff sorted out mismatched bookings by email, and they didn’t always record where items went. Now they do both in the app as they work.
 
 <div class="post-screens not-prose">
   <figure class="fx"><div class="post-screen-img"><Image src={scan} alt="Receiving screen: scan arriving items and check them against the booking" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Receive</strong><span>Scan arriving items and compare them with the booking.</span></figcaption></figure>
@@ -44,17 +44,17 @@ Staff sorted out mismatched bookings by email, and they didn’t always record w
   <figure class="fx" style="--d:210ms"><div class="post-screen-img"><Image src={photo} alt="Return screen with photos of the items before they leave" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Return</strong><span>Scan and photograph items, then approve the return or restore their locations.</span></figcaption></figure>
 </div>
 
-I built the app end to end and maintain the StoragePal platform it connects to. If a problem crosses between the two, I can fix both sides.
+I also maintain the StoragePal platform the app connects to. If a problem crosses between the two, I can fix both sides.
 
 ## Remove complexity the warehouse does not need
 
-I first built offline support. Then I checked where the app would run: every warehouse had internet, so I removed it before daily use began.
+I first built offline support. Then I checked where the app would run: every warehouse had internet, so I took offline support out before daily use began.
 
 <div class="post-principles not-prose">
   <div class="card post-before fx">
     <p class="eyebrow">Before: offline mode</p>
     <div class="post-before-lines" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-    <p>Extra code to save offline changes and sync them with StoragePal.</p>
+    <p>Extra code to save offline changes and sync them with the platform.</p>
   </div>
   <div class="card post-after fx" style="--d:70ms">
     <p class="eyebrow">After: online only</p>
@@ -63,13 +63,10 @@ I first built offline support. Then I checked where the app would run: every war
       <div><dt>Saved</dt><dd>The server keeps each session, even after a reload</dd></div>
       <div><dt>Smaller</dt><dd>Much less code to maintain</dd></div>
     </dl>
-    <p class="post-after-foot"><span>Gone before daily use began.</span></p>
   </div>
 </div>
 
-Staff need a connection to save changes. In return, I maintain far less sync code.
-
-## Make a retry understandable
+## Make a retried scan safe
 
 <Potion id="sps" />
 
@@ -92,18 +89,18 @@ Staff need a connection to save changes. In return, I maintain far less sync cod
       <li>If the same user retries, the server returns the saved result without processing it again.</li>
       <li>A test covers this case.</li>
     </ol>
-    <p class="post-outcome"><Icon name="ph:check-circle" aria-hidden="true" /> Staff can retry and get the result they expected, without processing the scan twice.</p>
+    <p class="post-outcome"><Icon name="ph:check-circle" aria-hidden="true" /> Staff can retry and get the result they expected.</p>
   </div>
 </aside>
 
 ## Keep work moving across system boundaries
 
-Staff sometimes need to label an item before StoragePal approves a booking change. Making them wait would hold up the warehouse, so the app lets them print the label first.
+Staff sometimes need to label an item before the platform approves a booking change. Making them wait would hold up the warehouse, so the app lets them print the label first.
 
 <div class="post-split not-prose">
   <div class="card fx">
-    <p class="post-split-label"><Icon name="ph:storefront" aria-hidden="true" /> StoragePal manages</p>
-    <p class="post-chips"><span class="stack-chip">Orders</span><span class="stack-chip">Item IDs</span></p>
+    <p class="post-split-label"><Icon name="ph:storefront" aria-hidden="true" /> The platform manages</p>
+    <p class="post-chips"><span class="stack-chip">Bookings</span><span class="stack-chip">Item IDs</span></p>
   </div>
   <div class="card fx" style="--d:70ms">
     <p class="post-split-label"><Icon name="ph:barcode" aria-hidden="true" /> The warehouse app manages</p>
@@ -117,24 +114,29 @@ Staff sometimes need to label an item before StoragePal approves a booking chang
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
     <li class="post-flow-node"><span class="post-icon"><Icon name="ph:tag" aria-hidden="true" /></span><strong>Label</strong><span>Staff label and place the item right away.</span></li>
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:check-square" aria-hidden="true" /></span><strong>Confirm</strong><span>After approval, the app checks the predicted ID against StoragePal.</span></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:check-square" aria-hidden="true" /></span><strong>Confirm</strong><span>After approval, the app checks the predicted ID against the platform.</span></li>
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:flag" aria-hidden="true" /></span><strong>Fix</strong><span>The app flags a wrong ID for a new label.</span></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:flag" aria-hidden="true" /></span><strong>Fix</strong><span>The app flags a wrong ID, and staff print a new label.</span></li>
   </ol>
 </figure>
 
-If the predicted ID turns out to be wrong, staff replace the label. They can keep working while the approval catches up.
-
 ## Check the behaviors that matter
 
-I test the things that could leave staff with the wrong result: a request sent twice, a return rejected, or a move canceled halfway through.
+I test the cases that could leave staff with the wrong result.
 
 <ul class="post-pills not-prose">
-  <li><Icon name="ph:check-circle" aria-hidden="true" />Repeated completion</li>
-  <li><Icon name="ph:check-circle" aria-hidden="true" />Duplicate approval</li>
+  <li><Icon name="ph:check-circle" aria-hidden="true" />A scan session completed twice</li>
+  <li><Icon name="ph:check-circle" aria-hidden="true" />An approval sent twice</li>
   <li><Icon name="ph:check-circle" aria-hidden="true" />Rejected returns restore locations</li>
   <li><Icon name="ph:check-circle" aria-hidden="true" />Canceled location changes are undone</li>
 </ul>
+
+<details class="evidence-detail not-prose">
+  <summary>Test coverage</summary>
+  <div>
+    <p>As of September 15, the code had 659 test methods, which I ran myself, outside CI. AI agents worked through another 65 scripted test scenarios, 57 in the browser and 8 on the API, with 28 documented runs in April and May.</p>
+  </div>
+</details>
 
 I also fixed smaller things that staff ran into every day.
 
@@ -144,26 +146,18 @@ I also fixed smaller things that staff ran into every day.
   <div class="card fx" style="--d:140ms"><span class="post-icon"><Icon name="ph:magnifying-glass" aria-hidden="true" /></span><h3>Flexible name search</h3><p>Search by first name or last name, in either order.</p></div>
 </div>
 
-Staff used the app on all 120 weekdays from April 13 to September 25, 2026.
+## Use in production
 
 <Weekdays class="not-prose fx my-10" />
 
 <dl class="post-figures not-prose">
-  <div class="fx"><dt>{evidence.sps.sessions}</dt><dd>completed scanning sessions</dd></div>
-  <div class="fx" style="--d:70ms"><dt>{evidence.sps.verifications}</dt><dd>item verifications</dd></div>
-  <div class="fx" style="--d:140ms"><dt>{evidence.sps.bayChanges}</dt><dd>storage location changes, {evidence.sps.bayMoves} of them moves between locations</dd></div>
+  <div class="fx"><dt>{evidence.sps.verifications}</dt><dd>item verifications</dd></div>
+  <div class="fx" style="--d:70ms"><dt>{evidence.sps.bayChanges}</dt><dd>storage location changes, {evidence.sps.bayMoves} of them moves between locations</dd></div>
 </dl>
 
-These counts cover actions recorded during the same period, not unique items. They show consistent daily use.
+These count actions in the same period, not unique items.
 
 <dl class="post-figures not-prose">
   <div class="fx"><dt>1,175 / 1,187</dt><dd>updates sent to the StoragePal platform succeeded on the first try, June 28 - September 26. The other 12 succeeded on a retry, 3 seconds to 10 minutes later.</dd></div>
-  <div class="fx" style="--d:70ms"><dt>2,047 / 2,200</dt><dd>hourly data syncs from the platform finished without a recorded failure. I count these apart from the updates.</dd></div>
+  <div class="fx" style="--d:70ms"><dt>2,047 / 2,200</dt><dd>hourly data syncs from the platform finished without a recorded failure. This is a separate count from the updates above.</dd></div>
 </dl>
-
-<details class="evidence-detail not-prose">
-  <summary>Test coverage</summary>
-  <div>
-    <p>As of September 15, the code had 659 test methods, which I ran by hand. There were also 65 scripted test scenarios run by AI agents: 57 in the browser and 8 on the API, with 28 documented runs in April and May.</p>
-  </div>
-</details>

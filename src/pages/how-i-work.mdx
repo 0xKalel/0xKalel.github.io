@@ -1,36 +1,36 @@
 ---
 layout: ../layouts/Prose.astro
 title: How I work
-description: What I learned looking after StoragePal, building a warehouse app for its staff, and starting RavenClip.
+description: Lessons from looking after StoragePal, building its warehouse app, and starting RavenClip.
 ---
 
 import Potion from '../components/pop/Potion.astro';
 
 ## Find what’s getting in the way
 
-StoragePal was already running when I joined, and staff used the platform all day. The screens for stored items and bookings slowed them down, so [I fixed those first](/work/storagepal/#fix-what-slowed-staff-down).
+StoragePal was already running when I joined, and the team used the staff admin tool all day. Its screens for stored items and bookings slowed them down, so [I fixed those first](/work/storagepal/#fix-what-slowed-staff-down).
 
-I still start the same way: what needs to change, who is waiting on it, and what can wait.
+I still start by asking what needs to change, who is waiting on it, and what can wait.
 
 ## Leave out what we don’t need
 
-I built offline support into the warehouse app, then checked where the app would run. Every warehouse had internet, so [I removed it](/work/sps/#remove-complexity-the-warehouse-does-not-need) before daily use began. Staff need a connection to save changes, and I maintain far less sync code.
+I built offline mode into the warehouse app, then checked where the app would run. Every warehouse had internet, so [I removed the feature](/work/sps/#remove-complexity-the-warehouse-does-not-need) before daily use began. Staff need a connection to save changes, and I maintain less sync code.
 
-Speed, data accuracy, recovery from failures, and maintenance cost all matter, so a pattern has to solve a problem we have.
+I weigh speed, data accuracy, recovery from failures, and maintenance cost, so I add a pattern only when it solves a problem we have.
 
 ## Use AI, own the result
 
 <Potion id="how-i-work" />
 
-Coding agents help me write code, investigate problems, and test changes. Deciding what to build, how it fits together, and whether it is ready to ship stays with me.
+Coding agents help me write code, investigate problems, and test changes. I decide what to build, how it fits together, and whether it is ready to ship.
 
-Before a change, I write down the requirements and limits. Then I check the result with regression tests, static analysis, and browser or API tests. If a check misses a problem, I improve the check. [A production postmortem shows how](/blog/2026/09/25/ravenclip-engineering/#postmortem-a-syntax-error-in-production).
+Before a change, I write down the requirements and limits. Then I check the result with regression tests, static analysis, and browser or API tests. If a check misses a problem, I improve the check. For an example, read [my postmortem of a syntax error in production](/blog/2026/09/25/ravenclip-engineering/#postmortem-a-syntax-error-in-production).
 
 ## Pay attention after launch
 
 I expected RavenClip’s customers to be people running news channels. The first to pay were an agency, an AI consulting firm, and a coach. [I changed what I built next to fit them](/work/ravenclip/#learn-from-the-people-who-pay).
 
-At StoragePal, I decide what to improve next from errors, staff feedback, costs, and real usage.
+At StoragePal, I decide what to improve next based on errors, staff feedback, costs, and usage data.
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: StoragePal
 headline: The software behind a busy storage business.
-tagline: I look after the software that runs StoragePal, a storage business in Paris. I decide what to build next, write and test the code, and keep it running.
+tagline: StoragePal stores boxes, furniture, and luggage in Paris. I decide what to build next, write and test the code, and keep the platform running.
 category: Product development · Storage and logistics
 role: Product and engineering, from roadmap to production support
 period: Oct 2024 - present
@@ -30,43 +30,42 @@ import before from '../../assets/work/storagepal-catalogue-2024.png';
 import after from '../../assets/work/storagepal-catalogue-grid.png';
 import checkout from '../../assets/work/storagepal-checkout.png';
 import transport from '../../assets/work/storagepal-transport.png';
-import aiCart from '../../assets/work/storagepal-ai-cart.png';
 import { evidence } from '../../data/evidence';
 import Potion from '../../components/pop/Potion.astro';
 
 ## A business already in operation
 
-StoragePal was already running when I joined. Customers were booking collections and paying invoices, and staff relied on the platform every day. I had to improve it while keeping that work moving.
+Customers were booking collections and paying invoices when I joined, and staff relied on the platform every day. I had to improve it while keeping that work moving.
 
 <figure class="post-flow card not-prose fx">
   <ol>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:users" aria-hidden="true" /></span><strong>Customers</strong><span>Book collections, storage, and returns online.</span></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:users" aria-hidden="true" /></span><strong>Booking website</strong><span>Customers book collections, storage, and returns.</span></li>
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:desktop" aria-hidden="true" /></span><strong>Platform</strong><span>Staff manage orders, inventory, invoices, and payments.</span></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:desktop" aria-hidden="true" /></span><strong>Staff admin tool</strong><span>Staff manage orders, inventory, invoices, and payments.</span></li>
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:warehouse" aria-hidden="true" /></span><strong>Warehouse</strong><span>Staff use the warehouse app to receive, locate, and return items.</span></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:warehouse" aria-hidden="true" /></span><strong>Warehouse app</strong><span>Warehouse staff receive, locate, and return items.</span></li>
   </ol>
 </figure>
 
-I also built the [warehouse app](/work/sps/) end to end for the warehouse staff.
+I also built the [warehouse app](/work/sps/) end to end.
 
 ## Work from what people ask for
 
-I talk with customers, customer care, ops, and the CEO every day, and I start most changes from what they tell me.
+I talk with customers, customer care, the operations team, and the CEO every day, and most of my changes start with them.
 
 <div class="post-cards not-prose">
-  <div class="card fx"><span class="post-icon"><Icon name="ph:users" aria-hidden="true" /></span><h3>Customers</h3><p>I rewrote our emails around their phone questions and added the warehouse map and entrance photos.</p></div>
+  <div class="card fx"><span class="post-icon"><Icon name="ph:users" aria-hidden="true" /></span><h3>Customers</h3><p>I rewrote our emails to answer what they asked by phone, and added the warehouse map and entrance photos.</p></div>
   <div class="card fx" style="--d:70ms"><span class="post-icon"><Icon name="ph:headset" aria-hidden="true" /></span><h3>Customer care</h3><p>They find a caller by phone number and see what's stored, what's owed, and the next bill on one screen.</p></div>
-  <div class="card fx" style="--d:140ms"><span class="post-icon"><Icon name="ph:warehouse" aria-hidden="true" /></span><h3>Operations</h3><p>I built the collection pricing with the logistics team and update the warehouse app when they ask.</p></div>
+  <div class="card fx" style="--d:140ms"><span class="post-icon"><Icon name="ph:warehouse" aria-hidden="true" /></span><h3>Operations team</h3><p>I update the warehouse app when they ask, and built the collection pricing with the transport team.</p></div>
 </div>
 
 <dl class="post-figures not-prose">
-  <div class="fx"><dt>{evidence.storagepal.arrivalCallsDown}</dt><dd>fewer calls asking how to find the warehouse in the month after the new emails (August 2026) than the month before, from our phone system.</dd></div>
+  <div class="fx"><dt>{evidence.storagepal.arrivalCallsDown}</dt><dd>fewer calls asking how to find the warehouse in the month after the new emails went out in August 2026 than in the month before. Source: our phone system.</dd></div>
 </dl>
 
 ## Fix what slowed staff down
 
-The screens for stored items and bookings slowed staff down every day, so I fixed those before building anything new.
+Staff use the stored items and bookings screens every day, so I fixed those before building anything new.
 
 <div class="post-split not-prose">
   <div class="card post-no fx">
@@ -81,14 +80,14 @@ The screens for stored items and bookings slowed staff down every day, so I fixe
     <ul>
       <li>Filtering and paging run in the database</li>
       <li>Exports run in batches</li>
-      <li><strong>12 staff screens</strong> share one system for columns, filters, sorting, and exports</li>
+      <li><strong>12 screens</strong> in the staff admin tool share one system for columns, filters, sorting, and exports</li>
     </ul>
   </div>
 </div>
 
 ## Cache what customers share
 
-The catalog was doing the same database work for every visitor. I reduced the queries and added indexes, then cached the product data everyone shares. Each customer’s cart still loads on its own.
+The catalog ran the same database queries for every visitor. I cut the number of queries and added indexes before adding the cache.
 
 <Potion id="storagepal" />
 
@@ -96,7 +95,7 @@ The catalog was doing the same database work for every visitor. I reduced the qu
   <div class="card fx">
     <p class="post-split-label"><Icon name="ph:database" aria-hidden="true" /> Shared by everyone: cached</p>
     <ul>
-      <li>Product data, cached for each language</li>
+      <li>Product data, one copy per language</li>
       <li>Cleared when staff change the catalog</li>
       <li>Expires after 24 hours as a safety net</li>
     </ul>
@@ -104,7 +103,7 @@ The catalog was doing the same database work for every visitor. I reduced the qu
   <div class="card fx" style="--d:70ms">
     <p class="post-split-label"><Icon name="ph:user" aria-hidden="true" /> Customer data: loaded on each request</p>
     <ul>
-      <li>Cart quantities, added on each request</li>
+      <li>Cart quantities</li>
       <li>Custom items, kept out of the shared cache</li>
     </ul>
   </div>
@@ -121,13 +120,9 @@ The catalog was doing the same database work for every visitor. I reduced the qu
   </figure>
 </div>
 
-<dl class="post-figures not-prose">
-  <div class="fx"><dt><span class="post-was">{evidence.storagepal.responseBefore} <span class="to">→</span></span> {evidence.storagepal.responseAfter}</dt><dd>Median server response time, not full page load. Local benchmark: 15 runs per version, same database.</dd></div>
-</dl>
-
 ## Make payment retries safe
 
-A customer shouldn’t have to wonder whether clicking Pay again will charge them twice. I rebuilt the payment flow around the current amount due, with checks to make retries safe.
+A customer shouldn’t have to wonder whether clicking Pay again will charge them twice. I rebuilt the payment flow around the current amount due.
 
 <div class="post-media not-prose fx">
   <div class="post-screen-img"><Image src={checkout} alt="StoragePal payment page with all payment details together" widths={[240, 480]} sizes="200px" /></div>
@@ -139,13 +134,12 @@ A customer shouldn’t have to wonder whether clicking Pay again will charge the
       <li>Retry failed payments and flag blocked payments for review</li>
       <li>Check the payment status before each reminder</li>
     </ul>
-    <dl class="post-figures"><div><dt>3 <span class="to">→</span> 1</dt><dd>pages in the payment flow</dd></div></dl>
   </div>
 </div>
 
 ## Price collections by the real job
 
-A flat regional price couldn’t account for the distance, crew, or access a job needed. I worked with customer support and logistics to turn those details into pricing rules.
+With customer care and the transport team, I turned the details of each job into pricing rules.
 
 <div class="post-principles not-prose">
   <div class="card post-before fx">
@@ -175,7 +169,7 @@ A flat regional price couldn’t account for the distance, crew, or access a job
 
 ## Keep AI proposals inside the business rules
 
-Customers can describe what they want to store or send a photo. The assistant suggests a cart they can edit. I keep the item checks and pricing on the server, so the model can’t invent a product or set its price.
+Customers can ask the AI shopping assistant to suggest a cart. I keep the item checks and pricing on the server, so the model can’t invent a product or set its price.
 
 <figure class="post-flow card not-prose fx">
   <ol>
@@ -189,23 +183,9 @@ Customers can describe what they want to store or send a photo. The assistant su
   </ol>
 </figure>
 
-<div class="post-media not-prose fx">
-  <div class="post-screen-img"><Image src={aiCart} alt="A cart suggested by the StoragePal assistant, ready for the customer to review and edit" widths={[240, 480]} sizes="200px" /></div>
-  <div>
-    <h3>Who decides what</h3>
-    <div class="post-rules">
-      <ul>
-        <li><span class="post-trigger">The model</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Helps the customer describe what they need</span></li>
-        <li><span class="post-trigger">The catalog</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Decides what can be sold</span></li>
-        <li><span class="post-trigger">Pricing rules</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Decide the price of every line</span></li>
-      </ul>
-    </div>
-  </div>
-</div>
-
 ## Upgrade with no maintenance window
 
-In November 2026 I spent about two and a half weeks moving the platform off years-old software. I worked with AI coding agents and reviewed every change. I ran every cloud and DNS step myself.
+In November 2026 I spent about two and a half weeks moving the platform off years-old software. I worked with AI coding agents and reviewed every change, but ran each cloud and DNS step myself.
 
 <div class="post-split not-prose">
   <div class="card post-no fx">
@@ -213,7 +193,7 @@ In November 2026 I spent about two and a half weeks moving the platform off year
     <ul>
       <li>PHP 7.2, past end of life, on Neos Flow 5.2</li>
       <li>A server set up by hand in 2020</li>
-      <li>The website on a separate WordPress server</li>
+      <li>The marketing site on a separate WordPress server</li>
       <li>API keys in git</li>
     </ul>
   </div>
@@ -222,7 +202,7 @@ In November 2026 I spent about two and a half weeks moving the platform off year
     <ul>
       <li><strong>PHP 8.5</strong> on Neos Flow 9.2, with MariaDB 11.4</li>
       <li>New AWS servers built from a script</li>
-      <li>Website, shop, and staff tools on one host, with pages as files in git</li>
+      <li>Marketing site, booking website, and staff admin tool on one host, with marketing pages as files in git</li>
       <li>Secrets out of git, and a scanner in CI that blocks them</li>
     </ul>
   </div>
@@ -234,14 +214,14 @@ In November 2026 I spent about two and a half weeks moving the platform off year
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
     <li class="post-flow-node"><span class="post-icon"><Icon name="ph:stethoscope" aria-hidden="true" /></span><strong>Check</strong><span>I tested each step with {evidence.storagepal.upgrade.smokeRequests} requests on production data. Old and new code billed the same orders.</span></li>
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:arrows-left-right" aria-hidden="true" /></span><strong>Switch</strong><span>I moved customers with one DNS change and moved the scheduled jobs in the same minute.</span></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:arrows-left-right" aria-hidden="true" /></span><strong>Switch</strong><span>I switched customers over with one DNS change and moved the scheduled jobs in the same minute.</span></li>
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
     <li class="post-flow-node"><span class="post-icon"><Icon name="ph:arrow-counter-clockwise" aria-hidden="true" /></span><strong>Rollback ready</strong><span>I could move everyone back with one DNS change, because the old code still ran on the database.</span></li>
   </ol>
 </figure>
 
 <dl class="post-figures not-prose">
-  <div class="fx"><dt><span class="post-was">{evidence.storagepal.upgrade.catalogBefore} <span class="to">→</span></span> {evidence.storagepal.upgrade.catalogAfter}</dt><dd>Median catalog page server time on production, before and after. Not full page load.</dd></div>
+  <div class="fx"><dt><span class="post-was">{evidence.storagepal.upgrade.catalogBefore} <span class="to">→</span></span> {evidence.storagepal.upgrade.catalogAfter}</dt><dd>Median catalog server response on production, before and after the upgrade. Not full page load.</dd></div>
   <div class="fx" style="--d:70ms"><dt>{evidence.storagepal.upgrade.invoiceExport}</dt><dd>for the invoice export, which never finished before.</dd></div>
   <div class="fx" style="--d:140ms"><dt><span class="post-was">{evidence.storagepal.upgrade.testsBefore} <span class="to">→</span></span> {evidence.storagepal.upgrade.testsAfter}</dt><dd>unit tests</dd></div>
 </dl>

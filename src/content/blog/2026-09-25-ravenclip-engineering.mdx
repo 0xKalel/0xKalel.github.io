@@ -1,6 +1,6 @@
 ---
 title: "Building RavenClip: recovery, AI checks, and costs"
-description: "How RavenClip recovers from failures, checks AI output, and tracks costs."
+description: "The technical choices behind RavenClip, where they fall short, and two production incidents."
 date: 2026-09-25
 updated: 2026-09-26
 tags: [ravenclip, ai-engineering, laravel, reliability]
@@ -13,17 +13,17 @@ import scenesShot from '../../assets/work/ravenclip-shot-makes.png';
 import reviewShot from '../../assets/work/ravenclip-shot-review.png';
 import Potion from '../../components/pop/Potion.astro';
 
-I started RavenClip because I wanted an easier way to follow the news. It turns news into short videos and publishes them on a schedule, and I build and run it with Laravel, React, a Node/Skia renderer, and FFmpeg. The [case study](/work/ravenclip/) covers the product; this post covers the technical choices and their limits.
+I started RavenClip because I wanted an easier way to follow the news. It turns news into short videos and publishes them on a schedule. I build and run it with Laravel, React, a Node/Skia renderer, and FFmpeg.
 
 <div class="post-tldr not-prose">
   <p class="eyebrow">The short version</p>
   <ol>
-    <li class="fx"><a href="#save-progress-so-work-can-resume"><span class="post-tldr-topic"><span>01</span><span>Recovery</span></span><strong>9 s <span class="to">→</span> 2 s</strong><span class="post-tldr-text">Median wait before rendering after each stage began starting as soon as the previous one finished.</span></a></li>
+    <li class="fx"><a href="#save-progress-so-work-can-resume"><span class="post-tldr-topic"><span>01</span><span>Recovery</span></span><strong>9 s <span class="to">→</span> 2 s</strong><span class="post-tldr-text">Median wait before rendering, after I made each stage start as soon as the previous one finished.</span></a></li>
     <li class="fx" style="--d:70ms"><a href="#structure-ai-output-and-check-it"><span class="post-tldr-topic"><span>02</span><span>Prompts</span></span><strong>15-18% fewer</strong><span class="post-tldr-text">Input tokens per call after replacing a banned-phrase list with three principles.</span></a></li>
     <li class="fx" style="--d:140ms"><a href="#know-what-automated-checks-can-prove"><span class="post-tldr-topic"><span>03</span><span>Checks</span></span><strong>Structure only</strong><span class="post-tldr-text">Checks catch off-topic text, weak openings, and length problems. They cannot prove factual accuracy.</span></a></li>
-    <li class="fx"><a href="#monitor-backup-providers"><span class="post-tldr-topic"><span>04</span><span>Fallback</span></span><strong>25 days</strong><span class="post-tldr-text">A backup provider hid an empty credit balance. Monitoring now detects these problems within hours.</span></a></li>
+    <li class="fx"><a href="#monitor-backup-providers"><span class="post-tldr-topic"><span>04</span><span>Backup</span></span><strong>25 days</strong><span class="post-tldr-text">The primary provider ran out of credit, and the backup hid it. Monitoring now detects an empty balance within hours.</span></a></li>
     <li class="fx" style="--d:70ms"><a href="#track-costs-and-know-what-is-missing"><span class="post-tldr-topic"><span>05</span><span>Costs</span></span><strong>$0.36</strong><span class="post-tldr-text">Recorded API spend per rendered video, September 1 to 25, 2026.</span></a></li>
-    <li class="fx" style="--d:140ms"><a href="#postmortem-a-syntax-error-in-production"><span class="post-tldr-topic"><span>06</span><span>Postmortem</span></span><strong>3 checks</strong><span class="post-tldr-text">A faulty bulk edit stopped one type of job for 18 hours. Three checks now guard against this error.</span></a></li>
+    <li class="fx" style="--d:140ms"><a href="#postmortem-a-syntax-error-in-production"><span class="post-tldr-topic"><span>06</span><span>Postmortem</span></span><strong>3 checks</strong><span class="post-tldr-text">A faulty bulk edit stopped one type of job for 18 hours. The checks I added guard against this error.</span></a></li>
   </ol>
 </div>
 
@@ -31,7 +31,7 @@ I started RavenClip because I wanted an easier way to follow the news. It turns 
 
 ## Save progress so work can resume
 
-Each stage saves its status in the database. After a failure, processing resumes from that point without repeating paid work. The pipeline generates voice and visuals in parallel, then combines them during rendering.
+Each stage saves its status in the database. After a failure, processing resumes from that point without repeating paid work.
 
 <PipelineRaven />
 
@@ -44,7 +44,7 @@ Each stage saves its status in the database. After a failure, processing resumes
   <div class="card fx" style="--d:70ms">
     <span class="post-icon"><Icon name="ph:timer" aria-hidden="true" /></span>
     <h3>Ordered timeouts</h3>
-    <p>The job times out first, then the supervisor, then the queue retries it. A stuck render reuses the assets already generated.</p>
+    <p>The job times out before the supervisor does, and the queue retries it after both. A stuck render reuses the assets already generated.</p>
   </div>
   <div class="card fx" style="--d:140ms">
     <span class="post-icon"><Icon name="ph:seal-check" aria-hidden="true" /></span>
@@ -53,7 +53,7 @@ Each stage saves its status in the database. After a failure, processing resumes
   </div>
 </div>
 
-Starting each stage as soon as the previous one finished reduced the median delay. The longest waits did not improve.
+I changed each stage to start as soon as the previous one finished.
 
 <dl class="post-figures not-prose">
   <div class="fx"><dt><span class="post-was">9 s <span class="to">→</span></span> 2 s</dt><dd>Median wait before rendering</dd></div>
@@ -62,14 +62,14 @@ Starting each stage as soon as the previous one finished reduced the median dela
 
 <div class="decision-note not-prose">
   <p class="eyebrow">A simple job chain is sometimes enough</p>
-  <p>Saving each stage adds code to maintain. After a user edits a scene, a simple job chain handles the short rebuild. The full recovery system is for automatic generation and publishing.</p>
+  <p>Saving each stage adds code to maintain. After a customer edits a scene, a job chain handles the short rebuild. The full recovery system is for automatic generation and publishing.</p>
 </div>
 
 <span id="give-models-a-structure-then-check-the-result" aria-hidden="true"></span>
 
 ## Structure AI output and check it
 
-Each model returns structured output, and the code checks it against a schema. Each stage has its own reasoning budget. Sorting needs less reasoning than writing a script.
+Every model returns structured output, and the code checks it against a schema. Each stage gets its own reasoning budget: sorting needs less than writing a script.
 
 ```ts
 // One narration beat, as the writer model returns it
@@ -83,14 +83,14 @@ Asking the model to identify new information first helps reduce repetition.
 
 <figure class="post-shot not-prose fx">
   <Image src={scenesShot} alt="RavenClip scene editor: each scene lists its narration line, its photos and its timing, next to a phone preview of the video" widths={[640, 1100, 1720]} sizes="(max-width: 767px) 100vw, 860px" />
-  <figcaption>Users can edit the narration, photos, and timing for each scene.</figcaption>
+  <figcaption>Customers can edit the narration, photos, and timing for each scene.</figcaption>
 </figure>
 
 <div class="post-principles not-prose">
   <div class="card post-before fx">
     <p class="eyebrow">Before</p>
     <div class="post-before-lines" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-    <p>A long list of banned phrases. The model kept finding new ways to repeat the same problem.</p>
+    <p>A long list of banned phrases. The model kept finding new ways to make the same mistake.</p>
   </div>
   <div class="card post-after fx" style="--d:70ms">
     <p class="eyebrow">After: three principles</p>
@@ -109,13 +109,13 @@ Simpler instructions helped, but some poor output still passed. Automated checks
 
 ## Know what automated checks can prove
 
-The system scores drafts and gives failed drafts specific feedback. A model reviews and rewrites them. Its revision must pass the checks and score higher to replace the original.
+The code scores each draft and gives failed ones specific feedback. A model reviews and rewrites each failed draft. The revision replaces the original only if it passes the checks and scores higher.
 
 <div class="post-split not-prose">
   <div class="card post-yes fx">
     <p class="post-split-label"><Icon name="ph:check-circle" aria-hidden="true" /> Checked or enforced</p>
     <ul>
-      <li>The script stays on its subject</li>
+      <li>The script stays on topic</li>
       <li>The opening follows the required structure</li>
       <li>Length and endings meet the requirements</li>
       <li>Later stages keep the approved narration or restore the checked version</li>
@@ -125,9 +125,9 @@ The system scores drafts and gives failed drafts specific feedback. A model revi
   <div class="card post-no fx" style="--d:70ms">
     <p class="post-split-label"><Icon name="ph:warning-circle" aria-hidden="true" /> Limits of these checks</p>
     <ul>
-      <li><strong>That a claim is true.</strong> A false sentence built from words in the source can still pass.</li>
-      <li><strong>Numbers in the narration.</strong> They are not checked.</li>
-      <li><strong>Non-Latin scripts.</strong> They skip the subject check.</li>
+      <li><strong>Factual accuracy.</strong> A false sentence built from words in the source can still pass.</li>
+      <li><strong>Numbers in the narration.</strong> No check covers them.</li>
+      <li><strong>Non-Latin scripts.</strong> They skip the topic check.</li>
     </ul>
   </div>
 </div>
@@ -169,27 +169,22 @@ Videos kept finishing, so I didn’t notice a provider failure for weeks.
     <span class="post-icon"><Icon name="ph:detective" aria-hidden="true" /></span>
     <div>
       <p class="eyebrow">Production incident</p>
-      <p class="post-incident-title">A backup provider hid an empty credit balance for 25 days</p>
+      <p class="post-incident-title">The primary provider ran out of credit, and the backup hid it</p>
     </div>
   </div>
   <dl class="post-figures">
     <div><dt>25 days</dt><dd>provider out of credit</dd></div>
-    <div><dt>8,162</dt><dd>calls sent to a backup service</dd></div>
+    <div><dt>8,162</dt><dd>calls sent to the backup provider</dd></div>
     <div><dt>~3.16×</dt><dd>the price per call</dd></div>
     <div><dt>$11-15</dt><dd>extra spend</dd></div>
   </dl>
-  <div class="post-meter">
-    <p class="post-meter-title">Price per call</p>
-    <div class="post-meter-row"><span>Primary</span><span><span class="post-meter-bar grow-bar" style="--w:27.8%"></span><b>1×</b></span></div>
-    <div class="post-meter-row"><span>Fallback</span><span><span class="post-meter-bar is-accent grow-bar" style="--w:88%"></span><b>~3.16×</b></span></div>
-  </div>
   <p class="post-incident-lesson">The extra cost was small, but it showed me a gap in monitoring.</p>
   <div class="post-incident-foot">
     <p class="eyebrow">The fix</p>
     <ol class="post-fix">
       <li>Track failure types and check provider health every 30 minutes.</li>
       <li>Read balances through provider APIs when possible. Otherwise, estimate remaining credit from recorded costs.</li>
-      <li>Run a daily check outside the queue, so it reports even when a worker is down.</li>
+      <li>Run a daily check outside the job queue, so it still reports when the workers are down.</li>
     </ol>
     <p class="post-outcome"><Icon name="ph:check-circle" aria-hidden="true" /> Monitoring has since detected two empty credit balances within hours.</p>
   </div>
@@ -216,14 +211,14 @@ I record paid API calls before checking their output, because unusable answers s
     <div><dt>Recorded API spend</dt><dd>$66.59</dd></div>
     <div><dt>Rendered videos</dt><dd>183</dd></div>
   </dl>
-  <p class="post-cost-excluded"><span>Not included</span><span class="stack-chip">Payment fees</span><span class="stack-chip">My time</span><span class="stack-chip">Retries with the same API key (tracked in part)</span></p>
+  <p class="post-cost-excluded"><span>Not included</span><span class="stack-chip">Payment fees</span><span class="stack-chip">My time</span><span class="stack-chip">Some retries with the same API key</span></p>
 </figure>
 
 <div class="post-cards is-2 not-prose">
   <div class="card fx">
     <span class="post-icon"><Icon name="ph:magnifying-glass" aria-hidden="true" /></span>
     <h3>Code-scanning test</h3>
-    <p>Finds paid integrations that do not record costs. It checks that every paid call records a cost, but cannot confirm the price.</p>
+    <p>Checks that every paid integration records a cost, but cannot confirm the price.</p>
   </div>
   <div class="card fx" style="--d:70ms">
     <span class="post-icon"><Icon name="ph:calendar-check" aria-hidden="true" /></span>
@@ -232,12 +227,12 @@ I record paid API calls before checking their output, because unusable answers s
   </div>
 </div>
 
-Caching also needs enough traffic to pay off.
+Caching needs enough traffic to pay off.
 
 <div class="card post-rules post-solo not-prose fx">
   <p class="eyebrow">Caching, by call type</p>
   <ul>
-    <li><span class="post-trigger">Enrichment</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Frequent: provider cache hits</span></li>
+    <li><span class="post-trigger">Enrichment</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Frequent enough for provider cache hits</span></li>
     <li><span class="post-trigger">Scene direction</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Too infrequent to benefit from caching. I shortened the prompt and will revisit caching when usage grows.</span></li>
   </ul>
 </div>
@@ -257,7 +252,7 @@ I decide what to build, how to structure it, and what to charge. Coding agents h
   <ol class="post-timeline">
     <li><b>Cause:</b> an agent's bulk edit put code above the PHP opening tag. The tests that ran never loaded that file.</li>
     <li class="is-hit"><b>Impact:</b> scene-asset jobs failed for about 18 hours. Three videos stalled, and all three recovered after the fix.</li>
-    <li><b>Detection:</b> a reviewer reported the problem by email before monitoring detected it.</li>
+    <li><b>Detection:</b> a reviewer emailed me about the problem before monitoring flagged it.</li>
   </ol>
   <div class="post-incident-foot">
     <p class="eyebrow">Checks added</p>
@@ -274,7 +269,7 @@ I decide what to build, how to structure it, and what to charge. Coding agents h
   <div class="fx"><dt>~1,300</dt><dd>test definitions; the count does not prove the software is bug-free</dd></div>
 </dl>
 
-Next time, I would add syntax checks and basic smoke tests from the start. Tests need to cover likely failures, and monitoring needs to catch what tests miss.
+Next time, I would add syntax checks and basic smoke tests from the start, and set up monitoring for what the tests miss.
 
 <Potion id="raven-post" />
 
@@ -290,4 +285,4 @@ Next time, I would add syntax checks and basic smoke tests from the start. Tests
   </ol>
 </div>
 
-RavenClip is an early product with three paying customers as of September 26, 2026. Running it helps me test design choices and question assumptions. The [case study](/work/ravenclip/) covers the product decisions.
+RavenClip is an early product with three paying customers as of September 26, 2026. Read the [RavenClip case study](/work/ravenclip/) for the product decisions.

@@ -1,7 +1,7 @@
 ---
 title: RavenClip
 headline: I wanted a better way to follow the news.
-tagline: That became RavenClip, a product that turns news into videos and publishes them to YouTube Shorts and TikTok. I build and run it alongside my full-time work.
+tagline: I started RavenClip to turn news into videos and publish them to YouTube Shorts and TikTok. I build and run it alongside my full-time work.
 category: Founder · AI product and operations
 role: Founder, product development, engineering, and operations
 period: May 2026 - present
@@ -31,28 +31,27 @@ shots:
 import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 import PipelineRaven from '../../components/viz/PipelineRaven.astro';
-import reviewShot from '../../assets/work/ravenclip-shot-review.png';
 import { evidence } from '../../data/evidence';
 import Potion from '../../components/pop/Potion.astro';
 
 ## Start with a complete workflow
 
-RavenClip started with something I wanted to use myself. I built a version that could take a story all the way to a finished video, then worked on getting it to run without me starting each step.
+I built it for my own use first.
 
 <div class="card post-solo not-prose fx">
   <p class="eyebrow">The first weeks</p>
   <ol class="post-timeline">
     <li><b>First version:</b> a complete video, with each stage started by hand.</li>
     <li class="is-hit"><b>Week three:</b> it ran on a schedule and published on its own.</li>
-    <li><b>Around then:</b> I added manual story selection and removed it the same day.</li>
+    <li><b>Around then:</b> I added a manual story picker.</li>
   </ol>
 </div>
 
-I wanted it to keep publishing while I was busy with other work. A story picker wasn’t helping with that, so I took it back out.
+I wanted it to keep publishing while I was busy with other work. The picker didn’t help with that, so I removed it the same day.
 
 ## Learn from the people who pay
 
-I thought I was building for people running news channels. The first paying customers had something else in mind.
+The first paying customers were not who I expected.
 
 <div class="post-split not-prose">
   <div class="card post-no fx">
@@ -71,21 +70,7 @@ I thought I was building for people running news channels. The first paying cust
   </div>
 </div>
 
-They wanted to share their expertise and reach an audience. That gave me a clearer reason to add brand controls and more channels per account.
-
-<div class="post-group not-prose">
-  <p class="eyebrow">What I added for them</p>
-  <ul class="post-pills">
-    <li><Icon name="ph:palette" aria-hidden="true" />Brand controls</li>
-    <li><Icon name="ph:stack" aria-hidden="true" />More channels per account</li>
-  </ul>
-</div>
-
-<dl class="post-figures not-prose">
-  <div class="fx"><dt>{evidence.ravenclip.daysToCustomer} days</dt><dd>from first commit (May 24, 2026) to the first external payment (September 6)</dd></div>
-  <div class="fx" style="--d:70ms"><dt>{evidence.ravenclip.customers}</dt><dd>paying customers as of September 26, 2026</dd></div>
-  <div class="fx" style="--d:140ms"><dt>30 / 30</dt><dd>posts from those customers published automatically, as of September 26, 2026</dd></div>
-</dl>
+They wanted to share their expertise and reach an audience, so I added brand controls and more channels per account.
 
 It’s still early: three customers gave me a direction to test.
 
@@ -98,22 +83,20 @@ If a render fails, I don’t want to pay for the narration and images again. Eac
 <PipelineRaven />
 
 <div class="post-cards is-2 not-prose">
-  <div class="card fx"><span class="post-icon"><Icon name="ph:floppy-disk" aria-hidden="true" /></span><h3>Saved stages</h3><p>Each stage saves its status. A background process starts the next stage when it is ready.</p></div>
   <div class="card fx" style="--d:70ms"><span class="post-icon"><Icon name="ph:lock-simple" aria-hidden="true" /></span><h3>One worker per stage</h3><p>Database locks stop two workers from taking the same stage.</p></div>
-  <div class="card fx"><span class="post-icon"><Icon name="ph:recycle" aria-hidden="true" /></span><h3>Reuse on retry</h3><p>A failed render reuses the assets it already has.</p></div>
   <div class="card fx" style="--d:70ms"><span class="post-icon"><Icon name="ph:seal-check" aria-hidden="true" /></span><h3>Publish once</h3><p>Publishing checks prevent duplicate posts.</p></div>
 </div>
 
 <div class="decision-note not-prose">
   <p class="eyebrow">A simple job chain is sometimes enough</p>
-  <p>I don’t use this for every job. Rebuilding a scene after an edit is a short sequence, so a simple job chain handles it.</p>
+  <p>I don’t save progress for every job. Rebuilding a scene after an edit is short, so a job chain handles it.</p>
 </div>
 
 <span id="notice-when-fallback-hides-a-problem" aria-hidden="true"></span>
 
 ## Monitor backup providers
 
-The videos kept coming, so I thought the providers were fine. One had been out of credit for 25 days. The backup was doing the work at a higher price.
+The videos kept coming, so I thought the providers were fine.
 
 <Potion id="ravenclip" />
 
@@ -122,12 +105,12 @@ The videos kept coming, so I thought the providers were fine. One had been out o
     <span class="post-icon"><Icon name="ph:detective" aria-hidden="true" /></span>
     <div>
       <p class="eyebrow">Production incident</p>
-      <p class="post-incident-title">A backup provider hid an empty credit balance for 25 days</p>
+      <p class="post-incident-title">The primary provider ran out of credit, and the backup hid it</p>
     </div>
   </div>
   <dl class="post-figures">
     <div><dt>25 days</dt><dd>provider out of credit</dd></div>
-    <div><dt>8,162</dt><dd>calls sent to a more expensive backup service</dd></div>
+    <div><dt>8,162</dt><dd>calls sent to the backup provider</dd></div>
     <div><dt>~3.16×</dt><dd>the price per call</dd></div>
   </dl>
   <div class="post-incident-foot">
@@ -145,7 +128,7 @@ The videos kept coming, so I thought the providers were fine. One had been out o
 
 ## Know the limits of AI checks
 
-I can check whether a script stays on topic or fits the required length. I can’t treat a passing check as proof that every claim is true. So customers can review every video, and flagged ones wait for approval.
+A passing check is no proof that every claim is true, so customers can review each video and flagged ones wait for approval.
 
 <div class="post-split not-prose">
   <div class="card fx">
@@ -161,15 +144,10 @@ I can check whether a script stays on topic or fits the required length. I can�
   <div class="card post-no fx" style="--d:70ms">
     <p class="post-split-label"><Icon name="ph:warning-circle" aria-hidden="true" /> Requires review</p>
     <ul>
-      <li><strong>Factual accuracy.</strong> Customers can review every video. Flagged videos wait for approval.</li>
+      <li><strong>Factual accuracy</strong></li>
     </ul>
   </div>
 </div>
-
-<figure class="post-shot not-prose fx">
-  <Image src={reviewShot} alt="RavenClip publish options for one video: Auto, Hold, and Schedule" widths={[640, 1100, 1720]} sizes="(max-width: 767px) 100vw, 860px" />
-  <figcaption>Customers choose automatic publishing, a review window, or a schedule.</figcaption>
-</figure>
 
 <dl class="post-figures not-prose">
   <div class="fx"><dt>$0.36</dt><dd>recorded API spend per rendered video: 183 videos, September 1 to 25, 2026, without payment fees or my time</dd></div>
@@ -177,16 +155,9 @@ I can check whether a script stays on topic or fits the required length. I can�
   <div class="fx" style="--d:140ms"><dt>5</dt><dd>interface languages. Paying customers so far publish in English and French.</dd></div>
 </dl>
 
-<div class="card post-rules post-solo not-prose fx">
-  <p class="eyebrow">Publishing</p>
-  <ul>
-    <li><span class="post-trigger">TikTok</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Live</span></li>
-    <li><span class="post-trigger">YouTube Shorts</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Live</span></li>
-    <li><span class="post-trigger">Instagram</span><Icon name="px-arrow-right" aria-hidden="true" /><span>Built; awaiting app review</span></li>
-  </ul>
-</div>
+I built Instagram publishing too; it is waiting for app review.
 
 <div class="post-cta card not-prose fx">
-  <p>I wrote a closer look at the engineering, including what went wrong.</p>
-  <a class="btn btn-primary" href="/blog/2026/09/25/ravenclip-engineering/">Read the post <Icon name="px-arrow-right" aria-hidden="true" /></a>
+  <p>I wrote up the engineering, including what went wrong.</p>
+  <a class="btn btn-primary" href="/blog/2026/09/25/ravenclip-engineering/">Read the engineering post <Icon name="px-arrow-right" aria-hidden="true" /></a>
 </div>
