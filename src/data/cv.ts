@@ -79,7 +79,7 @@ export const experience: Entry[] = [
         tags: ['perf', 'lead', 'freelance', 'laravel'], weight: 8,
       },
       {
-        text: 'Kept the **AI shopping assistant** inside business rules: the server checks its suggested cart and sets the prices. Code I write with AI agents goes through regression tests and static analysis.',
+        text: 'Kept the **AI shopping assistant** inside business rules: the server checks its suggested cart and sets the prices. I run code written with AI agents through regression tests and static analysis.',
         tags: ['ai', 'founder', 'frontend'], weight: 5,
       },
     ],

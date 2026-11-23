@@ -22,7 +22,7 @@ I started RavenClip because I wanted an easier way to follow the news. It turns 
     <li class="fx" style="--d:70ms"><a href="#structure-ai-output-and-check-it"><span class="post-tldr-topic"><span>02</span><span>Prompts</span></span><strong>15-18% fewer</strong><span class="post-tldr-text">Input tokens per call after replacing a banned-phrase list with three principles.</span></a></li>
     <li class="fx" style="--d:140ms"><a href="#know-what-automated-checks-can-prove"><span class="post-tldr-topic"><span>03</span><span>Checks</span></span><strong>Structure only</strong><span class="post-tldr-text">Checks catch off-topic text, weak openings, and length problems. They cannot prove factual accuracy.</span></a></li>
     <li class="fx"><a href="#monitor-backup-providers"><span class="post-tldr-topic"><span>04</span><span>Fallback</span></span><strong>25 days</strong><span class="post-tldr-text">A backup provider hid an empty credit balance. Monitoring now detects these problems within hours.</span></a></li>
-    <li class="fx" style="--d:70ms"><a href="#track-costs-and-know-what-is-missing"><span class="post-tldr-topic"><span>05</span><span>Costs</span></span><strong>$0.36</strong><span class="post-tldr-text">Recorded API spend per rendered video, September 1–25, 2026.</span></a></li>
+    <li class="fx" style="--d:70ms"><a href="#track-costs-and-know-what-is-missing"><span class="post-tldr-topic"><span>05</span><span>Costs</span></span><strong>$0.36</strong><span class="post-tldr-text">Recorded API spend per rendered video, September 1 to 25, 2026.</span></a></li>
     <li class="fx" style="--d:140ms"><a href="#postmortem-a-syntax-error-in-production"><span class="post-tldr-topic"><span>06</span><span>Postmortem</span></span><strong>3 checks</strong><span class="post-tldr-text">A faulty bulk edit stopped one type of job for 18 hours. Three checks now guard against this error.</span></a></li>
   </ol>
 </div>
@@ -31,7 +31,7 @@ I started RavenClip because I wanted an easier way to follow the news. It turns 
 
 ## Save progress so work can resume
 
-Each stage saves its status in the database. After a failure, processing resumes from that point without repeating paid work. Voice and visuals are generated in parallel, then combined during rendering.
+Each stage saves its status in the database. After a failure, processing resumes from that point without repeating paid work. The pipeline generates voice and visuals in parallel, then combines them during rendering.
 
 <PipelineRaven />
 
@@ -61,7 +61,7 @@ Starting each stage as soon as the previous one finished reduced the median dela
 </dl>
 
 <div class="decision-note not-prose">
-  <p class="eyebrow">When a simpler approach works</p>
+  <p class="eyebrow">A simple job chain is sometimes enough</p>
   <p>Saving each stage adds code to maintain. After a user edits a scene, a simple job chain handles the short rebuild. The full recovery system is for automatic generation and publishing.</p>
 </div>
 
@@ -69,7 +69,7 @@ Starting each stage as soon as the previous one finished reduced the median dela
 
 ## Structure AI output and check it
 
-Each model returns structured output that is checked against a schema. Each stage has its own reasoning budget. Sorting needs less reasoning than writing a script.
+Each model returns structured output, and the code checks it against a schema. Each stage has its own reasoning budget. Sorting needs less reasoning than writing a script.
 
 ```ts
 // One narration beat, as the writer model returns it
@@ -162,7 +162,7 @@ External API calls use shared logic for retries, API key rotation, and switching
   </div>
 </div>
 
-Videos kept finishing, so a provider failure went unnoticed for weeks.
+Videos kept finishing, so I didn’t notice a provider failure for weeks.
 
 <aside class="post-incident card not-prose fx">
   <div class="post-incident-head">
@@ -183,7 +183,7 @@ Videos kept finishing, so a provider failure went unnoticed for weeks.
     <div class="post-meter-row"><span>Primary</span><span><span class="post-meter-bar grow-bar" style="--w:27.8%"></span><b>1×</b></span></div>
     <div class="post-meter-row"><span>Fallback</span><span><span class="post-meter-bar is-accent grow-bar" style="--w:88%"></span><b>~3.16×</b></span></div>
   </div>
-  <p class="post-incident-lesson">The extra cost was small, but the incident exposed a gap in monitoring.</p>
+  <p class="post-incident-lesson">The extra cost was small, but it showed me a gap in monitoring.</p>
   <div class="post-incident-foot">
     <p class="eyebrow">The fix</p>
     <ol class="post-fix">
@@ -212,18 +212,18 @@ I record paid API calls before checking their output, because unusable answers s
     <p><strong>~$0.09</strong> infrastructure share</p>
   </div>
   <dl class="post-cost-basis">
-    <div><dt>Period</dt><dd>September 1–25, 2026</dd></div>
+    <div><dt>Period</dt><dd>September 1 to 25, 2026</dd></div>
     <div><dt>Recorded API spend</dt><dd>$66.59</dd></div>
     <div><dt>Rendered videos</dt><dd>183</dd></div>
   </dl>
-  <p class="post-cost-excluded"><span>Not included</span><span class="stack-chip">Payment fees</span><span class="stack-chip">My time</span><span class="stack-chip">Retries with the same API key, not fully tracked separately</span></p>
+  <p class="post-cost-excluded"><span>Not included</span><span class="stack-chip">Payment fees</span><span class="stack-chip">My time</span><span class="stack-chip">Retries with the same API key (tracked in part)</span></p>
 </figure>
 
 <div class="post-cards is-2 not-prose">
   <div class="card fx">
     <span class="post-icon"><Icon name="ph:magnifying-glass" aria-hidden="true" /></span>
     <h3>Code-scanning test</h3>
-    <p>Finds paid integrations that do not record costs. It checks that costs are recorded, but cannot confirm that the prices are correct.</p>
+    <p>Finds paid integrations that do not record costs. It checks that every paid call records a cost, but cannot confirm the price.</p>
   </div>
   <div class="card fx" style="--d:70ms">
     <span class="post-icon"><Icon name="ph:calendar-check" aria-hidden="true" /></span>
@@ -284,7 +284,7 @@ Next time, I would add syntax checks and basic smoke tests from the start. Tests
 
 <div class="post-next not-prose">
   <ol class="process-grid">
-    <li><span class="process-number">01</span><h3>Keep the raw data</h3><p>Store the data behind each measurement, not just the result.</p></li>
+    <li><span class="process-number">01</span><h3>Keep the raw data</h3><p>Store the data behind each measurement as well as the result.</p></li>
     <li><span class="process-number">02</span><h3>Keep incident evidence</h3><p>Keep incident records after routine logs expire.</p></li>
     <li><span class="process-number">03</span><h3>Close the cost gaps</h3><p>Track all costs, including retries with the same API key.</p></li>
   </ol>

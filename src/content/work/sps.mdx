@@ -35,20 +35,20 @@ import Potion from '../../components/pop/Potion.astro';
 
 ## Connect the booking to the warehouse floor
 
-When the items that arrived didn’t match a booking, staff sorted it out by email. Item locations weren’t always recorded either. I built the warehouse app so staff could handle both while doing the work, on a phone.
+Staff sorted out mismatched bookings by email, and they didn’t always record where items went. I built the warehouse app so they could do both on a phone while they work.
 
 <div class="post-screens not-prose">
   <figure class="fx"><div class="post-screen-img"><Image src={scan} alt="Receiving screen: scan arriving items and check them against the booking" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Receive</strong><span>Scan arriving items and compare them with the booking.</span></figcaption></figure>
   <figure class="fx" style="--d:70ms"><div class="post-screen-img"><Image src={order} alt="Screen listing the differences between a booking and the received items" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Check</strong><span>Review differences between the booking and what arrived.</span></figcaption></figure>
-  <figure class="fx" style="--d:140ms"><div class="post-screen-img"><Image src={bay} alt="Screen recording an item's storage location" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Locate</strong><span>Record each storage bay and keep a history of item moves.</span></figcaption></figure>
+  <figure class="fx" style="--d:140ms"><div class="post-screen-img"><Image src={bay} alt="Screen recording an item's storage location" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Locate</strong><span>Record each storage location and keep a history of item moves.</span></figcaption></figure>
   <figure class="fx" style="--d:210ms"><div class="post-screen-img"><Image src={photo} alt="Return screen with photos of the items before they leave" widths={[160, 240, 360, 480]} sizes="(min-width: 768px) 190px, 40vw" /></div><figcaption><strong>Return</strong><span>Scan and photograph items, then approve the return or restore their locations.</span></figcaption></figure>
 </div>
 
-I built the app end to end and maintain the StoragePal platform it connects to. When a problem crosses between the two, I can work on both sides.
+I built the app end to end and maintain the StoragePal platform it connects to. If a problem crosses between the two, I can fix both sides.
 
 ## Remove complexity the warehouse does not need
 
-I originally built offline support. Then I looked at where the app would actually run: every warehouse had internet. I removed it before daily use began.
+I first built offline support. Then I checked where the app would run: every warehouse had internet, so I removed it before daily use began.
 
 <div class="post-principles not-prose">
   <div class="card post-before fx">
@@ -60,14 +60,14 @@ I originally built offline support. Then I looked at where the app would actuall
     <p class="eyebrow">After: online only</p>
     <dl>
       <div><dt>Online</dt><dd>Scanning needs a connection</dd></div>
-      <div><dt>Saved</dt><dd>Sessions are saved on the server, even after a reload</dd></div>
+      <div><dt>Saved</dt><dd>The server keeps each session, even after a reload</dd></div>
       <div><dt>Smaller</dt><dd>Much less code to maintain</dd></div>
     </dl>
-    <p class="post-after-foot"><span>Removed before daily production use began.</span></p>
+    <p class="post-after-foot"><span>Gone before daily use began.</span></p>
   </div>
 </div>
 
-Staff need a connection to save changes. In return, there’s much less sync code to maintain, and their sessions are still saved if they reload the page.
+Staff need a connection to save changes. In return, I maintain far less sync code.
 
 ## Make a retry understandable
 
@@ -119,7 +119,7 @@ Staff sometimes need to label an item before StoragePal approves a booking chang
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
     <li class="post-flow-node"><span class="post-icon"><Icon name="ph:check-square" aria-hidden="true" /></span><strong>Confirm</strong><span>After approval, the app checks the predicted ID against StoragePal.</span></li>
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:flag" aria-hidden="true" /></span><strong>Fix</strong><span>An incorrect ID flags the item for a new label.</span></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:flag" aria-hidden="true" /></span><strong>Fix</strong><span>The app flags a wrong ID for a new label.</span></li>
   </ol>
 </figure>
 
@@ -136,7 +136,7 @@ I test the things that could leave staff with the wrong result: a request sent t
   <li><Icon name="ph:check-circle" aria-hidden="true" />Canceled location changes are undone</li>
 </ul>
 
-Daily use also changed the smaller things.
+I also fixed smaller things that staff ran into every day.
 
 <div class="post-cards not-prose">
   <div class="card fx"><span class="post-icon"><Icon name="ph:hand-tap" aria-hidden="true" /></span><h3>One-tap verification</h3><p>Checking an item takes a single tap.</p></div>
@@ -158,12 +158,12 @@ These counts cover actions recorded during the same period, not unique items. Th
 
 <dl class="post-figures not-prose">
   <div class="fx"><dt>1,175 / 1,187</dt><dd>updates sent to the StoragePal platform succeeded on the first try, June 28 - September 26. The other 12 succeeded on a retry, 3 seconds to 10 minutes later.</dd></div>
-  <div class="fx" style="--d:70ms"><dt>2,047 / 2,200</dt><dd>hourly data syncs from the platform finished without a recorded failure. These are counted separately from the updates.</dd></div>
+  <div class="fx" style="--d:70ms"><dt>2,047 / 2,200</dt><dd>hourly data syncs from the platform finished without a recorded failure. I count these apart from the updates.</dd></div>
 </dl>
 
 <details class="evidence-detail not-prose">
   <summary>Test coverage</summary>
   <div>
-    <p>As of September 15, the code had 659 test methods, run manually. There were also 65 scripted test scenarios run by AI agents: 57 in the browser and 8 on the API, with 28 documented runs in April and May.</p>
+    <p>As of September 15, the code had 659 test methods, which I ran by hand. There were also 65 scripted test scenarios run by AI agents: 57 in the browser and 8 on the API, with 28 documented runs in April and May.</p>
   </div>
 </details>

@@ -34,9 +34,9 @@ const phones = [
 ];
 
 const principles = [
-  { icon: 'stairs', title: 'Find what’s getting in the way.', text: 'At StoragePal, staff needed better tools for their daily work. That’s where I started.', href: '/work/storagepal/#start-where-staff-were-blocked', link: 'Start with daily operations' },
-  { icon: 'scales', title: 'Leave out what we don’t need.', text: 'Every warehouse had internet, so I removed offline mode from the warehouse app. Less code to look after.', href: '/work/sps/#remove-complexity-the-warehouse-does-not-need', link: 'Why I removed offline mode' },
-  { icon: 'hourglass', title: 'Pay attention after launch.', text: 'RavenClip’s first customers weren’t who I expected. Their needs changed what I built next.', href: '/work/ravenclip/#learn-from-the-people-who-pay', link: 'What paying customers taught me' },
+  { icon: 'stairs', title: 'Find what’s getting in the way.', text: 'At StoragePal, staff needed better tools for their daily work. That’s where I started.', href: '/work/storagepal/#fix-what-slowed-staff-down', link: 'Start with daily operations' },
+  { icon: 'scales', title: 'Leave out what we don’t need.', text: 'Every warehouse had internet, so I removed offline mode from the warehouse app and its sync code.', href: '/work/sps/#remove-complexity-the-warehouse-does-not-need', link: 'Why I removed offline mode' },
+  { icon: 'hourglass', title: 'Pay attention after launch.', text: 'RavenClip’s first customers weren’t who I expected, so I changed what I built next.', href: '/work/ravenclip/#learn-from-the-people-who-pay', link: 'Lessons from paying customers' },
 ] as const;
 ---
 
@@ -50,7 +50,7 @@ const principles = [
       <div class="hero-grid">
         <div>
           <p class="hero-statement rise" style="--i:2">A full-stack engineer<br />you can hand a project to.</p>
-          <p class="hero-sub rise" style="--i:3">I’ve spent {years} years building products and working on existing systems. I get up to speed quickly, write the code, and stay involved after launch.</p>
+          <p class="hero-sub rise" style="--i:3">I’ve spent {years} years building new products and taking over running ones. I write the code and stay involved after launch.</p>
           <div class="hero-actions rise" style="--i:4">
             <a href="#work" class="btn btn-primary">Explore my work <Icon name="px-arrow-down" aria-hidden="true" /></a>
             <a href={`/cv/${defaultRole.slug}.pdf`} class="btn btn-ghost">Download CV <Icon name="px-download" aria-hidden="true" /></a>
@@ -69,7 +69,7 @@ const principles = [
     <div class="shell section-space">
       <header class="sec-head fx">
         <h2><span class="sec-num" aria-hidden="true"></span>Selected work</h2>
-        <p class="sec-note">Here’s what I’ve been working on, and the decisions behind it.</p>
+        <p class="sec-note">Recent work, and the decisions behind it.</p>
       </header>
 
       <div class="work-list">

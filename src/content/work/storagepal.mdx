@@ -3,7 +3,7 @@ title: StoragePal
 headline: The software behind a busy storage business.
 tagline: I look after the software that runs StoragePal, a storage business in Paris. I decide what to build next, write and test the code, and keep it running.
 category: Product development · Storage and logistics
-role: Product and engineering, from roadmap and architecture to code, testing, releases, and production support
+role: Product and engineering, from roadmap to production support
 period: Oct 2024 - present
 stack: PHP, Neos Flow, MariaDB, JavaScript, Stripe, Gemini
 order: 1
@@ -48,27 +48,25 @@ StoragePal was already running when I joined. Customers were booking collections
   </ol>
 </figure>
 
-I handle the work day to day: deciding what comes next, working out how it should work, writing and testing the code, and releasing it. If something breaks in production, I fix it.
-
-I also built the [warehouse app](/work/sps/) end to end, for the staff who run the warehouse.
+I also built the [warehouse app](/work/sps/) end to end for the warehouse staff.
 
 ## Work from what people ask for
 
-I talk with customers, customer care, ops, and the CEO every day. Most changes start there.
+I talk with customers, customer care, ops, and the CEO every day, and I start most changes from what they tell me.
 
 <div class="post-cards not-prose">
   <div class="card fx"><span class="post-icon"><Icon name="ph:users" aria-hidden="true" /></span><h3>Customers</h3><p>I rewrote our emails around their phone questions and added the warehouse map and entrance photos.</p></div>
   <div class="card fx" style="--d:70ms"><span class="post-icon"><Icon name="ph:headset" aria-hidden="true" /></span><h3>Customer care</h3><p>They find a caller by phone number and see what's stored, what's owed, and the next bill on one screen.</p></div>
-  <div class="card fx" style="--d:140ms"><span class="post-icon"><Icon name="ph:warehouse" aria-hidden="true" /></span><h3>Operations</h3><p>I built the collection pricing with logistics and keep changing the warehouse app as their work changes.</p></div>
+  <div class="card fx" style="--d:140ms"><span class="post-icon"><Icon name="ph:warehouse" aria-hidden="true" /></span><h3>Operations</h3><p>I built the collection pricing with the logistics team and update the warehouse app when they ask.</p></div>
 </div>
 
 <dl class="post-figures not-prose">
   <div class="fx"><dt>{evidence.storagepal.arrivalCallsDown}</dt><dd>fewer calls asking how to find the warehouse in the month after the new emails (August 2026) than the month before, from our phone system.</dd></div>
 </dl>
 
-## Start where staff were blocked
+## Fix what slowed staff down
 
-The screens for stored items and bookings were slowing staff down every day. Fixing those was more useful than starting with a new feature.
+The screens for stored items and bookings slowed staff down every day, so I fixed those before building anything new.
 
 <div class="post-split not-prose">
   <div class="card post-no fx">
@@ -90,7 +88,7 @@ The screens for stored items and bookings were slowing staff down every day. Fix
 
 ## Cache what customers share
 
-The catalog was doing the same database work for every visitor. I reduced the queries and added indexes, then cached the product data everyone shares. Each customer’s cart still loads separately.
+The catalog was doing the same database work for every visitor. I reduced the queries and added indexes, then cached the product data everyone shares. Each customer’s cart still loads on its own.
 
 <Potion id="storagepal" />
 
@@ -170,8 +168,8 @@ A flat regional price couldn’t account for the distance, crew, or access a job
 <div class="post-media not-prose fx">
   <div class="post-screen-img"><Image src={transport} alt="StoragePal collection options with the price for the address" widths={[240, 480]} sizes="200px" /></div>
   <div>
-    <h3>What customers enter</h3>
-    <p>The quote uses the address, floor, and elevator details entered by the customer.</p>
+    <h3>Customer details</h3>
+    <p>The quote uses the address, floor, and elevator the customer enters.</p>
   </div>
 </div>
 
@@ -207,7 +205,7 @@ Customers can describe what they want to store or send a photo. The assistant su
 
 ## Upgrade with no maintenance window
 
-In November 2026 I spent about two and a half weeks moving the platform off years-old software. I worked with AI coding agents, set the rules, reviewed every change, and ran every cloud and DNS step myself.
+In November 2026 I spent about two and a half weeks moving the platform off years-old software. I worked with AI coding agents and reviewed every change. I ran every cloud and DNS step myself.
 
 <div class="post-split not-prose">
   <div class="card post-no fx">
@@ -232,13 +230,13 @@ In November 2026 I spent about two and a half weeks moving the platform off year
 
 <figure class="post-flow card not-prose fx">
   <ol>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:database" aria-hidden="true" /></span><strong>Side by side</strong><span>Old and new servers on one production database.</span></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:database" aria-hidden="true" /></span><strong>Side by side</strong><span>I ran old and new servers on one production database.</span></li>
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
     <li class="post-flow-node"><span class="post-icon"><Icon name="ph:stethoscope" aria-hidden="true" /></span><strong>Check</strong><span>I tested each step with {evidence.storagepal.upgrade.smokeRequests} requests on production data. Old and new code billed the same orders.</span></li>
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:arrows-left-right" aria-hidden="true" /></span><strong>Switch</strong><span>One DNS change moved customers. Scheduled jobs moved the same minute.</span></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:arrows-left-right" aria-hidden="true" /></span><strong>Switch</strong><span>I moved customers with one DNS change and moved the scheduled jobs in the same minute.</span></li>
     <li class="post-flow-link"><Icon name="px-arrow-right" aria-hidden="true" /></li>
-    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:arrow-counter-clockwise" aria-hidden="true" /></span><strong>Rollback ready</strong><span>One DNS change could move everyone back. The old code still ran on the database.</span></li>
+    <li class="post-flow-node"><span class="post-icon"><Icon name="ph:arrow-counter-clockwise" aria-hidden="true" /></span><strong>Rollback ready</strong><span>I could move everyone back with one DNS change, because the old code still ran on the database.</span></li>
   </ol>
 </figure>
 
